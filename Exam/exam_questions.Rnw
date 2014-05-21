@@ -1,0 +1,53 @@
+% To compile this document
+% graphics.off();rm(list=ls());library('knitr');knit('exam_questions.Rnw');  for(i in 1:2) system('R CMD pdflatex -shell-escape exam_questions.tex')
+
+%setwd("~/Dropbox/Docs/Teaching/isb101/Exam")
+
+
+\documentclass{article}
+
+
+<<style, echo=FALSE, results='asis'>>=
+BiocStyle::latex()
+@
+
+<<options, include=FALSE>>=
+options(digits=3, width=100, stringsAsFactors = FALSE)
+opts_chunk$set(echo=TRUE,tidy=FALSE,include=TRUE,
+               dev='png', fig.width = 5, fig.height = 3.5, comment = '#>  ', dpi = 300,
+		cache = TRUE)
+@
+
+
+
+\title{ISB101 Exam}
+\usepackage{amsmath}
+\usepackage{minted}
+\usepackage{natbib}
+\usepackage{mathpazo}
+%\usepackage{enumerate}
+\usepackage{soul}
+\usepackage{cases}
+\setlength{\parindent}{0cm} 
+
+\begin{document}
+
+\maketitle
+
+\newcounter{ExerciseNr}
+\addtocounter{ExerciseNr}{1}
+
+\section{Exercises} \label{sec:exercises}
+
+\subsection{Exercise \arabic{ExerciseNr}}
+
+You need to copy a dataset (\verb+~/Documents/P53_expression_levels.tsv+) to a remote server called \verb+apple.uni.lux+ preferably to the directory of \verb+/home/projects1/P53_screening+. What command would you use?
+
+\begin{description}
+  \item[A] \verb+cp apple.uni.lux:/home/projects1/P53_screening/ ~/Documents/P53_expression_levels.tsv+
+  \item[B] \verb+scp apple.uni.lux:/home/projects1/P53_screening/ ~/Documents/P53_expression_levels.tsv+
+  \item[C] \verb+scp ~/Documents/P53_expression_levels.tsv apple.uni.lux:/home/projects1/P53_screening/+
+  \item[D] \verb+scp apple.uni.lux:~/Documents/P53_expression_levels.tsv /home/projects1/P53_screening/+
+\end{description}
+
+\end{document}
