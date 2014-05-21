@@ -1,4 +1,4 @@
-isb101-2014
-===========
+Genomics & Databases (ISB101) - Teaching materials for year 2014
+================================================================
 
-Genomics &amp; Databases ISB101 - 2014 Teachibg materials.
+Still a long-way to go.
