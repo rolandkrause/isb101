@@ -11,9 +11,10 @@ Still a long-way to go.
 R1 Markdown, reproducible research
 R2 Visualization
    NGS1 Next generation sequencing 
-NGS2 
-NGS3 
-PH1 Phylogeny 1
+ * R1 Markdown, reproducible research
+ * R2 Visualization
+ * NGS1 Next generation sequencing 
+ * NGS3 
  * PH2 Orthology
 
 
