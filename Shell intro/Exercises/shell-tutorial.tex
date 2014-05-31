@@ -1,0 +1,424 @@
+% To compile this document
+% graphics.off();rm(list=ls());library('knitr');knit('shell-tutorial.Rnw');  for(i in 1:2) system('R CMD pdflatex -shell-escape shell-tutorial.tex')
+
+%setwd("/Volumes/Macintosh Storage/Users/jbinder/Dropbox/Docs/Teaching/2014/Shell intro")
+
+
+\documentclass{article}\usepackage[]{graphicx}\usepackage[usenames,dvipsnames]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+
+
+\RequirePackage{/Library/Frameworks/R.framework/Versions/3.1/Resources/library/BiocStyle/sty/Bioconductor}
+
+\AtBeginDocument{\bibliographystyle{/Library/Frameworks/R.framework/Versions/3.1/Resources/library/BiocStyle/sty/unsrturl}}
+
+
+
+
+
+
+
+
+\title{Shell Tutorial}
+\usepackage{amsmath}
+\usepackage{minted}
+\usepackage{natbib}
+\usepackage{mathpazo}
+\usepackage{framed}
+%\usepackage{enumerate}
+\usepackage{soul}
+\usepackage{cases}
+\setlength{\parindent}{0cm} 
+
+\author{Janos Binder$^1$ \\[1em]$^1$European Molecular Biology Laboratory (EMBL),\\ Heidelberg, Germany\\
+\texttt{janos.binder@embl.de}}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+
+
+\begin{document}
+
+\maketitle
+
+
+\tableofcontents
+
+\section{Getting started} \label{sec:prep}
+
+First you the necessary softwares to work remotely. On windows you need the necessary clients such as \verb+Putty+ and the \verb+WinSCP+ program. On Linux and Mac OSX you can use \verb+ssh+:
+
+\begin{verbatim}
+> ssh server.name
+\end{verbatim}
+
+Let's get familiar with the shell. You will see something like:
+
+\begin{verbatim}
+jbinder@red:~> 
+\end{verbatim}
+
+Where we are now? The \verb+pwd+ command will tell us. Try it out! Check also \verb+man+ or \verb+info+ out.
+
+\begin{verbatim}
+man pwd
+\end{verbatim}
+
+Press \verb+q+ to exit from the manual.
+
+\section{Setting up the project environment}
+
+We organize our work into folders. How does it work from the console. 
+
+In the modern operating system every user has her or his own home directory. One can reach it by:
+
+\begin{verbatim}
+cd ~
+\end{verbatim}
+
+The \verb+cd+ command changes the current directory and the \verb+~+ is a special character, whcih refers to the home directory. What is in this directory exactly? The following command will tell:
+
+\begin{verbatim}
+ls
+\end{verbatim}
+
+\verb+-la+ flags are widely used to list the hidden files and the details. 
+
+\begin{verbatim}
+ls -la
+\end{verbatim}
+
+The \verb+.+ denote the current directory and \verb+..+ denote the parent directory. The classroom projects should be stored in \verb+projects+. It can be created by:
+
+\begin{verbatim}
+mkdir projects
+cd projects
+\end{verbatim}
+
+Some directories are no longer used and they need to be removed. The \verb+rmdir+ is the opposite command of \verb+mkdir+.
+
+\begin{verbatim}
+mkdir wrong_directory
+ls -la
+ls -la wrong_directory
+rmdir wrong_directory
+ls -la
+\end{verbatim}
+
+\textbf{Task:} Create a project directory. Preference: \verb+~/projects/compartments+
+
+\section{Manipulating files}
+
+First we need the human knowledge dataset from \href{http://compartments.jensenlab.org/Downloads}{http://compartments.jensenlab.org/Downloads}. It can be be downloaded:
+
+\begin{verbatim}
+cd ~/projects/compartments
+wget http://download.jensenlab.org/human_compartment_knowledge_full.tsv
+ls -la
+\end{verbatim}
+
+You can also try:
+\begin{verbatim}
+cd ~/projects/compartments
+curl http://download.jensenlab.org/human_compartment_knowledge_full.tsv > hkcf2.tsv
+ls -la
+\end{verbatim}
+
+A few file manipulation. Copying (try out the \verb+TAB+ button when typing):
+
+\begin{verbatim}
+cp human_compartment_knowledge_full.tsv hckf.tsv
+ls -la
+\end{verbatim}
+
+Rename one of the copied files (be lazy, try to use \verb+TAB+ button again):
+
+\begin{verbatim}
+mv hckf.tsv hc.tsv
+ls -la
+\end{verbatim}
+
+Delete them:
+
+\begin{verbatim}
+mv hc.tsv
+ls -la
+\end{verbatim}
+
+The \verb+-v+ stands for verbose, and it is useful to see what is happening. The \verb+*+ character matches to everything.
+
+\begin{verbatim}
+rm -v hc*.tsv
+\end{verbatim}
+
+\subsection{Manipulating files}
+
+Bioinformatics data comes often in text format. To get a glance, try the following commands.
+
+\begin{verbatim}
+head human_compartment_knowledge_full.tsv
+tail human_compartment_knowledge_full.tsv
+\end{verbatim}
+
+The columns in \verb+tsv+ files are separated with a tab character (\verb+\t+). These files are closely related to the comma separated files (\verb+csv+).
+
+Let see what is inside:
+
+\begin{verbatim}
+less human_compartment_knowledge_full.tsv
+\end{verbatim}
+
+You can use the cursors, the \verb+space+ and \verb+G+ and \verb+g+ button, which goes to the end and the beginning of the file respectively. Use \verb+q+ to exit the program. We need some statistics about the file, the \verb+wc+ command answers how many lines, words and characters exist. We can limit it further by using the flags (\verb+-l -w+ or \verb+c-+).
+
+\begin{verbatim}
+wc human_compartment_knowledge_full.tsv
+\end{verbatim}
+
+We can also filter specific lines, for example what proteins are localized in the mitochondria. The Gene Ontology identifier for mitochondrion is \verb+GO:0005739+. It can be done by:
+
+\begin{verbatim}
+grep 'GO:0005739' human_compartment_knowledge_full.tsv
+\end{verbatim}
+
+It seems to be too long, let us see a sample from the output. For this we \emph{pipe} the output of the command into another command.
+
+\begin{verbatim}
+grep 'GO:0005739' human_compartment_knowledge_full.tsv | head
+\end{verbatim}
+
+If it seems good, we can store the mitochondrial proteins.
+
+\begin{verbatim}
+grep 'GO:0005739' human_compartment_knowledge_full.tsv > mitochondrial_proteins.tsv
+\end{verbatim}
+
+We can also get the non-mitochondrial proteins. The \verb+-v+ flag expresses to list all lines, which do not contain the pattern. One example:
+
+\begin{verbatim}
+grep -v 'GO:0005739' human_compartment_knowledge_full.tsv | head
+\end{verbatim}
+
+We need a file for the non-mitochondrial proteins as well.
+
+\begin{verbatim}
+grep -v 'GO:0005739' human_compartment_knowledge_full.tsv > non_mitochondrial_proteins.tsv
+\end{verbatim}
+
+Specific columns can be also selected. Now we see how a file with pair of Ensembl identifiers and GO terms can be created.
+
+\begin{verbatim}
+cut -f1,3 human_compartment_knowledge_full.tsv | head
+\end{verbatim}
+
+If works then save the results:
+
+\begin{verbatim}
+cut -f1,3 human_compartment_knowledge_full.tsv > ensembl_go_pairs.tsv
+\end{verbatim}
+
+\subsection{Advanced operations with AWK}
+
+AWK is an interpreted programming language designed for text processing and typically used as a data extraction and reporting tool. It is a standard feature of most Unix-like operating systems. Let us see some examples.
+
+\subsubsection*{Printing specific columns with AWK}
+
+As the first exercise let us see how can we print the columns with AWK. We use the GNU variant of AWK.
+
+\begin{verbatim}
+gawk -F '\t' '{print $1 "\t" $3;}' human_compartment_knowledge_full.tsv | head
+\end{verbatim}
+
+The \verb+-F '\t'+ expresses the separator between the columns. In the curly backets we have the print statement. It says print the first and the third columns separated by a tab.
+
+\subsubsection*{Filtering on specific values}
+
+We can also select the mitochondrial proteins with AWK:
+
+\begin{verbatim}
+gawk -F '\t' '$3 == "GO:0005739"' human_compartment_knowledge_full.tsv | head
+\end{verbatim}
+
+Here there are no curly backets used, so it is evaluated as a conditional (printed only if the expression is true). We can combine it with the previous example.
+
+\begin{verbatim}
+gawk -F '\t' '($3 == "GO:0005739"){print $1 "\t" $3;}' human_compartment_knowledge_full.tsv | head
+\end{verbatim}
+
+\subsubsection*{More filtering possibilities}
+
+It is often neccesary to filter a file based on some numerical threshold. In the example the last column denotes how reliable is the localization evidence. Filtering on high confidence scores ($= 5$):
+
+\begin{verbatim}
+gawk -F '\t' '$7 > 4' human_compartment_knowledge_full.tsv | head
+\end{verbatim}
+
+One can combine multiple conditionals. Here we examine the mitochondrial proteins with highly reliable evidence.
+
+\begin{verbatim}
+gawk -F '\t' '$3 == "GO:0005739" && $7 > 4' human_compartment_knowledge_full.tsv | head
+\end{verbatim}
+
+The \verb+&&+ denotes that both statement needs to be true, while \verb+||+ denote that at least one statement needs be true.
+
+\section{Shell programming}
+
+We will write a few script during the second part. First we learn how editing works remotely.
+
+\subsection*{Coding the first script -- Hello BioWorld!}
+
+\begin{verbatim}
+pico 1_hello_bioworld.sh
+\end{verbatim}
+
+Write the following lines:
+
+\begin{minted}{sh}
+#!/bin/sh
+
+echo "Hello BioWorld!"
+\end{minted}
+
+Exit works with \verb!CTRL+X!. Don't forget to save!
+
+You have make the script runnable and then you can test it.
+
+\begin{verbatim}
+chmod a+x 1_hello_bioworld.sh
+./1_hello_bioworld.sh
+\end{verbatim}
+
+\subsection*{Using variables}
+
+Variables are useful to store intermediate results and often used text and numbers. 
+
+\begin{minted}{sh}
+#!/bin/bash
+
+HW="Hello World!"
+
+echo $HW
+echo "It is boring to print" $HW
+\end{minted}
+
+\subsection*{Using conditionals}
+
+A branch of a script is executed only if the statement is true. A simple example:
+
+\begin{minted}{sh}
+#!/bin/bash
+
+FILE="3_basic_conditionals.sh"
+
+if [ -f $FILE ]; then
+    echo "FILE:" $FILE "exists!"
+fi
+\end{minted}
+
+A more complicated example:
+
+\begin{minted}{sh}
+#!/bin/bash
+
+FILE="3a_complex_conditionals"
+
+if [ -f $FILE ]; then
+    echo "FILE:" $FILE "exists!"
+else
+    echo "FILE:" $FILE "does not exists!"
+fi
+\end{minted}
+
+\textbf{Task:} Try to modify this script to run the other branch of the conditional.
+
+\subsection*{Using loops}
+
+A loop is a sequence of statements which is specified once but which may be carried out several times in succession. The code "inside" the loop is obeyed a specified number of times, or once for each of a collection of items, or until some condition is met, or indefinitely.
+
+\begin{minted}{sh}
+#!/bin/sh
+
+echo "We count to ten!"
+
+for (( i = 1 ; i <= 10 ; i++ )) ; do
+    echo $i
+done
+\end{minted}
+
+The double bracket denote that \verb+i+ refers to a number.
+
+\textbf{Task:} Modify the script to count back from 10.
+
+There is another solution to the previous example with the \verb+while+ keyword.
+
+\begin{minted}{sh}
+#!/bin/sh
+
+echo "We count to ten!"
+
+(( i = 1 ))
+while (( i <= 10 )) ; do
+    echo $i
+    (( i++ ))
+done
+\end{minted}
+
+\textbf{Task:} Modify the script to count back from 10.
+
+The shell can also store the output of a command. Here is an example, which writes the files out:
+
+\begin{minted}{sh}
+#!/bin/sh
+
+FILES=`ls -1`
+
+for f in $FILES; do
+    echo $f "is a file"
+done
+\end{minted}
+\end{document}
