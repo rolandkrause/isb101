@@ -44,6 +44,8 @@ opts_chunk$set(echo=TRUE,tidy=FALSE,include=TRUE,
 
 \section{Getting started} \label{sec:prep}
 
+\textbf{Exam-like question} Why would you use terminal and shell in the 21th century?
+
 First you the necessary softwares to work remotely. On windows you need the necessary clients such as \verb+Putty+ and the \verb+WinSCP+ program. On Linux and Mac OSX you can use \verb+ssh+:
 
 \begin{verbatim}
@@ -138,35 +140,40 @@ First we need the human knowledge dataset from \href{http://compartments.jensenl
 \begin{verbatim}
 cd ~/projects/compartments
 wget http://download.jensenlab.org/human_compartment_knowledge_full.tsv
-ls -la
+ls
 \end{verbatim}
+
+Take note that you can change multiple directories. You can use this \emph{path} to copy, move or manipulate files (e.g. you can refer to the file as \verb+~/projects/compartments/human_compartment_knowledge_full.tsv+. 
 
 You can also try:
 \begin{verbatim}
-cd ~/projects/compartments
 curl http://download.jensenlab.org/human_compartment_knowledge_full.tsv > hkcf2.tsv
-ls -la
+ls
 \end{verbatim}
 
 Now we try out a few file manipulation commands. Copying (try out the \verb+TAB+ button when typing):
 
 \begin{verbatim}
-cp human_compartment_knowledge_full.tsv hckf.tsv
-ls -la
+cp human_compartment_knowledge_full.tsv ../hckf.tsv
+ls
 \end{verbatim}
 
-Rename one of the copied files (be lazy, try to use \verb+TAB+ button again):
+Renameof the copied files (be lazy, try to use \verb+TAB+ button again):
 
 \begin{verbatim}
-mv hckf.tsv hc.tsv
-ls -la
+mv ../hckf.tsv ../hc.tsv
+ls
 \end{verbatim}
+
+Where did that file go? What does that \verb+..+ for? What would \verb+ls ..+ do?
+
+\textbf{Task} Find the \verb+hc.tsv+ file and move back to the current directory. Try to use the single \verb+.+.
 
 Delete them:
 
 \begin{verbatim}
-mv hc.tsv
-ls -la
+rm hc.tsv
+ls
 \end{verbatim}
 
 The \verb+-v+ stands for verbose, and it is useful to see what is happening behind. It works with most of the unix commands. The \verb+*+ character matches to everything.
@@ -176,6 +183,8 @@ rm -v hc*.tsv
 \end{verbatim}
 
 \textbf{Task} Create a directory under \verb+~/projects/compartments/mouse+. Download the mouse knowledge dataset and rename the file to \verb+mckf.tsv+.
+
+\textbf{Exam-like question} You need to copy (or move) a file located in your home directory under \verb+projects/compartments/protein_mapping.tsv+ to the current directory. What command and how would you use? 
 
 \subsection{Manipulating files}
 
@@ -200,6 +209,7 @@ You can use the cursors, the \verb+space+ and \verb+G+ and \verb+g+ button, whic
 
 \begin{verbatim}
 wc human_compartment_knowledge_full.tsv
+wc -l human_compartment_knowledge_full.tsv
 \end{verbatim}
 
 We can also filter specific lines, for example what proteins are localized in the mitochondria. The Gene Ontology identifier for mitochondrion is \verb+GO:0005739+. It can be done by:
@@ -208,7 +218,7 @@ We can also filter specific lines, for example what proteins are localized in th
 grep 'GO:0005739' human_compartment_knowledge_full.tsv
 \end{verbatim}
 
-It seems to be too long, let us see a sample from the output. The pipes are useful in Unix for this purpose. For this we send the output of the command into another command.
+It seems to be too long, let us take a sample from the output. The pipes are useful in Unix for this purpose. For this we send the output of the command into another command.
 
 \begin{verbatim}
 grep 'GO:0005739' human_compartment_knowledge_full.tsv | head
@@ -261,6 +271,25 @@ cut -f5 human_compartment_knowledge_full.tsv | sort | uniq -c
 
 \textbf{Task} List the various evidence codes and count how many proteins are associated with that evidence code.
 
+\textbf{Exam-like question} We ran the following command \verb+grep -v 'NR3C1' proteins_go.tsv | wc -l+
+
+The contents of \verb+proteins_go.tsv+ is:
+\begin{verbatim}
+NR3C1   GO:0005622   Compara
+NR3C1   GO:0005739   UniProtKB
+TRIM23  GO:0044464   HGNC
+RARS    GO:0017101   HPA
+BNIP1   GO:0005737   UniProtKB
+\end{verbatim}
+
+What will be the output? Why?
+
+\textbf{Exam-like question} We ran the following command \verb+cut -f1 'NR3C1' proteins_go.tsv | sort | uniq -c+
+
+The contents of the file is the same as before.
+
+What will be the output? Why?
+
 \subsection{Advanced operations with AWK}
 
 AWK is an interpreted programming language designed for text processing and typically used as a data extraction and reporting tool. It is a standard feature of most Unix-like operating systems. Let us see some examples.
@@ -283,11 +312,28 @@ We can also select the mitochondrial proteins with AWK:
 gawk -F '\t' '$3 == "GO:0005739"' human_compartment_knowledge_full.tsv | head
 \end{verbatim}
 
-Here \verb+$3 == "GO:0005739"+ is a logical expression and it says execute only if the third column is equal with that value. The opposite expression would be \verb+$3 == "GO:0005739"+. There are no curly backets used, and AWK by default will print out the lines, where the condition is true. We can combine it with the previous example.
+Here \verb+$3 == "GO:0005739"+ is a logical expression and it says execute only if the third column is equal with that value. The opposite expression would be \verb+$3 != "GO:0005739"+. There are no curly backets used, and AWK by default will print out the lines, where the condition is true. We can combine it with the previous example.
 
 \begin{verbatim}
 gawk -F '\t' '($3 == "GO:0005739"){print $1 "\t" $3;}' human_compartment_knowledge_full.tsv | head
 \end{verbatim}
+
+\textbf{Exam-like question} We ran the following command \verb+gawk -F '\t' '($1 == "NR3C1"){print $1 "\t" $2;}' proteins_go.tsv+
+
+The contents of \verb+proteins_go.tsv+ is:
+\begin{verbatim}
+NR3C1   GO:0005622   Compara
+NR3C1   GO:0005739   UniProtKB
+TRIM23  GO:0044464   HGNC
+RARS    GO:0017101   HPA
+BNIP1   GO:0005737   UniProtKB
+\end{verbatim}
+
+What will be the output? If you do not have \verb+gawk+ available which commands would you use to reach the same goal from the following: \verb+grep, wc, sort, cut, uniq+?
+
+\textbf{Exam-like question} We ran the following command \verb+gawk -F '\t' '($2 == "NR3C1"){print $1 "\t" $2;}' proteins_go.tsv+
+
+What will be the output? If you do not have \verb+gawk+ available which commands would you use to reach the same goal from the following: \verb+grep, wc, sort, cut, uniq+?
 
 \subsubsection*{More filtering possibilities}
 
@@ -315,9 +361,22 @@ gawk -F '\t' '$3 == "GO:0005739" && $7 > 4' human_compartment_knowledge_full.tsv
 
 \textbf{Task 2} Print proteins which do not come from \emph{Reactome}, but it has atleast a confidence score of 4. The format should be ENSEMBL identifiers and GO identifier pairs (e.g. get rid of the unnecessary colums).
 
+\textbf{Exam-like question} We ran the following command \verb+gawk -F '\t' '($1 == "NR3C1" || $2 == "GO:0044464")' proteins_go.tsv+
+
+The contents of \verb+proteins_go.tsv+ is:
+\begin{verbatim}
+NR3C1   GO:0005622   Compara
+NR3C1   GO:0005739   UniProtKB
+TRIM23  GO:0044464   HGNC
+RARS    GO:0017101   HPA
+BNIP1   GO:0005737   UniProtKB
+\end{verbatim}
+
+What will be the output?
+
 \section{Shell programming}
 
-We will write a few script during the second part. First we learn how editing works remotely.
+We will write a few script during the second part. First we learn how editing works remotely. Before please create a directory named \verb+~/projects/scripts+.
 
 \subsection*{Coding the first script -- Hello BioWorld!}
 
@@ -348,9 +407,27 @@ chmod a+x 1_hello_bioworld.sh
 ls -la 1_hello_bioworld.sh
 \end{verbatim}
 
+\subsection*{Arithmetics with shell scripting}
+
+One can do arithmetic integer calculation with the shell scripts. The \verb+$(( ... ))+ denotes an arithmetic expansion. Try the following lines in the \verb++ script:
+
+\begin{minted}{sh}
+#!/bin/sh
+
+# Here are the most important arithmetic operations
+
+echo "Two plus two is $(( 2 + 2 ))"
+echo "Two minus two is $(( 2 - 2 ))"
+echo "Two multiplied by two is $(( 2 * 2 ))"
+echo "The four divided by two is $(( 4 / 2 ))"
+echo "The remainder of four divided by two is $(( 4 % 2 ))"
+\end{minted}
+
 \subsection*{Using variables}
 
-Variables are useful to store intermediate results and often used text and numbers. 
+In computer programming, a variable or scalar is a storage location and an associated symbolic name (an identifier) which contains some known or unknown quantity or information, a value. The variable name is the usual way to reference the stored value; this separation of name and content allows the name to be used independently of the exact information it represents. Variables in programming may not directly correspond to the concept of variables in mathematics.
+
+Variables are useful to store intermediate results such text and numbers. Try the following example in the \verb+2_hello_variable.sh+ script.
 
 \begin{minted}{sh}
 #!/bin/bash
@@ -359,25 +436,38 @@ HW="Hello World!"
 
 echo $HW
 echo "It is boring to print" $HW
+
+# Here we show an arithmetic variable.
+
+FOUR=2+2
+
+# Try out what happens if you leave the brackets and the expression becomes $FOUR.
+
+echo "Two times two is $(( FOUR ))"
+
 \end{minted}
 
-When we refer to the variables we need to use the \verb+$+ sign.
+When we refer to the variables we need to use the \verb+$+ sign. Arithmetic variables are not evaluated if they are not between brackets.
 
 \subsection*{Using conditionals}
 
-A branch of a script is executed only if the statement is true. A simple example:
+In computer science, conditional statements, conditional expressions and conditional constructs are features of a programming language which perform different computations or actions depending on whether a programmer-specified boolean condition evaluates to true or false. Apart from the case of branch predication, this is always achieved by selectively altering the control flow based on some condition.
+
+A simple example of \verb+3_basic_conditionals.sh+:
 
 \begin{minted}{sh}
 #!/bin/bash
 
 FILE="3_basic_conditionals.sh"
 
+# -f checks whether the file exists.
+
 if [ -f $FILE ]; then
     echo "FILE:" $FILE "exists!"
 fi
 \end{minted}
 
-A more complicated example:
+A more complicated example of \verb+3a_complex_conditionals.sh+:
 
 \begin{minted}{sh}
 #!/bin/bash
@@ -393,9 +483,28 @@ fi
 
 \textbf{Task:} Try to modify this script to run the other branch of the conditional.
 
+A similar solution with integer in \verb+3b_arithmetic_example.sh+. Take note of \verb+==+ operator. It is the same as the one in \verb+gawk+.
+
+\begin{minted}{sh}
+#!/bin/bash
+
+FOUR=2+2
+
+echo "Is two plus to really four?"
+if [[ $((FOUR)) == 4 ]] ; then
+    echo "Yes!"
+else
+    echo "No!"
+fi
+\end{minted}
+
 \subsection*{Using loops}
 
 A loop is a sequence of statements which is specified once but which may be carried out several times in succession. The code "inside" the loop is obeyed a specified number of times, or once for each of a collection of items, or until some condition is met, or indefinitely.
+
+One uses loops when a step or similar steps needs to be carried out multiple times.
+
+Let us create the example \verb+4_loop_basics.sh+.
 
 \begin{minted}{sh}
 #!/bin/sh
@@ -409,9 +518,11 @@ done
 
 The double bracket denote that \verb+i+ refers to a number.
 
-\textbf{Task:} Modify the script to count back from 10.
+\textbf{Task} Modify the script to count back from 10.
 
-There is another solution to the previous example with the \verb+while+ keyword.
+\textbf{Task} Write "Hi five!" as well when \verb+i+ become 5.
+
+There is another solution to the previous example with the \verb+while+ keyword (\verb+4a_loop_until.sh+).
 
 \begin{minted}{sh}
 #!/bin/sh
@@ -427,7 +538,9 @@ done
 
 \textbf{Task:} Modify the script to count back from 10.
 
-The shell can also store the output of a command. Here is an example, which writes the files out:
+\textbf{Task} Write "Hi five!" as well when \verb+i+ become 5.
+
+The shell can also store the output of a command. Here is an example, which writes the files out (\verb+4b_loop_files.sh+):
 
 \begin{minted}{sh}
 #!/bin/sh
@@ -438,4 +551,20 @@ for f in $FILES; do
     echo $f "is a file"
 done
 \end{minted}
+
+The \verb+` ...`+ triggers command substitution; equivalent to \verb+$(...)+, but is somewhat more error-prone.
+
+\textbf{Exam-like question} Why would you use variables/conditionals/loops in a programming language?
+
+\textbf{Task} Make a script which prints out the following pattern. Use \verb+echo -n+ to print in the same line:
+\begin{verbatim}
+* * * * *
+* * * *
+* * *
+* * 
+*
+\end{verbatim}
+
+\textbf{Task} Write a script which prints out how many lines every file has in the directory. You can invoke the \verb+wc+ command from the body of the script.
+
 \end{document}

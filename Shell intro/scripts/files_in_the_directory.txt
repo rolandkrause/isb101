@@ -1,0 +1,5 @@
+1_hello_world.sh
+2_hello_variable.sh
+3_basic_conditionals.sh
+3a_complex_conditionals.sh
+files_in_the_directory.txt
