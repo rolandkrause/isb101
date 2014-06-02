@@ -80,11 +80,13 @@ The \verb+cd+ command changes the current directory and the \verb+~+ is a specia
 ls
 \end{verbatim}
 
-\verb+-la+ flags are widely used to list the hidden files and the details. 
+\verb+-la+ flags are widely used to list the hidden files and the details of the files. 
 
 \begin{verbatim}
 ls -la
 \end{verbatim}
+
+\section{Working with directories}
 
 The \verb+.+ denote the current directory and \verb+..+ denote the parent directory. The classroom projects should be stored in \verb+projects+. It can be created by:
 
@@ -94,6 +96,26 @@ cd projects
 \end{verbatim}
 
 We start working in the projects directory.
+
+One can always go back to the parent directory, when necessary:
+\begin{verbatim}
+cd ..
+ls -la
+\end{verbatim}
+
+Or combining more levels:
+
+\begin{verbatim}
+cd ../..
+ls -la
+\end{verbatim}
+
+Going back to projects:
+
+\begin{verbatim}
+cd ~/projects
+ls -la
+\end{verbatim}
 
 When some directories are no longer used,they need to be removed. The \verb+rmdir+ is the opposite command of \verb+mkdir+.
 
@@ -111,7 +133,7 @@ We use \verb+ls -la+ to check whether everything have gone fine.
 
 \section{Manipulating files}
 
-First we need the human knowledge dataset from \href{http://compartments.jensenlab.org/Downloads}{http://compartments.jensenlab.org/Downloads}. This file contains human subcellular localization information from model organisms databases (mostly from UniProt). It can be be downloaded:
+First we need the human knowledge dataset from \href{http://compartments.jensenlab.org/Downloads}{http://compartments.jensenlab.org/Downloads}. This file contains human subcellular localization information from model organisms databases (mostly from \emph{UniProtKB}). It can be be downloaded:
 
 \begin{verbatim}
 cd ~/projects/compartments
@@ -152,6 +174,8 @@ The \verb+-v+ stands for verbose, and it is useful to see what is happening behi
 \begin{verbatim}
 rm -v hc*.tsv
 \end{verbatim}
+
+\textbf{Task} Create a directory under \verb+~/projects/compartments/mouse+. Download the mouse knowledge dataset and rename the file to \verb+mckf.tsv+.
 
 \subsection{Manipulating files}
 
@@ -196,17 +220,13 @@ If it seems good, we can store the mitochondrial proteins. For that purpose we w
 grep 'GO:0005739' human_compartment_knowledge_full.tsv > mitochondrial_proteins.tsv
 \end{verbatim}
 
-We can also get the non-mitochondrial proteins. In the \verb+grep+ command using \verb+-v+ flag lists all lines, which do not contain the pattern. One example:
+Let us ignore annotations about NR3C1 protein. In the \verb+grep+ command using \verb+-v+ flag lists all lines, which do not contain the pattern. One example:
 
 \begin{verbatim}
-grep -v 'GO:0005739' human_compartment_knowledge_full.tsv | head
+grep -v 'NR3C1' human_compartment_knowledge_full.tsv | head
 \end{verbatim}
 
-We will store the non-mitochondrial proteins as well.
-
-\begin{verbatim}
-grep -v 'GO:0005739' human_compartment_knowledge_full.tsv > non_mitochondrial_proteins.tsv
-\end{verbatim}
+\textbf{Task} Ignore annotations which comes from the \emph{Reactome} database. Store the results in a file.
 
 Specific columns can be also selected. Now we see how a file with pair of Ensembl identifiers and GO terms can be created. To get a feeling about the structure of the file again we use the \verb+head+ command and the \verb+cut+ command will select the respective columns.
 
@@ -220,6 +240,26 @@ If works then let us store the results:
 \begin{verbatim}
 cut -f1,3 human_compartment_knowledge_full.tsv > ensembl_go_pairs.tsv
 \end{verbatim}
+
+Where does the data come from? Which databases provided the information? Selecting the fifth column answers this question:
+
+\begin{verbatim}
+cut -f5 human_compartment_knowledge_full.tsv
+\end{verbatim}
+
+However the results should be sorted and the duplicates should be removed. \verb+sort+ orders the databases in an alphabetical order, and the \verb+-u+ flag removes the duplicates.
+
+\begin{verbatim}
+cut -f5 human_compartment_knowledge_full.tsv | sort -u
+\end{verbatim}
+
+We are also interested how many entries are coming from the various databases. Counting using \verb+uniq -c+ will answer the question.
+
+\begin{verbatim}
+cut -f5 human_compartment_knowledge_full.tsv | sort | uniq -c
+\end{verbatim}
+
+\textbf{Task} List the various evidence codes and count how many proteins are associated with that evidence code.
 
 \subsection{Advanced operations with AWK}
 
@@ -270,6 +310,10 @@ The \verb+&&+ denotes that both statement needs to be true, while \verb+||+ deno
 \begin{verbatim}
 gawk -F '\t' '$3 == "GO:0005739" && $7 > 4' human_compartment_knowledge_full.tsv > mitochondrial_proteins_with_high_scores.tsv
 \end{verbatim}
+
+\textbf{Task 1} Print mitochondrial proteins which comes from the \emph{UniProtKB} database.
+
+\textbf{Task 2} Print proteins which do not come from \emph{Reactome}, but it has atleast a confidence score of 4. The format should be ENSEMBL identifiers and GO identifier pairs (e.g. get rid of the unnecessary colums).
 
 \section{Shell programming}
 

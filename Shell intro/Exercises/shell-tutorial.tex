@@ -122,17 +122,19 @@ In the modern operating system every user has her or his own home directory. One
 cd ~
 \end{verbatim}
 
-The \verb+cd+ command changes the current directory and the \verb+~+ is a special character, whcih refers to the home directory. What is in this directory exactly? The following command will tell:
+The \verb+cd+ command changes the current directory and the \verb+~+ is a special character, which refers to the home directory. What is in this directory exactly? The following command will tell:
 
 \begin{verbatim}
 ls
 \end{verbatim}
 
-\verb+-la+ flags are widely used to list the hidden files and the details. 
+\verb+-la+ flags are widely used to list the hidden files and the details of the files. 
 
 \begin{verbatim}
 ls -la
 \end{verbatim}
+
+\section{Working with directories}
 
 The \verb+.+ denote the current directory and \verb+..+ denote the parent directory. The classroom projects should be stored in \verb+projects+. It can be created by:
 
@@ -141,7 +143,29 @@ mkdir projects
 cd projects
 \end{verbatim}
 
-Some directories are no longer used and they need to be removed. The \verb+rmdir+ is the opposite command of \verb+mkdir+.
+We start working in the projects directory.
+
+One can always go back to the parent directory, when necessary:
+\begin{verbatim}
+cd ..
+ls -la
+\end{verbatim}
+
+Or combining more levels:
+
+\begin{verbatim}
+cd ../..
+ls -la
+\end{verbatim}
+
+Going back to projects:
+
+\begin{verbatim}
+cd ~/projects
+ls -la
+\end{verbatim}
+
+When some directories are no longer used,they need to be removed. The \verb+rmdir+ is the opposite command of \verb+mkdir+.
 
 \begin{verbatim}
 mkdir wrong_directory
@@ -151,11 +175,13 @@ rmdir wrong_directory
 ls -la
 \end{verbatim}
 
-\textbf{Task:} Create a project directory. Preference: \verb+~/projects/compartments+
+We use \verb+ls -la+ to check whether everything have gone fine.
+
+\textbf{Task:} Create a project directory. It should be located under: \verb+~/projects/compartments+
 
 \section{Manipulating files}
 
-First we need the human knowledge dataset from \href{http://compartments.jensenlab.org/Downloads}{http://compartments.jensenlab.org/Downloads}. It can be be downloaded:
+First we need the human knowledge dataset from \href{http://compartments.jensenlab.org/Downloads}{http://compartments.jensenlab.org/Downloads}. This file contains human subcellular localization information from model organisms databases (mostly from \emph{UniProtKB}). It can be be downloaded:
 
 \begin{verbatim}
 cd ~/projects/compartments
@@ -170,7 +196,7 @@ curl http://download.jensenlab.org/human_compartment_knowledge_full.tsv > hkcf2.
 ls -la
 \end{verbatim}
 
-A few file manipulation. Copying (try out the \verb+TAB+ button when typing):
+Now we try out a few file manipulation commands. Copying (try out the \verb+TAB+ button when typing):
 
 \begin{verbatim}
 cp human_compartment_knowledge_full.tsv hckf.tsv
@@ -191,11 +217,13 @@ mv hc.tsv
 ls -la
 \end{verbatim}
 
-The \verb+-v+ stands for verbose, and it is useful to see what is happening. The \verb+*+ character matches to everything.
+The \verb+-v+ stands for verbose, and it is useful to see what is happening behind. It works with most of the unix commands. The \verb+*+ character matches to everything.
 
 \begin{verbatim}
 rm -v hc*.tsv
 \end{verbatim}
+
+\textbf{Task} Create a directory under \verb+~/projects/compartments/mouse+. Download the mouse knowledge dataset and rename the file to \verb+mckf.tsv+.
 
 \subsection{Manipulating files}
 
@@ -205,6 +233,8 @@ Bioinformatics data comes often in text format. To get a glance, try the followi
 head human_compartment_knowledge_full.tsv
 tail human_compartment_knowledge_full.tsv
 \end{verbatim}
+
+The \verb+head+ command shows the beginning of the file, while \verb+tail+ shows the end of the file. Using \verb+-20+ will show the first or last 20 lines. The \verb+human_compartment_knowledge_full.tsv+ contains the following columns: ENSEMBL identifier of the gene, common protein name, cellular component GO identifier, name of the cellular component, source database, evidence code, confidence code.
 
 The columns in \verb+tsv+ files are separated with a tab character (\verb+\t+). These files are closely related to the comma separated files (\verb+csv+).
 
@@ -226,41 +256,58 @@ We can also filter specific lines, for example what proteins are localized in th
 grep 'GO:0005739' human_compartment_knowledge_full.tsv
 \end{verbatim}
 
-It seems to be too long, let us see a sample from the output. For this we \emph{pipe} the output of the command into another command.
+It seems to be too long, let us see a sample from the output. The pipes are useful in Unix for this purpose. For this we send the output of the command into another command.
 
 \begin{verbatim}
 grep 'GO:0005739' human_compartment_knowledge_full.tsv | head
 \end{verbatim}
 
-If it seems good, we can store the mitochondrial proteins.
+If it seems good, we can store the mitochondrial proteins. For that purpose we will use redirection.
 
 \begin{verbatim}
 grep 'GO:0005739' human_compartment_knowledge_full.tsv > mitochondrial_proteins.tsv
 \end{verbatim}
 
-We can also get the non-mitochondrial proteins. The \verb+-v+ flag expresses to list all lines, which do not contain the pattern. One example:
+Let us ignore annotations about NR3C1 protein. In the \verb+grep+ command using \verb+-v+ flag lists all lines, which do not contain the pattern. One example:
 
 \begin{verbatim}
-grep -v 'GO:0005739' human_compartment_knowledge_full.tsv | head
+grep -v 'NR3C1' human_compartment_knowledge_full.tsv | head
 \end{verbatim}
 
-We need a file for the non-mitochondrial proteins as well.
+\textbf{Task} Ignore annotations which comes from the \emph{Reactome} database. Store the results in a file.
+
+Specific columns can be also selected. Now we see how a file with pair of Ensembl identifiers and GO terms can be created. To get a feeling about the structure of the file again we use the \verb+head+ command and the \verb+cut+ command will select the respective columns.
 
 \begin{verbatim}
-grep -v 'GO:0005739' human_compartment_knowledge_full.tsv > non_mitochondrial_proteins.tsv
-\end{verbatim}
-
-Specific columns can be also selected. Now we see how a file with pair of Ensembl identifiers and GO terms can be created.
-
-\begin{verbatim}
+head human_compartment_knowledge_full.tsv
 cut -f1,3 human_compartment_knowledge_full.tsv | head
 \end{verbatim}
 
-If works then save the results:
+If works then let us store the results:
 
 \begin{verbatim}
 cut -f1,3 human_compartment_knowledge_full.tsv > ensembl_go_pairs.tsv
 \end{verbatim}
+
+Where does the data come from? Which databases provided the information? Selecting the fifth column answers this question:
+
+\begin{verbatim}
+cut -f5 human_compartment_knowledge_full.tsv
+\end{verbatim}
+
+However the results should be sorted and the duplicates should be removed. \verb+sort+ orders the databases in an alphabetical order, and the \verb+-u+ flag removes the duplicates.
+
+\begin{verbatim}
+cut -f5 human_compartment_knowledge_full.tsv | sort -u
+\end{verbatim}
+
+We are also interested how many entries are coming from the various databases. Counting using \verb+uniq -c+ will answer the question.
+
+\begin{verbatim}
+cut -f5 human_compartment_knowledge_full.tsv | sort | uniq -c
+\end{verbatim}
+
+\textbf{Task} List the various evidence codes and count how many proteins are associated with that evidence code.
 
 \subsection{Advanced operations with AWK}
 
@@ -274,7 +321,7 @@ As the first exercise let us see how can we print the columns with AWK. We use t
 gawk -F '\t' '{print $1 "\t" $3;}' human_compartment_knowledge_full.tsv | head
 \end{verbatim}
 
-The \verb+-F '\t'+ expresses the separator between the columns. In the curly backets we have the print statement. It says print the first and the third columns separated by a tab.
+The \verb+-F '\t'+ expresses the separator between the columns. In the curly backets we express what we want to do with the column. Using print statement, we can select the columns. It says print the first and the third columns separated by a tab.
 
 \subsubsection*{Filtering on specific values}
 
@@ -284,7 +331,7 @@ We can also select the mitochondrial proteins with AWK:
 gawk -F '\t' '$3 == "GO:0005739"' human_compartment_knowledge_full.tsv | head
 \end{verbatim}
 
-Here there are no curly backets used, so it is evaluated as a conditional (printed only if the expression is true). We can combine it with the previous example.
+Here \verb+$3 == "GO:0005739"+ is a logical expression and it says execute only if the third column is equal with that value. The opposite expression would be \verb+$3 == "GO:0005739"+. There are no curly backets used, and AWK by default will print out the lines, where the condition is true. We can combine it with the previous example.
 
 \begin{verbatim}
 gawk -F '\t' '($3 == "GO:0005739"){print $1 "\t" $3;}' human_compartment_knowledge_full.tsv | head
@@ -298,13 +345,23 @@ It is often neccesary to filter a file based on some numerical threshold. In the
 gawk -F '\t' '$7 > 4' human_compartment_knowledge_full.tsv | head
 \end{verbatim}
 
+There are a few logical expressions, which can be used with numbers. These are \verb+==, <, >, <=, >=+.
+
 One can combine multiple conditionals. Here we examine the mitochondrial proteins with highly reliable evidence.
 
 \begin{verbatim}
 gawk -F '\t' '$3 == "GO:0005739" && $7 > 4' human_compartment_knowledge_full.tsv | head
 \end{verbatim}
 
-The \verb+&&+ denotes that both statement needs to be true, while \verb+||+ denote that at least one statement needs be true.
+The \verb+&&+ denotes that both statement needs to be true, while \verb+||+ denote that at least one statement needs be true. Let us store these resuls.
+
+\begin{verbatim}
+gawk -F '\t' '$3 == "GO:0005739" && $7 > 4' human_compartment_knowledge_full.tsv > mitochondrial_proteins_with_high_scores.tsv
+\end{verbatim}
+
+\textbf{Task 1} Print mitochondrial proteins which comes from the \emph{UniProtKB} database.
+
+\textbf{Task 2} Print proteins which do not come from \emph{Reactome}, but it has atleast a confidence score of 4. The format should be ENSEMBL identifiers and GO identifier pairs (e.g. get rid of the unnecessary colums).
 
 \section{Shell programming}
 
@@ -321,16 +378,22 @@ Write the following lines:
 \begin{minted}{sh}
 #!/bin/sh
 
+# we can also have comments in the examples
+
 echo "Hello BioWorld!"
 \end{minted}
 
 Exit works with \verb!CTRL+X!. Don't forget to save!
 
-You have make the script runnable and then you can test it.
+The \verb+#!/bin/sh+ defines that the script is a shell script. The \verb+echo+ prints to the console.
+
+You have make the script runnable and then you can test it. On Unix every file has user, group and everybody permission levels. When you create a file you as the user can read and write it, but you cannot execute it, that is the reason why we use \verb+chmod+ to change the permission. \verb+ls -la+ also lists the permissions.
 
 \begin{verbatim}
+ls -la 1_hello_bioworld.sh
 chmod a+x 1_hello_bioworld.sh
 ./1_hello_bioworld.sh
+ls -la 1_hello_bioworld.sh
 \end{verbatim}
 
 \subsection*{Using variables}
@@ -345,6 +408,8 @@ HW="Hello World!"
 echo $HW
 echo "It is boring to print" $HW
 \end{minted}
+
+When we refer to the variables we need to use the \verb+$+ sign.
 
 \subsection*{Using conditionals}
 
