@@ -1,0 +1,1598 @@
+% To compile this document
+% graphics.off();rm(list=ls());library('knitr');knit('EDA-lab.Rnw');  for(i in 1:2) system('R CMD pdflatex EDA-lab.tex')
+
+%detach(bodyfat);
+
+% extract R-code
+% purl('EDA-lab.Rnw')
+
+%setwd("/Volumes/Macintosh Storage/Users/jbinder/Dropbox/Docs/Teaching/isb101/Visualization in R/Tutorial")
+
+
+\documentclass{article}\usepackage[]{graphicx}\usepackage[usenames,dvipsnames]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+
+
+\RequirePackage{/Library/Frameworks/R.framework/Versions/3.1/Resources/library/BiocStyle/sty/Bioconductor}
+
+\AtBeginDocument{\bibliographystyle{/Library/Frameworks/R.framework/Versions/3.1/Resources/library/BiocStyle/sty/unsrturl}}
+
+
+
+
+
+
+
+
+\title{EDA--lab}
+\usepackage{amsmath}
+\usepackage{natbib}
+\usepackage{mathpazo}
+%\usepackage{enumerate}
+\usepackage{soul}
+\usepackage{cases}
+\setlength{\parindent}{0cm} 
+
+\author{Janos Binder$^1$ \\[1em]European Molecular Biology Laboratory (EMBL),\\ Heidelberg, Germany\\
+\texttt{$^1$janos.binder@embl.de}}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+\maketitle
+
+
+\tableofcontents
+
+\section{Acknowledgements}
+
+This tutorial is based on the material of Bernd Klaus (\href{http://www-huber.embl.de/users/klaus/main.html}{http://www-huber.embl.de/users/klaus/main.html)}.
+
+\section{Required Packages and other Preparations} \label{sec:prep}
+
+%
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{load}\hlstd{(}\hlkwd{url}\hlstd{(}\hlstr{"http://www-huber.embl.de/users/klaus/BasicR/seqZyx.rda"}\hlstd{))}
+\hlkwd{library}\hlstd{(}\hlstr{"TeachingDemos"}\hlstd{)}
+\hlkwd{data}\hlstd{(golub,} \hlkwc{package} \hlstd{=} \hlstr{"multtest"}\hlstd{)}
+\hlkwd{library}\hlstd{(biomaRt)}
+\hlkwd{library}\hlstd{(reshape2)}
+\hlkwd{library}\hlstd{(ggplot2)}
+\hlkwd{library}\hlstd{(plyr)}
+\hlkwd{library}\hlstd{(xlsx)}
+\hlkwd{library}\hlstd{(vioplot)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+%
+
+Should you get error messages, you can also install them quickly:
+
+%
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{source}\hlstd{(}\hlstr{"http://bioconductor.org/biocLite.R"}\hlstd{)}
+\hlstd{packs} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"TeachingDemos"}\hlstd{,} \hlstr{"multtest"}\hlstd{,} \hlstr{"biomaRt"}\hlstd{,}
+           \hlstr{"reshape2"}\hlstd{,} \hlstr{"ggplot2"}\hlstd{,} \hlstr{"plyr"}\hlstd{,} \hlstr{"xlsx"}\hlstd{,} \hlstr{"vioplot"}\hlstd{)}
+\hlkwd{biocLite}\hlstd{(packs)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+%
+
+
+\section{Introduction}
+
+In this lab, a few essential methods are given to display and visualize data. 
+It quickly answers questions like: How are my data distributed? How can the frequencies 
+of nucleotides from a gene be visualized? Are there outliers in my data?
+Does the distribution of my data resemble that of a bell--shaped curve? Are
+there differences between gene expression values taken from two groups of
+patients?\\
+
+The most important central tendencies (mean, median) are defined and
+illustrated together with the most important measures of spread (standard
+deviation, variance, inter quartile range, and median absolute deviation).
+
+We also introduce \CRANpkg{ggplot2} a package to produce elegant graphics
+for data analysis.
+
+\section{Base graphics and ggplot2}
+
+The package \Rpackage{ggplot2} is one  of the most commonly used graphics packages for \R.
+It is an alternative to the basic graphic system of \R, which is limited in various
+aspects. In this lab we will use basic graphics in \R \vspace{2pt} and corresponding
+ \Rpackage{ggplot2} plots side by side.
+
+\Rpackage{ggplot2} is meant to be an implementation of the Grammar of Graphics, 
+developed by L. Wilkinson, hence gg--plot. 
+The basic notion is that there is a grammar to the composition of graphical components in 
+statistical graphics, and by directly controlling that grammar, you can generate 
+a large set of carefully constructed graphics tailored to your particular needs. 
+
+
+The central concept of the approach is that 
+plots convey information through various aspects of their aesthetics.
+Aesthetics are mappings from the data to something you can visually perceive.
+Some aesthetics that plots use are:
+
+\begin{itemize}
+  \item x position
+  \item y position
+  \item size of elements
+  \item shape of elements
+  \item color of elements
+\end{itemize}
+
+The elements in a plot are geometric shapes, like
+
+\begin{itemize}
+   \item points
+   \item lines
+   \item line segments
+   \item bars
+   \item text
+\end{itemize}
+
+     
+
+Some of these geometries have their own particular aesthetics. For instance:
+
+\begin{itemize}
+    \item points
+\begin{itemize}
+     \item point shape
+     \item point size
+\end{itemize}
+   \item lines
+\begin{itemize}
+      \item  line type
+      \item  line weight
+\end{itemize}
+   \item bars
+\begin{itemize}
+      \item  y minimum
+      \item  y maximum
+      \item  fill color
+      \item  outline color
+\end{itemize}
+    \item text
+\begin{itemize}
+       \item label value
+\end{itemize}
+
+\end{itemize}
+
+Each component is added to the plot as a layer, hence you might start with 
+a simple mapping of the raw data to the x-- and y--axes, creating a scatterplot.
+A second layer may the be added by coloring the points according to a
+group they belong to and so on.
+
+There are other basics of these graphics that you can adjust, 
+like the scaling of the aesthetics, and the positions of the geometries.
+
+The values represented in the plot are the product of various statistics. If you just plot the 
+raw data, you can think of each point representing the identity statistic. 
+Many bar charts represent the mean or the median statistic. Histograms are bar charts 
+where the bars represent the binned count or density statistics and so on.
+
+\subsection{Building a Plot Layer by Layer}
+
+There's a quick plotting function in \Rpackage{ggplot2} called \Rfunction{qplot()}
+which is meant to be similar to the \Rfunction{plot()} function from base graphics. 
+You can do a lot with \Rfunction{qplot()}, but it can be better to approach
+the package from the layering syntax.
+
+All \Rpackage{ggplot2} plots begin with the function \Rfunction{ggplot()}. 
+\Rfunction{ggplot()} takes two primary 
+arguments, \Robject{data} is the data frame containing the data to be plotted
+and \Rfunction{aes( )} are the aesthetic mappings to pass on to the plot elements.
+
+As you can see, the second argument, \Rfunction{aes()}, isn't a normal argument, but another 
+function. Since we'll never use \Rfunction{aes()} as a separate function, it might be best
+to think of it as a special way to pass a list of arguments to the plot.
+
+The first step in creating a plot is to add one or more layers. Let's start with 
+the iris data set as an example. Note that \Rpackage{ggplot2} always requires the specification
+of the data frame from which the variables used in the plot are drawn.
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+    \hlkwd{summary}\hlstd{(iris)}
+\end{alltt}
+\begin{verbatim}
+#>     Sepal.Length   Sepal.Width    Petal.Length   Petal.Width        Species  
+#>    Min.   :4.30   Min.   :2.00   Min.   :1.00   Min.   :0.1   setosa    :50  
+#>    1st Qu.:5.10   1st Qu.:2.80   1st Qu.:1.60   1st Qu.:0.3   versicolor:50  
+#>    Median :5.80   Median :3.00   Median :4.35   Median :1.3   virginica :50  
+#>    Mean   :5.84   Mean   :3.06   Mean   :3.76   Mean   :1.2                  
+#>    3rd Qu.:6.40   3rd Qu.:3.30   3rd Qu.:5.10   3rd Qu.:1.8                  
+#>    Max.   :7.90   Max.   :4.40   Max.   :6.90   Max.   :2.5
+\end{verbatim}
+\begin{alltt}
+    \hlstd{p} \hlkwb{<-} \hlkwd{ggplot}\hlstd{(iris,} \hlkwd{aes}\hlstd{(Sepal.Length, Sepal.Width) )}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+If you just type \Rcode{p} or \Rcode{print(p)}, you'll get back a warning saying
+that the plot lacks  any layers. With the \Rfunction{ggplot()} function, 
+we've set up a plot which is going to draw from the iris data, 
+the Sepal.length variable will be mapped to the x--axis, and the Sepal.width
+variable is going to be mapped to the y--axis. 
+However, we have not determined which kind of geometric object will represent the data. 
+Let's add points, for a scatterplot.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+ \hlstd{p} \hlopt{+} \hlkwd{geom_point}\hlstd{()}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/ggplot-ex2} 
+
+\end{knitrout}
+
+Alternatively, this plot could have been produced with \Rfunction{qplot}.
+Additionally, you can map color to the species. 
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{qplot}\hlstd{(Sepal.Length, Sepal.Width,} \hlkwc{data} \hlstd{= iris,} \hlkwc{color} \hlstd{= Species)}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/ggplot-ex-qplot} 
+
+\end{knitrout}
+
+We clearly see that the  setosa plants have different Sepal.Length/Sepal.Width 
+relationship compared to the other two species. The full documentation for \Rpackage{ggplot2} can be found at \url{http://docs.ggplot2.org/current/}.
+Apart from mapping data to aesthetics, \Rpackage{ggplot2} 
+can handle statistical transformations of the data, i.e. easily create all 
+the nice exploratory graphics we will look at below.
+
+We will explore one of these transformations by adding a regression line
+to the data of each of the three plant species as a third layer.
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{ggsmooth} \hlkwb{<-} \hlstd{(}\hlkwd{qplot}\hlstd{(Sepal.Length, Sepal.Width,} \hlkwc{data} \hlstd{= iris,} \hlkwc{color} \hlstd{= Species)}
+\hlopt{+} \hlkwd{stat_smooth}\hlstd{(}\hlkwc{method} \hlstd{=} \hlstr{"lm"}\hlstd{))}
+\hlstd{ggsmooth}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/ggplot-ex-smoother} 
+
+\end{knitrout}
+
+The command \Rfunction{stat\textunderscore smooth} first adds a statistical transformation
+to the existing data and then plots it using a certain geometry, in this
+case a special "smooth" geometry that is tailored to the plotting of regression
+fits. You can obtained the statistical transformations by looking at the saved
+plot and extracting the appropriate sublist. 
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{transformed.data} \hlkwb{<-} \hlkwd{as.list}\hlstd{(}\hlkwd{print}\hlstd{(ggsmooth))}\hlopt{$}\hlstd{data[[}\hlnum{2}\hlstd{]]}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+Thus, you could also map the transformed data differently than the default geometry
+does it. This however does not make much sense in this case.
+
+\subsection{Some biological data}
+
+Here we're looking at some real biological data: different doses of HFG (a cytokine)
+were applied to cells and the downstream effect to the phosphorylation of  target
+proteins were assessed recording a time course--signal in different conditions.
+This data and the exercise ideas were provided by Lars Velten (Steinmetz lab). 
+We first  load  the dataset.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{proteins}\hlkwb{<-}\hlkwd{read.csv}\hlstd{(}\hlstr{"http://www-huber.embl.de/users/klaus/BasicR/proteins.csv"}\hlstd{)[,}\hlopt{-}\hlnum{1}\hlstd{]}
+\hlkwd{head}\hlstd{(proteins)}
+\end{alltt}
+\begin{verbatim}
+#>       Condition min Target    Signal    Sigma
+#>   1 10ng/mL HGF   0   pAKT -6.71e+08 96749276
+#>   2 10ng/mL HGF   5   pAKT  5.68e+08 97144057
+#>   3 10ng/mL HGF  10   pAKT  1.05e+09 97215659
+#>   4 10ng/mL HGF  20   pAKT -3.23e+08 97055787
+#>   5 10ng/mL HGF  30   pAKT -9.00e+08 96908309
+#>   6 10ng/mL HGF  60   pAKT  3.17e+08 96731346
+\end{verbatim}
+\begin{alltt}
+\hlstd{proteins_pMek} \hlkwb{<-} \hlkwd{subset}\hlstd{(proteins, proteins}\hlopt{$}\hlstd{Target} \hlopt{==} \hlstr{"pMEK"}\hlstd{)}
+\hlstd{proteins_pMek_sub} \hlkwb{<-} \hlkwd{subset}\hlstd{(proteins_pMek, proteins_pMek}\hlopt{$}\hlstd{Condition} \hlopt{==} \hlstr{"10ng/mL HGF"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+We can start simple by only looking at the first condition 
+of the "pMEK" protein target for now. We simply
+produce a line plot of the signal across time. In this plot
+we use the data  \Robject{proteins\textunderscore pMek\textunderscore sub},
+ map \Robject{min}
+to the x--axis and \Robject{Signal} to the y--axis and use a 
+line a a geometry. Additional modifications are added to the plot
+in the exercise.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{proteins_pMek_sub}
+\end{alltt}
+\begin{verbatim}
+#>         Condition min Target    Signal    Sigma
+#>   103 10ng/mL HGF   0   pMEK  3.38e+08 31005696
+#>   104 10ng/mL HGF   5   pMEK -2.09e+08 31400418
+#>   105 10ng/mL HGF  10   pMEK  7.20e+07 31199120
+#>   106 10ng/mL HGF  20   pMEK -2.76e+08 31015194
+#>   107 10ng/mL HGF  30   pMEK  8.70e+08 31140886
+#>   108 10ng/mL HGF  60   pMEK  2.42e+08 31040783
+#>   109 10ng/mL HGF 120   pMEK  4.31e+07 31072343
+\end{verbatim}
+\begin{alltt}
+\hlkwd{qplot}\hlstd{(min, Signal,} \hlkwc{data} \hlstd{= proteins_pMek_sub,} \hlkwc{geom} \hlstd{=} \hlstr{"line"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/plot-protein-data} 
+\begin{kframe}\begin{alltt}
+\hlcom{# or}
+\hlcom{#ggplot(proteins_pMek_sub, aes(min, Signal)) + geom_line()}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\subsubsection*{Exercise: Simple ggplot usage}
+ 
+Using the data \Robject{proteins\textunderscore pMek\textunderscore sub}, 
+do the following
+
+\begin{enumerate}[label=(\emph{\alph*})]
+
+\item Use points as a geometry instead of lines
+\item Use both lines and points
+\item Add errorbars \Robject{geom\textunderscore errorbar} to the plot.
+This requires  further aesthetics: 
+\Robject{ymax} and \Robject{ymin}. 
+The estimated error is stored in the variable \Robject{Sigma}.
+
+\end{enumerate}
+
+
+
+We can also easily plot all conditions for the protein pMEK by
+mapping color to the experimental condition of pMEK.
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{qplot}\hlstd{(min, Signal,} \hlkwc{data} \hlstd{= proteins_pMek,} \hlkwc{geom} \hlstd{=} \hlstr{"line"}\hlstd{,} \hlkwc{color} \hlstd{= Condition)}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/plot-protein-data-2} 
+\begin{kframe}\begin{alltt}
+\hlcom{# or}
+\hlcom{#ggplot(proteins_pMek, aes(min, Signal, color = Condition) ) + geom_line()}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\subsection{Setting axis limits}
+Another important aspect of data display are the limits of the 
+x-- and y--axis. You can change these limits by using \Robject{xlim()}
+and \Robject{ylim()}. However, the overall scale will not be "retrained"
+and only be limited. This essentially results in plotting only a subset
+of the data, excluding values outside of the 
+limits. In order to actually "zoom--in" without excluding data points
+one has to use the  \Rfunction{coord\textunderscore cartesian()} command. In the
+code below, we first limit the y--axis to 1e9, excluding all
+other data points, then we retrain the scale.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{## limit scale}
+\hlstd{(}\hlkwd{qplot}\hlstd{(min, Signal,} \hlkwc{data} \hlstd{= proteins_pMek,} \hlkwc{geom} \hlstd{=} \hlstr{"line"}\hlstd{,} \hlkwc{color} \hlstd{= Condition)}
+\hlopt{+} \hlkwd{ylim}\hlstd{(}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{1e9}\hlstd{)))}
+\end{alltt}
+
+
+{\ttfamily\noindent\color{warningcolor}{\#>\ \  Warning: Removed 4 rows containing missing values (geom\_path).}}\end{kframe}
+\includegraphics[width=\maxwidth]{figure/limitng_vs_zooming1} 
+\begin{kframe}\begin{alltt}
+\hlcom{## retrain scale}
+\hlstd{(}\hlkwd{qplot}\hlstd{(min, Signal,} \hlkwc{data} \hlstd{= proteins_pMek,} \hlkwc{geom} \hlstd{=} \hlstr{"line"}\hlstd{,} \hlkwc{color} \hlstd{= Condition)}
+\hlopt{+} \hlkwd{coord_cartesian}\hlstd{(}\hlkwc{ylim} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,} \hlnum{1e9}\hlstd{)))}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/limitng_vs_zooming2} 
+
+\end{knitrout}
+
+\subsection{Faceting}
+
+\Rpackage{ggplot2} also allows you to easily split plots according to a factor 
+variable, plotting parts of the data in different panels. Returning
+to the iris data, we can easily plot different species in different 
+panels using \Rfunction{facet\textunderscore wrap()}. This is
+the simplest faceting function, splitting according to one
+factor only. 
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{ggsmooth} \hlopt{+} \hlkwd{facet_wrap}\hlstd{(} \hlopt{~} \hlstd{Species)}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/iris-panels} 
+
+\end{knitrout}
+
+The splitting is defined in a formula notation:
+yfactor \textasciitilde xfactor. Factors can also be combined,
+e.g.  yfactor \textasciitilde xfactor\textunderscore 1 + xfactor\textunderscore 2. 
+Faceting  can also be used with \Rfunction{qplot()}, there you always have
+to specify a two--sided formula. If you only want to use a single
+splitting factor, you can use the dot notation:
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{(}\hlkwd{qplot}\hlstd{(Sepal.Length, Sepal.Width,} \hlkwc{data} \hlstd{= iris,}
+\hlkwc{color} \hlstd{= Species,} \hlkwc{facets} \hlstd{= .} \hlopt{~}  \hlstd{Species))}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/iris-panels_qplot} 
+
+\end{knitrout}
+
+
+\subsubsection*{Exercise: ggplot faceting}
+ 
+Using the data \Robject{proteins\textunderscore pMek}, 
+produce a plot split by the experimental condition factor using 
+\Rfunction{facet\textunderscore wrap()}. 
+
+
+
+\subsection{Melting and casting data frames}  
+
+The data table we loaded was already suitable for the plots we wanted 
+to produce since every line represents exactly one observation. 
+However, this is not necessarily the case and we might want to represent
+the different time points by different columns, not just a single one.
+
+In time series analysis parlance our current data would be in "long" format,
+but we might want to transform it into a "wide" format, with a separate 
+column for every time point. The package \CRANpkg{reshape2} allows 
+you to do this. \Rpackage{ggplot2} usually requires "long" formats, which can be
+obtained by using the function \Rfunction{melt}. Thus a "molten"
+data frame in \Rpackage{ggplot2} corresponds to a "long" format.  "wide" formats
+can be computed using the function \Rfunction{dcast}. As an example
+we will now represent every time point of our data frame as a single
+column. 
+
+Note that the wide format is only compatible with a single numerical target
+variable, so we only include signal as a variable here. The
+casting grid is defined by a formula with the variables that will
+be represented by a single column on the left (x--variables) and 
+the wide variables on the right side of the tilde (y--variables). 
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{proteins_cast} \hlkwb{<-} \hlkwd{dcast}\hlstd{(proteins, Target} \hlopt{+} \hlstd{Condition} \hlopt{~}   \hlstd{min ,}
+                \hlkwc{value.var} \hlstd{=} \hlstr{"Signal"}\hlstd{)}
+\hlkwd{head}\hlstd{(proteins_cast)}
+\end{alltt}
+\begin{verbatim}
+#>     Target          Condition         0        5        10        20        30      45        60
+#>   1   pAKT        10ng/mL HGF -6.71e+08 5.68e+08  1.05e+09 -3.23e+08 -9.00e+08      NA  3.17e+08
+#>   2   pAKT        40ng/mL HGF -7.59e+08 3.32e+08  1.95e+08  1.29e+08  7.43e+07      NA  1.01e+09
+#>   3   pAKT 40ng/mL HGF + AKTi -2.03e+08 1.62e+08 -2.41e+08        NA -4.69e+08      NA -3.31e+08
+#>   4   pAKT 40ng/mL HGF + MEKi  7.30e+08 6.57e+08  8.73e+08        NA  1.39e+09      NA  7.10e+08
+#>   5   pAKT        80ng/mL HGF -3.09e+08 8.36e+08  8.91e+08  1.12e+09  9.08e+08 3.8e+08 -6.95e+08
+#>   6  pERK1        10ng/mL HGF  2.77e+08 2.37e+08 -3.36e+08 -1.48e+08  7.06e+08      NA  2.85e+07
+#>           120
+#>   1 -4.69e+08
+#>   2 -7.95e+08
+#>   3  5.92e+08
+#>   4 -2.21e+08
+#>   5 -2.16e+08
+#>   6  5.52e+08
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+We can now melt the data frame again. For melting, you have to specify
+id variable and/or measurement variables. id variables identify a single 
+line in the molten data frame and measured variables represent the 
+measurements. If you only supply one of them, it is assumed that
+all the other variables belong to the other group. Columns
+that are not in either of the groups are discarded.
+
+A factor column is then added to indicate to which
+former column a measurement belongs to. In our case this is the
+time point. Another useful function is \Rfunction{arrange}
+which allows you to reorder the data frame according
+to certain columns.  
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{proteins_molten} \hlkwb{<-} \hlkwd{melt}\hlstd{(proteins_cast,} \hlkwc{id.vars} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"Target"}\hlstd{,} \hlstr{"Condition"}\hlstd{),}
+\hlkwc{variable.name}\hlstd{=}\hlstr{"Time"}\hlstd{,} \hlkwc{value.name}\hlstd{=} \hlstr{"Signal"}\hlstd{)}
+\hlstd{proteins_molten} \hlkwb{<-}\hlkwd{arrange}\hlstd{(proteins_molten, Condition)}
+\hlkwd{head}\hlstd{(proteins_molten)}
+\end{alltt}
+\begin{verbatim}
+#>     Target   Condition Time    Signal
+#>   1   pAKT 10ng/mL HGF    0 -6.71e+08
+#>   2  pERK1 10ng/mL HGF    0  2.77e+08
+#>   3  pERK2 10ng/mL HGF    0 -1.91e+08
+#>   4   pMEK 10ng/mL HGF    0  3.38e+08
+#>   5   pAKT 10ng/mL HGF    5  5.68e+08
+#>   6  pERK1 10ng/mL HGF    5  2.37e+08
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\subsubsection*{Exercise: complex ggplot example}
+ 
+Use the data frame \Robject{proteins} to produce 
+a plot of the time courses  split by the experimental 
+target and colored according to the experimental 
+conditions. Add error bars to your plot.
+
+
+
+
+
+%ldply(list(value = proteins[,1:4], value = proteins[,c(1:3,5)] ))
+
+\section{Univariate Data Display}
+
+In order to study the distribution of data, various visualization methods are 
+available. We will look at some of them in the following.
+
+\subsection{Frequency Table and Barplot}
+
+Discrete data occur when the values naturally fall into categories. A frequency 
+table simply gives the number of occurrences within a category.
+
+\subsubsection*{Example: Nucleotide Frequencies } 
+A gene consists of a sequence of nucleotides $\{A, C, G, T \}$.
+The number of each nucleotide can be displayed in a frequency table. This
+will be illustrated by an Exon of the Zyxin gene, which plays an important role in cell
+adhesion. You can use the Bioconductor package \Rpackage{biomaRt} to query
+various genomic databases. The commented code below was originally used to retrieve the
+exon sequence. The command \Rfunction{strplit} splits the sequence into
+its single letter parts. We already loaded the sequence at the beginning of
+the lab.
+
+
+%
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{ensembl}\hlkwb{=}  \hlkwd{useMart}\hlstd{(}\hlstr{"ensembl"}\hlstd{,}\hlkwc{dataset}\hlstd{=}\hlstr{"hsapiens_gene_ensembl"}\hlstd{)}
+\hlstd{seqZyx} \hlkwb{<-} \hlkwd{getSequence}\hlstd{(}\hlkwc{id} \hlstd{=} \hlstr{"ENSG00000159840"}\hlstd{,} \hlkwc{type} \hlstd{=} \hlstr{"ensembl_gene_id"}\hlstd{,}
+\hlkwc{mart} \hlstd{= ensembl,} \hlkwc{seqType} \hlstd{=} \hlstr{"gene_exon"}\hlstd{)[}\hlnum{1}\hlstd{,]}
+\hlstd{seqZyx} \hlkwb{<-} \hlkwd{strsplit}\hlstd{(}\hlkwd{as.character}\hlstd{(seqZyx[}\hlnum{1}\hlstd{,}\hlnum{1}\hlstd{]),} \hlkwc{split} \hlstd{=} \hlkwd{character}\hlstd{(}\hlnum{0}\hlstd{))}
+\hlstd{seqZyx} \hlkwb{<-} \hlstd{seqZyx[[}\hlnum{1}\hlstd{]]}
+\hlkwd{save}\hlstd{(seqZyx,} \hlkwc{file} \hlstd{=} \hlstr{"seqZyx.rda"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+%
+
+A (frequency) table, a corresponding pie plot  and a barplot
+can be produced by following commands
+
+%
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{table}\hlstd{(seqZyx)} \hlcom{## table}
+\end{alltt}
+\begin{verbatim}
+#>   seqZyx
+#>    A  C  G  T 
+#>   29 94 70 30
+\end{verbatim}
+\begin{alltt}
+\hlkwd{prop.table}\hlstd{(}\hlkwd{table}\hlstd{(seqZyx))} \hlcom{## frequency table}
+\end{alltt}
+\begin{verbatim}
+#>   seqZyx
+#>       A     C     G     T 
+#>   0.130 0.422 0.314 0.135
+\end{verbatim}
+\begin{alltt}
+\hlkwd{barplot}\hlstd{(}\hlkwd{table}\hlstd{(seqZyx))}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/Zyx-table} 
+
+\end{knitrout}
+
+In \Rpackage{ggplot2} we first have to transform our data into an
+appropriate \Robject{data.frame}. We then map the bases to 
+the x--axis and add binning by using the bar geometry.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{ggBarplot} \hlkwb{=} \hlkwd{ggplot}\hlstd{(} \hlkwc{data} \hlstd{=} \hlkwd{data.frame}\hlstd{(}\hlkwc{bases} \hlstd{=} \hlkwd{factor}\hlstd{(seqZyx)),} \hlkwd{aes}\hlstd{(}\hlkwc{x} \hlstd{= bases))}
+\hlstd{ggBarplot} \hlkwb{=} \hlstd{ggBarplot} \hlopt{+} \hlkwd{xlab}\hlstd{(}\hlstr{""}\hlstd{)} \hlopt{+} \hlkwd{geom_bar}\hlstd{()}
+\hlstd{ggBarplot}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/Zyx-table-ggplot2} 
+
+\end{knitrout}
+%
+
+In order to plot a pie chart with \Rpackage{ggplot2}, we first have 
+to create a stacked bar plot by  mapping the base counts to the fill 
+of the bar and then use polar coordinates.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{pie}\hlstd{(}\hlkwd{table}\hlstd{(seqZyx))}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/Zyx-pie1} 
+\begin{kframe}\begin{alltt}
+\hlstd{ggPie} \hlkwb{=} \hlkwd{ggplot}\hlstd{(} \hlkwc{data} \hlstd{=} \hlkwd{data.frame}\hlstd{(}\hlkwc{bases} \hlstd{=} \hlkwd{factor}\hlstd{(seqZyx)),} \hlkwd{aes}\hlstd{(}\hlkwc{x} \hlstd{=} \hlkwd{factor}\hlstd{(}\hlnum{1}\hlstd{),}  \hlkwc{fill} \hlstd{= bases))}
+\hlstd{ggPie} \hlkwb{=} \hlstd{ggPie} \hlopt{+} \hlkwd{xlab}\hlstd{(}\hlkwa{NULL}\hlstd{)} \hlopt{+} \hlkwd{geom_bar}\hlstd{()} \hlopt{+} \hlkwd{scale_x_discrete}\hlstd{(}\hlkwc{breaks}\hlstd{=}\hlkwa{NULL}\hlstd{)}
+\hlstd{ggPie} \hlopt{+} \hlkwd{coord_polar}\hlstd{(}\hlkwc{theta} \hlstd{=} \hlstr{"y"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/Zyx-pie2} 
+
+\end{knitrout}
+%
+
+\subsection{Scatterplots and Stripcharts}
+An elementary method to visualize data is the so--called scatterplot,
+which simply plots two sets of data against each other or, if applied to a single
+data set, plots each data point of the set according to its index. \\
+
+A stripchart is similar to a scatterplot, but plots all data points of a single
+data set horizontally or vertically. This is particularly useful in combination with a factor 
+that distinguishes members from different experimental conditions or patients groups.
+
+
+\subsubsection*{Example: Visualizing Gene CCND3} 
+Many visualization methods will be illustrated by the Golub
+ microarray data on two sub types of leukemia. We shall concentrate on the expression values of gene
+"CCND3 Cyclin D3", which are collected in row 1042 of the data matrix
+\Rfunction{golub}. To plot the data values one can simply use \Rfunction{plot(golub[1042,])}. In
+the resulting plot  the vertical axis gives the size of the expression
+values and the horizontal axis the index of the patients. This is a scatterplot 
+of a single data set. \\
+
+ It can be observed
+that the values for patient 28 to 38 are somewhat lower, but, indeed, the
+picture is not very clear because the groups are not plotted separately.
+To produce two adjacent stripcharts one for the ALL and one for the
+AML patients, we use a factor called  \Rfunction{gol.fac} which
+separates the classes of patients.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{plot}\hlstd{(golub[}\hlnum{1042}\hlstd{,])}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/plotCCND3} 
+
+\end{knitrout}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{gol.fac} \hlkwb{<-} \hlkwd{factor}\hlstd{(golub.cl,}\hlkwc{levels}\hlstd{=}\hlnum{0}\hlopt{:}\hlnum{1}\hlstd{,} \hlkwc{labels}\hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"ALL"}\hlstd{,}\hlstr{"AML"}\hlstd{))}
+\hlkwd{stripchart}\hlstd{(golub[}\hlnum{1042}\hlstd{,]} \hlopt{~} \hlstd{gol.fac,} \hlkwc{method}\hlstd{=}\hlstr{"jitter"}\hlstd{,} \hlkwc{vertical} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/stripchartCCND3} 
+
+\end{knitrout}
+
+From the resulting figure it can be observed that the CCND3
+expression values of the ALL patients tend to have larger expression values
+than those of the AML patients. The option \Robject{jitter} will ``smear''
+the data points a little bit. In \Rpackage{ggplot2} these plots can be created
+like this:
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{CCND3} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}\hlkwc{expCCND3} \hlstd{= golub[}\hlnum{1042}\hlstd{,],} \hlkwc{patients} \hlstd{= gol.fac)}
+
+\hlstd{ggScatter} \hlkwb{=} \hlkwd{qplot}\hlstd{(}\hlkwd{seq_along}\hlstd{(expCCND3), expCCND3,} \hlkwc{data} \hlstd{= CCND3,} \hlkwc{geom} \hlstd{=}\hlstr{"point"}\hlstd{)}
+\hlstd{ggScatter} \hlopt{+} \hlkwd{xlab}\hlstd{(}\hlstr{"Index"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/ggplot2scatter1} 
+\begin{kframe}\begin{alltt}
+\hlstd{ggStrip} \hlkwb{=}  \hlkwd{ggplot}\hlstd{(CCND3,} \hlkwd{aes}\hlstd{(}\hlkwc{x}\hlstd{=patients,} \hlkwc{y}\hlstd{=expCCND3))}
+\hlstd{ggStrip} \hlopt{+} \hlkwd{geom_point}\hlstd{(}\hlkwc{position} \hlstd{=}  \hlkwd{position_jitter}\hlstd{(}\hlkwc{w} \hlstd{=} \hlnum{.0}\hlstd{,} \hlkwc{h} \hlstd{=} \hlnum{.30}\hlstd{))}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/ggplot2scatter2} 
+
+\end{knitrout}
+
+The ``jittering'' in \Rpackage{ggplot2} occurs after the plot has been created
+and the data has been mapped to aesthetics that is why it is called a ``position
+adjustment''.  Note that the degree of jittering can be controlled 
+explicitly in \Rpackage{ggplot2}.
+
+
+\subsection{Histograms}
+
+Another method to visualize data is by dividing the range of data values into
+a number of intervals and to plot the frequency per interval as a bar. Such
+a plot is called a histogram.
+
+\subsubsection*{Example: Histogram of CCND3}
+A histogram of the expression values of gene CCND3 
+of the acute lymphoblastic leukemia patients can be produced as follows:
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{hist}\hlstd{(golub[}\hlnum{1042}\hlstd{, gol.fac}\hlopt{==}\hlstr{"ALL"}\hlstd{])}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/histCCND3} 
+
+\end{knitrout}
+
+The function \Rfunction{hist} divides the data into 5 intervals having width equal to
+0.5. Observe  that one value is small and the
+other ones are more or less symmetrically distributed around the mean. The number
+of bins can be adjusted by the \Rfunction{breaks} option, choosing
+\Rfunction{prob = TRUE}, will give the relative frequency for each bin on
+the $y$--axis instead of the absolute frequencies. \\
+
+
+\Rpackage{ggplot2} uses binning as the default geometry if only x--values are
+supplied, so creating a histogram is really easy. By default it uses the range of
+the data divided by 30 as the binwidth. This can be easily adjusted. Here, we
+produce a barplot given the absolute counts per bin and then a classical histogram
+giving the relative frequencies.
+
+In the code below, \Rfunction{(aes(y = ..density..)} means
+that we map the y--coordinate to the relative frequency 
+estimate as returned by the \Rfunction{stat \textunderscore bin} 
+statistical transformation used  by the ``geom\textunderscore histogram'' 
+function.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{CCND3.ALL} \hlkwb{=} \hlkwd{data.frame}\hlstd{(}\hlkwc{CCND3.ALL} \hlstd{= golub[}\hlnum{1042}\hlstd{, gol.fac}\hlopt{==}\hlstr{"ALL"}\hlstd{])}
+\hlstd{ggplotAbsFreq} \hlkwb{=} \hlkwd{qplot}\hlstd{(golub[}\hlnum{1042}\hlstd{, gol.fac}\hlopt{==}\hlstr{"ALL"}\hlstd{],} \hlkwc{binwidth} \hlstd{=} \hlnum{0.5}\hlstd{)}
+\hlstd{ggplotHist} \hlkwb{=} \hlkwd{ggplot}\hlstd{(CCND3.ALL,} \hlkwd{aes}\hlstd{(}\hlkwc{x}\hlstd{=CCND3.ALL ))}
+\hlstd{ggplotHist} \hlkwb{=} \hlstd{ggplotHist} \hlopt{+} \hlkwd{geom_histogram}\hlstd{(}\hlkwd{aes}\hlstd{(}\hlkwc{y} \hlstd{= ..density..),} \hlkwc{binwidth} \hlstd{=} \hlnum{0.5}\hlstd{)}
+
+
+\hlstd{ggplotAbsFreq}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/ggplot2hist1} 
+\begin{kframe}\begin{alltt}
+\hlstd{ggplotHist}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/ggplot2hist2} 
+
+\end{knitrout}
+
+
+\subsection{Kernel density estimates}
+Kernel density estimates are a method to turn the histogram
+into a smooth density estimate. Given data
+$x_1, \dotsc, x_n$ and a constant called "bandwidth" $h$,
+the kernel density estimate is given by:
+
+\begin{center}
+\[
+\hat f(x)= \frac{1}{n}\sum_{i=1}^{n}  \frac{1}{h}K\left( \frac{x-x_i}{h} \right) 
+\]
+\end{center}
+
+Typical kernels are:
+\begin{itemize}
+\item Bisquare kernel: $K(u) = \frac{15}{16}(1-u^2)^2 \; \text{ for } u \in [-1,1] \; \text{and} \; 0 \text{ otherwise }$
+\item Gau{\ss} kernel: $K(u) = \frac{1}{\sqrt{2\pi}} \exp\Biggl(-\frac{1}{2} u^2  \Biggr) \; \text{ for } \; u \in \mathbb{R}$ 
+\end{itemize}
+
+They readily computed using the \R  \hspace{2pt} function \Rfunction{density} or the appropriate
+ggplot statistical transformation, which uses this function.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{CCND3.ALL} \hlkwb{=} \hlkwd{data.frame}\hlstd{(}\hlkwc{CCND3.ALL} \hlstd{= golub[}\hlnum{1042}\hlstd{, gol.fac}\hlopt{==}\hlstr{"ALL"}\hlstd{])}
+ \hlkwd{qplot}\hlstd{(golub[}\hlnum{1042}\hlstd{, gol.fac}\hlopt{==}\hlstr{"ALL"}\hlstd{],} \hlkwc{geom} \hlstd{=} \hlstr{"density"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/ggplot2density} 
+
+\end{knitrout}
+
+Since we do not have many data points, the kernel density estimates 
+gives a somewhat different impression than the histogram. Also note 
+that kernel density estimates do not respect the boundaries of the
+data set by default.
+
+\subsection{Boxplots}
+It is always possible to sort $n$ data values to have increasing order $x_1 \leq 
+x_2 \leq \dots \leq x_n$ , where $x_1$ is the smallest, $x_2$ is the first--to--the 
+smallest, etc. 
+
+Let $x_{0.25}$ be a number for which it holds that 25\% of the data values 
+$x_1 , \dotsc, x_n$ are smaller. That is, 25\% of the data values 
+lay on the left side of the number $x_{0.25}$, the reason for which it is called the first quartile or the 25th percentile. \\
+
+
+The second quartile is the value $x_{0.5}$ such that 50\% of the data values are
+smaller. It is also called the median. 
+Similarly, the third quartile or 75th percentile is the value $x_{0.75}$ such
+that 75\% of the data is smaller.\\
+
+A popular method to display data is by drawing a box around the first and the 
+third quartile, a bold line segment for the median, and the
+smaller line segments (whiskers) for the smallest and
+the largest data values. Such a data display is known as a box--and--whisker
+plot or simply boxplot.
+
+
+\subsubsection*{Example: Boxplot of CCND3}
+A view on the distribution of the expression values of the
+ALL and the AML patients on gene CCND3  can be obtained by
+constructing two separate boxplots adjacent to one another. To produce such
+a plot the factor gol.fac is again very useful.
+%
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{boxplot}\hlstd{(golub[}\hlnum{1042}\hlstd{,]} \hlopt{~} \hlstd{gol.fac)}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/boxplotCCND3} 
+
+\end{knitrout}
+%
+
+In \Rpackage{ggplot2} a boxplot can be exactly as a stripchart,
+we just have to change the geometry of the plot:
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{ggBox}\hlkwb{=}  \hlkwd{ggplot}\hlstd{(CCND3,} \hlkwd{aes}\hlstd{(}\hlkwc{x}\hlstd{=patients,} \hlkwc{y}\hlstd{=expCCND3,} \hlkwc{color} \hlstd{= patients))}
+\hlstd{ggBox} \hlopt{+} \hlkwd{geom_boxplot}\hlstd{()}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/ggBox} 
+
+\end{knitrout}
+
+From the position of the boxes,  it can be observed that the gene
+expression values for ALL are larger than those for AML. Furthermore, since
+the two sub-boxes around the median are more or less equally wide, the data
+are quite symmetrically distributed around the median. The quantiles can
+be computed with the function  \Rfunction{quantile}. By default the four
+``quartiles'' are returned but other quantiles can be obtained by specifying
+the \Rfunction{probs} parameter
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{quantile}\hlstd{(golub[}\hlnum{1042}\hlstd{,])}
+\end{alltt}
+\begin{verbatim}
+#>       0%    25%    50%    75%   100% 
+#>   -0.743  1.043  1.813  2.049  2.766
+\end{verbatim}
+\begin{alltt}
+\hlcom{## custom quantiles}
+\hlkwd{quantile}\hlstd{(golub[}\hlnum{1042}\hlstd{,],} \hlkwc{probs} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,} \hlnum{0.1}\hlstd{,} \hlnum{0.5}\hlstd{))}
+\end{alltt}
+\begin{verbatim}
+#>       0%    10%    50% 
+#>   -0.743  0.484  1.813
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+Outliers are data values laying far apart from the pattern set by the
+majority of the data values. The implementation in \Rfunction{R} of the (modified)
+boxplot draws such outlier points separately as small circles. A data point
+$x$ is defined as an outlier point if
+\begin{gather*}
+x < x_{0.25} - 1.5 \cdot (x_{0.75} - x_{0.25} )
+\intertext{or} 
+x > x_{0.75} + 1.5  \cdot (x_{0.75} - x_{0.25} )
+\end{gather*}
+
+From the boxplot above it can be observed that there are outliers among the gene
+expression values of ALL patients. These are the smaller values 0.45827 and
+1.10546, and the largest value 2.76610. The AML expression values have one
+outlier with value -0.74333.
+To define extreme outliers, the factor 1.5 is raised to 3.0.  
+These numbers can be conveniently extracted from the 
+\Rfunction{boxplot.stats} function:
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{boxplot.stats}\hlstd{(golub[}\hlnum{1042}\hlstd{, gol.fac} \hlopt{==} \hlstr{"ALL"}\hlstd{])}
+\end{alltt}
+\begin{verbatim}
+#>   $stats
+#>   [1] 1.28 1.80 1.93 2.18 2.59
+#>   
+#>   $n
+#>   [1] 27
+#>   
+#>   $conf
+#>   [1] 1.81 2.04
+#>   
+#>   $out
+#>   [1] 2.766 1.105 0.458
+\end{verbatim}
+\begin{alltt}
+\hlcom{### outliers are in the "out" element of the list }
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\subsection{Violin plots}
+
+A violin plot is a combination of a boxplot and a kernel density estimate. 
+Specifically, instead of straight borders for the boxes, a kernel density estimate
+is displayed. 
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{vioplot}\hlstd{(}\hlkwd{split}\hlstd{(golub[}\hlnum{1042}\hlstd{,],  gol.fac)[[}\hlnum{1}\hlstd{]],} \hlkwd{split}\hlstd{(golub[}\hlnum{1042}\hlstd{,],  gol.fac)[[}\hlnum{2}\hlstd{]],}
+        \hlkwc{names} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"ALL"}\hlstd{,} \hlstr{"AML"}\hlstd{))}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/Violin_plot_example1} 
+\begin{kframe}\begin{alltt}
+\hlstd{ggBox} \hlopt{+} \hlkwd{geom_violin}\hlstd{()}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/Violin_plot_example2} 
+
+\end{knitrout}
+
+
+\subsection{Empirical Cumulative Distribution Function}
+Another way to visualize data is the empirical cumulative distribution function 
+(ecdf). It is an estimator for the actual  cumulative distribution function,
+which gives the probability of observing values less than a given value $t$.
+Especially if you have a large number
+of data points, it gives a useful visualization tool for your data.
+For every number $t$ the ecdf  $\hat F_n(t)$ is the fraction of data points
+that are smaller than $t$.
+
+\begin{gather*}
+    \hat F_n(t) = \frac{ \mbox{number of elements in the sample} \leq t}n  
+%\frac{1}{n} \sum_{i=1}^n \mathbf{1}\{x_i \le t\},
+\end{gather*}
+Obviously, just as the cdf the ecdf will always start 0 and end up at
+1. You can easily read off quantiles from the ecdf, since the $y$--axis
+represents the quantiles of the data. 
+
+\subsubsection*{Example: ECDF of CCND3}
+From the plot of the ecdf of CCND3, it can be seen that the
+median of the overall data is roughly 1.8. The steep increase of the ecdf for
+values greater than the median shows that larger values are more more common
+in the data set.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{plot}\hlstd{(}\hlkwd{ecdf}\hlstd{(golub[}\hlnum{1042}\hlstd{, ]) ,} \hlkwc{main} \hlstd{=} \hlstr{"ecdf of CCND3"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/ecdfCCND3} 
+
+\end{knitrout}
+
+In \Rpackage{ggplot2} there exists a specialized statistic which performs
+the calculation necessary to obtain the ecdf. It also easy to split the
+ecdf calculation by a factor, here we clearly see that for CCND3, 
+the expression for ALL patients is always higher than the expression for
+AML patients.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{ggECDF}\hlkwb{=}  \hlkwd{ggplot}\hlstd{(CCND3,} \hlkwd{aes}\hlstd{(}\hlkwc{x}\hlstd{=expCCND3,} \hlkwc{color} \hlstd{= patients))}
+\hlstd{ggECDF} \hlopt{+} \hlkwd{stat_ecdf}\hlstd{(}\hlkwc{geom} \hlstd{=} \hlstr{"step"}\hlstd{,} \hlkwc{size} \hlstd{=} \hlnum{2}\hlstd{)} \hlopt{+} \hlkwd{ylab}\hlstd{(}\hlstr{"Frequency"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/ggecdfCCND3} 
+
+\end{knitrout}
+
+
+\subsection{Quantile--Quantile (QQ) Plot}
+A method to compare the (e)cdf of  a data set to another (e)cdf is  
+so--called quantile-quantile (Q--Q) plot. In such a plot, usually the quantiles of the
+of the data set are displayed against the corresponding quantiles of
+the normal distribution (bell--shaped). Hence, the empirical cdf of the
+data are compared to the (corresponding) normal cdf.  \\
+
+A straight line is added representing points which
+correspond exactly to the quantiles of a corresponding normal distribution. 
+By observing the extent in which the points appear on the line, it can be evaluated to
+what degree the data are normally distributed. That is, the closer the  
+values appear to the line, the more likely it is that the data are
+normally distributed. To produce a Q--Q plot of the ALL gene expression values
+of CCND3  one may use the following code \\
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{qqnorm}\hlstd{(golub[}\hlnum{1042}\hlstd{, gol.fac}\hlopt{==}\hlstr{"ALL"}\hlstd{])}
+\hlkwd{qqline}\hlstd{(golub[}\hlnum{1042}\hlstd{, gol.fac}\hlopt{==}\hlstr{"ALL"}\hlstd{])}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/QQCCND3} 
+
+\end{knitrout}
+
+From the resulting figure it can be observed that most of the data points
+are on or near the straight line, while a few others are further away.
+This is an expected behavior for gene expression data. The above example 
+illustrates a case where the degree of non--normality
+is moderate so that a clear conclusion cannot be drawn. \\
+
+The QQ--plot can  also be used to compare the distributions of 
+two data sets to one another by plotting their quantiles against each other. 
+In order to do this, you can call the function \Rfunction{qqplot}. A comparison
+of the distributions / ecdfs of AML and ALL gene expression values is given by:
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{qqplot}\hlstd{(golub[}\hlnum{1042}\hlstd{, gol.fac}\hlopt{==}\hlstr{"ALL"}\hlstd{], golub[}\hlnum{1042}\hlstd{, gol.fac}\hlopt{==}\hlstr{"AML"}\hlstd{])}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/QQCCND3vs} 
+
+\end{knitrout}
+
+As we can see, the quantiles lie on a straight line, which indicates that
+their general shape agrees. However, they might have different means and
+standard deviations.
+
+
+In \Rpackage{ggplot2} there exists a specialized statistic which performs
+the calculation necessary to obtain the QQ--plot. The qnorm equivalent is
+a bit harder to obtain, we have to extract the augmented data frame returned
+by the \Rfunction{stat\textunderscore qq} function and add a linear smoother.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{ggQQ} \hlkwb{=}  \hlkwd{ggplot}\hlstd{(CCND3.ALL,} \hlkwd{aes}\hlstd{(}\hlkwc{sample}\hlstd{=CCND3.ALL))} \hlopt{+}  \hlkwd{stat_qq}\hlstd{()}
+\hlcom{#ggQQ }
+\hlstd{tp} \hlkwb{=} \hlkwd{cbind}\hlstd{(CCND3.ALL,} \hlkwd{as.data.frame}\hlstd{((}\hlkwd{print}\hlstd{(ggQQ)}\hlopt{$}\hlstd{data)[[}\hlnum{1}\hlstd{]][,} \hlkwd{c}\hlstd{(} \hlstr{"sample"}\hlstd{,} \hlstr{"theoretical"}\hlstd{)]))}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/ggQQplotCCND31} 
+\begin{kframe}\begin{alltt}
+\hlstd{ggQQ} \hlopt{+} \hlkwd{stat_smooth}\hlstd{(}\hlkwc{mapping} \hlstd{=} \hlkwd{aes}\hlstd{(}\hlkwc{x} \hlstd{= theoretical,} \hlkwc{y} \hlstd{= sample),} \hlkwc{data} \hlstd{= tp,} \hlkwc{method} \hlstd{=} \hlstr{"lm"}\hlstd{,} \hlkwc{se} \hlstd{= F )}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/ggQQplotCCND32} 
+
+\end{knitrout}
+
+
+
+\section{Descriptive Statistics}
+There exist various ways to describe the central tendency as well as the spread
+of data. In particular, the central tendency can be described by the mean or
+the median, and the spread by the variance, standard deviation, interquartile
+range, or median absolute deviation. These will be defined and illustrated.
+
+
+\subsection{Measures of Central Tendency}
+The most important descriptive statistics for central tendency are the mean
+and the median. The sample mean of the data values $x_1, \dotsc, x_n$ is defined
+as:
+
+\begin{gather*}
+\overline x =\frac{1}{k} \sum_{i=1}^k x_{i}
+= \frac{1}{n} \left( x_{1} + \dotso + x_{n}\right).
+\end{gather*}
+
+Thus the sample mean is simply the average of the $n$ data values. Since it
+is the sum of all data values divided by the sample size, a few extreme data
+values may largely influence its size. In other words, the mean is not robust
+against outliers. \\
+
+The median is defined as the second quartile or the 50th percentile, and
+is denoted by $x_{0.50}$. When the data are symmetrically distributed around the
+mean, then the mean and the median are equal. Since extreme data values
+do not influence the size of the median, it is very robust against outliers.
+Robustness is important in biological applications because data are frequently contaminated 
+by extreme or otherwise influential data values.
+
+\subsubsection*{Example: Mean and Median of CCND3} 
+To compute the mean and median of the ALL expression
+values of gene CCND3 Cyclin D3 consider the following.
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{mean}\hlstd{(golub[}\hlnum{1042}\hlstd{, gol.fac}\hlopt{==}\hlstr{"ALL"}\hlstd{])}
+\end{alltt}
+\begin{verbatim}
+#>   [1] 1.89
+\end{verbatim}
+\begin{alltt}
+\hlkwd{median}\hlstd{(golub[}\hlnum{1042}\hlstd{, gol.fac}\hlopt{==}\hlstr{"ALL"}\hlstd{])}
+\end{alltt}
+\begin{verbatim}
+#>   [1] 1.93
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+Note that the mean and the median do not differ much so that the distribution 
+seems to be quite symmetric.
+
+\subsection{Measures of Spread}
+The most important measures of spread are the standard deviation, the interquartile range, 
+and the median absolute deviation. The standard deviation
+is the square root of the sample variance, which is defined as
+
+
+\begin{gather*}
+s^2 =\frac{1}{k - 1} \sum_{i=1}^k (x_{i} - \overline x)^{2}
+= \frac{1}{n} \left( (x_{1} - \overline x)^{2} + \dotso + (x_{n} - \overline x)^{2}\right).
+\end{gather*}
+
+Hence, it is the average of the squared differences between the data values
+and the sample mean. The sample standard deviation $s$ is the square root
+of the sample variance and may be interpreted as the distance of the data
+values to the mean. The variance and the standard deviation are not robust
+against outliers. \\
+
+The interquartile range is defined as the difference between the third and
+the first quartile, that is $x_{0.75} - x_{0.25}$. It can be computed by the function
+\Rfunction{IQR(x)}. More specifically, the value \Rfunction{IQR(x)/1.349}
+ is a robust estimator of
+the standard deviation.  \\
+
+The median absolute deviation (MAD) is defined as
+a constant times the median of the absolute deviations of the data from the
+median. In \Rfunction{R} it is computed by the
+function \Rfunction{mad} defined as the median of the sequence
+$|x_1  - x_{0.5} |, \dotsc, |x_n - x_{0.5} |$
+multiplied by the constant 1.4826. It equals the standard deviation in case
+the data come from a bell--shaped (normal) distribution.
+Because the interquartile range and the median absolute deviation are based
+on quantiles, these are robust against outliers.
+
+
+\subsubsection*{Example: Measures of Spread for CCND3} These measures of spread 
+for the ALL expression values of gene CCND3 can be computed as follows.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{sd}\hlstd{(golub[}\hlnum{1042}\hlstd{, gol.fac}\hlopt{==}\hlstr{"ALL"}\hlstd{])}
+\end{alltt}
+\begin{verbatim}
+#>   [1] 0.491
+\end{verbatim}
+\begin{alltt}
+\hlkwd{IQR}\hlstd{(golub[}\hlnum{1042}\hlstd{, gol.fac}\hlopt{==}\hlstr{"ALL"}\hlstd{])} \hlopt{/} \hlnum{1.349}
+\end{alltt}
+\begin{verbatim}
+#>   [1] 0.284
+\end{verbatim}
+\begin{alltt}
+\hlkwd{mad}\hlstd{(golub[}\hlnum{1042}\hlstd{, gol.fac}\hlopt{==}\hlstr{"ALL"}\hlstd{])}
+\end{alltt}
+\begin{verbatim}
+#>   [1] 0.368
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+Due to the three outliers (cf. boxplot above) the standard deviation is larger
+than the interquartile range and the mean absolute deviation. That is, the
+absolute differences with respect to the median are somewhat smaller than
+the root of the squared differences.
+
+\subsubsection*{Exercise: Illustration of Mean and Standard Deviation}
+
+
+\begin{enumerate}[label=(\emph{\alph*})]
+ \item Compute the mean and the standard deviation for 1, 1.5, 2, 2.5, 3.
+\item Compute the mean and the standard deviation for 1, 1.5, 2, 2.5, 30.
+ \item Comment on the differences.
+\end{enumerate}
+
+\subsubsection*{Exercise: Plotting Gene Expressions of CCND3}
+Use the gene expressions from "CCND3" of Golub collected in row
+1042 of the object golub.
+\begin{enumerate}[label=(\emph{\alph*})]
+
+\item  Produce a  stripchart for the gene expressions separately
+for the ALL as well as for the AML patients. Hint: Use a factor
+for appropriate separation.
+\item  Rotate the plot to a vertical position and keep it that way for the
+questions to come.
+\item  Color the ALL expressions red and AML blue. Hint: Use the \Robject{col}
+parameter.
+\item  Add a title to the plot. Hint: Use \Robject{title}.
+\item   Change the boxes into stars. Hint: Use the \Robject{pch} parameter.
+\end{enumerate}
+
+\subsubsection*{Exercise: Plotting Gene Expressions using \CRANpkg{ggplot2}}
+In this exercise we will plot the gene expressions for a couple
+of genes in the golub data set in a single figure, using a separate 
+panel for each gene.
+
+\begin{enumerate}[label=(\emph{\alph*})]
+\item Turn the golub data set into a 
+data frame with genes in the columns. Add the
+group descriptor \Robject{gol.fac} as a additional
+column and turn it into a factor.
+
+\item Select a random sample of 6 genes from the golub
+data. HINT: Use the function \Rfunction{sample} to do this.
+
+\item Melt the resulting data frame containing the selected genes
+in such a way that all the gene expression values are in 
+a single column.
+
+\item Use this data frame and \CRANpkg{ggplot2} to produce
+a pdf file containing boxplots separated per patient group for each
+of the randomly selected genes. Also add the raw data points 
+to the plot.
+\end{enumerate}
+
+
+
+\subsubsection*{Exercise: Comparing Normality for Two Genes} 
+Consider the gene expression values in row 790 and 66 of the Golub data.
+
+\begin{enumerate}[label=(\emph{\alph*})] 
+ \item Produce a boxplot for the expression values of the ALL patients
+and comment on the differences. Are there outliers?
+\item Produce a QQ-plot and formulate a hypothesis about the normality of the genes.
+ \item Compute the mean and the median for the expression values of
+the ALL patients and compare these. Do this for both genes.
+\end{enumerate}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Answers to Exercises}
+
+\subsubsection*{Exercise: Simple ggplot usage }
+\begin{enumerate}[label=(\emph{\alph*})]
+
+\item Use points as a geometry instead of lines
+\item Use both lines and points
+\item Add errorbars \Robject{geom\textunderscore errorbar} to the plot.
+This requires  further aesthetics: 
+\Robject{ymax} and \Robject{ymin}. 
+The estimated error is stored in the variable \Robject{Sigma}.
+
+\end{enumerate}
+
+\subsubsection*{Solution: Simple ggplot usage }
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{#a}
+\hlcom{##########################################################}
+\hlstd{plot_1} \hlkwb{<-} \hlkwd{ggplot}\hlstd{(}\hlkwd{aes}\hlstd{(} \hlkwc{x} \hlstd{= min,} \hlkwc{y} \hlstd{= Signal ),} \hlkwc{data} \hlstd{= proteins_pMek_sub)}
+\hlstd{plot_1} \hlkwb{<-} \hlstd{plot_1} \hlopt{+} \hlkwd{geom_point}\hlstd{()}
+\hlstd{plot_1} \hlkwb{<-} \hlstd{plot_1}  \hlopt{+} \hlkwd{xlab}\hlstd{(}\hlstr{"Time [min]"}\hlstd{)} \hlopt{+} \hlkwd{ylab}\hlstd{(}\hlstr{"pMEK Signal"}\hlstd{)}
+
+\hlcom{#b}
+\hlcom{##########################################################}
+\hlstd{plot_1} \hlkwb{<-} \hlstd{plot_1} \hlopt{+} \hlkwd{geom_line}\hlstd{()}
+
+\hlcom{#c}
+\hlcom{##########################################################}
+\hlstd{plot_1} \hlkwb{<-} \hlstd{plot_1} \hlopt{+} \hlkwd{geom_errorbar}\hlstd{(}\hlkwd{aes}\hlstd{(}\hlkwc{ymax} \hlstd{= Signal}\hlopt{+}\hlnum{2}\hlopt{*}\hlstd{Sigma,}
+\hlkwc{ymin} \hlstd{= Signal}\hlopt{-}\hlnum{2}\hlopt{*}\hlstd{Sigma))}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+
+\subsubsection*{Exercise: ggplot faceting}
+ 
+Using the data \Robject{proteins\textunderscore pMek\textunderscore sub}, 
+to produce a plot split by the experimental condition factor using 
+\Rfunction{facet\textunderscore wrap()}. 
+
+
+
+\subsubsection*{Solution: ggplot faceting}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{(}\hlkwd{qplot}\hlstd{(min, Signal,} \hlkwc{data} \hlstd{= proteins_pMek,} \hlkwc{geom} \hlstd{=} \hlstr{"line"}\hlstd{,} \hlkwc{color} \hlstd{= Condition)}
+\hlopt{+} \hlkwd{facet_wrap}\hlstd{(} \hlopt{~} \hlstd{Condition)} \hlopt{+} \hlkwd{geom_errorbar}\hlstd{(}\hlkwd{aes}\hlstd{(}\hlkwc{ymax} \hlstd{= Signal}\hlopt{+}\hlnum{2}\hlopt{*}\hlstd{Sigma,}
+\hlkwc{ymin} \hlstd{= Signal}\hlopt{-}\hlnum{2}\hlopt{*}\hlstd{Sigma)))}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\subsubsection*{Exercise: complex ggplot example}
+ 
+Use the data \Robject{proteins}, to produce 
+a plot of the time courses  split by the experimental 
+target and colored according to the experimental 
+conditions. Add error bars to your plot.
+
+
+
+\subsubsection*{Solution: complex ggplot example}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{(}\hlkwd{qplot}\hlstd{(min, Signal,} \hlkwc{data} \hlstd{= proteins,} \hlkwc{geom} \hlstd{=} \hlstr{"line"}\hlstd{,} \hlkwc{color} \hlstd{= Condition)}
+\hlopt{+} \hlkwd{facet_wrap}\hlstd{(} \hlopt{~} \hlstd{Target,} \hlkwc{ncol} \hlstd{=} \hlnum{2}\hlstd{)} \hlopt{+} \hlkwd{geom_errorbar}\hlstd{(}\hlkwd{aes}\hlstd{(}\hlkwc{ymax} \hlstd{= Signal}\hlopt{+}\hlnum{2}\hlopt{*}\hlstd{Sigma,}
+                                                  \hlkwc{ymin} \hlstd{= Signal}\hlopt{-}\hlnum{2}\hlopt{*}\hlstd{Sigma)))}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+
+\subsubsection*{Exercise: Illustration of Mean and Standard Deviation}
+
+
+\begin{enumerate}[label=(\emph{\alph*})] 
+ \item Compute the mean and the standard deviation for 1, 1.5, 2, 2.5, 3.
+\item Compute the mean and the standard deviation for 1, 1.5, 2, 2.5, 30.
+ \item Comment on the differences.
+\end{enumerate}
+
+\subsubsection*{Solution:  Illustration of Mean and Standard Deviation}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{#Use x<- c(1,1.5,2,2.5,3) and mean(x) and sd(x) to obtain}
+\hlcom{#that the mean is 2 and the standard deviation is 0.79}
+(b) Now the mean is 7.4 and  the standard deviation dramatically increased 
+(c) The outlier increased the mean as well as the standard deviation.
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+
+\subsubsection*{Exercise: Plotting Gene Expressions of CCND3}
+Use the gene expressions from "CCND3" of Golub collected in row
+1042 of the object golub.
+\begin{enumerate}[label=(\emph{\alph*})]
+
+\item  Produce a so-called stripchart for the gene expressions separately
+for the ALL as well as for the AML patients. Hint: Use a factor
+for appropriate separation.
+\item  Rotate the plot to a vertical position and keep it that way for the
+questions to come.
+\item  Color the ALL expressions red and AML blue. Hint: Use the \Robject{tcol}
+parameter.
+\item  Add a title to the plot. Hint: Use \Robject{title}.
+\item   Change the boxes into stars. Hint: Use the \Robject{pch} parameter.
+\end{enumerate}
+
+\subsubsection*{Solution: Plotting Gene Expressions of CCND3}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{gol.fac} \hlkwb{<-} \hlkwd{factor}\hlstd{(golub.cl,}\hlkwc{levels}\hlstd{=}\hlnum{0}\hlopt{:}\hlnum{1}\hlstd{,} \hlkwc{labels}\hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"ALL"}\hlstd{,}\hlstr{"AML"}\hlstd{))}
+\hlkwd{stripchart}\hlstd{(golub[}\hlnum{1042}\hlstd{,]} \hlopt{~} \hlstd{gol.fac,}\hlkwc{method}\hlstd{=}\hlstr{"jitter"}\hlstd{)}
+\hlkwd{stripchart}\hlstd{(golub[}\hlnum{1042}\hlstd{,]} \hlopt{~} \hlstd{gol.fac,}\hlkwc{method}\hlstd{=}\hlstr{"jitter"}\hlstd{,}\hlkwc{vertical} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\hlkwd{stripchart}\hlstd{(golub[}\hlnum{1042}\hlstd{,]} \hlopt{~} \hlstd{gol.fac,}\hlkwc{method}\hlstd{=}\hlstr{"jitter"}\hlstd{,}\hlkwc{col}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"red"}\hlstd{,} \hlstr{"blue"}\hlstd{),}
+\hlkwc{vertical} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\hlkwd{stripchart}\hlstd{(golub[}\hlnum{1042}\hlstd{,]} \hlopt{~} \hlstd{gol.fac,}\hlkwc{method}\hlstd{=}\hlstr{"jitter"}\hlstd{,}\hlkwc{col}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"red"}\hlstd{,} \hlstr{"blue"}\hlstd{),} \hlkwc{pch}\hlstd{=}\hlstr{"*"}
+\hlstd{,}\hlkwc{vertical} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\hlkwd{title}\hlstd{(}\hlstr{"CCND3 Cyclin D3 expression value for ALL and AMl patients"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+
+\subsubsection*{Exercise: Plotting Gene Expressions using \CRANpkg{ggplot2}}
+In this exercise we will plot the gene expressions for a couple
+of genes in the golub data set in a single figure, using a separate 
+panel for each gene.
+
+\begin{enumerate}[label=(\emph{\alph*})]
+\item Turn the golub data set into a 
+data frame with genes in the columns. Add the
+group descriptor \Robject{gol.fac} as a additional
+column and turn it into a factor.
+
+\item Select a random sample of 6 genes from the golub
+data. HINT: Use the function \Rfunction{sample} to do this.
+
+\item Melt the resulting data frame containing the selected genes
+in such a way that all the gene expression values are in 
+a single column.
+
+\item Use this data frame and \CRANpkg{ggplot2} to produce
+a pdf file containing boxplots separated per patient group for each
+of the randomly selected genes. Also add the raw data points 
+to the plot.
+\end{enumerate}
+
+
+
+\subsubsection*{Solution: Plotting Gene Expressions using \CRANpkg{ggplot2}}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{#a}
+\hlcom{###############################################################}
+\hlstd{golub.df} \hlkwb{=} \hlkwd{as.data.frame}\hlstd{(}\hlkwd{cbind}\hlstd{(}\hlkwd{t}\hlstd{(golub), gol.fac))}
+\hlstd{golub.df}\hlopt{$}\hlstd{gol.fac} \hlkwb{=} \hlkwd{as.factor}\hlstd{(golub.df}\hlopt{$}\hlstd{gol.fac)}
+
+\hlcom{#b}
+\hlcom{###############################################################}
+\hlstd{rand.sample} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlkwd{sample}\hlstd{(}\hlkwd{dim}\hlstd{(golub)[}\hlnum{1}\hlstd{],}\hlnum{6}\hlstd{),}\hlnum{3052}\hlstd{)}
+
+\hlcom{#c}
+\hlcom{###############################################################}
+\hlstd{dataForPlot} \hlkwb{=} \hlkwd{melt}\hlstd{(golub.df[, rand.sample],}
+    \hlkwc{id} \hlstd{=} \hlstr{'gol.fac'}\hlstd{)}
+
+\hlcom{#e}
+\hlcom{###############################################################}
+\hlkwd{pdf}\hlstd{(}\hlstr{"boxplots.pdf"}\hlstd{,} \hlkwc{width} \hlstd{=} \hlnum{14}\hlstd{,} \hlkwc{height} \hlstd{=} \hlnum{10}\hlstd{)}
+\hlstd{p} \hlkwb{<-} \hlkwd{qplot}\hlstd{(gol.fac, value,}  \hlkwc{data} \hlstd{= dataForPlot)} \hlopt{+}
+  \hlkwd{geom_boxplot}\hlstd{(}\hlkwd{aes}\hlstd{(}\hlkwc{fill} \hlstd{= gol.fac))} \hlopt{+}
+  \hlkwd{facet_wrap}\hlstd{(}\hlopt{~} \hlstd{variable)} \hlopt{+}
+  \hlkwd{geom_point}\hlstd{(}\hlkwc{colour} \hlstd{=} \hlstr{'black'}\hlstd{,} \hlkwc{alpha} \hlstd{=} \hlnum{0.5}\hlstd{)}
+\hlstd{p}
+\hlkwd{dev.off}\hlstd{()}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\subsubsection*{Exercise: Comparing Normality for Two Genes} 
+Consider the gene expression values in row 790 and 66 of the Golub data.
+
+\begin{enumerate}[label=(\emph{\alph*})] 
+ \item Produce a boxplot for the expression values of the ALL patients
+and comment on the differences. Are there outliers?
+\item Produce a QQ-plot and formulate a hypothesis about the normality of the genes.
+ \item Compute the mean and the median for the expression values of
+the ALL patients and compare these. Do this for both genes.
+\end{enumerate}
+
+\subsubsection*{Solution: Comparing Normality for Two Genes}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{#Comparing two genes}
+\hlcom{#(a) Use }
+\hlkwd{boxplot}\hlstd{(golub[}\hlnum{66}\hlstd{,]}\hlopt{~}\hlstd{gol.fac)}
+\hlkwd{dev.new}\hlstd{()}
+\hlkwd{boxplot}\hlstd{(golub[}\hlnum{790}\hlstd{,]}\hlopt{~}\hlstd{gol.fac)}
+\hlcom{#to observe that 790 has three}
+\hlcom{#outliers and 66 has no outlier.}
+\hlcom{# (dev.new() opens a new graphical window)}
+
+\hlcom{#(b) Use }
+\hlkwd{qqnorm}\hlstd{(golub[}\hlnum{66}\hlstd{,gol.fac}\hlopt{==}\hlstr{"ALL"}\hlstd{])}
+\hlkwd{qqline}\hlstd{(golub[}\hlnum{66}\hlstd{,gol.fac}\hlopt{==}\hlstr{"ALL"}\hlstd{])}
+\hlkwd{dev.new}\hlstd{()}
+\hlkwd{qqnorm}\hlstd{(golub[}\hlnum{790}\hlstd{,gol.fac}\hlopt{==}\hlstr{"ALL"}\hlstd{])}
+\hlkwd{qqline}\hlstd{(golub[}\hlnum{790}\hlstd{,gol.fac}\hlopt{==}\hlstr{"ALL"}\hlstd{])}
+\hlcom{#to observe that nearly all values of 66 are on the line, where as for}
+\hlcom{#790 the three outliers are way of the normality line. Hypothesis:}
+\hlcom{#The expression values of 66 are normally distributed, but those of}
+\hlcom{#row 790 are not.}
+
+\hlcom{#(c) Use }
+\hlkwd{mean}\hlstd{(golub[}\hlnum{66}\hlstd{,gol.fac}\hlopt{==}\hlstr{"ALL"}\hlstd{])}
+\hlkwd{median}\hlstd{(golub[}\hlnum{790}\hlstd{,gol.fac}\hlopt{==}\hlstr{"ALL"}\hlstd{])}
+\hlcom{#and# }
+\hlkwd{mean}\hlstd{(golub[}\hlnum{790}\hlstd{,gol.fac}\hlopt{==}\hlstr{"ALL"}\hlstd{])}
+\hlkwd{median}\hlstd{(golub[}\hlnum{790}\hlstd{,gol.fac}\hlopt{==}\hlstr{"ALL"}\hlstd{])}
+\hlcom{#The mean (-1.174024) is larger than the median (-1.28137) due to}
+\hlcom{#outliers on the right hand side. For the gene in row 66 the mean is}
+\hlcom{#1.182503 and the median 1.23023. The differences are smaller.}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+
+\end{document}

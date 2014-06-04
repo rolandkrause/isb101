@@ -1,0 +1,22 @@
+\contentsline {section}{\numberline {1}Acknowledgements}{1}{section.1}
+\contentsline {section}{\numberline {2}Required Packages and other Preparations}{2}{section.2}
+\contentsline {section}{\numberline {3}Introduction}{2}{section.3}
+\contentsline {section}{\numberline {4}Base graphics and ggplot2}{2}{section.4}
+\contentsline {subsection}{\numberline {4.1}Building a Plot Layer by Layer}{3}{subsection.4.1}
+\contentsline {subsection}{\numberline {4.2}Some biological data}{6}{subsection.4.2}
+\contentsline {subsection}{\numberline {4.3}Setting axis limits}{8}{subsection.4.3}
+\contentsline {subsection}{\numberline {4.4}Faceting}{10}{subsection.4.4}
+\contentsline {subsection}{\numberline {4.5}Melting and casting data frames}{12}{subsection.4.5}
+\contentsline {section}{\numberline {5}Univariate Data Display}{13}{section.5}
+\contentsline {subsection}{\numberline {5.1}Frequency Table and Barplot}{13}{subsection.5.1}
+\contentsline {subsection}{\numberline {5.2}Scatterplots and Stripcharts}{18}{subsection.5.2}
+\contentsline {subsection}{\numberline {5.3}Histograms}{22}{subsection.5.3}
+\contentsline {subsection}{\numberline {5.4}Kernel density estimates}{25}{subsection.5.4}
+\contentsline {subsection}{\numberline {5.5}Boxplots}{26}{subsection.5.5}
+\contentsline {subsection}{\numberline {5.6}Violin plots}{29}{subsection.5.6}
+\contentsline {subsection}{\numberline {5.7}Empirical Cumulative Distribution Function}{31}{subsection.5.7}
+\contentsline {subsection}{\numberline {5.8}Quantile--Quantile (QQ) Plot}{33}{subsection.5.8}
+\contentsline {section}{\numberline {6}Descriptive Statistics}{37}{section.6}
+\contentsline {subsection}{\numberline {6.1}Measures of Central Tendency}{38}{subsection.6.1}
+\contentsline {subsection}{\numberline {6.2}Measures of Spread}{38}{subsection.6.2}
+\contentsline {section}{\numberline {7}Answers to Exercises}{40}{section.7}
