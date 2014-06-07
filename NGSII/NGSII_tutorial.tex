@@ -10,7 +10,7 @@
 \usepackage{soul}
 \usepackage{cases}
 \setlength{\parindent}{0cm} 
-
+\definecolor{bg}{rgb}{0.95,0.95,0.95}
 \author{Roland Krause$^1$ \\[1em]Luxembourg Centre for Systems Biomedicine (LCSB),\\ Unversity of Luxembourg\\
 \texttt{$^1$roland.krause@uni.lu}}
 
@@ -25,14 +25,19 @@
 
 This part of the work shop shows how to align sequences,
 improve the alignment and call variants. In order to speed up the
-lecture, only chromosome 22 is taken into account.
+lecture, only chromosome 22 for an exome study is taken into account.
 
-
-Create directory ngs for all 
+\subsection{Set up}
+Create directory \verb+ngs+ for all next-generation sequencing tutorials.
+ 
 \begin{minted}{bash}
- 	mkdir workshop
-	chdir workshop
+ 	mkdir ngs
+	cd ngs
 \end{minted}
+
+
+
+
 
 All data source data is kept in the directory \verb+/Users/roland.krause/Public/isb101/+. 
 
@@ -42,55 +47,83 @@ For your convenience, create a variable holding the path to the resources.
 RESOURCE="/Users/roland.krause/Public/isb101/"
 \end{minted}
 
-The programs samtools, bwa, picard-tools should be available from your path.
+Note: Not all commands are given in full in this tutorial. 
+You might need to use the commands you have learned previously.
+
+The programs \verb+samtools+ and \verb+bwa+ should be available from your path.
 
 Question: How do you find out where a program is installed?
-
+% which 
 
 \section{Extracting reads from an existing BAM file}
 \subsection{Copy the BAM file to your local folder}
 This file has already been processed. We use it as source of our data.
-The BAM file is called  \verb+AID16385_SID15899_daughter.Improved.bam+
+The BAM file is called  \verb+daughter.Improved.bam+
 
-Create a i{\em soft link} to the file.
+Create a {\em soft link} to the file.
 
 \begin{minted}{bash}
-ln -s $RESOURCE/AID16385_SID15899_daughter.Improved.bam .
-\end{minted} //$
+ln -s $RESOURCE/daughter.Improved.bam .
+\end{minted}
 % $
-Question: Why not don't we copy the file? Check the properties of the file using options of the \verb+ls+ command.
-
+Questions:
+\begin{enumerate}
+\item Why not don't we copy the file? 
+\item Check the properties of the file using options of the \verb+ls+ command.
+\item What happens if you would delete the link in your directory?
+\item What happens if you delete the file in \mint{bash}|$RESOURCE| ?
+\end{enumerate}
 \subsection{Index the BAM file}
 \begin{minted}{bash}
-samtools index AID16385_SID15899_daughter.Improved.bam
+samtools index daughter.Improved.bam
 \end{minted}
-Question: What did the command do? What is an "index"?
+This will take a few seconds. 
+
+Questions
+\begin{enumerate}
+\item  What did the command do? 
+	\item What is an {\em index}?
+\end{enumerate}i
 
 \subsection{Extract chromosome 22 from the example BAM}
-make a slice of chromosome 22 and save in SAM format
+Slice chromosome 22 and save a piece in SAM format
 \begin{minted}{bash}
-samtools view AID16385_SID15899_daughter.Improved.bam 22 \
-> AID16385_SID15899_daughter.Improved.22.sam
+samtools view daughter.Improved.bam 22 \
+> daughter.Improved.22.sam
 \end{minted}
 
 \subsection{Convert SAM to FASTQ using PICARD}
+
+Create a soft link to the picard-tool \verb+SamToFastq+ in your local \verb+ngs+ directory. 
+
+Then, run the converter as follows:
+
 \begin{minted}{bash}
-java -jar picard-tools-1.108/SamToFastq.jar \
- I=AID16385_SID15899_daughter.Improved.22.sam \
- F=AID16385_SID15899_daughter.22.1.fq \
- F2=AID16385_SID15899_daughter.22.2.fq \
+java -jar SamToFastq.jar \
+ I=daughter.Improved.22.sam \
+ F=daughter.22.1.fq \
+ F2=daughter.22.2.fq \
  VALIDATION_STRINGENCY=SILENT
 \end{minted}
 
+Inspect the output files and recapitulte the fastq-format.
+
 \section{Performing quality control of the sequenced reads}
-to run fastqc on a remote machine login via ssh with -X for X11 support!
+FastQC is a tool kit for quality performance. You will probably not be able to run 
+this unless you are working from a Linux computer. 
+If you are working from a Mac, you need to have X11 or XQuartz installed.
+
+On the server login on a remote machine login via ssh with -X for X11 support.
+\mint{bash}{ ssh -X username@nitro.uni.lux}
 the following command opens the FastQC GUI
 \begin{minted}{bash}
 perl FastQC/fastqc
 \end{minted}
 
-%%% goto File->Open
+Goto File->Open
+and load the new .sam file
 
+We will discuss this together on screen. 
 
 \section{Mapping}
 \subsection{Indexing the reference }
@@ -106,26 +139,20 @@ The following command has to be use. This step is skipped as it takes to much ti
 %%% -n 7 is used for a more sensitive alignment
 %%% -q 15 is used for trimming sequences by quality (default=0=switched off)
 \begin{minted}{bash}
-bwa mem -n 7 -q 15 human_g1k_v37_Ensembl_MT_66.fasta AID16385_SID15899_daughter.22.1.fq > AID16385_SID15899_daughter.22.1.sai AID16385_SID15899_daughter.22.2.sai 
-bwa-0.7.7/bwa sampe -r '@RG\tID:FCC189PACXX:2:1101\tPL:Illumina\tLB:LIBID15900\tSM:SID15899\tCN:CCG' \
-  human_g1k_v37_Ensembl_MT_66.fasta \
-  AID16385_SID15899_daughter.22.1.sai \
-  AID16385_SID15899_daughter.22.2.sai \
-  AID16385_SID15899_daughter.22.1.fq \
-  AID16385_SID15899_daughter.22.2.fq \
-  > AID16385_SID15899_daughter.22.sam
+bwa mem human_g1k_v37_Ensembl_MT_66.fasta daughter.22.1.fq daughter.22.2.fq \
+  > daughter.22.sam
 \end{minted}
 
 
 \subsection{Convert SAM to BAM}
 \begin{minted}{bash}
-samtools view -bS AID16385_SID15899_daughter.22.sam > AID16385_SID15899_daughter.22.bam
+samtools view -bS daughter.22.sam > daughter.22.bam
 \end{minted}
 \subsection{Sort BAM}
 The suffix bam is automatically attached. This is for compatibility with PICARD and GATK.
 
 \begin{minted}{bash}
-samtools sort AID16385_SID15899_daughter.22.bam  AID16385_SID15899_daughter.22.sorted 
+samtools sort daughter.22.bam  daughter.22.sorted 
 \end{minted}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -139,9 +166,9 @@ Copy picard tools from the \verb+RESOURCE+ folder.
 mkdir tmp
 
 java -Djava.io.tmpdir=tmp -jar picard-tools-1.108/MarkDuplicates.jar \
- I=AID16385_SID15899_daughter.22.sorted.bam \
- O=AID16385_SID15899_daughter.22.sorted.marked.bam \
- METRICS_FILE=AID16385_SID15899_daughter.22.sorted.marked.metrics \
+ I=daughter.22.sorted.bam \
+ O=daughter.22.sorted.marked.bam \
+ METRICS_FILE=daughter.22.sorted.marked.metrics \
  VALIDATION_STRINGENCY=LENIENT
 
 \end{minted}        
@@ -153,7 +180,7 @@ java -Djava.io.tmpdir=tmp -jar picard-tools-1.108/MarkDuplicates.jar \
 
 \subsection{Index BAM file for GATK}
 \begin{minted}{bash}
-samtools index AID16385_SID15899_daughter.22.sorted.marked.bam
+samtools index daughter.22.sorted.marked.bam
 \end{minted}
 
 
@@ -164,7 +191,7 @@ Introduce GATK, dbSNP
 Stage 1
 \begin{minted}{bash}
 java -Djava.io.tmpdir=tmp -jar GenomeAnalysisTK-1.6-11-g3b2fab9/GenomeAnalysisTK.jar \
- -I AID16385_SID15899_daughter.22.sorted.marked.bam \
+ -I daughter.22.sorted.marked.bam \
  -R human_g1k_v37_Ensembl_MT_66.fasta \
  -knownSites dbsnp_135.b37.vcf \
  -T  CountCovariates \
@@ -172,17 +199,17 @@ java -Djava.io.tmpdir=tmp -jar GenomeAnalysisTK-1.6-11-g3b2fab9/GenomeAnalysisTK
  -cov QualityScoreCovariate \
  -cov CycleCovariate \
  -cov DinucCovariate \
- -recalFile  AID16385_SID15899_daughter.22.sorted.marked.recal_data.csv 
+ -recalFile  daughter.22.sorted.marked.recal_data.csv 
 \end{minted}
 Stage 2
 \begin{minted}{bash}
  
 java -Djava.io.tmpdir=tmp -jar GenomeAnalysisTK-1.6-11-g3b2fab9/GenomeAnalysisTK.jar \
- -I AID16385_SID15899_daughter.22.sorted.marked.bam \
+ -I daughter.22.sorted.marked.bam \
  -R human_g1k_v37_Ensembl_MT_66.fasta \
- -o  AID16385_SID15899_daughter.22.sorted.marked.recal.bam \
+ -o  daughter.22.sorted.marked.recal.bam \
  -T TableRecalibration \
- -recalFile AID16385_SID15899_daughter.22.sorted.marked.recal_data.csv \
+ -recalFile daughter.22.sorted.marked.recal_data.csv \
  -noOQs
  \end{minted}
  
@@ -195,8 +222,8 @@ java -Djava.io.tmpdir=tmp -jar GenomeAnalysisTK-1.6-11-g3b2fab9/GenomeAnalysisTK
  -R human_g1k_v37_Ensembl_MT_66.fasta \
  -known Mills_and_1000G_gold_standard.indels.b37.sites.vcf \
  -known 1000G_phase1.indels.b37.vcf \
- -o AID16385_SID15899_daughter.22.sorted.marked.recal.bam.list \
- -I AID16385_SID15899_daughter.22.sorted.marked.recal.bam \
+ -o daughter.22.sorted.marked.recal.bam.list \
+ -I daughter.22.sorted.marked.recal.bam \
  -L 22
  \end{minted}
 
@@ -204,14 +231,14 @@ Stage 2
 \begin{minted}{bash}
 java -Djava.io.tmpdir=tmp -jar GenomeAnalysisTK-1.6-11-g3b2fab9/GenomeAnalysisTK.jar -T IndelRealigner \
  -R human_g1k_v37_Ensembl_MT_66.fasta \
- -o AID16385_SID15899_daughter.22.sorted.marked.recal.realinged.bam \
- -I AID16385_SID15899_daughter.22.sorted.marked.recal.bam \
- -targetIntervals AID16385_SID15899_daughter.22.sorted.marked.recal.bam.list
+ -o daughter.22.sorted.marked.recal.realinged.bam \
+ -I daughter.22.sorted.marked.recal.bam \
+ -targetIntervals daughter.22.sorted.marked.recal.bam.list
 \end{minted}
 
 \subsection{Index the bam file}
 \begin{minted}{bash}
-samtools index AID16385_SID15899_daughter.22.sorted.marked.recal.realinged.bam
+samtools index daughter.22.sorted.marked.recal.realinged.bam
 \end{minted}
 
 
@@ -225,9 +252,9 @@ samtools index AID16385_SID15899_daughter.22.sorted.marked.recal.realinged.bam
 samtools-0.1.19/samtools mpileup \
  -S -E -g -Q 13 -q 20 \
  -f human_g1k_v37_Ensembl_MT_66.fasta \
- AID16385_SID15899_daughter.22.sorted.marked.recal.realinged.bam | \
+ daughter.22.sorted.marked.recal.realinged.bam | \
  samtools-0.1.19/bcftools/bcftools \
- view -vc - > AID16385_SID15899_daughter.22.sorted.marked.recal.realinged.mpileup.vcf
+ view -vc - > daughter.22.sorted.marked.recal.realinged.mpileup.vcf
 \end{minted}
 
 \subsection{ GATK Unified Genotyper}
@@ -236,7 +263,7 @@ java -Djava.io.tmpdir=tmp -jar GenomeAnalysisTK-1.6-11-g3b2fab9/GenomeAnalysisTK
  -l INFO \
  -T UnifiedGenotyper \
  -R human_g1k_v37_Ensembl_MT_66.fasta \
- -I AID16385_SID15899_daughter.22.sorted.marked.recal.realinged.bam \
+ -I daughter.22.sorted.marked.recal.realinged.bam \
  -stand_call_conf 30.0 \
  -stand_emit_conf 10.0 \
  --genotype_likelihoods_model BOTH \
@@ -254,13 +281,13 @@ java -Djava.io.tmpdir=tmp -jar GenomeAnalysisTK-1.6-11-g3b2fab9/GenomeAnalysisTK
  -A RMSMappingQuality \
  -A BaseQualityRankSumTest \
  -L 22 \
- -o AID16385_SID15899_daughter.22.sorted.marked.recal.realinged.gatk.vcf
+ -o daughter.22.sorted.marked.recal.realinged.gatk.vcf
 \end{minted} 
 
 \subsection{ Visualize alignments with samtools tview }
 \begin{minted}{bash}
 samtools-0.1.19/samtools tview \
- AID16385_SID15899_daughter.22.sorted.marked.recal.realinged.bam \
+ daughter.22.sorted.marked.recal.realinged.bam \
  human_g1k_v37_Ensembl_MT_66.fasta
 \end{minted}
 Acknowledgement: Holger Thiele, Kamel Jabbari (CCG Cologne)
