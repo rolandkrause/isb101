@@ -82,8 +82,14 @@ This will take a few seconds.
 Questions
 \begin{enumerate}
 \item  What did the command do? 
-	\item What is an {\em index}?
-\end{enumerate}i
+\item What is an {\em index}?
+\end{enumerate}
+\subsection{Visualize alignments with samtools tview }
+\begin{minted}{bash}
+samtools tview \
+ daughter.Improved.bam \
+ human_g1k_v37_Ensembl_MT_66.fasta
+\end{minted}
 
 \subsection{Extract chromosome 22 from the example BAM}
 Slice chromosome 22 and save a piece in SAM format
@@ -94,12 +100,12 @@ samtools view daughter.Improved.bam 22 \
 
 \subsection{Convert SAM to FASTQ using PICARD}
 
-Create a soft link to the picard-tool \verb+SamToFastq+ in your local \verb+ngs+ directory. 
+Create a soft link to the picard-tools directory (!) in \verb+$RESCOURCE+ in your local \verb+ngs+ directory. 
 
 Then, run the converter as follows:
 
 \begin{minted}{bash}
-java -jar SamToFastq.jar \
+java -jar picard-tools/SamToFastq.jar \
  I=daughter.Improved.22.sam \
  F=daughter.22.1.fq \
  F2=daughter.22.2.fq \
@@ -114,7 +120,8 @@ this unless you are working from a Linux computer.
 If you are working from a Mac, you need to have X11 or XQuartz installed.
 
 On the server login on a remote machine login via ssh with -X for X11 support.
-\mint{bash}{ ssh -X username@nitro.uni.lux}
+\mint{bash}+ssh -X username@nitro.uni.lux+
+
 the following command opens the FastQC GUI
 \begin{minted}{bash}
 perl FastQC/fastqc
@@ -127,26 +134,37 @@ We will discuss this together on screen.
 
 \section{Mapping}
 \subsection{Indexing the reference }
-The following command has to be use. This step is skipped as it takes to much time.
+The following command has to be use. This step is skipped as it takes to much time. The results can be found
+in the \verb+$RESOURCE+ directory.
 \begin{minted}{bash}
 # bwa index -a bwtsw human_g1k_v37_Ensembl_MT_66.fasta
 \end{minted}
 
 
 
-\subsection{Perform alignment with bwa} 
+\subsection{Perform alignment with Burrows-Wheeler Transform} 
+In this main section of the mapping we will first align all reads and subsequently 
+prepare the alignment for filtering and clean-up .
 
+We will built indeces for further processing.
 %%% -n 7 is used for a more sensitive alignment
 %%% -q 15 is used for trimming sequences by quality (default=0=switched off)
-\begin{minted}{bash}
-bwa mem human_g1k_v37_Ensembl_MT_66.fasta daughter.22.1.fq daughter.22.2.fq \
-  > daughter.22.sam
-\end{minted}
 
+Modify the path to the reference genome in the command line. 
+
+Question: Why would a link not work in this case?
+
+\begin{minted}{bash}
+bwa mem -M -t 4 human_g1k_v37_Ensembl_MT_66.fasta \
+daughter.22.1.fq daughter.22.2.fq \
+> daughter.22.sam
+\end{minted}
+%  bwa mem -t 4 -M $RESOURCE/human_g1k_v37_Ensembl_MT_66.fasta daughter.22.1.fq daughter.22.2.fq > daughter.22.sam 
 
 \subsection{Convert SAM to BAM}
 \begin{minted}{bash}
-samtools view -bS daughter.22.sam > daughter.22.bam
+samtools view -bS daughter.22.sam \
+> daughter.22.bam
 \end{minted}
 \subsection{Sort BAM}
 The suffix bam is automatically attached. This is for compatibility with PICARD and GATK.
@@ -154,6 +172,7 @@ The suffix bam is automatically attached. This is for compatibility with PICARD 
 \begin{minted}{bash}
 samtools sort daughter.22.bam  daughter.22.sorted 
 \end{minted}
+% java7 -Xmx4g -XX:ParallelGCThreads=4 -Djava.io.tmpdir=./ -jar picard-tools//SortSam.jar INPUT= daughter.22.1.fq.bam OUTPUT= daughter.22.1.fq.sorted.bam SORT_ORDER=coordinate VALIDATION_STRINGENCY=LENIENT
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Mark duplicate reads}
@@ -165,7 +184,7 @@ Copy picard tools from the \verb+RESOURCE+ folder.
 \begin{minted}{bash}
 mkdir tmp
 
-java -Djava.io.tmpdir=tmp -jar picard-tools-1.108/MarkDuplicates.jar \
+java -Djava.io.tmpdir=tmp -jar picard-tools/MarkDuplicates.jar \
  I=daughter.22.sorted.bam \
  O=daughter.22.sorted.marked.bam \
  METRICS_FILE=daughter.22.sorted.marked.metrics \
@@ -178,92 +197,106 @@ java -Djava.io.tmpdir=tmp -jar picard-tools-1.108/MarkDuplicates.jar \
 \url{http://sourceforge.net/apps/mediawiki/picard/index.php?title=Main_Page}
 %Q:_How_does_MarkDuplicates_work.3F
 
-\subsection{Index BAM file for GATK}
+\subsection{Add read-group}
+
+This step is only necesssary for data generated around 2012.
+
 \begin{minted}{bash}
-samtools index daughter.22.sorted.marked.bam
+java -jar picard-tools/AddOrReplaceReadGroups.jar \
+INPUT=daughter.22.sorted.marked.bam \
+OUTPUT=daughter.22.prepared.bam \
+RGID=group1 RGLB= lib1 RGPL=illumina RGPU=unit1 RGSM=sample1
+
+java -jar picard-tools//BuildBamIndex.jar INPUT=daughter.22.prepared.bam
 \end{minted}
 
+\section{Quality improvements}
 
-\section{BQSR(Base Quality Score Recalibration)}
 
-Introduce GATK, dbSNP
-
-Stage 1
+% rm human_g1k_v37_Ensembl_MT_66.dict 
 \begin{minted}{bash}
-java -Djava.io.tmpdir=tmp -jar GenomeAnalysisTK-1.6-11-g3b2fab9/GenomeAnalysisTK.jar \
- -I daughter.22.sorted.marked.bam \
- -R human_g1k_v37_Ensembl_MT_66.fasta \
- -knownSites dbsnp_135.b37.vcf \
- -T  CountCovariates \
- -cov ReadGroupCovariate \
- -cov QualityScoreCovariate \
- -cov CycleCovariate \
- -cov DinucCovariate \
- -recalFile  daughter.22.sorted.marked.recal_data.csv 
-\end{minted}
-Stage 2
+java -Xmx4g -jar picard-tools/CreateSequenceDictionary.jar \
+R=human_g1k_v37_Ensembl_MT_66.fasta \
+O=human_g1k_v37_Ensembl_MT_66.dict
+\end{minted}           
+Step B 
 \begin{minted}{bash}
- 
-java -Djava.io.tmpdir=tmp -jar GenomeAnalysisTK-1.6-11-g3b2fab9/GenomeAnalysisTK.jar \
- -I daughter.22.sorted.marked.bam \
- -R human_g1k_v37_Ensembl_MT_66.fasta \
- -o  daughter.22.sorted.marked.recal.bam \
- -T TableRecalibration \
- -recalFile daughter.22.sorted.marked.recal_data.csv \
- -noOQs
- \end{minted}
- 
-
-\subsection{Realign sequences close to indels}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{minted}{bash}
-java -Djava.io.tmpdir=tmp -jar GenomeAnalysisTK-1.6-11-g3b2fab9/GenomeAnalysisTK.jar \
- -T RealignerTargetCreator \
- -R human_g1k_v37_Ensembl_MT_66.fasta \
- -known Mills_and_1000G_gold_standard.indels.b37.sites.vcf \
- -known 1000G_phase1.indels.b37.vcf \
- -o daughter.22.sorted.marked.recal.bam.list \
- -I daughter.22.sorted.marked.recal.bam \
- -L 22
- \end{minted}
-
-Stage 2
-\begin{minted}{bash}
-java -Djava.io.tmpdir=tmp -jar GenomeAnalysisTK-1.6-11-g3b2fab9/GenomeAnalysisTK.jar -T IndelRealigner \
- -R human_g1k_v37_Ensembl_MT_66.fasta \
- -o daughter.22.sorted.marked.recal.realinged.bam \
- -I daughter.22.sorted.marked.recal.bam \
- -targetIntervals daughter.22.sorted.marked.recal.bam.list
+samtools faidx human_g1k_v37_Ensembl_MT_66.fasta
 \end{minted}
 
-\subsection{Index the bam file}
+\subsection{Realignment}
+Create a index using GATK. 
+
+%os.system("java -Xmx4g -jar %s/GenomeAnalysisTK.jar -T RealignerTargetCreator -R human_g1k_v37_Ense
+%mbl_MT_66.fasta -o %s.bam.list -I %s.addrg_reads.bam --fix_misencoded_quality_scores "%(gatk, read_
+%1, read_1))
+Note that we use \verb+java7+ for running GATK, required for the latest version.
+
 \begin{minted}{bash}
-samtools index daughter.22.sorted.marked.recal.realinged.bam
+java7 -Xmx4g -jar GenomeAnalysisTK.jar \
+-T RealignerTargetCreator \
+-R human_g1k_v37_Ensembl_MT_66.fasta \
+-o daughter.bam.list \
+-I daughter.22.prepared.bam 
+\end{minted}
+% --fix_misencoded_quality_scores 
+%java7 -Xmx4g -jar GenomeAnalysisTK.jar -T RealignerTargetCreator -R human_g1k_v37_Ensembl_MT_66.fasta -o daughter.22.1.fq.bam.list -I daughter.22.1.fq.addrg_reads.bam --fix_misencoded_quality_scores
+
+
+\begin{minted}{bash} 
+java7 -Xmx4g -Djava.io.tmpdir=./tmp/ -jar GenomeAnalysisTK.jar \
+-T IndelRealigner \
+-I daughter.22.prepared.bam \
+-R human_g1k_v37_Ensembl_MT_66.fasta \
+-targetIntervals daughter.bam.list -o daughter.22.real.bam
+\end{minted} 
+% --fix_misencoded_quality_scores 
+
+%os.system("java -Xmx4g -Djava.io.tmpdir=./ -jar %s/GenomeAnalysisTK.jar -I %s.addrg_reads.bam -R human_g1k_v37_Ensembl_MT_66.fasta -T IndelRealigner -targetIntervals %s.bam.list -o %s.marked.realign ed.bam --fix_misencoded_quality_scores"%(gatk, read_1, read_1, read_1))
+
+\subsection{BQSR(Base Quality Score Recalibration)}
+\begin{minted}{bash}
+ java7 -Xmx4g -jar GenomeAnalysisTK.jar \
+   -T BaseRecalibrator \
+   -I daughter.22.real.bam \
+   -R human_g1k_v37_Ensembl_MT_66.fasta \
+   -knownSites dbsnp_135.b37.vcf \
+   -o recal_data.table
 \end{minted}
 
+\subsection{Fix the mate pairs }
 
+%os.system("java -Djava.io.tmpdir=./flx-auswerter -jar %s/FixMateInformation.jar INPUT=%s.marked.realigned.bam OUTPUT=%s_bam.marked.realigned.fixed.bam SO=coordinate VALIDATION_STRINGENCY=LENIENT CREATE_INDEX=true "%(picard, read_1, read_1)
+
+
+\begin{minted}{bash}
+java7 -Djava.io.tmpdir=./tmp -jar picard-tools//FixMateInformation.jar INPUT=daughter.22.real.bam OUTPUT=daughter.22.real.fixed.bam SO=coordinate VALIDATION_STRINGENCY=LENIENT CREATE_INDEX=true 
+\end{minted}
 %%%%%%%%%%%%%%%%%%%%
 \section{Variant calling}
 %%%%%%%%%%%%%%%%%%%%
 
+The final step of variant calling with the two tools most often used, \verb+samtools+ and \verb+GATK+.
 
 \subsection{Samtools mpileup}
 \begin{minted}{bash}
-samtools-0.1.19/samtools mpileup \
+samtools mpileup \
  -S -E -g -Q 13 -q 20 \
  -f human_g1k_v37_Ensembl_MT_66.fasta \
- daughter.22.sorted.marked.recal.realinged.bam | \
- samtools-0.1.19/bcftools/bcftools \
- view -vc - > daughter.22.sorted.marked.recal.realinged.mpileup.vcf
+ daughter.22.real.bam | \
+ bcftools \
+ view -vc - > daughter.22.mpileup.vcf
 \end{minted}
 
+
+Note: not working at the moment. 
 \subsection{ GATK Unified Genotyper}
 \begin{minted}{bash}
-java -Djava.io.tmpdir=tmp -jar GenomeAnalysisTK-1.6-11-g3b2fab9/GenomeAnalysisTK.jar \
+java7 -Djava.io.tmpdir=tmp -jar GenomeAnalysisTK.jar \
  -l INFO \
  -T UnifiedGenotyper \
  -R human_g1k_v37_Ensembl_MT_66.fasta \
- -I daughter.22.sorted.marked.recal.realinged.bam \
+ -I daughter.22.real.bam \
  -stand_call_conf 30.0 \
  -stand_emit_conf 10.0 \
  --genotype_likelihoods_model BOTH \
@@ -281,14 +314,8 @@ java -Djava.io.tmpdir=tmp -jar GenomeAnalysisTK-1.6-11-g3b2fab9/GenomeAnalysisTK
  -A RMSMappingQuality \
  -A BaseQualityRankSumTest \
  -L 22 \
- -o daughter.22.sorted.marked.recal.realinged.gatk.vcf
+ -o daughter.22.gatk.vcf
 \end{minted} 
 
-\subsection{ Visualize alignments with samtools tview }
-\begin{minted}{bash}
-samtools-0.1.19/samtools tview \
- daughter.22.sorted.marked.recal.realinged.bam \
- human_g1k_v37_Ensembl_MT_66.fasta
-\end{minted}
-Acknowledgement: Holger Thiele, Kamel Jabbari (CCG Cologne)
+Acknowledgement: Holger Thiele, Kamel Jabbari (CCG Cologne), Patrick May, Dheeraj Bobbili (LCSB)
 \end{document}
