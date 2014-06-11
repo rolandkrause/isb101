@@ -161,7 +161,7 @@ Modify the path to the reference genome in the command line.
 Question: Why would a link not work in this case?
 
 \begin{minted}{bash}
-bwa mem -M 4 human_g1k_v37_Ensembl_MT_66.fasta \
+bwa mem -M  $RESOURCE/human_g1k_v37_Ensembl_MT_66.fasta \
 daughter.22.1.fq daughter.22.2.fq \
 > daughter.22.sam
 \end{minted}
