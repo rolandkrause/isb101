@@ -20,11 +20,11 @@ Speakers: Reinhard Schneider (RS), Aishwarya Alex (AM), Ganna Androsova (GA), Ro
 ### Planning Jan 2015
 
  * Jan 5
-Introduction to genomics and databases (RS)
-Searching, sorting, alignment (AA) 
+ - Introduction to genomics and databases (RS)
+ - Searching, sorting, alignment (AA) 
 
  * Jan 6
-Introduction shell (PM)
+- Introduction shell (PM)
 R and the shell (RK/GA)
 
 Jan 7
