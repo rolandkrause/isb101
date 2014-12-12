@@ -23,7 +23,7 @@ Speakers: Reinhard Schneider (RS), Aishwarya Alex (AA), Ganna Androsova (GA), Ro
  * IS I - Introduction to the course (RS)
  * IS II - Searching, sorting, alignment (AA) 
 
- * Jan 6
+* Jan 6
   - IS III - Introduction shell (PM)
   - Perl I - From the shell to Perl (RK/GA)
 
@@ -44,7 +44,7 @@ Speakers: Reinhard Schneider (RS), Aishwarya Alex (AA), Ganna Androsova (GA), Ro
  * NGS II - Introduction to sequencing and NGS (YJK)
 
 * Jan 13
- * NGS III  - Introduction to sequencing and NGS (YJK)
+ * NGS III - Introduction to sequencing and NGS (YJK)
  * NGS IV - Tutorial NGS PM
 
 * Jan 14 
