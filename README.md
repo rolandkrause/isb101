@@ -30,22 +30,22 @@ Speakers: Reinhard Schneider (RS), Aishwarya Alex (AM), Ganna Androsova (GA), Ro
 * Jan 7
  - R  (AN/AA) - Visualization in R
  - R Regular expression
-
+ 
  * Jan 8
- - Databases I (VS)
+ - Databases I - Introduction (VS)
  - Databases II - programmatic access to databases (VS)
 
- * Jan 9
+* Jan 9
  * Databases III
  * Databases IV
 
- * Jan 12
- * Algorithms for mapping and searching (RK)
- * YJK Introduction to sequencing and NGS
+* Jan 12
+ * NGS I - Algorithms for mapping and searching (RK)
+ * NGS II - Introduction to sequencing and NGS (YJK)
 
-Jan 13
-Introduction to sequencing and NGS (YJK)
-Sequencing II PM
+* Jan 13
+ * NGS III  - Introduction to sequencing and NGS (YJK)
+ * NGS IV - Tutorial NGS PM
 
 Jan 14 Sequencing III (PM)
 
