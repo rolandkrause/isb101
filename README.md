@@ -15,29 +15,29 @@ Genomics & Databases (ISB101) - Teaching materials for year 2014
  * PH1 Phylogeny 1
  * PH2 Orthology
 
-Speakers: Reinhard Schneider (RS), Aishwarya Alex (AM), Ganna Androsova (GA), Roland Krause (RK), Venkata Satagopam (VS), Yeoun Jin Kim (YJK)
+Speakers: Reinhard Schneider (RS), Aishwarya Alex (AA), Ganna Androsova (GA), Roland Krause (RK), Venkata Satagopam (VS), Yeoun Jin Kim (YJK)
 
 ### Planning Jan 2015
 
- * Jan 5
- - Introduction to genomics and databases (RS)
- - Searching, sorting, alignment (AA) 
+* Jan 5
+ * IS I - Introduction to the course (RS)
+ * IS II - Searching, sorting, alignment (AA) 
 
  * Jan 6
-  - Introduction shell (PM)
-  - R and the shell (RK/GA)
+  - IS III - Introduction shell (PM)
+  - Perl I - From the shell to Perl (GA)
 
 * Jan 7
- - R  (AN/AA) - Visualization in R
- - R Regular expression
+ - Perl  II - Perl (GA)
+ - Perl III - Regular expressions (GA/RK/AA) 
  
  * Jan 8
- - Databases I - Introduction (VS)
- - Databases II - programmatic access to databases (VS)
+ - Databases I - Introduction to databases (VS)
+ - Databases II - Practicals
 
 * Jan 9
- * Databases III
- * Databases IV
+ * Databases III - Programmatic access to databases (VS)
+ * Databases IV - Practicals
 
 * Jan 12
  * NGS I - Algorithms for mapping and searching (RK)
@@ -47,14 +47,15 @@ Speakers: Reinhard Schneider (RS), Aishwarya Alex (AM), Ganna Androsova (GA), Ro
  * NGS III  - Introduction to sequencing and NGS (YJK)
  * NGS IV - Tutorial NGS PM
 
-Jan 14 Sequencing III (PM)
+* Jan 14 
+ * NGS V - Sequencing III (PM)
+ * R I - Data analysis  (RK)
 
+* Jan 15 
+ * R II - Markdown, reproducible research (GA/RK)
+ * R III - Advanced R project (NGS related)
 
-Jan 15 
-Markdown, reproducible research (GA/RK)
-Advanced R project (NGS related)
-
-Jan 16 
-Advanced R project (NGS related)
-
+* Jan 16 
+ * Advanced R project (NGS related)
+ * Repetion 
 Later: Exam
