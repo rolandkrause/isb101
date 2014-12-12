@@ -25,7 +25,7 @@ Speakers: Reinhard Schneider (RS), Aishwarya Alex (AA), Ganna Androsova (GA), Ro
 
  * Jan 6
   - IS III - Introduction shell (PM)
-  - Perl I - From the shell to Perl (GA)
+  - Perl I - From the shell to Perl (RK/GA)
 
 * Jan 7
  - Perl  II - Perl (GA)
