@@ -24,18 +24,24 @@ Speakers: Reinhard Schneider (RS), Aishwarya Alex (AM), Ganna Androsova (GA), Ro
  - Searching, sorting, alignment (AA) 
 
  * Jan 6
-- Introduction shell (PM)
-R and the shell (RK/GA)
+  - Introduction shell (PM)
+  - R and the shell (RK/GA)
 
-Jan 7
-R  (AN/AA) - Visualization in R
-R Regular expression
+* Jan 7
+ - R  (AN/AA) - Visualization in R
+ - R Regular expression
 
-Jan 8/9 programmatic access to databases (VS)
+ * Jan 8
+ - Databases I (VS)
+ - Databases II - programmatic access to databases (VS)
 
-Jan 12
-Algorithms for mapping and searching (RK)
-YJK Introduction to sequencing and NGS
+ * Jan 9
+ * Databases III
+ * Databases IV
+
+ * Jan 12
+ * Algorithms for mapping and searching (RK)
+ * YJK Introduction to sequencing and NGS
 
 Jan 13
 Introduction to sequencing and NGS (YJK)
