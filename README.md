@@ -1,21 +1,8 @@
-Genomics & Databases (ISB101) - Teaching materials for year 2014
-================================================================
+Genomics & Databases (ISB101) - Teaching materials 
+===================================================
 
 
-
-### Tutorial to be included
-
-  *SH1 Introduction to the shell
- *  SH2 Control structures
- * R1 Markdown, reproducible research
- * R2 Visualization
- * NGS1 Next generation sequencing 
- * NGS2 
- * NGS3 
- * PH1 Phylogeny 1
- * PH2 Orthology
-
-Speakers: Reinhard Schneider (RS), Aishwarya Alex (AA), Ganna Androsova (GA), Roland Krause (RK), Venkata Satagopam (VS), Yeoun Jin Kim (YJK)
+Instructors: Reinhard Schneider (RS), Aishwarya Alex (AA), Ganna Androsova (GA), Roland Krause (RK), Venkata Satagopam (VS), Yeoun Jin Kim (YJK)
 
 ### Planning Jan 2015
 
