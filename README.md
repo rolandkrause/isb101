@@ -11,16 +11,16 @@ Instructors: Reinhard Schneider (RS), Aishwarya Alex (AA), Ganna Androsova (GA),
  * IS II - Searching, sorting, alignment (AA) 
 
 * Jan 6
-  - IS III - Introduction shell (PM)
-  - Perl I - From the shell to Perl (RK/GA)
+ * IS III - Introduction shell (PM)
+ * Perl I - From the shell to Perl (RK/GA)
 
 * Jan 7
- - Perl  II - Perl (GA)
- - Perl III - Regular expressions (GA/RK/AA) 
+ * Perl  II - Perl (GA)
+ * Perl III - Regular expressions (GA/RK/AA) 
  
- * Jan 8
- - Databases I - Introduction to databases (VS)
- - Databases II - Practicals
+* Jan 8
+ * Databases I - Introduction to databases (VS)
+ * Databases II - Practicals
 
 * Jan 9
  * Databases III - Programmatic access to databases (VS)
