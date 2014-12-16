@@ -12,11 +12,11 @@ Instructors: Reinhard Schneider (RS), Aishwarya Alex (AA), Ganna Androsova (GA),
 
 * Jan 6
  * IS III - Introduction shell (PM)
- * Perl I - From the shell to Perl (RK/GA)
+ * Perl I - From the shell to Perl (RK)
 
 * Jan 7
- * Perl  II - Perl (GA)
- * Perl III - Regular expressions (GA/RK/AA) 
+ * Perl  II - Regular expressions (GA/AA/RK)
+ * Perl III - Perl project (GA/RK/AA) 
  
 * Jan 8
  * Databases I - Introduction to databases (VS)
@@ -36,13 +36,14 @@ Instructors: Reinhard Schneider (RS), Aishwarya Alex (AA), Ganna Androsova (GA),
 
 * Jan 14 
  * NGS V - Sequencing III (PM)
- * R I - Data analysis  (RK)
+ * PH I - Phylogeny - Multiple alignment and tree building  (RK)
 
 * Jan 15 
- * R II - Markdown, reproducible research (GA/RK)
- * R III - Advanced R project (NGS related)
+ * PH II - Phylogeny and orthology (GA/RK)
+ * Repetition (AA/GA/RK)
 
 * Jan 16 
- * Advanced R project (NGS related)
- * Repetion 
+ * Test exam (AA/GA/RK)
+ * Discussion
+
 Later: Exam
