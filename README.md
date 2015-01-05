@@ -11,7 +11,11 @@ Instructors: Reinhard Schneider (RS), Aishwarya Alex (AA), Ganna Androsova (GA),
  * IS II - Searching, sorting, alignment (AA) 
 
 * Jan 6
- * IS III - Introduction shell (PM)
+ * IS III - Introduction shell (PM)<br>
+   <ul>Downlond course material from<br>
+   <item> 1) Download: https://www.dropbox.com/s/6fwlbw5g1pctw9u/unixtut.tar.gz?dl=0 <br>
+   <item> 2) Unpacking tarball: tar -zxvf unixtut.tar.gz
+   </ul>
  * Perl I - From the shell to Perl (RK)
 
 * Jan 7
