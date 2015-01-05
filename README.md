@@ -2,7 +2,7 @@ Genomics & Databases (ISB101) - Teaching materials
 ===================================================
 
 
-Instructors: Reinhard Schneider (RS), Aishwarya Alex (AA), Ganna Androsova (GA), Roland Krause (RK), Venkata Satagopam (VS), Yeoun Jin Kim (YJK)
+Instructors: Reinhard Schneider (RS), Aishwarya Alex (AA), Ganna Androsova (GA), Roland Krause (RK), Patrick May (PM), Venkata Satagopam (VS), Yeoun Jin Kim (YJK)
 
 ### Planning Jan 2015
 
