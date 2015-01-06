@@ -29,7 +29,7 @@ Instructors: Reinhard Schneider (RS), Aishwarya Alex (AA), Ganna Androsova (GA),
 * Jan 8
  * Databases I - Introduction to databases (VS)
  * Databases II - Practicals
-<br><br> Material (ZIP archive) : https://www.dropbox.com/s/gtt8m3qxys0zyqh/MISB_data_integration_tutorial_material_2015.zip?dl=0 <br>
+<br>Material (ZIP archive) : https://www.dropbox.com/s/gtt8m3qxys0zyqh/MISB_data_integration_tutorial_material_2015.zip?dl=0 <br>
 
 * Jan 9
  * Databases III - Programmatic access to databases (VS)
