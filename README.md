@@ -2,7 +2,7 @@ Genomics & Databases (ISB101) - Teaching materials
 ===================================================
 
 
-Instructors: Reinhard Schneider (RS), Aishwarya Alex (AA), Ganna Androsova (GA), Roland Krause (RK), Venkata Satagopam (VS), Yeoun Jin Kim (YJK)
+Instructors: Reinhard Schneider (RS), Aishwarya Alex (AA), Ganna Androsova (GA), Roland Krause (RK), Patrick May (PM), Venkata Satagopam (VS), Yeoun Jin Kim (YJK)
 
 ### Planning Jan 2015
 
@@ -11,7 +11,13 @@ Instructors: Reinhard Schneider (RS), Aishwarya Alex (AA), Ganna Androsova (GA),
  * IS II - Searching, sorting, alignment (AA) 
 
 * Jan 6
- * IS III - Introduction shell (PM)
+ * IS III - Introduction shell (PM)<br>
+   <ul>Download course material from<br>
+   <item> 1) Download: https://www.dropbox.com/s/6fwlbw5g1pctw9u/unixtut.tar.gz?dl=0 <br>
+   <item> 2) Unpacking tarball: tar -zxvf unixtut.tar.gz<br>
+   <item> 3) cd unixtut<br>
+   <item> 4) open index.html in your Firefox browser
+   </ul>
  * Perl I - From the shell to Perl (RK)
 
 * Jan 7
