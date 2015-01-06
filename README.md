@@ -16,6 +16,7 @@ Instructors: Reinhard Schneider (RS), Aishwarya Alex (AA), Ganna Androsova (GA),
    <item> 1) Download: https://www.dropbox.com/s/6fwlbw5g1pctw9u/unixtut.tar.gz?dl=0 <br>
    <item> 2) Unpacking tarball: tar -zxvf unixtut.tar.gz<br>
    <item> 3) cd unixtut
+   <item> 4) open index.html in your Firefox browser
    </ul>
  * Perl I - From the shell to Perl (RK)
 
