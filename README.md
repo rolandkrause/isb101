@@ -34,7 +34,7 @@ Instructors: Reinhard Schneider (RS), Aishwarya Alex (AA), Ganna Androsova (GA),
 * Jan 9
  * Databases III - Programmatic access to databases (VS)
  * Databases IV - Practicals
-
+<br>Material: https://www.dropbox.com/sh/ub957p1o5cqd9oz/AAAX1uf4VwcGR7GXpAVhzmrma?dl=0<br>
 * Jan 12
  * NGS I - Algorithms for mapping and searching (RK)
  * NGS II - Introduction to sequencing and NGS (YJK)
