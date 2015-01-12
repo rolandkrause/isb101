@@ -18,7 +18,7 @@ Instructors: Reinhard Schneider (RS), Aishwarya Alex (AA), Ganna Androsova (GA),
    <item> 3) cd unixtut<br>
    <item> 4) mv unixtut ~<br>
    <item> 5) open index.html in your Firefox browser
-   </ul>
+   </ul><br>
    <ul><item>Material as Windows ZIP archive: https://www.dropbox.com/s/2jkyisbkw9ctjt2/unixtut.zip?dl=0 </ul><br>
  * Perl I - From the shell to Perl (RK)
 
