@@ -41,7 +41,7 @@ Instructors: Reinhard Schneider (RS), Aishwarya Alex (AA), Ganna Androsova (GA),
 
 * Jan 13
  * NGS III - Introduction to sequencing and NGS (YJK)
- * NGS IV - Tutorial NGS 1 PM
+ * NGS IV - Tutorial NGS 1 (PM)
 
 * Jan 14 
  * NGS V - Tutorial NGS 2 (PM)
