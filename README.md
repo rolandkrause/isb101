@@ -19,7 +19,7 @@ Instructors: Reinhard Schneider (RS), Aishwarya Alex (AA), Ganna Androsova (GA),
    <item> 4) mv unixtut ~<br>
    <item> 5) open index.html in your Firefox browser
    </ul>
-   Material as Windows ZIP archive: https://www.dropbox.com/s/2jkyisbkw9ctjt2/unixtut.zip?dl=0 <br>
+   <ul><item>Material as Windows ZIP archive: https://www.dropbox.com/s/2jkyisbkw9ctjt2/unixtut.zip?dl=0 </ul><br>
  * Perl I - From the shell to Perl (RK)
 
 * Jan 7
@@ -41,10 +41,10 @@ Instructors: Reinhard Schneider (RS), Aishwarya Alex (AA), Ganna Androsova (GA),
 
 * Jan 13
  * NGS III - Introduction to sequencing and NGS (YJK)
- * NGS IV - Tutorial NGS PM
+ * NGS IV - Tutorial NGS 1 PM
 
 * Jan 14 
- * NGS V - Sequencing III (PM)
+ * NGS V - Tutorial NGS 2 (PM)
  * PH I - Phylogeny - Multiple alignment and tree building  (RK)
 
 * Jan 15 
