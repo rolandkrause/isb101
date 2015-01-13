@@ -29,12 +29,15 @@ Instructors: Reinhard Schneider (RS), Aishwarya Alex (AA), Ganna Androsova (GA),
 * Jan 8
  * Databases I - Introduction to databases (VS)
  * Databases II - Practicals
-<br>Material (ZIP archive) : https://www.dropbox.com/s/gtt8m3qxys0zyqh/MISB_data_integration_tutorial_material_2015.zip?dl=0 <br>
+<br>Material (ZIP archive) : 
+https://www.dropbox.com/s/gtt8m3qxys0zyqh/MISB_data_integration_tutorial_material_2015.zip?dl=0 <br>
 
 * Jan 9
  * Databases III - Programmatic access to databases (VS)
  * Databases IV - Practicals
-<br>Material: https://www.dropbox.com/sh/ub957p1o5cqd9oz/AAAX1uf4VwcGR7GXpAVhzmrma?dl=0<br>
+<br>Material: https://www.dropbox.com/s/b4b95k9gsk8mfl0/uni.lux.isb101.genomics_and_databases.course.programatic_access.20150108.pdf?dl=0<br>
+https://www.dropbox.com/s/babfctkdakzxmbb/perl_scripts_written_during_course.zip?dl=0<br>
+
 * Jan 12
  * NGS I - Algorithms for mapping and searching (RK)
  * NGS II - Introduction to sequencing and NGS (YJK)
