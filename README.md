@@ -35,10 +35,9 @@ https://www.dropbox.com/s/gtt8m3qxys0zyqh/MISB_data_integration_tutorial_materia
 * Jan 9
  * Databases III - Programmatic access to databases (VS)
  * Databases IV - Practicals
-<br>Material -  
-Download presentation:
+<br>Material -  Download presentation:
 https://www.dropbox.com/s/b4b95k9gsk8mfl0/uni.lux.isb101.genomics_and_databases.course.programatic_access.20150108.pdf?dl=0<br>
-Download the Perl scripts written during the course 
+Download the Perl scripts written during the course:
 https://www.dropbox.com/s/babfctkdakzxmbb/perl_scripts_written_during_course.zip?dl=0<br>
 
 * Jan 12
