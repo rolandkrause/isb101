@@ -47,7 +47,11 @@ https://www.dropbox.com/s/babfctkdakzxmbb/perl_scripts_written_during_course.zip
 * Jan 13
  * NGS III - Introduction to sequencing and NGS (YJK)
  * NGS IV - Tutorial NGS 1 (PM)<br>
- <ul><item>Download presentation from <br>https://www.dropbox.com/s/m8vtmiqvvat2w8x/May.WES.UL.Jan2015.pdf?dl=0</ul><br>
+ <ul><item>Download presentation from <br>https://www.dropbox.com/s/m8vtmiqvvat2w8x/May.WES.UL.Jan2015.pdf?dl=0<br>
+     <item> Bamfiles for IGV:<br>
+     <item>https://www.dropbox.com/s/30qc8d4rrpdea6x/daughter.chr22.recal.bam?dl=0<br>
+     <item>https://www.dropbox.com/s/0an6ok7enqf54rh/daughter.chr22.recal.bai?dl=0<br>
+</ul><br>
 
 * Jan 14 
  * NGS V - Tutorial NGS 2 (PM)
