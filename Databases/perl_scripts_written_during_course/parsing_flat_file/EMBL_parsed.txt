@@ -1,0 +1,12 @@
+ACCESSION	ORGANISM	DESCRIPTION
+AM112435	Trichoderma reesei	Trichoderma reesei EST, fragment 01143 
+BW633000	Lotus japonicus	Lotus japonicus cDNA, clone: LjFL2-033-AG02, 5' end, suspension-cultured cells treated with salicylic acid or methyljasmonate. 
+EC190223	termite gut metagenome	SSE00001433 Metatranscriptome of hindgut from Zootermopsis angusticollis Non-normalized termite gut metagenome cDNA, mRNA sequence. 
+AA000001	Homo sapiens (human)	zd84h07.s1 Soares_fetal_heart_NbHH19W Homo sapiens cDNA clone IMAGE:347389 3', mRNA sequence. 
+AA020517	Mus musculus (house mouse)	mh62b04.r1 Soares mouse placenta 4NbMP13.5 14.5 Mus musculus cDNA clone IMAGE:455503 5' similar to gb:X51438 Mouse mRNA for vimentin (MOUSE);, mRNA sequence. 
+KJ158051	Sigmodon hispidus (hispid cotton rat)	Sigmodon hispidus voucher MSB 83340 transferrin receptor 1 (TfR1) mRNA, complete cds. 
+JO017629	Nannospalax galili (Upper Galilee mountains blind mole rat)	TSA: Nannospalax galili isotig13887.Nagamubr mRNA sequence. 
+CV826669	Angiostrongylus cantonensis (rat lungworm)	AACP0001.SCR Angiostrongylus cantonensis adult worms cDNA clone Angiostrongylus cantonensis cDNA clone AACP0001.SC 3', mRNA sequence. 
+GW916754	Xenopsylla cheopis (oriental rat flea)	HM1-EST-52 oriental rat flea 1 day post-hemoceol injection library Xenopsylla cheopis cDNA, mRNA sequence. 
+AA012645	Rattus norvegicus (Norway rat)	RPU0101AC Rat myometrium, differential display Rattus norvegicus cDNA 5' and 3', mRNA sequence. 
+AA417512	Saccharomyces cerevisiae (baker's yeast)	m2/a05 Yeast::mTn-lacZ/LEU2 library Saccharomyces cerevisiae cDNA Genomic sequences upstream of lacZ fusion similar to YM8010.01c, mRNA sequence. 

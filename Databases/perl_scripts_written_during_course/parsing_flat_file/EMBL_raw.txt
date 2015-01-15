@@ -1,0 +1,750 @@
+ID   AM112435; SV 1; linear; mRNA; EST; FUN; 227 BP.
+XX
+AC   AM112435;
+XX
+DT   12-DEC-2005 (Rel. 86, Created)
+DT   14-MAR-2006 (Rel. 87, Last updated, Version 2)
+XX
+DE   Trichoderma reesei EST, fragment 01143
+XX
+KW   EST; expressed sequence tag.
+XX
+OS   Trichoderma reesei
+OC   Eukaryota; Fungi; Dikarya; Ascomycota; Pezizomycotina; Sordariomycetes;
+OC   Hypocreomycetidae; Hypocreales; Hypocreaceae; Trichoderma.
+XX
+RN   [1]
+RP   1-227
+RA   Arvas M.I.;
+RT   ;
+RL   Submitted (03-OCT-2005) to the INSDC.
+RL   Arvas M.I., Protein Production, VTT Biotechnology, Tietotie 2, Espoo, P.O.
+RL   Box 1500, 02044 VTT, FINLAND.
+XX
+RN   [2]
+RX   DOI; 10.1186/1471-2164-7-32.
+RX   PUBMED; 16504068.
+RA   Arvas M.I., Pakula T.M., Lanthaler K., Saloheimo M., Valkonen M.,
+RA   Suortti T., Robson G., Penttila M.;
+RT   "Common features and interesting differences in transcriptional responses
+RT   to secretion stress in the fungi Trichoderma reesei and Saccharomyces
+RT   cerevisiae";
+RL   BMC Genomics 7:32-32(2006).
+XX
+DR   MD5; f4180ac93ec43d08a91d126b881057cc.
+DR   UNILIB; 40680; 18903.
+XX
+FH   Key             Location/Qualifiers
+FH
+FT   source          1..227
+FT                   /organism="Trichoderma reesei"
+FT                   /strain="RutC-30"
+FT                   /mol_type="mRNA"
+FT                   /note="EST library enriched for secretion stress induced
+FT                   genes"
+FT                   /note="fragment 01143"
+FT                   /db_xref="taxon:51453"
+FT                   /db_xref="UNILIB:40680"
+XX
+SQ   Sequence 227 BP; 38 A; 64 C; 74 G; 51 T; 0 other;
+     gcgcctcgct cgccagcgag accagcaagg ctgctgccgc cgcctcgtcg gaccacgacg        60
+     atgctgctgc gccgatgcag acgggcttca tggccatggg tgcgctgctc ggcggtgccg       120
+     ctgttctcgg taacatgtga ggcggttttc attcaatcct gttcgtaact ggtttctcta       180
+     atgggacgtc acgaggcgaa aacttttggt agcatgggac gggaatg                     227
+//
+ID   BW633000; SV 1; linear; mRNA; EST; PLN; 477 BP.
+XX
+AC   BW633000;
+XX
+DT   01-APR-2006 (Rel. 87, Created)
+DT   01-APR-2006 (Rel. 87, Last updated, Version 1)
+XX
+DE   Lotus japonicus cDNA, clone: LjFL2-033-AG02, 5' end, suspension-cultured
+DE   cells treated with salicylic acid or methyljasmonate.
+XX
+KW   5'-end sequence (5'-EST); EST (expressed sequence tag).
+XX
+OS   Lotus japonicus
+OC   Eukaryota; Viridiplantae; Streptophyta; Embryophyta; Tracheophyta;
+OC   Spermatophyta; Magnoliophyta; eudicotyledons; Gunneridae; Pentapetalae;
+OC   rosids; fabids; Fabales; Fabaceae; Papilionoideae; Loteae; Lotus.
+XX
+RN   [1]
+RP   1-477
+RA   Sakurai N., Yano K., Nishida H., Namai K., Sakai Y., Suzuki H., Shibata D.;
+RT   ;
+RL   Submitted (15-DEC-2004) to the INSDC.
+RL   Daisuke Shibata, Kazusa DNA Research Institute; 2-6-7 Kazusa-Kamatari,
+RL   Kisarazu, Chiba 292-0818, Japan (E-mail:shibata@kazusa.or.jp,
+RL   Tel:81-438-52-3947, Fax:81-438-52-3948)
+XX
+RN   [2]
+RA   Sakurai N., Yano K., Nishida H., Namai K., Sakai Y., Suzuki H., Shibata D.;
+RT   "Database of Expressed sequence tags from a Legume, Lotus japonicus";
+RL   Unpublished.
+XX
+DR   MD5; dd78a5dd65bc35c5e4e285a8e20aea5c.
+DR   UNILIB; 42387; 19592.
+XX
+FH   Key             Location/Qualifiers
+FH
+FT   source          1..477
+FT                   /organism="Lotus japonicus"
+FT                   /ecotype="Gifu B-129"
+FT                   /mol_type="mRNA"
+FT                   /clone="LjFL2-033-AG02"
+FT                   /note="suspension-cultured cells treated with A) 0.5 mM
+FT                   salicylic acid for 6 hr and B) 0.5 mM methyljasmonate for
+FT                   24 hr. Equal amounts of total RNA from A and B were mixed
+FT                   and used for construction of the cDNA library."
+FT                   /db_xref="taxon:34305"
+FT                   /db_xref="UNILIB:42387"
+XX
+SQ   Sequence 477 BP; 107 A; 187 C; 67 G; 116 T; 0 other;
+     gatttgtcaa agtcttctcc aaattccact gacactgaga agtgtctctt ctcctcaaaa        60
+     cccttatttc ctccctcttt ctctgtatct tcctgaatct gaagtctaca atggcttcct       120
+     ctcccaagct cgtactgcag atcctcatca ccatcatcgt cgccgttgcc accgtctcct       180
+     ccgattccac cgacaacgac gaacgagtca gcgagcttct ctcccagcaa tccagatcca       240
+     aatcaggcgt aatccgcctc aacgaccaaa ccctcagccg ctacatctcc tccgtcgaaa       300
+     ccccacgccc ctactccctc ctcatcttct tcgacgccac tcagctccac gacaaatccg       360
+     aactccgcct caccgagctt cgcaacgagt tcgccatcgt cgcctcctcc ttcatcacca       420
+     acaacgccaa cacctccgca ctcgcgaatc tcttcttctg cgacattgaa ttcaagg          477
+//
+ID   EC190223; SV 1; linear; mRNA; EST; ENV; 149 BP.
+XX
+AC   EC190223;
+XX
+DT   04-JUN-2006 (Rel. 88, Created)
+DT   10-AUG-2009 (Rel. 101, Last updated, Version 2)
+XX
+DE   SSE00001433 Metatranscriptome of hindgut from Zootermopsis angusticollis
+DE   Non-normalized termite gut metagenome cDNA, mRNA sequence.
+XX
+KW   EST.
+XX
+OS   termite gut metagenome
+OC   unclassified sequences; metagenomes; organismal metagenomes.
+XX
+RN   [1]
+RP   1-149
+RA   Keeling P.J.;
+RT   "TBestDB [http://tbestdb.bcm.umontreal.ca/searches/login.php] Streblomastix
+RT   strix";
+RL   Unpublished.
+XX
+DR   MD5; ec6451204bde70289d0f5f06102a466a.
+DR   UNILIB; 42605; 19805.
+XX
+CC   Contact: TBestDB
+CC   Departement de Biochimie, Universite de Montreal
+CC   Montreal, Canada
+CC   Email: tbestdb-curator@bch.umontreal.ca
+CC   Plate: 1842.
+XX
+FH   Key             Location/Qualifiers
+FH
+FT   source          1..149
+FT                   /organism="termite gut metagenome"
+FT                   /environmental_sample
+FT                   /mol_type="mRNA"
+FT                   /clone_lib="Metatranscriptome of hindgut from Zootermopsis
+FT                   angusticollis Non-normalized"
+FT                   /note="host: Zootermopsis angusticollis"
+FT                   /db_xref="taxon:433724"
+FT                   /db_xref="UNILIB:42605"
+XX
+SQ   Sequence 149 BP; 65 A; 27 C; 32 G; 25 T; 0 other;
+     aacctcagaa agtgacagtc aaaaaacaac ctaagaaagt aatagctaaa gaacaacctg        60
+     aggtggaagt ccaaggaaca aaatgtggaa ttggcagggc aaatcacaag gttcttccat       120
+     cgttgaaact ccaaaggaaa aacttgaga                                         149
+//
+ID   AA000001; SV 1; linear; mRNA; EST; HUM; 474 BP.
+XX
+AC   AA000001;
+XX
+DT   29-JUN-1996 (Rel. 48, Created)
+DT   03-MAR-2000 (Rel. 62, Last updated, Version 3)
+XX
+DE   zd84h07.s1 Soares_fetal_heart_NbHH19W Homo sapiens cDNA clone IMAGE:347389
+DE   3', mRNA sequence.
+XX
+KW   EST.
+XX
+OS   Homo sapiens (human)
+OC   Eukaryota; Metazoa; Chordata; Craniata; Vertebrata; Euteleostomi; Mammalia;
+OC   Eutheria; Euarchontoglires; Primates; Haplorrhini; Catarrhini; Hominidae;
+OC   Homo.
+XX
+RN   [1]
+RP   1-474
+RA   Hillier L., Clark N., Dubuque T., Elliston K., Hawkins M., Holman M.,
+RA   Hultman M., Kucaba T., Le M., Lennon G., Marra M., Parsons J., Rifkin L.,
+RA   Rohlfing T., Soares M., Tan F., Trevaskis E., Waterston R., Williamson A.,
+RA   Wohldmann P., Wilson R.;
+RT   "The WashU-Merck EST Project";
+RL   Unpublished.
+XX
+DR   MD5; 3616e701cf550296013317cfcce0bde3.
+DR   UNILIB; 118; 424.
+XX
+CC   Contact: Wilson RK
+CC   Washington University School of Medicine
+CC   4444 Forest Park Parkway, Box 8501, St. Louis, MO 63108
+CC   Tel: 314 286 1800
+CC   Fax: 314 286 1810
+CC   Email: est@watson.wustl.edu
+CC   This clone is available royalty-free through LLNL ; contact the
+CC   IMAGE Consortium (info@image.llnl.gov) for further information.
+CC   Insert Length: 2259   Std Error: 0.00
+CC   Seq primer: mob.REGA+ET
+CC   High quality sequence stop: 403.
+XX
+FH   Key             Location/Qualifiers
+FH
+FT   source          1..474
+FT                   /organism="Homo sapiens"
+FT                   /lab_host="DH10B (ampicillin resistant)"
+FT                   /mol_type="mRNA"
+FT                   /sex="unknown"
+FT                   /dev_stage="19 weeks"
+FT                   /clone_lib="Soares_fetal_heart_NbHH19W"
+FT                   /clone="IMAGE:347389"
+FT                   /note="Organ: heart; Vector: pT7T3D (Pharmacia) with a
+FT                   modified polylinker; Site_1: Not I; Site_2: Eco RI; 1st
+FT                   strand cDNA was primed with a Not I - oligo(dT) primer [5'
+FT                   TGTTACCAATCTGAAGTGGGAGCGGCCGCATCTTTTTTTTTTTTTTTTTT 3'],
+FT                   double-stranded cDNA was size selected, ligated to Eco RI
+FT                   adapters (Pharmacia), digested with Not I and cloned into
+FT                   the Not I and Eco RI sites of a modified pT7T3 vector
+FT                   (Pharmacia). Library went through one round of
+FT                   normalization to a Cot = 5. Library constructed by M.Fatima
+FT                   Bonaldo. This library was constructed from the same fetus
+FT                   as the fetal lung library, Soares fetal lung NbHL19W."
+FT                   /db_xref="taxon:9606"
+FT                   /db_xref="UNILIB:118"
+XX
+SQ   Sequence 474 BP; 140 A; 105 C; 115 G; 107 T; 7 other;
+     taantgagat ctaggtatta acctgctgtc tagcgaaaac tagtcactaa gtcctggcct        60
+     gagagatacc cacatttcct ttagaacaaa cagaactaat acctgtgtac atttctgaga       120
+     gcctgatgtg tgagtcctta aaatgtagac cttgcaggag gcttagacct cagtttcacc       180
+     taatgcatgt ggaggaaatg gaggtgagaa tagtcacctg aagagtgcaa gcgctccagc       240
+     tccagcacac acactcttcc ctgggcagca ggaaaaggag gtaacaagga cttgggctga       300
+     catctgaagc actangctaa tgtgcctggt agaggggagc ctcaggaagn cacaagatgg       360
+     tcattccacc tngtagctgt ccacaaacct gaggtttcca catcgttttt aaagggcaca       420
+     gtgggcaaat gtgncaaggc agaaaaccaa taaccatttc aagggntcac ttgn             474
+//
+ID   AA020517; SV 1; linear; mRNA; EST; MUS; 247 BP.
+XX
+AC   AA020517;
+XX
+DT   04-DEC-1996 (Rel. 50, Created)
+DT   03-MAR-2000 (Rel. 62, Last updated, Version 3)
+XX
+DE   mh62b04.r1 Soares mouse placenta 4NbMP13.5 14.5 Mus musculus cDNA clone
+DE   IMAGE:455503 5' similar to gb:X51438 Mouse mRNA for vimentin (MOUSE);, mRNA
+DE   sequence.
+XX
+KW   EST.
+XX
+OS   Mus musculus (house mouse)
+OC   Eukaryota; Metazoa; Chordata; Craniata; Vertebrata; Euteleostomi; Mammalia;
+OC   Eutheria; Euarchontoglires; Glires; Rodentia; Sciurognathi; Muroidea;
+OC   Muridae; Murinae; Mus; Mus.
+XX
+RN   [1]
+RP   1-247
+RA   Marra M., Hillier L., Allen M., Bowles M., Dietrich N., Dubuque T.,
+RA   Geisel S., Kucaba T., Lacy M., Le M., Martin J., Morris M.,
+RA   Schellenberg K., Steptoe M., Tan F., Underwood K., Moore B., Theising B.,
+RA   Wylie T., Lennon G., Soares B., Wilson R., Waterston R.;
+RT   "The WashU-HHMI Mouse EST Project";
+RL   Unpublished.
+XX
+DR   MD5; 3f8786973dc20e8537ce22f012b6422c.
+DR   UNILIB; 745; 470.
+XX
+CC   Contact: Marra M/Mouse EST Project
+CC   WashU-HHMI Mouse EST Project
+CC   Washington University School of MedicineP
+CC   4444 Forest Park Parkway, Box 8501, St. Louis, MO 63108
+CC   Tel: 314 286 1800
+CC   Fax: 314 286 1810
+CC   Email: mouseest@watson.wustl.edu
+CC   This clone is available royalty-free through LLNL ; contact the
+CC   IMAGE Consortium (info@image.llnl.gov) for further information.
+CC   MGI:272391
+CC   Seq primer: -28M13 rev2 from Amersham
+CC   High quality sequence stop: 245.
+XX
+FH   Key             Location/Qualifiers
+FH
+FT   source          1..247
+FT                   /organism="Mus musculus"
+FT                   /lab_host="DH10B"
+FT                   /strain="C57BL/6J"
+FT                   /mol_type="mRNA"
+FT                   /sex="unknown"
+FT                   /dev_stage="adult"
+FT                   /clone_lib="Soares mouse placenta 4NbMP13.5 14.5"
+FT                   /clone="IMAGE:455503"
+FT                   /tissue_type="placenta"
+FT                   /note="Organ: placenta; Vector: pT7T3D-Pac (Pharmacia) with
+FT                   a modified polylinker; Site_1: Not I; Site_2: Eco RI; 1st
+FT                   strand cDNA was primed with a Not I - oligo(dT) primer [5'
+FT                   TGTTACCAATCTGAAGTGGGAGCGGCCGCGGAAATTTTTTTTTTTTTTTTTTTTTTTT
+FT                   T 3']; double-stranded cDNA was ligated to Eco RI adaptors
+FT                   (Pharmacia), digested with Not I and cloned into the Not I
+FT                   and Eco RI sites of the modified pT7T3 vector. Library went
+FT                   through one round of normalization, and was constructed by
+FT                   Bento Soares and M.Fatima Bonaldo."
+FT                   /db_xref="taxon:10090"
+FT                   /db_xref="UNILIB:745"
+XX
+SQ   Sequence 247 BP; 51 A; 77 C; 53 G; 66 T; 0 other;
+     ctgctctcct cgccttccag cagcttcctg taggtggcga tctcaatgtc cagggccatc        60
+     ttaacattga gcagatcttg gtattcacga aggtgacgag ccatctcttc cttcatgttt       120
+     tggatctcat cctgcaggcg gccaatagtg tcctggtagt tagcagcttc aagggcaaaa       180
+     ttctcttcca tctcacgcat ctggcgcccc agagacccca gcgctcctac gattaacaac       240
+     tcacctg                                                                 247
+//
+ID   KJ158051; SV 1; linear; mRNA; STD; ROD; 2277 BP.
+XX
+AC   KJ158051;
+XX
+DT   08-JUN-2014 (Rel. 121, Created)
+DT   23-JUL-2014 (Rel. 121, Last updated, Version 2)
+XX
+DE   Sigmodon hispidus voucher MSB 83340 transferrin receptor 1 (TfR1) mRNA,
+DE   complete cds.
+XX
+KW   .
+XX
+OS   Sigmodon hispidus (hispid cotton rat)
+OC   Eukaryota; Metazoa; Chordata; Craniata; Vertebrata; Euteleostomi; Mammalia;
+OC   Eutheria; Euarchontoglires; Glires; Rodentia; Sciurognathi; Muroidea;
+OC   Cricetidae; Sigmodontinae; Sigmodon.
+XX
+RN   [1]
+RP   1-2277
+RX   PUBMED; 24920811.
+RA   Zong M., Fofana I., Choe H.;
+RT   "Human and Host-species Transferrin Receptor 1 Use by North American
+RT   Arenaviruses";
+RL   J. Virol. 88(16):9418-9428(2014).
+XX
+RN   [2]
+RP   1-2277
+RA   Zong M., Fofana I., Choe H.;
+RT   ;
+RL   Submitted (13-JAN-2014) to the INSDC.
+RL   Infectious Diseases, The Scripps Research Institute, 130 Scripps Way,
+RL   Juptier, FL 33458, USA
+XX
+DR   MD5; 43e44fa6551ca684111cf1378185eeaf.
+XX
+FH   Key             Location/Qualifiers
+FH
+FT   source          1..2277
+FT                   /organism="Sigmodon hispidus"
+FT                   /mol_type="mRNA"
+FT                   /country="USA:Florida, Dade County"
+FT                   /specimen_voucher="MSB 83340"
+FT                   /sex="female"
+FT                   /tissue_type="heart; kidney"
+FT                   /PCR_primers="fwd_seq: atgatgratcaagccag, rev_seq:
+FT                   ttaaaactcattgtcaatatyccaaatgtcacc"
+FT                   /db_xref="taxon:42415"
+FT   gene            1..2277
+FT                   /gene="TfR1"
+FT   CDS             1..2277
+FT                   /codon_start=1
+FT                   /gene="TfR1"
+FT                   /product="transferrin receptor 1"
+FT                   /protein_id="AIA98683.1"
+FT                   /translation="MMDQARSAISNLFGGEPLSYTRFSLARQADGDNSHVEMKLAVDEE
+FT                   ENMDNMKASVRKPRKFNGRLCFGTVAVVIFFLIGFMTGYLGYCKRIEQKDCVKVAEAET
+FT                   VNSQNFQTEEDIPKSSRLYWADLKKLLSEKLNTIEFTDTIKQLSQNTPREAGSQKDENL
+FT                   AYYIENQFQDFKLSKVWRDEHYVKIQVKGSNAQNSVTIINDNGGLYLLKNLTGYVAYSK
+FT                   AAEVTGKLVHANFGTKKDFENLNYAVNGSLVIVRAGEITFAEKVANAQSFNAIGVLIYM
+FT                   DKNKFPVVKADLARFGHAHLGTGDPYTPGFPSFNHTQFPPSQSSGLPRIPVQTISREAA
+FT                   DKLFQNMEGKCPSSWNVDSSCKLELTSDKNVKLSVNNELKETRILNIFGVIKGFEEPDR
+FT                   YVVVGAQRDSWGPGAAKSSVGTALLLKLAQTFSDMVLRGGFKPIRSIIFASWTAGDFGA
+FT                   VGATEWLEGYLSSLHIKAFTYINLDKVVLGTNNFKVSASPLLYTLIEKTMQDVKHPIDG
+FT                   RSLYRDSNWINKVEKLSLDNAAFPFLAYSGIPAVSFCFCEDEDYPYLDTMLDTYELLIQ
+FT                   KVPQLDKMVRVAAEVAGQFIIKLTHEIELNLDYDMYNNKILSFVRDLNQFRADIRDMGL
+FT                   SLQWLYSARGDYFRATSRLTSDFHNAEKTNRFVMRQINDRIMKVEYHFLSPYVSPRESP
+FT                   FRHIFWGYGSHTLSALMESLKLRQKNISAFNETLFRNQLALASWTIQGVANALSGDIWN
+FT                   IDNEF"
+XX
+SQ   Sequence 2277 BP; 698 A; 438 C; 501 G; 640 T; 0 other;
+     atgatggatc aagccagatc agcaatctct aacttgtttg gtggagaacc attatcatat        60
+     acccggttta gcctggctcg gcaagcagat ggagataaca gccatgtgga gatgaaattg       120
+     gctgtagatg aagaagaaaa tatggacaac atgaaggcta gtgtcagaaa acccagaaaa       180
+     tttaatggaa gactctgctt tgggacagtt gcagtagtca tctttttctt aattggattt       240
+     atgactggct acctggggta ctgtaaacgc atagaacaaa aagactgtgt gaaagtggca       300
+     gaagcggaga cagtcaattc acagaacttc caaacagaag aagacattcc taaatcttct       360
+     cgcttgtatt gggcagacct caaaaaactg ttgtcagaga aactgaacac catagagttc       420
+     acagacacca tcaagcagct gagccagaat acccctcggg aggctggatc tcaaaaagat       480
+     gaaaatcttg cctattatat tgaaaatcag tttcaagact ttaaactcag caaagtctgg       540
+     cgagatgaac attatgtgaa gatccaggtg aaaggcagca atgctcaaaa ctcggtgacc       600
+     ataataaatg ataatggtgg cttgtacctg ttgaagaatc ttacaggtta tgtggcatat       660
+     agcaaagctg cagaagttac tggtaaactg gtccatgcta attttggcac taaaaaagac       720
+     tttgaaaact taaattatgc tgtgaatgga tccttagtga ttgttagagc aggggaaatc       780
+     acttttgcag aaaaggttgc aaatgcacaa agctttaatg caattggtgt cttgatatac       840
+     atggacaaga ataaattccc agttgttaag gcagaccttg cacgttttgg acatgctcat       900
+     ctaggaactg gtgacccata cacacctggc tttccatctt tcaatcatac tcagtttccg       960
+     ccatctcagt catcgggatt gcctaggata cctgttcaaa caatttcaag agaggctgct      1020
+     gacaagctat ttcaaaacat ggaaggaaag tgcccttcta gttggaacgt agattcttca      1080
+     tgtaaactgg aattgacatc agataaaaat gtgaagctca gtgtgaacaa cgagttgaaa      1140
+     gagacaagaa tacttaatat ctttggcgtt attaaaggtt ttgaggaacc agaccgttac      1200
+     gttgtagtag gagcccagag agattcctgg ggtcctggtg ctgcaaagtc cagtgtggga      1260
+     acagctcttc tgttgaaact tgcccaaaca ttttcagata tggttttaag aggtggattt      1320
+     aaacccatta ggagcattat ctttgccagc tggactgcag gagacttcgg agctgttggt      1380
+     gccaccgagt ggctagaggg atacctttca tctctgcaca taaaagcctt cacttacatt      1440
+     aatctggata aagttgtcct tggtactaac aacttcaaag tttctgctag ccctctattg      1500
+     tatacactta ttgagaagac aatgcaggat gtaaagcatc caattgatgg gagatctcta      1560
+     tatcgagaca gcaactggat caacaaagtt gagaaacttt cccttgacaa tgccgccttc      1620
+     ccttttctgg catattctgg aatcccagca gtttctttct gtttttgtga ggatgaggat      1680
+     tatccttatt tggatactat gctggatacg tatgagttac taattcagaa agttcctcag      1740
+     ctggacaaaa tggttcgtgt agctgcagaa gtggctggtc agttcattat taaacttact      1800
+     catgaaattg aactgaacct ggactatgat atgtataaca acaaaatact gtcatttgtg      1860
+     agggatctga accagttccg agcagatatc agggacatgg gtctaagtct acagtggctg      1920
+     tattctgctc gcggagacta ctttcgtgct acatctagac taacatctga cttccataat      1980
+     gcggagaaaa caaacagatt tgtcatgagg caaatcaatg accgtattat gaaagtagaa      2040
+     tatcacttcc tgtcacccta tgtatctccc agagagtctc cttttcgaca catcttctgg      2100
+     ggttatggct ctcacactct ttcagcttta atggagagtt tgaagcttcg acagaaaaat      2160
+     attagcgctt ttaatgaaac actcttcaga aaccagttgg ccttagcttc gtggactatt      2220
+     caaggagttg caaatgccct ctctggtgac atttggaata ttgacaatga gttttaa         2277
+//
+ID   JO017629; SV 1; linear; mRNA; TSA; ROD; 291 BP.
+XX
+AC   JO017629;
+XX
+PR   Project:PRJNA67373;
+XX
+DT   26-JUL-2011 (Rel. 109, Created)
+DT   07-SEP-2011 (Rel. 110, Last updated, Version 2)
+XX
+DE   TSA: Nannospalax galili isotig13887.Nagamubr mRNA sequence.
+XX
+KW   Transcriptome Shotgun Assembly; TSA.
+XX
+OS   Nannospalax galili (Upper Galilee mountains blind mole rat)
+OC   Eukaryota; Metazoa; Chordata; Craniata; Vertebrata; Euteleostomi; Mammalia;
+OC   Eutheria; Euarchontoglires; Glires; Rodentia; Sciurognathi; Muroidea;
+OC   Spalacidae; Spalacinae; Nannospalax.
+XX
+RN   [1]
+RC   Publication Status: Online-Only
+RP   1-291
+RX   DOI; 10.1371/journal.pone.0021227.
+RX   PUBMED; 21857902.
+RA   Malik A., Korol A., Hubner S., Hernandez A.G., Thimmapuram J., Ali S.,
+RA   Glaser F., Paz A., Avivi A., Band M.;
+RT   "Transcriptome Sequencing of the Blind Subterranean Mole Rat, Spalax
+RT   galili: Utility and Potential for the Discovery of Novel Evolutionary
+RT   Patterns";
+RL   PLoS One 6(8):E21227-E21227(2011).
+XX
+RN   [2]
+RP   1-291
+RA   Malik A., Korol A., Glaser F., Paz A., Hubner S., Hernandez A.G.,
+RA   Thimmapuram J., Ali S., Avivi A., Band M.;
+RT   ;
+RL   Submitted (30-JUN-2011) to the INSDC.
+RL   Roy J. Carver Biotechnology Center, University of Illinois at
+RL   Urbana-Champaign, 356 ERML, 1201 W. Gregory Dr., Urbana, IL 61801, USA
+XX
+DR   MD5; ca2fa7f3eb4439ab4b7af8ae2d5a96d6.
+XX
+CC   ##Assembly-Data-START##
+CC   Assembly Method       :: Newbler
+CC   Sequencing Technology :: 454; Solexa
+CC   ##Assembly-Data-END##
+XX
+XX
+FH   Key             Location/Qualifiers
+FH
+FT   source          1..291
+FT                   /organism="Nannospalax galili"
+FT                   /mol_type="mRNA"
+FT                   /tissue_type="muscle; brain"
+FT                   /db_xref="taxon:1026970"
+XX
+SQ   Sequence 291 BP; 83 A; 65 C; 60 G; 83 T; 0 other;
+     cttggctcca tctccaacac aatgaatgtg tcattaatca ctagtggtct tgacacatgg        60
+     cacagaacaa aacatttgcc atttgatctt gatttctcgt agctgagggg atgaacatgc       120
+     acctttttct ttctctcact gtgctttttt tcacgctacc aatacaattc cgcaaggtgt       180
+     aagtgttgct agggtatgtg aaatggaaat gaaagcccgt cagttgaata atcgcaggag       240
+     caaaactaaa agttactccc cggcttgcct gagaacagtc cagatcgaaa g                291
+//
+ID   CV826669; SV 1; linear; mRNA; EST; INV; 295 BP.
+XX
+AC   CV826669;
+XX
+DT   17-NOV-2004 (Rel. 81, Created)
+DT   19-NOV-2004 (Rel. 81, Last updated, Version 2)
+XX
+DE   AACP0001.SCR Angiostrongylus cantonensis adult worms cDNA clone
+DE   Angiostrongylus cantonensis cDNA clone AACP0001.SC 3', mRNA sequence.
+XX
+KW   EST.
+XX
+OS   Angiostrongylus cantonensis (rat lungworm)
+OC   Eukaryota; Metazoa; Ecdysozoa; Nematoda; Chromadorea; Rhabditida;
+OC   Strongylida; Metastrongyloidea; Angiostrongylidae; Angiostrongylus.
+XX
+RN   [1]
+RP   1-295
+RA   Peng H.J.;
+RT   "Angiostrongylus cantonensis adult worms cDNA clone";
+RL   Unpublished.
+XX
+DR   MD5; 635f20a02e0ff20b7b26fea646e58fd2.
+DR   EuropePMC; PMC2774698; 19852860.
+DR   UNILIB; 38382; 16694.
+XX
+CC   Contact: Peng H.J.
+CC   Department of Parasitology department
+CC   The Institute of Tropical Medicine
+CC   BOX 510515, First Military Medical University, Guangzhou,
+CC   Guangdong, P.R.China
+CC   Tel: 86-20 85148308
+CC   Fax: 86-20 87705671
+CC   Email: hong-jaunpeng@263.net
+CC   PCR PRimers
+CC   FORWARD: Lambda TriplEx2 Forward Primer
+CC   BACKWARD: Lambda TriplEx2 Reverse Primer
+CC   Seq primer: Lambda TriplEx2 Reverse Primer
+CC   High quality sequence stop: 259.
+XX
+FH   Key             Location/Qualifiers
+FH
+FT   source          1..295
+FT                   /organism="Angiostrongylus cantonensis"
+FT                   /mol_type="mRNA"
+FT                   /dev_stage="adult worms"
+FT                   /clone_lib="Angiostrongylus cantonensis adult worms cDNA
+FT                   clone"
+FT                   /clone="AACP0001.SC"
+FT                   /db_xref="taxon:6313"
+FT                   /db_xref="UNILIB:38382"
+XX
+SQ   Sequence 295 BP; 74 A; 75 C; 61 G; 85 T; 0 other;
+     agtcacgatc tcatctattc aagattggat aagtttcgcg cctgctgcct tccttggatg        60
+     tggtagccgt ttctaaggct ccctctccgg agtcgaaccc ttattctccg ttacccgtaa       120
+     taaccatggt agactaatag actaccatca ggttgatagg gcagacactt tttcggatta       180
+     tcggcgaaca agccgccgat atgctgcgtt attcagagtc agcaaactac atccgaaaat       240
+     gattgatttg ctctaataat tgcacccttt cgaaagtcag ggtttatacg caccc            295
+//
+ID   GW916754; SV 1; linear; mRNA; EST; INV; 612 BP.
+XX
+AC   GW916754;
+XX
+DT   19-MAY-2011 (Rel. 108, Created)
+DT   19-MAY-2011 (Rel. 108, Last updated, Version 1)
+XX
+DE   HM1-EST-52 oriental rat flea 1 day post-hemoceol injection library
+DE   Xenopsylla cheopis cDNA, mRNA sequence.
+XX
+KW   EST.
+XX
+OS   Xenopsylla cheopis (oriental rat flea)
+OC   Eukaryota; Metazoa; Ecdysozoa; Arthropoda; Hexapoda; Insecta; Pterygota;
+OC   Neoptera; Endopterygota; Siphonaptera; Pulicidae; Xenopsyllinae;
+OC   Xenopsylla.
+XX
+RN   [1]
+RP   1-612
+RA   Erickson D.L., Zhou W.;
+RT   "Identification of immune-inducible genes of plague vector Xenopsylla
+RT   cheopis flea";
+RL   Unpublished.
+XX
+DR   MD5; 89d969851724f863cc7ea88457f17be5.
+XX
+CC   Contact: Erickson,D.L.
+CC   Department of Microbiology and Molecular Biology
+CC   Brigham Young University
+CC   893 WIDB, Provo, UT 84602, USA
+CC   Tel: 801 422 1981
+CC   Email: xenopsylla@gmail.com
+CC   Seq primer: M13 Forward.
+XX
+FH   Key             Location/Qualifiers
+FH
+FT   source          1..612
+FT                   /organism="Xenopsylla cheopis"
+FT                   /mol_type="mRNA"
+FT                   /dev_stage="adult"
+FT                   /clone_lib="LIBEST_026294 oriental rat flea 1 day
+FT                   post-hemoceol injection library"
+FT                   /tissue_type="whole flea"
+FT                   /note="Library was prepared by Suppression Subtractive
+FT                   Hybridization with PCR-Select cDNA Subtraction Kit
+FT                   (Clontech)"
+FT                   /db_xref="taxon:163159"
+XX
+SQ   Sequence 612 BP; 177 A; 130 C; 108 G; 196 T; 1 other;
+     acgcgggygt agaaggcttc aactcattag ctgcgatagc ttgttgcaat tgttcatatt        60
+     ttgggcctct caaatatctt tctaggcaca acctaacaac agtgccacta cttttcaaaa       120
+     catctacggc ttgatggttt gaatatcctt gtagcgattg accatctact tccacaattc       180
+     tgtcatttac ttgaattctt cctgataaat ctgcagcact tccaggagag acacttttaa       240
+     caaatattcc ggttagctct tccttttcac atacataacc cgcaattgtg atgccaagac       300
+     cattaaaatc ctttttcagt tcaactgaaa atttctccat ttctggaagt tccaaattca       360
+     tagacattct actagcagct aatggtaaat tgtggccatc tgtattatat ataaaagaat       420
+     tgggatgtgt gtcaacaaca ggtgaaggtg aagctgaact tgaatcatta ccaaatattt       480
+     ctggatatcc agcagctatt aaatgtgcat ctaattctat gggatcagct aataatctag       540
+     tgggaacaac gggggcacta ctatgccttt ctattggtct attggtcgag ctactactaa       600
+     ccgcacatgt gt                                                           612
+//
+ID   AA012645; SV 1; linear; mRNA; EST; ROD; 305 BP.
+XX
+AC   AA012645;
+XX
+DT   03-AUG-1996 (Rel. 48, Created)
+DT   26-JAN-2011 (Rel. 107, Last updated, Version 3)
+XX
+DE   RPU0101AC Rat myometrium, differential display Rattus norvegicus cDNA 5'
+DE   and 3', mRNA sequence.
+XX
+KW   EST.
+XX
+OS   Rattus norvegicus (Norway rat)
+OC   Eukaryota; Metazoa; Chordata; Craniata; Vertebrata; Euteleostomi; Mammalia;
+OC   Eutheria; Euarchontoglires; Glires; Rodentia; Sciurognathi; Muroidea;
+OC   Muridae; Murinae; Rattus.
+XX
+RN   [1]
+RP   1-305
+RX   DOI; 10.1016/S0002-9378(97)70159-5.
+RX   PUBMED; 9322637.
+RA   Chien E.K., Tokuyama Y., Rouard M., Phillippe M., Bell G.I.;
+RT   "Identification of gestationally regulated genes in rat myometrium by use
+RT   of messenger ribonucleic acid differential display";
+RL   Am. J. Obstet. Gynecol. 177(3):645-652(1997).
+XX
+DR   MD5; e22200ee28d4fefe53512a4d59f5381f.
+DR   UNILIB; 629; 468.
+XX
+CC   Contact: Chien EKS
+CC   Departments of Biochemistry and Molecular Biology and Obstetrics
+CC   and Gynecology
+CC   University of Chicago
+CC   5841 South Maryland Avenue, MC 1028, Chicago, IL 60637, USA
+CC   Tel: 312 702 9117
+CC   Fax: 312 702 9237
+CC   Email: echien@babies.bsd.uchicago.edu
+CC   PCR PRimers
+CC   FORWARD: GATCATAGCC
+CC   BACKWARD: TTTTTTTTTTTAC
+CC   Insert Length: 294   Std Error: 0.00
+CC   Seq primer: SP6 AND T7.
+XX
+FH   Key             Location/Qualifiers
+FH
+FT   source          1..305
+FT                   /organism="Rattus norvegicus"
+FT                   /mol_type="mRNA"
+FT                   /sex="female"
+FT                   /dev_stage="days 12, 16, 20, 21, 22, and postpartum day 1"
+FT                   /clone_lib="LIBEST_000468 Rat myometrium, differential
+FT                   display"
+FT                   /tissue_type="myometrium"
+FT                   /note="cDNA obtained from pregnant rat myometrium on days
+FT                   12, 16, 20, 21, 22, and postpartum day 1, using
+FT                   differential display"
+FT                   /db_xref="taxon:10116"
+FT                   /db_xref="UNILIB:629"
+XX
+SQ   Sequence 305 BP; 75 A; 64 C; 53 G; 113 T; 0 other;
+     tttttttttt tacccatttt ccagttaagt cctgtctttt gtgaaattcc aatacttaaa        60
+     ctgcaatttg caattgtctc tgaagtcaat gaaattaaga aaaaaagtcc taattttctt       120
+     gcaggtcatc gtgtcctctt aggataagca gacgcaaccg ttgctgcagt ctatgcagaa       180
+     ccgcttttta tttcccacgg ccttgacgtt cctttttaac actttcttct tcctcttggc       240
+     gtttctcata gtgtgagaag tcatcaaaaa tggaagtggt gtgcttgtag ctgctatgat       300
+     caatc                                                                   305
+//
+ID   AA417512; SV 1; linear; mRNA; EST; FUN; 450 BP.
+XX
+AC   AA417512;
+XX
+DT   14-MAY-1997 (Rel. 51, Created)
+DT   26-JAN-2011 (Rel. 107, Last updated, Version 4)
+XX
+DE   m2/a05 Yeast::mTn-lacZ/LEU2 library Saccharomyces cerevisiae cDNA Genomic
+DE   sequences upstream of lacZ fusion similar to YM8010.01c, mRNA sequence.
+XX
+KW   EST.
+XX
+OS   Saccharomyces cerevisiae (baker's yeast)
+OC   Eukaryota; Fungi; Dikarya; Ascomycota; Saccharomycotina; Saccharomycetes;
+OC   Saccharomycetales; Saccharomycetaceae; Saccharomyces.
+XX
+RN   [1]
+RP   1-450
+RX   PUBMED; 7926789.
+RA   Burns N., Grimwade B., Ross-Macdonald P.B., Choi E.-Y., Finberg K.,
+RA   Roeder G.S., Snyder M.;
+RT   "Large-scale analysis of gene expression, protein localization, and gene
+RT   disruption in Saccharomyces cerevisiae";
+RL   Genes Dev. 8(9):1087-1105(1994).
+XX
+DR   MD5; e9a00f589f1ff583abaa928d02a9867a.
+DR   StrainInfo; 699126; 0.
+DR   UNILIB; 1027; 864.
+XX
+CC   Contact: Snyder M
+CC   Department of Biology
+CC   Yale University
+CC   New Haven CT 06520-8103
+CC   Tel: 2034326139
+CC   Fax: 2034326161
+CC   Email: snymicp@yalevm.ycc.yale.edu
+CC   lacZ fusion; Vegetative expression; Beta-gal fusion localization
+CC   pattern: cytoplasmic dots (3-20); Disruption phenotype: ND; Fusion:
+CC   in codon 77 of YM8010.01c. Sequence given is adjacent to lacZ.
+CC   Seq primer: lacZ sequences in transposon.
+XX
+FH   Key             Location/Qualifiers
+FH
+FT   source          1..450
+FT                   /organism="Saccharomyces cerevisiae"
+FT                   /lab_host="E.coli"
+FT                   /strain="Y800"
+FT                   /mol_type="mRNA"
+FT                   /clone_lib="LIBEST_000864 Yeast::mTn-lacZ/LEU2 library"
+FT                   /note="Vector: hybrid; Burns et al., Genes Dev. 8,
+FT                   1087-1105 (1994). A yeast genomic DNA library was prepared
+FT                   in the vector pHSS6-Sal, and subjected to transposon
+FT                   mutagenesis with mTn-LEU2/lacZ. This mini-transposon
+FT                   carries lacZ sequences that lack an initiation codon;
+FT                   expression of lacZ is only provided by in-frame fusion to
+FT                   yeast coding sequence. The yeast genomic DNA carrying the
+FT                   mTn-LEU2/lacZ insertion was released from pHSS6-Sal by
+FT                   digestion with NotI, and transplaced back onto the yeast
+FT                   chromosome in diploid strain Y800. Yeast colonies
+FT                   expressing lacZ were screened using a color assay for
+FT                   beta-galactosidase activity. Using either yIP5 (Burns et
+FT                   al.) or pRSQ (Ross-Macdonald et al., Methods in Molecular
+FT                   and Cellular Biology 5, 298-308. 1995), a plasmid
+FT                   containing the fusion junction between genomic DNA and the
+FT                   lacZ end of mTn-LEU2/lacZ was recovered from each
+FT                   individual yeast transformant that expressed lacZ activity.
+FT                   These recovered plasmids comprise 'The blue guys library'.
+FT                   The fusion junction was then sequenced using a primer in
+FT                   the mTn's lacZ region. This sequence data was analyzed to
+FT                   identify the expressed ORF upstream of the fusion."
+FT                   /db_xref="taxon:4932"
+FT                   /db_xref="UNILIB:1027"
+XX
+SQ   Sequence 450 BP; 156 A; 93 C; 73 G; 128 T; 0 other;
+     ttataagccg cgtagctatc tgttttgtaa aaaaataaac gatacagatg acgatgtaga        60
+     ccacgattaa ggttccaaac gcaaacaaca ttatatccat gttaagttcg tcagtatcgt       120
+     ctcccccata agatacatcg ccacggggga tcaccgaaga tctaccacac cgtatttgtc       180
+     cgcttatcga accgagaagc agcgattcta tcagaaactt gaatgacatt tgctttttta       240
+     tatagaaaaa aaatttggct ctccaaactt taagattttt tataattatt aaccaatgac       300
+     aatatagata acttgaaaca actcttgaaa attttgtagt taggcaccag tcctttggtt       360
+     tttcaatgtt cctataaaaa atcactcctc ccatgcagca gtaaagcgct attctcaaaa       420
+     atagctcaac ctgagagagg aagaaagagc                                        450
+//
