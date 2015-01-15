@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head> 
+<title> UNIX Tutorial Six</title> 
+<link href="unixtut1.css" rel="stylesheet" type="text/css" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="Copyright" content="Michael Stonebank, 1995" />
+</head> 
+ 
+<body>
+<h1>UNIX Tutorial Six </h1>
+<h2>Other useful UNIX commands &nbsp; </h2>
+<h3><samp>quota</samp></h3>
+<p>On multiuser computer users are allocated a certain amount of disk space on the file system 
+  for their personal files. On your personal computer or laptop no quota should be set at all. If you go over your quota, you are cannot write any more files. 
+</p>
+<p> To check your current quota on this computer and how much of it you have used, type </p>
+
+<p class="command"> % quota -v </p>
+
+<h3><samp>df</samp></h3>
+<p>The <code>df</code> command reports on the space left on the file system. For example, to 
+  find out how much space is left on the fileserver, type </p>
+
+<p class="command"> % df . </p>
+
+<h3><samp>du</samp></h3>
+<p>The <code>du</code> command outputs the number of kilobytes used by each subdirectory. Useful 
+  if you have gone over quota and you want to find out which directory has the 
+  most files. In your home-directory, type </p>
+
+<p class="command"> % du </p>
+
+<h3><samp>gzip</samp></h3>
+<p>This compresses a file. For example, to zip tutorial_R1_001.fa, type </p>
+
+<p class="command"> % gzip tutorial_R1_001.fa </p>
+<p>This will zip the file and place it in a file called tutorial_R1_001.fa.gz </p>
+<p> To unzip the file, use the gunzip command. </p>
+
+<p class="command"> % gunzip tutorial_R1_001.fa.gz </p>
+
+<h3><samp>tar</samp></h3>
+<p><samp>tar</samp> creates and manipulates streaming archive files. Archives can contain
+files and directories. For example, archive and zip the file <strong>list2</strong> and the directory 
+<strong>backups</strong> in your unixstuff directory  
+</p>
+<p class="command"> % tar cfz myArchive.tar.gz list2 backups</p>
+<p>and unpack it in your <strong>backups</strong> directory:</p>
+<p class="command">tar -zxvf myArchive.tar.gz </p>
+
+<h3><samp>file</samp></h3>
+<p>file classifies the named files according to the type of data they contain, 
+  for example ascii (text), pictures, compressed data, etc.. To report on all 
+  files in your working directory, type </p>
+
+<p class="command"> % file * </p>
+
+<h3><samp>history</samp></h3>
+<p>The shell keeps an ordered list of all the commands that you have entered. 
+  Each command is given a number according to the order it was entered.</p>
+
+<p class="command"> % history (show command history list)</p>
+<h2>Exercise 6a</h2>
+<p>If you want to get all <code>cp</code> commands that you are used so far type
+<p class="command"> % history | grep cp <\p>
+
+
+    <p> </p>
+<p class="navbar"><a href="unix5.html"><img src="media/left.gif" alt="Previous" width="37" height="39" border="0" /></a> 
+  <a href="index.html"><img src="media/home.gif" alt="Home" width="81" height="39" border="0" /></a> 
+  <a href="unix7.html"><img src="media/right.gif" alt="Next" width="37" height="39" border="0" /></a> 
+</p>
+
+<p class="date"> adapted from M.Stonebank@surrey.ac.uk, &copy; 24th August 2001, abused by Patrick.May@uni.lu, March 2014 </p>
+
+
+</body>
+</html>

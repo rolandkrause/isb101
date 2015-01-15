@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Bioinf UNIX Tutorial</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="Copyright" content="Michael Stonebank, 1995" />
+<link href="unixtut1.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<h1>Bioinf UNIX Tutorial</h1>
+<h2>Other Helpfull Commands </h2>
+<h3><samp>cut</samp> </h3>
+<p>The command <code>cut</code> can be used to extract columns from a file.</p>
+<p class="command"> % echo -e "b\t300\na\t2\nb\t31\n" >s.txt<br>
+ % cat s.txt
+<br>
+ % cut -f 2 s.txt
+</p>
+<p class="hint"><samp>echo</samp> writes to the standard out.</p>
+
+<h3><samp>uniq</samp> </h3>
+<p>The <samp>uniq</samp> commands reads the specified input comparing adjacent lines,
+     and writes a copy of each unique input line to the output:</p>
+<p>For example extract the different chromosomes from the file <strong>$HOME/unixtut/media/Mills_and_1000G_gold_standard.indels.b37.chr22.vcf</strong>
+<p class="command"> % cat $HOME/unixtut/media/Mills_and_1000G_gold_standard.indels.b37.chr22.vcf | grep -v -P "^#"  | cut -f 1 | uniq </p>
+</p>
+
+<h2>Other interesting examples</h2>
+
+<h3>Convert FASTQ to FASTA</h3>
+<p>Convert FASTQ file (<strong>$HOME/unixtut/media/tutorial_R1_001.fq</strong>) to FASTA format</p>
+<p class="command"> % cat $HOME/unixtut/media/tutorial_R1_001.fq | paste - - - - | cut -f 1,2 | sed 's/^@/>/g' | tr '\t' '\n' >myFASTA.fa</p>
+ 
+<h3>Print sequence length and abundance</h3>
+<p class="command"> % cat $HOME/unixtut/media/tutorial_R1_001.fa | grep -v ">" | perl -e 'while(<>){chomp($_);$c{length($_)}++ };print "Length\tOccurrence\n";foreach (keys(%c)){ print $_."\t".$c{$_}."\n"};'</p>
+
+<h3> Convert FASTQ quality scores from ASCII to numeric</h3>
+<p class="command"> % cat $HOME/unixtut/media/tutorial_R1_001.fq | awk '!(NR%4)' | perl -ne 'chomp($_);@scores=split(//);print $_."\n"; foreach $s (@scores) { $number = ord($s) - 33; print "$number ";} print "\n"'
+</p>
+
+<p class="navbar"><a href="unix9.html"><img src="media/left.gif" alt="Back" width="37" height="39" border="0" /></a> 
+  <a href="index.html"><img src="media/home.gif" alt="Home" width="81" height="39" border="0" /></a> 
+</p>
+
+<p class="date">adapted from M.Stonebank@surrey.ac.uk October 2001, abused by Patrick.May@uni.lu, March 2014 </p>
+<p> </p>
+</body>
+</html>

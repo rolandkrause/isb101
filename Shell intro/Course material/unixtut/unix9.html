@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>UNIX Tutorial Nine</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="Copyright" content="Michael Stonebank, 1995" />
+<link href="unixtut1.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<h1>UNIX Tutorial Nine </h1>
+<h2>9.1 Command substitutions</h2>
+<p>Command substitution reassigns the output of a command or even multiple commands; it literally plugs the command output into another context. The classic form of command substitution uses backquotes (<samp>`...`</samp>). Commands within backquotes (backticks) generate command-line text.</p> 
+<p class="command"> % file_name=`basename $HOME/userstuff/tutorial_R1_001.fa`
+<br> % echo $sample_name
+<br> % files=`ls *`
+<br> % echo $files
+<br> % curDir=`pwd`
+<br> % echo $curDir
+</p>
+
+<h2>9.2 Some arithmetic</h2>
+
+<h3>Arithmatic expansion using double parenthesis</h3>
+<p class="command"> % z=0
+<br> % z=$(($z+3)) (increment by 3)
+<br> % echo "z = $z"
+</p>
+
+<h3><samp>expr</samp></h3>
+<p>The <samp>expr</samp> utility evaluates expression and writes the result on standard output. It concatenates and evaluates the arguments according to the operation given (arguments must be separated by spaces). Operations may be arithmetic, comparison, string, or logical.
+</p>
+<p class="command"> % expr 3 + 5
+<br> % y=`expr 5 \* 3`
+<br> % b=`expr $y = 5`
+<br> % y=`expr $y + 1` (increment by 1)
+</p>
+
+<h2>9.3 IF test constructs</h3>
+<p>An <samp>if</samp>/<samp>then</samp> construct tests whether the exit status of a list of commands is <samp>0</samp> (since <samp>0</samp> means "success" by UNIX convention), and if so, executes one or more commands.
+
+<p class="command"> % echo "Testing \"0\""
+<br> % if [ 0 ]      # zero
+<br> % then
+<br> %   echo "0 is true."
+<br> % else          # Or else ...
+<br> %   echo "0 is false."
+<br> % fi            # 0 is true.
+<br> % 
+<br> % word=Linux
+<br> % letter_sequence=inu
+<br> % if echo "$word" | grep -q "$letter_sequence"
+<br> % # The "-q" option to grep suppresses output.
+<br> % then
+<br> %   echo "$letter_sequence found in $word"
+<br> % else
+<br> %   echo "$letter_sequence not found in $word"
+<br> % fi
+<br> %
+<br> % file="listNotFound"
+<br> % if [ ! -e "$file" ]       # Check if file exists.
+<br> % then
+<br> % echo "$file does not exist."; echo
+<br> % fi
+
+</p>
+
+<h2>9.4 Loops</h2>
+<p> A <strong>loop</strong> is a block of code that iterates a list of commands as long as the loop control condition is true.</p>
+
+<h3><samp>for</samp></h3>
+<p>The basic construct looks like
+<p class="command"> % for <var>arg</var> in <var>[list]</var>
+<br>
+% do
+<br>
+% <var>command(s)
+<br>
+done
+</p>
+<p>Here some examples:</p>
+<p class="command"> % for i in 1 2 3 4 5
+<br> % do
+<br> % echo $i
+<br> % done
+<br>
+<br> % for file in `ls`
+<br> % do
+<br> % echo $file
+<br> % done
+</p>
+
+<h3>Exercise 9a</h3>
+<p>Try the following:</p>
+<p class="command"> % for a in `seq 10`
+<br> % do
+<br> %  echo -n "$a "
+<br> % done
+</p>
+
+<p>What does <samp>seq</samp> do ?</p> 
+
+<h3><samp>while</samp></h3>
+<p>The <samp>while</samp> construct tests for a condition at the top of a loop, and keeps looping as long as that condition is true (returns a 0 exit status). In contrast to a for loop, a while loop finds use in situations where the number of loop repetitions is not known beforehand.
+</p>
+<p><samp>while <var>[ condition ]</var><br>
+do<br>
+ <var>command(s)...</var><br>
+done<br> 
+</p>
+<p class="command"> % var=0
+<br> % limit=10
+<br> % while [ "$var" -lt "$limit" ]
+<br> % do
+<br> % echo -n $var
+<br> % var=`expr $var + 1`
+<br> % done
+</p>
+
+<p class="navbar"><a href="unix8.html"><img src="media/left.gif" alt="Back" width="37" height="39" border="0" /></a> 
+  <a href="index.html"><img src="media/home.gif" alt="Home" width="81" height="39" border="0" /></a> 
+  <a href="bioinf.html"><img src="media/right.gif" alt="Next" width="37" height="39" border="0" /></a> 
+</p>
+
+<p class="date">adapted from M.Stonebank@surrey.ac.uk October 2001, abused by Patrick.May@uni.lu, March 2014 </p>
+<p> </p>
+</body>
+</html>

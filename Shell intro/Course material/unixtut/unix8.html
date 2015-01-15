@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>UNIX Tutorial Eight</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="Copyright" content="Michael Stonebank, 1995" />
+<link href="unixtut1.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<h1>UNIX Tutorial Eight </h1>
+<h2>8.1 UNIX Variables</h2>
+<p>Variables are a way of passing information from the shell to programs when 
+  you run them. Programs look &quot;in the environment&quot; for particular variables 
+  and if they are found will use the values stored. Some are set by the system, 
+  others by you, yet others by the shell, or any program that loads another program. 
+</p>
+<p>Standard UNIX variables are split into two categories, environment variables 
+  and shell variables. In broad terms, shell variables apply only to the current 
+  instance of the shell and are used to set short-term working conditions; environment 
+  variables have a farther reaching significance, and those set at login are valid 
+  for the duration of the session. By convention, environment variables have UPPER 
+  CASE and shell variables have lower case names. </p>
+
+<h2>8.2 Environment Variables</h2>
+<p>An example of an environment variable is the OSTYPE variable. The value of 
+  this is the current operating system you are using. Type </p>
+<p class="command">% echo $OSTYPE </p>
+<p>More examples of environment variables are </p>
+<ul>
+  <li> USER (your login name)</li>
+  <li> HOME (the path name of your home directory)</li>
+  <li> HOST (the name of the computer you are using)</li>
+  <li> ARCH (the architecture of the computers processor)</li>
+  <li> DISPLAY (the name of the computer screen to display X windows)</li>
+  <li> PRINTER (the default printer to send print jobs)</li>
+  <li> PATH (the directories the shell should search to find a command)</li>
+</ul>
+<h3>Finding out the current values of these variables.</h3>
+
+<p>ENVIRONMENT variables are set using the <samp>setenv</samp> command, displayed 
+  using the <samp>printenv</samp> or <samp>env</samp> commands, and unset using 
+  the <samp>unsetenv</samp> command. </p>
+<p>To show all values of these variables, type</p>
+<p class="command">% printenv | less</p>
+<h2>8.3 Shell Variables</h2>
+<p>An example of a shell variable is the history variable. The value of this is 
+  how many shell commands to save, allow the user to scroll back through all the 
+  commands they have previously entered. Type</p>
+<p class="command">% echo $history</p>
+<p>More examples of shell variables are </p>
+<ul>
+  <li>cwd (your current working directory)
+  </li>
+  <li> home (the path name of your home directory)
+  </li>
+  <li> path (the directories the shell should search to find a command)
+  </li>
+  <li> prompt (the text string used to prompt for interactive commands shell your 
+    login shell)
+  </li>
+</ul>
+
+<h3>Finding out the current values of these variables.</h3>
+
+<p>In the <samp>bash</samp> SHELL variables are set using the <samp>export</samp> command.  </p>
+<p class="command"> % echo $hist</p>
+<p class="command"> % export hist=200 </p>
+<p class="command"> % printenv | grep $hist </p>
+
+<h2>8.6 Setting the PATH</h2>
+<p>When you type a command, your path (or PATH) variable defines in which directories 
+  the shell will look to find the command you typed. If the system returns a message 
+  saying &quot;command: Command not found&quot;, this indicates that either the 
+  command doesn't exist at all on the system or it is simply not in your path. 
+</p>
+<p>For example, to run units, you either need to directly specify the units path 
+  (<strong>~/units174/bin/units</strong>), or you need to have the directory <strong>~/units174/bin</strong> 
+  in your path. </p>
+<p>You can add it to the end of your existing path (the <strong>$path</strong> 
+  represents this) by issuing the command: </p>
+<p class="command"> % export PATH=$PATH:/Users/patrick.may/units174/bin</p>
+<p>Test that this worked by trying to run units in any directory other that where 
+  units is actually located. </p>
+<p class="command">% cd; units</p>
+<p class="hint"><strong>HINT:</strong> You can run multiple commands on one line 
+  by separating them with a semicolon. </p>
+<p>To add this path PERMANENTLY, add the following line to your .bashrc in your home
+directory AFTER the list of other commands.</p>
+
+<p class="navbar"><a href="unix7.html"><img src="media/left.gif" alt="Back" width="37" height="39" border="0" /></a> 
+  <a href="index.html"><img src="media/home.gif" alt="Home" width="81" height="39" border="0" /></a> 
+  <a href="unix9.html"><img src="media/right.gif" alt="Next" width="37" height="39" border="0" /></a> 
+</p>
+
+<p class="date">adapted from M.Stonebank@surrey.ac.uk October 2001, abused by Patrick.May@uni.lu, March 2014 </p>
+<p> </p>
+</body>
+</html>
