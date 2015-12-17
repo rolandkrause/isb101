@@ -3,27 +3,300 @@ Introduction to R
 author: Ganna Androsova/Roland Krause
 date: 2015-01-05
 
-Introduction into R
+What is R?
 ========================================================
 
-For more details on authoring R presentations click the
-**Help** button on the toolbar.
+R is a language and environment for **statistical** computing and **graphics**.
 
-- Bullet 1
-- Bullet 2
-- Bullet 3
+Advantages of R:
+- FREE software
+- easy to download/install/update
+- easy to get help – huge R community in the web
+- easy to process big files and analyze huge amounts of data
+- integrated data visualization tools
+- programs can be integrated in the text (for instance, .pdf file will contain then results of calculations, figures, etc. - RMarkdown)
 
-Slide With Code
+More details on https://www.r-project.org/about.html
+
+How to install R on my PC?
 ========================================================
 
+- go to http://cran.r-project.org
+- choose your system
+- choose **base**
+- download R
+- run the downloaded file
+
+How to start coding?
+========================================================
+
+Create a new script with:
+![](1.png)
+
+How to write **good** programs?
+========================================================
+
+- Think **algorithmically**
+- Remember that your **PC doesn’t have brains**
+- IDEALLY: try to optimize your programs and make it **universal** (independent on current inputs (numbers, letters, etc.)
+
+What is called ‘inputs’?
+========================================================
+Inputs are your data, something you will work with further in your program.
+
+Inputs may be:
+![](2.png)
+
+Data types in R
+========================================================
+![](3.png)
+Type command **class( )** to see what data you are working with
+
+What can I do with R?
+========================================================
+- Data input/import
+- Data output/export
+- Basic operations (arithmetical, etc)
+- Data visualization
+- Data analysis
+- much more...
+
+Create variable in R
+========================================================
+- type 
 ```{r}
-summary(cars)
-print(cars)
+a = 5
+```
+-> variable is in memory
+- type 
+```{r}
+c = (a^5 - a)
+c
+```
+- to see what is **c** equal to, type
+```{r}
+print(c)
 ```
 
-Slide With Plot
+Basic R operations
+========================================================
+```{r}
+a = c(1,2,3,4)
+a
+a+5
+a-10
+a*4
+```
+
+Basic R operations
+========================================================
+```{r}
+sqrt(a)
+exp(a)
+log(a)
+```
+
+Basic R operations
+========================================================
+We can save the results in another vector called **b** and use parentheses for more complicated expressions:
+```{r}
+b = (a + sqrt(a))/(exp(2)+1)
+b
+```
+The operation is performed on an element by element basis.
+```{r}
+a/b
+```
+
+Basic R operations
 ========================================================
 
-```{r, echo=FALSE}
-plot(cars)
+While performing operations on vectors, all of the vectors in an expression must be the same length. If the lengths of the vectors differ then you may get an error message, or worse, a warning message and unpredictable results:
+```{r, warning = TRUE}
+a = c(1,2,3)
+b = c(10,11,12,13)
+a+b
+```
+
+Basic R operations
+========================================================
+As you work in R and create new vectors it can be easy to lose track of what variables you have defined. To get a list of all of the variables that have been defined use the ls() command:
+```{r}
+ls()
+```
+
+Naming of variables
+========================================================
+Naming conventions in R are famously **anarchic**
+
+Basically, there are 5 naming conventions to choose from:
+
+- alllowercase: e.g. adjustcolor
+- period.separated: e.g. plot.new
+- underscore_separated: e.g. numeric_version
+- lowerCamelCase: e.g. addTaskCallback
+- UpperCamelCase: e.g. SignatureMethod
+
+**Choose one and BE CONSISTENT!**
+
+Naming of variables
+========================================================
+Give meaningful names
+- **matrix_export** is better than **exp**
+
+Andy Lester declared **The World's Worst Variable Name** to be:
+
+                          data
+
+Of course it's data! That's what variables contain! That's all they ever can contain. It's like you're packing up your belongings to move to a new house, and on the side of the box you write, in big black marker, "things"
+
+Vectors
+========================================================
+You have already seen vector creation: **a = c(1,2,3)**
+
+To generate a sequence of values from x to y with one step: **x:y**
+```{r}
+a = 2:10
+a
+```
+You can also create a vector using **c()**:
+```{r}
+b = c(1, 16, 23:28)
+b
+```
+
+Operations with vectors
+========================================================
+![](4.png)
+
+Operations with vectors
+========================================================
+```{r}
+help(sort)
+sort(a, decreasing = FALSE)
+sort(a, decreasing = TRUE)
+```
+
+From vectors to matrices
+========================================================
+```{r}
+a = c(1,2)
+b = c(3,4)
+```
+
+You may bind two vectors columnwise or rowwise: 
+```{r}
+cbind(a, b)
+c = rbind(a, b)
+```
+BUT !!! Vectors must be of the same length!!!
+
+Matrices
+========================================================
+To create a x-by-y matrix of 0s :
+```{r}
+matrix(0, nrow = 2, ncol = 3)
+```
+To create any matrix:
+```{r}
+matrix(c(1,2,3,4,5,6), nrow = 2, ncol = 3)
+```
+
+Row and column naming
+========================================================
+Give a vector with names, the length of which corresponds to dimentions of matrix:
+
+```{r}
+c = matrix(c(1,2,3,4,5,6), nrow = 2, ncol = 3)
+names = c("first_row", "second_row")
+length(names)
+rownames(c) = names
+colnames(c) = c("A", "B", "C")
+print(c)
+```
+
+Addressing elements
+========================================================
+Every element of your R object has it’s order number inside the object. This order number is called index.
+```{r}
+b = c(1, 16, 23:28)
+b
+b[2]
+```
+
+Addressing elements in matrix
+========================================================
+To access an element in matrix, specify of two numbers or names:
+[row_number, col_number]
+```{r}
+c
+c[1, 2]
+c[2, "B"]
+```
+
+Addressing elements in matrix
+========================================================
+Within the brackets you may specify various arguments, including not only numbers, but also conditions to which the desired elements must satisfy:
+```{r}
+c[1,]
+c[c>3]
+```
+
+Data frames
+========================================================
+A data frame is used for storing data tables. It is a list of vectors of equal length. For example, the following variable df is a data frame containing three vectors n, s, b.
+```{r}
+n = c(2, 3, 5)
+s = c("aa", "bb", "cc")
+b = c(TRUE, FALSE, TRUE)
+df = data.frame(n, s, b)
+df
+```
+
+Data frames
+========================================================
+R has a built-in data frame called mtcars.
+```{r}
+mtcars[1:10,1:5]
+```
+
+Data frames
+========================================================
+We can use the row and column names instead of the numeric coordinates.
+```{r}
+mtcars["Mazda RX4", "cyl"]
+```
+The number of data rows in the data frame is given by:
+```{r}
+nrow(mtcars)
+```
+**ncol( )** -> for number of columns
+
+Working with data frames
+========================================================
+Access the specific column by **$column_name** (this only works for data frames)
+```{r}
+mtcars$cyl
+mean(mtcars$cyl)
+#median(mtcars$cyl)
+```
+
+Working with data frames
+========================================================
+```{r}
+quantile(mtcars$cyl)
+min(mtcars$cyl)
+sd(mtcars$cyl)
+#summary(mtcars) #prints min, max, mean, median, and quantiles
+```
+
+Working with data frames
+========================================================
+Change the column names of data frame with function **names( )**
+```{r}
+names(mtcars)[1] = "new_name"
+```
+To see first n elements of your data frame use **head(data_frame, n)**
+```{r}
+head(mtcars, 3) #Gives first 3 rows
 ```
