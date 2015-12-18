@@ -1,0 +1,79 @@
+<style>
+.reveal column, .reveal column1, .reveal column2 slideContent{
+    margin:-20px;
+    }
+.reveal code .r{
+    width:120%
+    font:0.8em}
+.section .reveal .state-background {
+    background: white;}
+.section .reveal h1,
+.section .reveal p {
+    color: black;
+    position: relative;
+    top: 4%;}
+.reveal h1, .reveal h2, .reveal h3 {
+  word-wrap: normal;
+  -moz-hyphens: none;
+}
+.small-code pre code {
+  font-size: 1em;
+}
+.midcenter {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+}
+</style>
+
+Advanced introduction to R
+========================================================
+author: Ganna Androsova
+date: 2015-01-06
+font-family: 'Arial'
+
+Frequency distribution
+========================================================
+In statistics, a **frequency distribution** is a table that displays the frequency of various outcomes in a sample. Each entry in the table contains the frequency or count of the occurrences of values within a particular group or interval, and in this way, the table summarizes the distribution of values in the sample.
+
+Let’s take an example of “**discoveries**” data set (type ?discoveries in your R console).
+
+These are the **raw data** on the number of important inventions or discoveries made yearly from 1860 to 1959.
+
+Frequency distribution
+========================================================
+class:small-code
+Extract data on years 1869 to 1878:
+```{r}
+discoveries.per.year = discoveries[10:19]
+discoveries.per.year
+```
+During the mentioned 10 years there were 26 important discoveries; that having 5 discoveries per year happened only once and that one, two or three discoveries per year are much more frequent (3 times each).
+
+Frequency distribution
+========================================================
+class:small-code
+In R you can create the frequency distribution table using just one command: **table( )**.
+
+This creates so-called **contingency table** which is the analog of the frequency distribution table:
+```{r}
+table(discoveries.per.year)
+```
+
+Data visualization
+========================================================
+A plot is a visualization (graphical representation) of data, in which the data are coded by **symbols**, such as **dots**, **bars** in a bar chart, **lines** in a line chart, or **slices** in a pie chart.
+![](5.png)
+
+Installation of R packages
+========================================================
+
+- List of the existing R packages is available at **Packages** tab at https://cran.r-project.org
+
+To add packages type in console:
+- install.packages("**PackageName**")
+
+OR
+- source("https://bioconductor.org/biocLite.R")
+biocLite("**PackageName**")
+- you may also download any package as a .zip and install it then by choosing in the R menu: **Packages** -> **Install package(s) from local .zip file** -> choosing the name of the file
