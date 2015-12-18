@@ -29,12 +29,18 @@ Working Directory
 - When we load/save datasets, load source files or save graphs we will need to specify the file path. To avoid typing the path every time we can specify a working directory.
 
 - To set the working directory click File > Change dir... or type setwd(file path)
-```{r}
+
+```r
 getwd()
 ```
 
+```
+[1] "/Users/ganna.androsova/isb101/R"
+```
+
 If files are in different directory please indicate it with
-```{r}
+
+```r
 setwd("/Users/ganna.androsova/isb101/R")
 ```
 
@@ -43,12 +49,14 @@ Data import
 class:small-code
 You can directly read your data table from a file located either on your computer: 
 
-```{r}
+
+```r
 taxon = read.table('taxon.txt')
 ```
 
 or elsewhere in the web: 
-```{r}
+
+```r
 # url of taxon data
 taxon_url = "http://www.bio.ic.ac.uk/research/mjcraw/therbook/data/taxon.txt"
 
@@ -56,6 +64,16 @@ taxon_url = "http://www.bio.ic.ac.uk/research/mjcraw/therbook/data/taxon.txt"
 taxon = read.table(taxon_url)
 
 head(taxon)
+```
+
+```
+    Petals Internode    Sepal    Bract  Petiole     Leaf    Fruit
+1 5.621498  29.48060 2.462107 18.20341 11.27910 1.128033 7.876151
+2 4.994617  28.36025 2.429321 17.65205 11.04084 1.197617 7.025416
+3 4.767505  27.25432 2.570497 19.40838 10.49072 1.003808 7.817479
+4 6.299446  25.92424 2.066051 18.37915 11.80182 1.614052 7.672492
+5 6.489375  25.21131 2.901583 17.31305 10.12159 1.813333 7.758443
+6 5.785868  25.52433 2.655643 17.07216 10.55816 1.955524 7.880880
 ```
 
 Data import
@@ -91,15 +109,27 @@ Installation of R packages
 class:small-code
 For working with excel file, we need package **"xlsReadWrite"**.
 
-```{r, eval = F}
+
+```r
 source("https://bioconductor.org/biocLite.R")
 biocLite("xlsx")
 ```
 After you run these lines -> package is installed but not started.
-```{r}
+
+```r
 library(xlsx)
 taxon = read.xlsx("taxon.xlsx", sheetIndex = 1)
 head(taxon[, 1:6])
+```
+
+```
+      Petals  Internode      Sepal      Bract    Petiole       Leaf
+1 5621498349 2948059578 2462106579  182034091 1127909704 1128032999
+2 4994616997 2836024706 2429320759 1765204912  110408378 1197616585
+3 4767504884 2725431792 2570497375  194083846 1049072184 1003808444
+4 6299445616  259242382 2066051345 1837915478 1180182252 1614051727
+5 6489375001 2521130805 2901582763 1731304737 1012159001 1813333082
+6   57858682 2552433147 2655642742 1707215724  105581605 1955524186
 ```
 
 Control statements: conditions
@@ -118,7 +148,8 @@ Control statements: conditions
 class:small-code
 ![](14.png)
 ***
-```{r}
+
+```r
 x = c(2,3,4,5)
 
 if (all(x) == 0) { 
@@ -128,6 +159,10 @@ if (all(x) == 0) {
   x[length(x)+1] = 16 
   print(x) 
 }
+```
+
+```
+[1]  2  3  4  5 16
 ```
 
 Repetitive execution: for loop
@@ -145,13 +180,37 @@ Repetitive execution: for loop
 class:small-code
 ![](15.png)
 ***
-```{r}
+
+```r
 x = cbind(c(1, 2, 3, 4), c(5, 7, 8, 9))
 
 for (ii in 1:nrow(x)){
   x[ii,] = 5
   print(x)
 }
+```
+
+```
+     [,1] [,2]
+[1,]    5    5
+[2,]    2    7
+[3,]    3    8
+[4,]    4    9
+     [,1] [,2]
+[1,]    5    5
+[2,]    5    5
+[3,]    3    8
+[4,]    4    9
+     [,1] [,2]
+[1,]    5    5
+[2,]    5    5
+[3,]    5    5
+[4,]    4    9
+     [,1] [,2]
+[1,]    5    5
+[2,]    5    5
+[3,]    5    5
+[4,]    5    5
 ```
 
 Other loops: repeat and while
@@ -165,7 +224,8 @@ There exist other statements for repeated expressions: **repeat** expression and
 Other loops: while and repeat
 ========================================================
 class:small-code
-```{r}
+
+```r
 ii = 1 
 while (ii <= nrow(x)) { 
   x[ii,] = 1
@@ -173,8 +233,32 @@ while (ii <= nrow(x)) {
   print(x) 
 }
 ```
+
+```
+     [,1] [,2]
+[1,]    1    1
+[2,]    5    5
+[3,]    5    5
+[4,]    5    5
+     [,1] [,2]
+[1,]    1    1
+[2,]    1    1
+[3,]    5    5
+[4,]    5    5
+     [,1] [,2]
+[1,]    1    1
+[2,]    1    1
+[3,]    1    1
+[4,]    5    5
+     [,1] [,2]
+[1,]    1    1
+[2,]    1    1
+[3,]    1    1
+[4,]    1    1
+```
 ***
-```{r}
+
+```r
 j = 1 
 repeat { 
   x[, j] = 3
@@ -186,10 +270,24 @@ repeat {
 }
 ```
 
+```
+     [,1] [,2]
+[1,]    3    1
+[2,]    3    1
+[3,]    3    1
+[4,]    3    1
+     [,1] [,2]
+[1,]    3    3
+[2,]    3    3
+[3,]    3    3
+[4,]    3    3
+```
+
 Working with file
 ========================================================
 class:small-code
-```{r, fig.align = "center", fig.height = 6, fig.width = 6}
+
+```r
 #taxon
 mean.values = c(1:ncol(taxon))
 for(i in c(1:ncol(taxon))){
@@ -200,11 +298,14 @@ lines(mean.values)
 axis(1, at=c(1:ncol(taxon)), labels=colnames(taxon))
 ```
 
+<img src="R_session2-figure/unnamed-chunk-11-1.png" title="plot of chunk unnamed-chunk-11" alt="plot of chunk unnamed-chunk-11" style="display: block; margin: auto;" />
+
 Writing the results
 ========================================================
 class:small-code
 ![](16.png)
-```{r}
+
+```r
 write.table(mean.values, file = "Log-transformed mean taxon.txt", quote = FALSE, sep = "\t")
 ```
 
@@ -220,9 +321,14 @@ Frequency distribution
 ========================================================
 class:small-code
 Extract data on years 1869 to 1878:
-```{r}
+
+```r
 discoveries.per.year = discoveries[10:19]
 discoveries.per.year
+```
+
+```
+ [1] 1 2 1 2 1 3 3 3 5 2
 ```
 During the mentioned 10 years there were 26 important discoveries; that having 5 discoveries per year happened only once and that one, two or three discoveries per year are much more frequent (3 times each).
 
@@ -232,8 +338,15 @@ class:small-code
 In R you can create the frequency distribution table using just one command: **table( )**.
 
 This creates so-called **contingency table** which is the analog of the frequency distribution table:
-```{r}
+
+```r
 table(discoveries.per.year)
+```
+
+```
+discoveries.per.year
+1 2 3 5 
+3 3 3 1 
 ```
 
 Data visualization
@@ -247,21 +360,27 @@ How to create a graph in R?
 ========================================================
 class:small-code
 The basic function for plotting in R is **plot( )**. It opens a graph window and plots a graph there. Its results can be varied by changing the parameters (arguments) of the **plot( )** function:
-```{r, fig.align = "center", fig.height = 5}
+
+```r
 years = c(1:10)
 discoveries_df = data.frame(years, discoveries.per.year)
 plot(discoveries_df)
 ```
 
+<img src="R_session2-figure/unnamed-chunk-15-1.png" title="plot of chunk unnamed-chunk-15" alt="plot of chunk unnamed-chunk-15" style="display: block; margin: auto;" />
+
 How to create a graph in R?
 ========================================================
 class:small-code
 
-```{r, fig.align = "center", fig.height = 7, fig.width = 12}
+
+```r
 par(mfrow=c(1,2))
 plot(discoveries_df)
 hist(discoveries.per.year, breaks = 10)
 ```
+
+<img src="R_session2-figure/unnamed-chunk-16-1.png" title="plot of chunk unnamed-chunk-16" alt="plot of chunk unnamed-chunk-16" style="display: block; margin: auto;" />
 
 How to create a graph in R?
 ========================================================
@@ -274,11 +393,14 @@ Use the **pch=** option to specify symbols to use when plotting points. For symb
 How to create a graph in R?
 ========================================================
 class:small-code
-```{r, fig.align = "center", fig.height = 7, fig.width = 12}
+
+```r
 par(mfrow=c(1,2))
 plot(discoveries_df, col = "blue", pch = 19, main = "Discoveries per year", xlab = "Years", ylab = "Number of discoveries")
 hist(discoveries.per.year, breaks = 10, col = "green", main = "Frequency distribution of discoveries", xlab = "Discoveries per year")
 ```
+
+<img src="R_session2-figure/unnamed-chunk-17-1.png" title="plot of chunk unnamed-chunk-17" alt="plot of chunk unnamed-chunk-17" style="display: block; margin: auto;" />
 
 Plotting in R
 ========================================================
@@ -291,7 +413,8 @@ class:small-code
 - You can add a **groups=** option to designate a factor specifying how the elements of x are grouped.
 - Option **gcolor=** controls the color of the groups label.
 
-```{r, fig.align = "center", fig.height = 7, fig.width = 12}
+
+```r
 par(mfrow=c(1,2))
 # Simple Dotplot
 dotchart(mtcars$mpg,labels=row.names(mtcars),cex=.7,main="Gas Milage for Car Models",xlab="Miles Per Gallon")
@@ -305,10 +428,13 @@ x$color[x$cyl==8] <- "darkgreen"
 dotchart(x$mpg,labels=row.names(x),cex=.7,groups= x$cyl,main="Gas Milage for Car Models\ngrouped by cylinder",xlab="Miles Per Gallon", gcolor="black", color=x$color)
 ```
 
+<img src="R_session2-figure/unnamed-chunk-18-1.png" title="plot of chunk unnamed-chunk-18" alt="plot of chunk unnamed-chunk-18" style="display: block; margin: auto;" />
+
 Dot plots
 ========================================================
 class:small-code
-```{r, fig.align = "center", fig.height = 6, fig.width = 12}
+
+```r
 par(mfrow=c(1,2))
 # Simple Dotplot
 dotchart(mtcars$mpg,labels=row.names(mtcars),cex=.7,main="Gas Milage for Car Models",xlab="Miles Per Gallon")
@@ -316,6 +442,8 @@ dotchart(mtcars$mpg,labels=row.names(mtcars),cex=.7,main="Gas Milage for Car Mod
 # Dotplot: Grouped Sorted and Colored 
 dotchart(x$mpg,labels=row.names(x),cex=.7,groups= x$cyl,main="Gas Milage for Car Models\ngrouped by cylinder",xlab="Miles Per Gallon", gcolor="black", color=x$color)
 ```
+
+<img src="R_session2-figure/unnamed-chunk-19-1.png" title="plot of chunk unnamed-chunk-19" alt="plot of chunk unnamed-chunk-19" style="display: block; margin: auto;" />
 
 Bar charts
 ========================================================
@@ -332,7 +460,8 @@ Include option **names.arg = (character vector)** to label the bars.
 Bar charts
 ========================================================
 class:small-code
-```{r, fig.align = "center", fig.height = 6, fig.width = 12, eval=FALSE}
+
+```r
 par(mfrow=c(2,2))
 # Simple Bar Plot 
 counts <- table(mtcars$gear)
@@ -354,24 +483,7 @@ barplot(counts, main="Car Distribution by Gears and VS",xlab="Number of Gears", 
 Bar charts
 ========================================================
 class:small-code
-```{r, fig.align = "center", fig.height = 9, fig.width = 12, echo=FALSE}
-par(mfrow=c(2,2))
-# Simple Bar Plot 
-counts <- table(mtcars$gear)
-barplot(counts, main="Car Distribution", xlab="Number of Gears")
-
-# Simple Horizontal Bar Plot with Added Labels 
-counts <- table(mtcars$gear)
-barplot(counts, main="Car Distribution", horiz=TRUE,names.arg=c("3 Gears", "4 Gears", "5 Gears"))
-
-# Stacked Bar Plot with Colors and Legend
-counts <- table(mtcars$vs, mtcars$gear)
-barplot(counts, main="Car Distribution by Gears and VS",xlab="Number of Gears", col=c("darkblue","red"),legend = rownames(counts))
-
-# Grouped Bar Plot
-counts <- table(mtcars$vs, mtcars$gear)
-barplot(counts, main="Car Distribution by Gears and VS",xlab="Number of Gears", col=c("darkblue","red"),legend = rownames(counts), beside=TRUE)
-```
+<img src="R_session2-figure/unnamed-chunk-21-1.png" title="plot of chunk unnamed-chunk-21" alt="plot of chunk unnamed-chunk-21" style="display: block; margin: auto;" />
 
 Line charts
 ========================================================
@@ -387,7 +499,8 @@ It **can not produce a graph** on its own. Usually **it follows a plot(x, y)** c
 Line charts
 ========================================================
 class:small-code
-```{r, fig.align = "center", fig.height = 9, fig.width = 12, eval=FALSE}
+
+```r
 x <- c(1:5) #create some data
 y <- x 
 
@@ -405,18 +518,7 @@ for(i in 1:length(opts)){
 Line charts
 ========================================================
 class:small-code
-```{r, fig.align = "center", fig.height = 9, fig.width = 14, echo=FALSE}
-x <- c(1:5) #create some data
-y <- x 
-par(pch=22, col="blue") # plotting symbol and color 
-par(mfrow=c(2,4)) # all plots on one page 
-opts = c("p","l","o","b","c","s","S","h") 
-for(i in 1:length(opts)){ 
-  heading = paste("type=",opts[i]) 
-  plot(x, y, main=heading) 
-  lines(x, y, type=opts[i]) 
-}
-```
+<img src="R_session2-figure/unnamed-chunk-23-1.png" title="plot of chunk unnamed-chunk-23" alt="plot of chunk unnamed-chunk-23" style="display: block; margin: auto;" />
 
 Boxplots
 ========================================================
@@ -430,10 +532,13 @@ square root of the samples sizes;
 Boxplots
 ========================================================
 class:small-code
-```{r, fig.align = "center", fig.height = 7, fig.width = 7}
+
+```r
 # Boxplot of MPG by Car Cylinders 
 boxplot(wt~cyl, data=mtcars, main=toupper("Vehicle Weight"), font.main=3, cex.main=1.2, xlab="Number of Cylinders", ylab="Weight", font.lab=3, col="green")
 ```
+
+<img src="R_session2-figure/unnamed-chunk-24-1.png" title="plot of chunk unnamed-chunk-24" alt="plot of chunk unnamed-chunk-24" style="display: block; margin: auto;" />
 
 Population vs. sample
 ========================================================
@@ -468,10 +573,13 @@ Q3 = The upper quartile = The 0.75 quantile = The 75% percentile
 Quantile, quartile, percentile
 ========================================================
 class:small-code
-```{r, fig.align = "center", fig.height = 7, fig.width = 7}
+
+```r
 boxplot(x, range = 0, col = "red", main = "Basic boxplot")
 text(1.3, quantile(x), c("Minimum","Q1","Median","Q3","Maximum"), col="blue")
 ```
+
+<img src="R_session2-figure/unnamed-chunk-25-1.png" title="plot of chunk unnamed-chunk-25" alt="plot of chunk unnamed-chunk-25" style="display: block; margin: auto;" />
 
 Measures of variability
 ========================================================
