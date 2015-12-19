@@ -31,7 +31,13 @@ Regular Expressions in R
 author: Ganna Androsova
 date: 07-01-2016
 font-family: 'Arial'
+<br>
+<br>
+<br>
+<br>
+<br>
 
+<div style = "font-size:60%">Slides are adapted from presentation "LECTURE 16: REGULAR EXPRESSIONS IN R" by Vinayak Rao</div>
 
 What is a regular expression?
 ========================================================
@@ -110,8 +116,6 @@ caught red handed
 R functions
 ========================================================
 **grep, grepl**: Search for matches of a regular expression/pattern in a character vector; either return the indices into the character vector that match, the strings that happen to match, or a TRUE/FALSE vector indicating which elements match
-
-**regexpr, gregexpr**: Search a character vector for regular expression matches and return the indices of the string where the match begins and the length of the match
 
 **sub, gsub**: Search a character vector for regular expression matches and replace that match with another string
 
@@ -240,6 +244,107 @@ gsub('(a+)r(a+)', '\\U\\1r\\2', vec2, perl = TRUE)
 gsub('(a+)r(a+)', '\\U\\1r\\E\\2', vec2, perl = TRUE)
 ```
 
+Extended list of regular expressions
+========================================================
+**.** stands for any character.
+
+**[ABC]** means A,B or C.
+
+**[A-Z]** means any upper letter between A and Z.
+
+**[0-9]** means any digit between 0 and 9.
+
+List of metacharacters **‘$ * + . ? [ ] ^ { } | ( ) \’**. If you need to use one of those characters, precede them with a doubled backslash.
+
+Extended list of regular expressions
+========================================================
+For numbers:
+
+**[:digit:]** Digits: ‘0 1 2 3 4 5 6 7 8 9’.
+
+For letters :
+
+**[:alpha:]** Alphabetic characters: ‘[:lower:]’ and ‘[:upper:]’.
+
+**[:upper:]** Upper-case letters.
+
+**[:lower:]** Lower-case letters.
+
+Note that the set of alphabetic characters includes accents such as é è ê which are very common is some languages like French. Therefore, it is more general than **[A-Za-z]** which does not include letters with accent.
+
+Extended list of regular expressions
+========================================================
+For other characters :
+
+**[:punct:]** Punctuation characters: ‘! " # $ % & ' ( ) * + , - . / : ; < = > ? @ [ \ ] ^ _ ` { | } ~’.
+
+**[:space:]** Space characters: tab, newline, vertical tab, form feed, carriage return, and space.
+
+**[:blank:]** Blank characters: space and tab.
+
+Extended list of regular expressions
+========================================================
+For combination of other classes :
+
+**[:alnum:]** Alphanumeric characters: ‘[:alpha:]’ and ‘[:digit:]’.
+
+**[:graph:]** Graphical characters: ‘[:alnum:]’ and ‘[:punct:]’.
+
+**[:print:]** Printable characters: ‘[:alnum:]’, ‘[:punct:]’ and space.
+
+**[:xdigit:]** Hexadecimal digits: ‘0 1 2 3 4 5 6 7 8 9 A B C D E F a b c d e f’.
+
+Extended list of regular expressions
+========================================================
+You can quantify the number of repetition by adding after the regular expression the following characters :
+
+**?** The preceding item is optional and will be matched at most once.
+
+* The preceding item will be matched zero or more times.
+
+**+** The preceding item will be matched one or more times.
+
+**{n}** The preceding item is matched exactly ‘n’ times.
+
+**{n,}** The preceding item is matched ‘n’ or more times.
+
+**{n,m}** The preceding item is matched at least ‘n’ times, but not more than ‘m’ times.
+
+Extended list of regular expressions
+========================================================
+class:small-code
+**^** to force the regular expression to be at the beginning of the string
+
+**$** to force the regular expression to be at the end of the string
+
+If you want to know more, have a look at the 2 following help files :
+```{r}
+?regexp # gives some general explanations
+?grep # help file for grep(),regexpr(),sub(),gsub(),etc
+```
+
+Concatenating strings
+========================================================
+class:small-code
+**paste()** concatenates strings.
+**cat()** prints and concatenates strings
+```{r}
+paste("toto","tata",sep=' ')
+paste("toto","tata",sep=",")
+x <- c("a","b","c")
+paste(x,collapse="-")
+cat(c("a","b","c"), sep = "+")
+```
+
+Splitting a string
+========================================================
+class:small-code
+**strsplit( )** : Split the elements of a character vector ‘x’ into substrings according to the matches to substring ‘split’ within them.
+**cat()** prints and concatenates strings
+```{r}
+strsplit("a.b.c", "\\.")
+unlist(strsplit("a.b.c", "\\."))
+```
 
 
 
