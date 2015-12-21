@@ -1,0 +1,73 @@
+Linkage analysis in R 
+========================================================
+author: Roland Krause
+date: 7. January 2016
+
+Tutorial content
+========================================================
+
+- Working with family data
+- Plotting a pedigree
+- Reading a pedigree
+- Calculate odds ratio and lod score
+
+Slide With Code
+========================================================
+
+```{r}
+summary(cars)
+```
+
+Slide With Plot
+========================================================
+
+```{r, echo=FALSE}
+plot(cars)
+```
+
+Risk ratio  
+==============================
+
+*Risk ratio* is the risk of event in the experimental group $R_e$ vs risk of event in  the control group $R_c$
+
+      | Event S | Failure F (no event) | Total
+  ----|-----------|-------------|------
+  Experimental intervention | $S_E$ | $F_E$ |$N_E$
+  Control intervention |$S_C$ | $F_C$ |$N_C$
+
+$$R_R=\frac{S_E/N_E}{S_C/N_C}$$
+
+Calculate the risk ratio for post-operative delirium in a group of  1400 patients. 650 patients are older than 77 years of age of which 52 develop delirium. In the younger group, only 40 patients are delerious after surgery. Calculate the risk ratio and the odds ratio.
+
+Linkage analysis
+================
+class: section
+
+Install package in R
+====================
+
+```{r}
+#install.packages("paramlink")
+library(paramlink)
+
+```
+
+
+Basics of family analysis in R with *paramlink* and *kinship2*
+=====================
+
+Create a nuclear family
+```{r}
+nuc.p <- nuclearPed(4,2)
+print(nuc.p)
+```
+
+***
+
+```{r}
+plot(nuc.p)
+```
+
+
+GWAS analysis in GenABEL
+========================

@@ -1,0 +1,420 @@
+<style>
+.reveal column, .reveal column1, .reveal column2 slideContent{
+    margin:-20px;
+    }
+.reveal code .r{
+    width:120%
+    font:0.8em}
+.section .reveal .state-background {
+    background: white;}
+.section .reveal h1,
+.section .reveal p {
+    color: black;
+    position: relative;
+    top: 4%;}
+.reveal h1, .reveal h2, .reveal h3 {
+  word-wrap: normal;
+  -moz-hyphens: none;
+}
+.small-code pre code {
+  font-size: 1em;
+}
+.midcenter {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+}
+</style>
+
+Introduction to R
+========================================================
+author: Ganna Androsova
+date: 2015-01-06
+font-family: 'Arial'
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<div style = "font-size:60%">Slides are adapted from presentation "Practicals in Bioinformatics" by Dr. Tatiana R. Baumuratova</div>
+
+What is R?
+========================================================
+
+R is a language and environment for **statistical** computing and **graphics**.
+
+Advantages of R:
+- FREE software
+- easy to download/install/update
+- easy to process big files and analyze huge amounts of data
+- integrated data visualization tools
+- programs can be integrated in the text (for instance, .pdf file will contain then results of calculations, figures, etc. - RMarkdown)
+
+More details on https://www.r-project.org/about.html
+
+How to install R on my PC?
+========================================================
+
+- go to http://cran.r-project.org
+- choose your system
+- choose **base**
+- download R
+- run the downloaded file
+
+How to start coding?
+========================================================
+
+Create a new script with:
+<div style="width:70%"><img src="1.png"></img></div>
+
+How to write **good** programs?
+========================================================
+
+- Think **algorithmically**
+- Remember that your **PC doesn’t have brains**
+- IDEALLY: try to optimize your programs and make it **universal** (independent on current inputs (numbers, letters, etc.)
+
+What is called ‘inputs’?
+========================================================
+Inputs are your data, something you will work with further in your program.
+
+Inputs may be:
+![](2.png)
+
+Data types in R
+========================================================
+![](3.png)
+Type command **class( )** to see what data you are working with
+
+What can I do with R?
+========================================================
+- Data input/import
+- Data output/export
+- Basic operations (arithmetical, etc)
+- Data visualization
+- Data analysis
+- much more...
+
+Create variable in R
+========================================================
+class: small-code
+- type to save variable into memory
+```{r}
+a = 5
+```
+- create a new variable based on **a**
+```{r}
+c = (a^5 - a)
+c
+```
+- another way to see what **c** is equal to is
+```{r}
+print(c)
+```
+Create variable in R
+========================================================
+class: small-code
+- create a vector with several elements by command **c( )**
+```{r}
+a = c(1,2,3)
+a
+a = c(1:3)
+a
+a+5
+a*4
+```
+Basic R operations
+========================================================
+class: small-code
+```{r}
+a-10
+sqrt(a)
+exp(a)
+log(a)
+```
+***
+We can save the results in another vector called **b** and use parentheses for more complicated expressions:
+```{r}
+b = (a + sqrt(a))/(exp(2)+1)
+print(b)
+a/b
+```
+
+Basic R operations
+========================================================
+class: small-code
+
+While performing operations on vectors, all of the vectors in an expression must be the same length. If the lengths of the vectors differ then you may get an error message, or worse, a warning message and unpredictable results:
+```{r, warning = TRUE}
+a = c(1,2,3)
+b = c(10,11,12,13)
+a+b
+```
+
+Basic R operations
+========================================================
+class: small-code
+
+As you work in R and create new vectors it can be easy to lose track of what variables you have defined. To get a list of all of the variables that have been defined use the ls() command:
+```{r}
+ls()
+```
+
+Naming of variables
+========================================================
+Naming conventions in R are famously **anarchic**.
+
+There are 5 naming conventions:
+
+- alllowercase: e.g. adjustcolor
+- period.separated: e.g. **plot.new** <- most preferred in R
+- underscore_separated: e.g. numeric_version
+- lowerCamelCase: e.g. addTaskCallback
+- UpperCamelCase: e.g. SignatureMethod
+
+**Choose one and BE CONSISTENT!**
+
+Naming of variables
+========================================================
+Give **MEANINGFUL** names
+- **matrix.multiplication** is better than **mult**
+
+Andy Lester declared **The World's Worst Variable Name** to be:
+
+                          data
+
+Of course it's data! That's what variables contain! That's all they ever can contain. It's like you're packing up your belongings to move to a new house, and on the side of the box you write, in big black marker, "things"
+
+Naming of variables
+========================================================
+
+Guess: what is the **second** worst variable name?
+
+
+Naming of variables
+========================================================
+
+                          data2
+
+Usually, you'll see it like this:
+
+total = price * qty
+
+total2 = total - discount
+
+if(total > total2){
+
+print("You got a discount!")
+
+}
+
+If you're faced with naming something total2, change the existing name to something more specific.
+
+Vectors
+========================================================
+class: small-code
+
+You have already seen vector creation: **a = c(1,2,3)**
+
+To generate a sequence of values from x to y with one step: **x:y**
+```{r}
+a = 2:10
+a
+```
+or
+```{r}
+b = c(1, 16, 23:28)
+b
+```
+
+Operations with vectors
+========================================================
+![](4.png)
+
+Operations with vectors
+========================================================
+class: small-code
+```{r}
+help(sort)
+```
+
+**help** will return a full description of the query command: what it does, what it needs as input, what will be produced in output
+```{r}
+sort(a, decreasing = FALSE)
+sort(a, decreasing = TRUE)
+```
+
+From vectors to matrices
+========================================================
+class: small-code
+```{r}
+a = c(1,2)
+b = c(3,4)
+```
+
+- You may bind two vectors columnwise or rowwise: 
+```{r}
+cbind(a, b)
+c = rbind(a, b)
+```
+- BUT !!! Vectors must be of the same length!!!
+
+***
+To create a x-by-y matrix of 0s :
+```{r}
+matrix(0, nrow = 2, ncol = 3)
+```
+To create any matrix:
+```{r}
+matrix(c(1,2,3,4,5,6), nrow = 2, ncol = 3)
+```
+
+Row and column naming
+========================================================
+class: small-code
+
+Give a vector with names, the length of which corresponds to dimentions of matrix:
+
+```{r}
+c = matrix(c(1,2,3,4,5,6), nrow = 2, ncol = 3)
+names = c("first_row", "second_row")
+length(names)
+rownames(c) = names
+colnames(c) = c("A", "B", "C")
+print(c)
+```
+
+Addressing elements
+========================================================
+class: small-code
+
+Every element of your R object has it’s order number inside the object. This order number is called index.
+```{r}
+b = c(1, 16, 23:27)
+b
+b[2]
+```
+
+***
+To access an element in matrix, specify row index (or row name) and then column index (or name) as **[row_index, col_index]**
+```{r}
+c
+c[1, 2]
+c[2, "B"]
+```
+
+Addressing elements in matrix
+========================================================
+class: small-code
+
+Within the brackets you may specify various arguments, including not only numbers, but also conditions to which the desired elements must satisfy:
+```{r}
+c
+c[1,]
+c[c>3]
+```
+***
+Other operations like **transpose**, **matrix multiplication** can be performed:
+```{r}
+d = t(c)
+d
+c %*% d
+```
+
+Data frames
+========================================================
+class: small-code
+
+A data frame is used for storing data tables. It is a list of vectors of equal length. For example, the following variable df is a data frame containing three vectors n, s, b.
+```{r}
+n = c(2, 3, 5)
+s = c("aa", "bb", "cc")
+b = c(TRUE, FALSE, TRUE)
+df = data.frame(n, s, b)
+df
+```
+
+What is the difference between matrices and data frames?
+========================================================
+- Rows and columns of a matrix must have the same class (numeric, character, etc).  
+- In a dataframe, you can have mixture of every class.
+- You can convert from one to the other using **as.data.frame()** or **as.matrix()**.
+
+WARNING: if you convert a dataframe with different classes of columns, then your matrix will just be all character.
+
+Matrix vs. data frame?
+========================================================
+class: small-code
+R has a built-in data frame called mtcars. Let's take first 5 rows and 5 columns:
+```{r}
+mtcars[1:5,1:5]
+```
+***
+Now convert it into matrix:
+```{r}
+as.matrix(mtcars[1:5,1:5])
+```
+-> nothing changed
+
+Matrix vs. data frame?
+========================================================
+class: small-code
+Change it's first element:
+```{r}
+mtcars[1,1] = "text"
+```
+Now convert it into matrix:
+```{r}
+as.matrix(mtcars[1:5,1:5])
+```
+-> all matrix is composed of characters (text)
+
+-> numbers are not recognized as numbers (for algebraic operations) but as text
+
+Data frames
+========================================================
+class: small-code
+
+We can use the row and column names instead of the numeric coordinates.
+```{r}
+mtcars["Mazda RX4", "cyl"]
+```
+The number of data rows in the data frame is given by:
+```{r}
+nrow(mtcars)
+ncol(mtcars) #for number of columns
+```
+
+***
+Access the specific column by **$column_name** (this only works for data frames)
+```{r}
+mtcars$cyl
+mean(mtcars$cyl)
+median(mtcars$cyl)
+```
+
+Working with data frames
+========================================================
+class: small-code
+
+```{r}
+quantile(mtcars$cyl)
+min(mtcars$cyl)
+sd(mtcars$cyl)
+summary(mtcars[,1:4]) #prints min, max, mean, median, and quantiles
+```
+
+Working with data frames
+========================================================
+class: small-code
+
+Change the column names of data frame with function **names( )**
+```{r}
+names(mtcars)[1] = "new_name"
+```
+To see first n elements of your data frame use **head(data_frame, n)**
+```{r}
+head(mtcars) #Gives first 6 rows if n is not specified
+```
