@@ -1,2 +1,4 @@
-
+.RData
 *.swp
+.Rproj.user
+*.html
