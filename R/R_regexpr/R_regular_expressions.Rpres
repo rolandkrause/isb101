@@ -113,6 +113,35 @@ caught red handed
 
 **red**, purple, and blue shirt
 
+Finite-state machine
+========================================================
+A **finite-state machine** (FSM) or finite-state automaton is a mathematical model of computation used to design both computer programs and sequential logic circuits.
+
+It is conceived as an abstract machine that can be in one of a finite number of **states**.
+
+The machine is in only one state at a time; the state it is in at any given time is called the **current state**. 
+
+It can change from one state to another when initiated by a triggering event or condition; this is called a **transition**.
+
+Finite-state machine
+========================================================
+![](5.jpg)
+
+State diagram for a turnstile
+![](6.png)
+
+Finite-state machine
+========================================================
+![](7.png)
+
+Finite-state machine
+========================================================
+Matching of regular expression **a(a|b)*b**
+
+![](8.png)
+
+Try custom matching here: https://jex.im/regulex/#!embed=false&flags=&re=a(a%7Cb)*b
+
 R functions
 ========================================================
 **grep, grepl**: Search for matches of a regular expression/pattern in a character vector; either return the indices into the character vector that match, the strings that happen to match, or a TRUE/FALSE vector indicating which elements match
