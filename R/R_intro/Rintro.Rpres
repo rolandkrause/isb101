@@ -1,7 +1,4 @@
 <style>
-.reveal column, .reveal column1, .reveal column2 slideContent{
-    margin:-20px;
-    }
 .reveal code .r{
     width:120%
     font:0.8em}
@@ -24,6 +21,9 @@
     top: 50%;
     left: 50%;
 }
+.reveal .column {
+    display:block;
+}
 </style>
 
 Introduction to R
@@ -31,6 +31,7 @@ Introduction to R
 author: Ganna Androsova
 date: 2015-01-06
 font-family: 'Arial'
+transition: fade
 <br>
 <br>
 <br>
@@ -54,6 +55,15 @@ Advantages of R:
 
 More details on https://www.r-project.org/about.html
 
+What can I do with R?
+========================================================
+- Data input/import
+- Data output/export
+- Basic operations (arithmetical, etc)
+- Data visualization
+- Data analysis
+- much more...
+
 How to install R on my PC?
 ========================================================
 
@@ -69,13 +79,6 @@ How to start coding?
 Create a new script with:
 <div style="width:70%"><img src="1.png"></img></div>
 
-How to write **good** programs?
-========================================================
-
-- Think **algorithmically**
-- Remember that your **PC doesn’t have brains**
-- IDEALLY: try to optimize your programs and make it **universal** (independent on current inputs (numbers, letters, etc.)
-
 What is called ‘inputs’?
 ========================================================
 Inputs are your data, something you will work with further in your program.
@@ -86,60 +89,146 @@ Inputs may be:
 Data types in R
 ========================================================
 ![](3.png)
-Type command **class( )** to see what data you are working with
+Call command **class( )** to see what data you are working with.
 
-What can I do with R?
+Variables in R
 ========================================================
-- Data input/import
-- Data output/export
-- Basic operations (arithmetical, etc)
-- Data visualization
-- Data analysis
-- much more...
+Let's say your cases are Bob, Fred, Barb, Sue, and Jeff. 
+
+Age, height, weight, race, year in school, and SAT score are called **variables**. 
+
+You would ordinarily put this information into a data frame as follows:
+
+name   |  age | hgt | wgt | race |gender|SAT 
+-------|------|-----|-----|------|------|----
+Bob    |   21 |  70 | 180 | Cauc |  M   |1080
+Fred   |   18 |  67 | 156 |Af.Am |  M   |1210
+Barbara|   18 |  64 | 128 |Af.Am |  F   | 840
+Sue    |   24 |  66 | 118 | Cauc |  F   |1340
+Jeff   |   20 |  72 | 202 |Asian |  M   | 880
+
+Variables in R
+========================================================
+Numbers, like age and weight, are called **numerical variables**. 
+
+The names of categories that the subject falls into, for example race ad gender, are called **categorical variables**.
+
+Categorical variables are often called **factors** in R.
+
+name   |  age | hgt | wgt | race |gender|SAT 
+-------|------|-----|-----|------|------|----
+Bob    |   21 |  70 | 180 | Cauc |  M   |1080
+Fred   |   18 |  67 | 156 |Af.Am |  M   |1210
+Barbara|   18 |  64 | 128 |Af.Am |  F   | 840
+Sue    |   24 |  66 | 118 | Cauc |  F   |1340
+Jeff   |   20 |  72 | 202 |Asian |  M   | 880
+
+Variables in R
+========================================================
+When we think of categorical variables or factors, we are thinking of variables that have relatively few possible values. These values are called **levels**. The levels of gender, for example, are F and M.
+
+When a variable has a different value for everyone, like the subject's name or address for example, it's often called a **character variable**.
+
+Assignment
+========================================================
+class: small-code
+In R you create things, called "objects", by a process called **assignment**.
+
+To assign data to an object name in R:
+```{r}
+x = 7
+```
+This SHOULD NOT be read as "x equals 7", which will result in confusion later. Instead, the single equals sign means "takes the value" or "is assigned the value."
+
+Here is another way to do assignment:
+```{r}
+x <- 7
+```
+
+Workspace
+========================================================
+class: small-code
+There are several ways to check content of variable:
+- Select the variable and press Ctrl+Enter (cmd + Enter for Mac)
+- run command
+```{r}
+print(x)
+```
+- In R Console type **x** to see it's value.
+- Check "Environment" tab in RStudio
+
+Numeric variables
+========================================================
+class: small-code
+Numeric data in R in either "double" or "integer". In practice, numeric computations always produce "double" results thus "numeric" name is used as a synonym. 
+
+Integers are a little more than 2 billion, while the other numerics are much bigger.
+They can be bigger because they are stored as double precision floating point numbers, which have two pieces: the exponent (like 308 below), and the "significant" (like 1.797693 below).
+```{r}
+.Machine$integer.max
+.Machine$double.xmax
+```
+
+Numeric variables
+========================================================
+class: small-code
+R will automatically convert between the numeric classes when needed.
+
+Most math is done using double precision, so that is often the default storage.
+```{r}
+is.numeric(1)
+is.integer(1)
+```
+
+Numeric variables
+========================================================
+class: small-code
+Sometimes you may want to specifically store a vector as integers if you know that they will never be converted to doubles (used as ID values or indexing) since integers require less storage space. 
+```{r}
+is.numeric(1L)
+is.integer(1L) #Putting capital 'L' after an integer forces it to be stored as an integer.
+```
 
 Create variable in R
 ========================================================
 class: small-code
-- type to save variable into memory
-```{r}
-a = 5
-```
 - create a new variable based on **a**
 ```{r}
+a = 2
 c = (a^5 - a)
 c
 ```
-- another way to see what **c** is equal to is
-```{r}
-print(c)
-```
-Create variable in R
+
+Create a vector in R
 ========================================================
 class: small-code
-- create a vector with several elements by command **c( )**
+- create a vector with several elements by command **c(object,object,...)**, which combines objects into a vector
 ```{r}
 a = c(1,2,3)
 a
 a = c(1:3)
 a
-a+5
-a*4
+a + 5
+a * 4
 ```
 Basic R operations
 ========================================================
 class: small-code
 ```{r}
-a-10
+a - 10
 sqrt(a)
 exp(a)
 log(a)
 ```
-***
+
+Basic R operations
+========================================================
+class: small-code
 We can save the results in another vector called **b** and use parentheses for more complicated expressions:
 ```{r}
 b = (a + sqrt(a))/(exp(2)+1)
 print(b)
-a/b
+a / b
 ```
 
 Basic R operations
@@ -150,13 +239,43 @@ While performing operations on vectors, all of the vectors in an expression must
 ```{r, warning = TRUE}
 a = c(1,2,3)
 b = c(10,11,12,13)
-a+b
+a + b
+a = c(1,2)
+a + b
 ```
+R has tendency to recycle data.
+
+Logical
+========================================================
+class: small-code
+Logical – binary, two possible values represented by **TRUE** and **FALSE**.
+```{r}
+a = c(3, 7, 1, 2, 4)
+a > 2
+a == 2
+!(a <= 3)
+```
+
+Find which element is...
+========================================================
+class: small-code
+```{r}
+a
+which(a > 2)
+a[which(a > 2)]
+```
+
+Functions to Provide Information about Vectors
+========================================================
+![](5.png)
+
+Logical Operators
+========================================================
+![](6.png)
 
 Basic R operations
 ========================================================
 class: small-code
-
 As you work in R and create new vectors it can be easy to lose track of what variables you have defined. To get a list of all of the variables that have been defined use the ls() command:
 ```{r}
 ls()
@@ -164,28 +283,18 @@ ls()
 
 Naming of variables
 ========================================================
-Naming conventions in R are famously **anarchic**.
+Among R naming conventions, the period.separated lowercase is the most preffered one.
 
-There are 5 naming conventions:
+E.g. new.plot, my.list, new.function, transition.matrix...
 
-- alllowercase: e.g. adjustcolor
-- period.separated: e.g. **plot.new** <- most preferred in R
-- underscore_separated: e.g. numeric_version
-- lowerCamelCase: e.g. addTaskCallback
-- UpperCamelCase: e.g. SignatureMethod
-
-**Choose one and BE CONSISTENT!**
-
-Naming of variables
-========================================================
-Give **MEANINGFUL** names
+Give **MEANINGFUL** names:
 - **matrix.multiplication** is better than **mult**
 
 Andy Lester declared **The World's Worst Variable Name** to be:
 
                           data
 
-Of course it's data! That's what variables contain! That's all they ever can contain. It's like you're packing up your belongings to move to a new house, and on the side of the box you write, in big black marker, "things"
+Of course it's data! That's what variables contain! That's all they ever can contain. It's like you're packing up your belongings to move to a new house, and on the side of the box you write, in big black marker, "things".
 
 Naming of variables
 ========================================================
@@ -197,18 +306,16 @@ Naming of variables
 ========================================================
 
                           data2
-
-Usually, you'll see it like this:
-
+```{r, eval=FALSE}
 total = price * qty
-
 total2 = total - discount
+total2 = total2 + total * taxrate
+total3 = purchase_order_value + available_credit
 
-if(total > total2){
-
-print("You got a discount!")
-
+if ( total2 < total3 ) {
+    print "You can't afford this order.";
 }
+```
 
 If you're faced with naming something total2, change the existing name to something more specific.
 
@@ -259,9 +366,11 @@ b = c(3,4)
 cbind(a, b)
 c = rbind(a, b)
 ```
-- BUT !!! Vectors must be of the same length!!!
+- But vectors must be of the same length!
 
-***
+From vectors to matrices
+========================================================
+class: small-code
 To create a x-by-y matrix of 0s :
 ```{r}
 matrix(0, nrow = 2, ncol = 3)
@@ -278,8 +387,8 @@ class: small-code
 Give a vector with names, the length of which corresponds to dimentions of matrix:
 
 ```{r}
-c = matrix(c(1,2,3,4,5,6), nrow = 2, ncol = 3)
-names = c("first_row", "second_row")
+c = matrix(c(1,2,3,4,5,6,7,8,9), nrow = 3, ncol = 3)
+names = c("first_row", "second_row", "third_row")
 length(names)
 rownames(c) = names
 colnames(c) = c("A", "B", "C")
@@ -297,7 +406,9 @@ b
 b[2]
 ```
 
-***
+Addressing elements
+========================================================
+class: small-code
 To access an element in matrix, specify row index (or row name) and then column index (or name) as **[row_index, col_index]**
 ```{r}
 c
@@ -315,12 +426,26 @@ c
 c[1,]
 c[c>3]
 ```
-***
+
+Operations with matrix
+========================================================
+class: small-code
 Other operations like **transpose**, **matrix multiplication** can be performed:
 ```{r}
 d = t(c)
 d
 c %*% d
+```
+
+Operations with matrix
+========================================================
+class: small-code
+
+Be careful with the * operator: it does not perform matrix multiplication, but rather an entry-wise multiplication:
+```{r}
+c
+d
+c * d
 ```
 
 Data frames
@@ -329,10 +454,10 @@ class: small-code
 
 A data frame is used for storing data tables. It is a list of vectors of equal length. For example, the following variable df is a data frame containing three vectors n, s, b.
 ```{r}
-n = c(2, 3, 5)
-s = c("aa", "bb", "cc")
-b = c(TRUE, FALSE, TRUE)
-df = data.frame(n, s, b)
+numbers = c(2, 3, 5)
+letters = c("aa", "bb", "cc")
+logicals = c(TRUE, FALSE, TRUE)
+df = data.frame(numbers, letters, logicals)
 df
 ```
 
@@ -351,7 +476,10 @@ R has a built-in data frame called mtcars. Let's take first 5 rows and 5 columns
 ```{r}
 mtcars[1:5,1:5]
 ```
-***
+
+Matrix vs. data frame?
+========================================================
+class: small-code
 Now convert it into matrix:
 ```{r}
 as.matrix(mtcars[1:5,1:5])
@@ -387,7 +515,9 @@ nrow(mtcars)
 ncol(mtcars) #for number of columns
 ```
 
-***
+Data frames
+========================================================
+class: small-code
 Access the specific column by **$column_name** (this only works for data frames)
 ```{r}
 mtcars$cyl
@@ -418,3 +548,59 @@ To see first n elements of your data frame use **head(data_frame, n)**
 ```{r}
 head(mtcars) #Gives first 6 rows if n is not specified
 ```
+
+Factors
+========================================================
+class: small-code
+A **factor**-type vector contains a set of numeric codes with character-valued levels. Example, a family of two girls (1) and four boys (0):
+```{r}
+kids = factor(c(1,0,1,0,0,0), levels = c(0, 1), labels = c("boy", "girl"))
+kids
+class(kids)
+mode(kids)
+```
+
+Factors
+========================================================
+class: small-code
+Regardless of the levels/labels of the factor, the numeric storage is an integer with 1 corresponding to the first level (in alphabetic-order).
+```{r}
+kids + 1
+as.numeric(kids)
+as.numeric(kids) + 1
+```
+
+Lists
+========================================================
+class: small-code
+
+An ordered collection of objects (components). A list allows you to gather a variety of (possibly unrelated) objects under one name.
+```{r}
+# example of a list with 4 components - a string, a numeric vector, a matrix, and a scaler 
+mylist = list(name="Fred", mynumbers=a, mymatrix=c, age=5.3)
+
+# example of a list containing two lists 
+two_lists = list(mylist, list("first_elelment", "second_element"))
+```
+Identify elements of a list using the [[]] convention
+```{r}
+mylist[[1]] # 1st component of the list
+mylist[["mynumbers"]] # component named mynumbers in list
+```
+
+Lists
+========================================================
+class: small-code
+If you have nested lists: indicate with [[]] number of list followed by [] number of element of that list
+```{r}
+two_lists[[1]][3]
+two_lists[[2]][1]
+```
+
+
+
+
+
+
+
+
