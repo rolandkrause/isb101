@@ -126,13 +126,13 @@ class:small-code
 
 ```{r}
 vec <- c('ct', 'cat', 'cart', 'dog', 'rat', 'carert', 'bet')
-grep(".at", vec, perl=TRUE)
-grep("..t", vec, perl=TRUE)
+grep(".at", vec)
+grep("..t", vec)
 ```
 **+** represents one or more occurrences
 
 ```{r}
-grep('c.+t', vec, perl = TRUE)
+grep('c.+t', vec)
 ```
 
 Meta characters
@@ -142,13 +142,13 @@ class:small-code
 
 ```{r}
 vec 
-grep('c.*t', vec, perl = TRUE)
+grep('c.*t', vec)
 ```
 Group terms with parentheses ’(’ and ’)’
 
 ```{r}
-grep('c(.r)+t', vec, perl = TRUE)
-grep('c(.r)*t', vec, perl = TRUE)
+grep('c(.r)+t', vec)
+grep('c(.r)*t', vec)
 ```
 
 Meta characters
@@ -161,7 +161,7 @@ Other useful ones include:
 ˆ and $ (start and end of line)
 ```{r}
 vec
-grep('r.$', vec, perl = TRUE)
+grep('r.$', vec)
 ```
 
 Meta characters
@@ -170,7 +170,7 @@ class:small-code
 | ( logical OR )
 ```{r}
 vec
-grep('(c.t)|(c.rt)', vec, perl = TRUE)
+grep('(c.t)|(c.rt)', vec)
 ```
 
 Character classes
@@ -195,15 +195,15 @@ class:small-code
 We saw a bunch of special characters . + * ] [ $ What if we want to match them?
 ```{r}
 vec2 = c("ct", "cat", "caat", "caart", "caaat", "caaraat", "c.t")
-grep('c.t', vec2, perl = TRUE)
+grep('c.t', vec2)
 ```
 Escape them with \
 
 ```{r}
-#grep('c\.t', vec, perl = TRUE) will not work, because R thinks \. is a special character like \n
+#grep('c\.t', vec) will not work, because R thinks \. is a special character like \n
 
 #Use two \’s
-grep('c\\.t', vec2, perl = TRUE)
+grep('c\\.t', vec2)
 ```
 
 Matching metacharacters
@@ -215,8 +215,8 @@ To match a \, our pattern must represent \\
 Our string must contain 4 backslashes!
 ```{r}
 vec = c("a\\backslash", "nobackslash")
-#grep('\\', vec, perl = TRUE) gives error
-grep('\\\\', vec, perl = TRUE)
+#grep('\\', vec) gives error
+grep('\\\\', vec)
 ```
 
 Search and replace
@@ -225,13 +225,13 @@ class:small-code
 The **sub** function allows search and replacement:
 ```{r}
 vec2
-sub('a+', 'a', vec2, perl = TRUE)
+sub('a+', 'a', vec2)
 ```
 **sub** replaces only first match, **gsub** replaces all
 
 Use backreferences \1, \2 etc to refer to first, second group, etc.
 ```{r}
-gsub('(a+)r(a+)', 'b\\1brc\\2c', vec2, perl = TRUE)
+gsub('(a+)r(a+)', 'b\\1brc\\2c', vec2)
 ```
 
 Search and replace
@@ -240,8 +240,8 @@ class:small-code
 Use \U, \L, \E to make following backreferences upper or lower case or leave unchanged
 ```{r}
 vec2
-gsub('(a+)r(a+)', '\\U\\1r\\2', vec2, perl = TRUE)
-gsub('(a+)r(a+)', '\\U\\1r\\E\\2', vec2, perl = TRUE)
+gsub('(a+)r(a+)', '\\U\\1r\\2', vec2)
+gsub('(a+)r(a+)', '\\U\\1r\\E\\2', vec2)
 ```
 
 Extended list of regular expressions
