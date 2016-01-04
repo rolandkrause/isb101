@@ -442,7 +442,7 @@ apply(a, 2, function(x){x[[sample.int(length(x),1)]]})
 ```
 
 ```
-[1] 1 3 6 7 9
+[1]  1  3  6  7 10
 ```
 
 lapply() and sapply()
@@ -549,7 +549,7 @@ system.time(
 
 ```
    user  system elapsed 
-  1.065   0.011   1.078 
+  1.134   0.013   1.152 
 ```
 
 ```r
@@ -558,7 +558,7 @@ system.time(log(nums))
 
 ```
    user  system elapsed 
-  0.009   0.002   0.011 
+  0.010   0.002   0.011 
 ```
 So in conclusion: vectorization is important because it allows you to operate on vectors quickly (unlike looping).
 
