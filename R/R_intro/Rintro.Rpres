@@ -29,7 +29,7 @@
 Introduction to R
 ========================================================
 author: Ganna Androsova
-date: 2015-01-06
+date: 2015-01-05
 font-family: 'Arial'
 transition: fade
 <br>

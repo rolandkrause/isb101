@@ -29,7 +29,7 @@
 Regular Expressions in R
 ========================================================
 author: Ganna Androsova
-date: 07-01-2016
+date: 06-01-2016
 font-family: 'Arial'
 <br>
 <br>
