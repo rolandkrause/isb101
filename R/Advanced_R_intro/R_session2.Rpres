@@ -68,9 +68,9 @@ head(taxon)
 
 Data import
 ========================================================
-It’s important to remember of possibility to extend the power of the functions used - by playing with their arguments: 
+It's important to remember of possibility to extend the power of the functions used - by playing with their arguments: 
 
-**myDF = read.table(‘fileName.txt’, header = T, as.is = T)**
+**myDF = read.table('fileName.txt', header = T, as.is = T)**
 
 Data comes in different formats: txt, csv, xls, tab...
 Not all data types are supported in R. 
@@ -92,7 +92,7 @@ To add packages type in console:
 OR
 - source("https://bioconductor.org/biocLite.R")
 biocLite("**PackageName**")
-- you may also download any package as a .zip and install it then by choosing in the R menu: **Packages** -> **Install package(s) from local .zip file** -> choosing the name of the file
+- you may also download any package as a .zip and install it then by choosing in the R menu: **Packages** -> **Install package(s) from local .zip file** ->' choosing the name of the file
 
 Installation of R packages
 ========================================================
@@ -187,9 +187,9 @@ To check whether your data satisfy some particular condition, R has a structure:
 
 Here **expression1** must include logical operators and be evaluated to a single logical value (**TRUE** or **FALSE**).
 
-If TRUE, then the **expression2** is executed.
+'If TRUE, then the **expression2** is executed.
 
-If FALSE, then **expression3** is executed. The **expression3** may be either a single command, or a sequence of commands, or again a control statement, like if … else operator or a loop.
+If FALSE, then **expression3** is executed. The **expression3** may be either a single command, or a sequence of commands, or again a control statement, like if ' else operator or a loop.
 
 Control statements: conditions
 ========================================================
@@ -210,13 +210,13 @@ if (all(x) == 0) {
 
 Repetitive execution: for loop
 ========================================================
-If there’s a need in multiple execution of the same command or a sequence of commands, use statement:
+If there's a need in multiple execution of the same command or a sequence of commands, use statement:
 
 **for (xxx in expression1) { expression2 }**
 
-Here **xxx** is a loop variable; **expression1** is the sequence of instances, which **xxx** should run on and **expression2** is the (group of) command(s) to be executed.
+'Here **xxx** is a loop variable; **expression1** is the sequence of instances, which **xxx** should run on and **expression2** is the (group of) command(s) to be executed.
 
-**expression2** is repeatedly evaluated as xxx ranges through the values in the vector result of expression1.
+**'expression2** is repeatedly evaluated as xxx ranges through the values in the vector result of expression1.
 
 For loop (example 1)
 ========================================================
@@ -252,9 +252,9 @@ Other loops: repeat and while
 ========================================================
 There exist other statements for repeated expressions: **repeat** expression and **while** (condition) expression.
 
-The **break** statement can be used to terminate any loop, possibly abnormally. This is the only way to terminate **repeat** loops, usually by using **if…else…** statement to check if the desired condition is satisfied.
+'The **break** statement can be used to terminate any loop, possibly abnormally. This is the only way to terminate **repeat** loops, usually by using **if'else'** statement to check if the desired condition is satisfied.
 
-The **next** statement can be used to discontinue one particular cycle and skip to the “next” (this is more likely to be used in **for** and **while** loops)
+'The **next** statement can be used to discontinue one particular cycle and skip to the 'next' (this is more likely to be used in **for** and **while** loops)
 
 While loop
 ========================================================
@@ -427,14 +427,14 @@ write.table(mean.values, file = "Log-transformed mean taxon.txt", quote = FALSE,
 How to write good programs?
 ========================================================
 - Think **algorithmically**
-- Remember that your **PC doesn’t have brains**
+- Remember that your **PC doesn't have brains**
 - IDEALLY: try to optimize your programs and make it **universal** (independent on current inputs (numbers, letters, etc.)
 
 Frequency distribution
 ========================================================
 In statistics, a **frequency distribution** is a table that displays the frequency of various outcomes in a sample. Each entry in the table contains the frequency or count of the occurrences of values within a particular group or interval, and in this way, the table summarizes the distribution of values in the sample.
 
-Let’s take an example of “**discoveries**” data set (type ?discoveries in your R console).
+Let's take an example of '**discoveries**' data set (type ?discoveries in your R console).
 
 These are the **raw data** on the number of important inventions or discoveries made yearly from 1860 to 1959.
 
@@ -545,7 +545,7 @@ Create bar plots with the **barplot(x)**, where x is a vector or matrix. If **x 
 
 Use the option **horiz = T** to create a horizontal bar plot.
 
-If **x is a matrix** and the option **beside = FALSE** used, then each bar of the plot corresponds to a column of x, with the values in the column giving the heights of stacked “sub-bars”.
+If **x is a matrix** and the option **beside = FALSE** used, then each bar of the plot corresponds to a column of x, with the values in the column giving the heights of stacked 'sub-bars'.
 
 If** x is a matrix** and **beside = TRUE**, then the values in each column are juxtaposed rather than stacked.
 

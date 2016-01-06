@@ -58,10 +58,10 @@ What is a regular expression?
 Motivation
 ========================================================
 What if we want to match 
-- any letter followed by ’n’?
-- any vowel followed by ’n’?
-- two letters followed by ’n’?
-- any number of letters followed by ’n’? 
+- any letter followed by 'n'?
+- any vowel followed by 'n'?
+- two letters followed by 'n'?
+- any number of letters followed by 'n'? 
 
 Regular expressions!
 - allow us to match much more complicated patterns 
@@ -151,7 +151,7 @@ R functions
 Meta characters
 ========================================================
 class:small-code
-**.** (period) represents any character except empty string ””
+**.** (period) represents any character except empty string ''
 
 ```{r}
 vec <- c('ct', 'cat', 'cart', 'dog', 'rat', 'carert', 'bet')
@@ -173,7 +173,7 @@ class:small-code
 vec 
 grep('c.*t', vec)
 ```
-Group terms with parentheses ’(’ and ’)’
+Group terms with parentheses '(' and ')'
 
 ```{r}
 grep('c(.r)+t', vec)
@@ -183,11 +183,11 @@ grep('c(.r)*t', vec)
 Meta characters
 ========================================================
 class:small-code
-‘.’ ‘,’ ‘+’ ‘*’ are all metacharacters
+'.' ',' '+' ''* are all metacharacters
 
 Other useful ones include:
 
-ˆ and $ (start and end of line)
+?? and $ (start and end of line)
 ```{r}
 vec
 grep('r.$', vec)
@@ -214,9 +214,9 @@ Character classes
 
 **[0-7ivx]** any of 0 to 7, i, v, and x
 
-Inside a character class **ˆ** means anything except the following characters. E.g.
+Inside a character class **??** means anything except the following characters. E.g.
 
-**[ˆ0-9]** anything except a digit
+**[??0-9]** anything except a digit
 
 Matching metacharacters
 ========================================================
@@ -231,7 +231,7 @@ Escape them with \
 ```{r}
 #grep('c\.t', vec) will not work, because R thinks \. is a special character like \n
 
-#Use two \’s
+#Use two \'s
 grep('c\\.t', vec2)
 ```
 
@@ -283,29 +283,29 @@ Extended list of regular expressions
 
 **[0-9]** means any digit between 0 and 9.
 
-List of metacharacters **‘$ * + . ? [ ] ^ { } | ( ) \’**. If you need to use one of those characters, precede them with a doubled backslash.
+List of metacharacters '**$ * + . ? [ ] ^ { } | ( ) \'**. If you need to use one of those characters, precede them with a doubled backslash.
 
 Extended list of regular expressions
 ========================================================
 For numbers:
 
-**[:digit:]** Digits: ‘0 1 2 3 4 5 6 7 8 9’.
+**[:digit:]** Digits: '0 1 2 3 4 5 6 7 8 9'.
 
 For letters :
 
-**[:alpha:]** Alphabetic characters: ‘[:lower:]’ and ‘[:upper:]’.
+**[:alpha:]** Alphabetic characters: '[:lower:]' and '[:upper:]'.
 
 **[:upper:]** Upper-case letters.
 
 **[:lower:]** Lower-case letters.
 
-Note that the set of alphabetic characters includes accents such as é è ê which are very common is some languages like French. Therefore, it is more general than **[A-Za-z]** which does not include letters with accent.
+Note that the set of alphabetic characters includes accents such as ?? ?? ?? which are very common is some languages like French. Therefore, it is more general than **[A-Za-z]** which does not include letters with accent.
 
 Extended list of regular expressions
 ========================================================
 For other characters :
 
-**[:punct:]** Punctuation characters: ‘! " # $ % & ' ( ) * + , - . / : ; < = > ? @ [ \ ] ^ _ ` { | } ~’.
+**[:punct:]** Punctuation characters: '! " # $ % & ' ( ) * + , - . / : ; < = > ? @ [ \ ] ^ _ ` { | } ~'.
 
 **[:space:]** Space characters: tab, newline, vertical tab, form feed, carriage return, and space.
 
@@ -315,13 +315,13 @@ Extended list of regular expressions
 ========================================================
 For combination of other classes :
 
-**[:alnum:]** Alphanumeric characters: ‘[:alpha:]’ and ‘[:digit:]’.
+**[:alnum:]** Alphanumeric characters: '[:alpha:]' and '[:digit:]'.
 
-**[:graph:]** Graphical characters: ‘[:alnum:]’ and ‘[:punct:]’.
+**[:graph:]** Graphical characters: '[:alnum:]' and '[:punct:]'.
 
-**[:print:]** Printable characters: ‘[:alnum:]’, ‘[:punct:]’ and space.
+**[:print:]** Printable characters: '[:alnum:]', '[:punct:]' and space.
 
-**[:xdigit:]** Hexadecimal digits: ‘0 1 2 3 4 5 6 7 8 9 A B C D E F a b c d e f’.
+**[:xdigit:]** Hexadecimal digits: '0 1 2 3 4 5 6 7 8 9 A B C D E F a b c d e f'.
 
 Extended list of regular expressions
 ========================================================
@@ -333,11 +333,11 @@ You can quantify the number of repetition by adding after the regular expression
 
 **+** The preceding item will be matched one or more times.
 
-**{n}** The preceding item is matched exactly ‘n’ times.
+**{n}** The preceding item is matched exactly 'n' times.
 
-**{n,}** The preceding item is matched ‘n’ or more times.
+**{n,}** The preceding item is matched 'n' or more times.
 
-**{n,m}** The preceding item is matched at least ‘n’ times, but not more than ‘m’ times.
+**{n,m}** The preceding item is matched at least 'n' times, but not more than 'm' times.
 
 Extended list of regular expressions
 ========================================================
@@ -368,7 +368,7 @@ cat(c("a","b","c"), sep = "+")
 Splitting a string
 ========================================================
 class:small-code
-**strsplit( )** : Split the elements of a character vector ‘x’ into substrings according to the matches to substring ‘split’ within them.
+**strsplit( )** : Split the elements of a character vector 'x' into substrings according to the matches to substring 'split' within them.
 **cat()** prints and concatenates strings
 ```{r}
 strsplit("a.b.c", "\\.")
