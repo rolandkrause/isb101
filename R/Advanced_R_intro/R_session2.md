@@ -21,7 +21,7 @@
 Advanced introduction to R
 ========================================================
 author: Ganna Androsova
-date: 2015-01-06
+date: 2015-01-05
 font-family: 'Arial'
 transition: fade
 <br>
@@ -442,7 +442,7 @@ apply(a, 2, function(x){x[[sample.int(length(x),1)]]})
 ```
 
 ```
-[1] 1 3 6 7 9
+[1] 1 4 5 8 9
 ```
 
 lapply() and sapply()
@@ -549,7 +549,7 @@ system.time(
 
 ```
    user  system elapsed 
-  1.065   0.011   1.078 
+  1.226   0.016   1.272 
 ```
 
 ```r
