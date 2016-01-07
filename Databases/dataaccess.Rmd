@@ -1,0 +1,95 @@
+---
+title: "Access to databases"
+author: "Roland Krause"
+date: "January 7, 2016"
+highlighter : highlight.js
+output: 
+  ioslides_presentation:
+    smaller: true
+    logo: logo-lcsb.png
+---
+
+## Objectives|Discovering and access of biological information
+
+1. Browsing, identify structure of data
+2. Access data programmatically - e.g. using R, wget or other 
+via an Application Program Interface (API)
+
+## Big data in bioinformatics
+
+![alt text](../Databases/bigdata.png)
+
+## Cost of sequencing
+
+![alt text](../Databases/costgenome.png)
+
+
+## How data is organized|Large institutions to host data
+- NCBI  - National Center for Biotechnology Information
+- EBI - European Institute for Bioinformatics
+
+## Genome browsers
+
+- UCSC Genome Browser - [genome.ucsc.edu](genome.ucsc.edu)
+- ENSEMBL - [www.ensembl.org](www.ensembl.org)
+
+
+
+
+## BioMart installation
+
+```{r, eval=FALSE}
+source("http://bioconductor.org/biocLite.R")
+biocLite("biomaRt")
+
+```
+```{r}
+library("biomaRt")
+listMarts(host="www.ensembl.org")
+```
+
+
+## Using ENSEMBL Mart
+
+```{r}
+ensembl.mart = useMart(biomart="ENSEMBL_MART_ENSEMBL", 
+                       host="www.ensembl.org")
+head(listDatasets(ensembl.mart))
+```
+
+## Using a specific database
+```{r}
+human.genes.mart = useDataset(ensembl.mart, dataset="hsapiens_gene_ensembl")
+head(listAttributes(human.genes.mart))
+
+```
+
+## Get data from the database
+
+```{r}
+chr21_genes <- getBM(attributes=c('ensembl_gene_id',
+'ensembl_transcript_id','hgnc_symbol','chromosome_name','start_position','end_position'), filters =
+'chromosome_name', values ="21", mart = human.genes.mart)
+
+head(chr21_genes)
+```
+
+## Links between databases
+
+
+```{r}
+hgnc_swissprot <- getBM(attributes=c('ensembl_gene_id','ensembl_transcript_id','hgnc_symbol','hgnc_id','uniprot_swissprot'),filters = 'ensembl_gene_id', values = 'ENSG00000139618', mart = human.genes.mart)
+head(hgnc_swissprot)
+```
+
+
+## Home work task
+
+Retrieve the known SNPs for the `KCNA2` gene using the ENSEMBL Biomart.
+
+1. Find out about the relevant resources using the web interface in [http://www.ensembl.org/biomart/](http://www.ensembl.org/biomart/)
+
+2. Code the access using the R-Biomart services.
+
+Send your a text file of the output and your R code. 
+
