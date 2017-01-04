@@ -375,6 +375,25 @@ strsplit("a.b.c", "\\.")
 unlist(strsplit("a.b.c", "\\."))
 ```
 
+Excercise 1
+========================================================
+![](9.png)
+
+Excercise 2
+========================================================
+**Part 1**
+
+Do a search and replace of 'dog' to 'cat', 'cat' to `mouse', and 'mouse' to 'dog' in: 
+
+```{r}
+string = "Do dogs eat cats, or does your cat eat a mouse?"
+```
+
+**Part 2**
+Part 1 results in the word 'mouses', which is not very good English! Modify your solution to also replace 'cats' with 'mice' . 
+
+Hint: We need to distinguish 'cat' from 'cats' . 
+
 
 
 
