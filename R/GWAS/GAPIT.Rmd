@@ -1,0 +1,96 @@
+---
+title: "Genome-wide association studies with GAPIT"
+author: "Roland Krause"
+date: "1/6/2017"
+output: 
+  ioslides_presentation:
+    widescreen: true
+    logo: ../logo-lcsb.png
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## GWAS analysis with GAPIT
+
+One of many packages to provide GWAS analysis
+
+
+
+## Installation
+```{r install, eval=F}
+source("http://www.bioconductor.org/biocLite.R") 
+biocLite("multtest")
+install.packages("gplots")
+install.packages("scatterplot3d")
+
+#The downloaded link at: http://cran.r-project.org/package=scatterplot3d
+
+
+```
+
+
+## Libraries
+```{r libraries}
+#Step 0: Import library and GAPIT functions run this section each time to start R)
+#######################################################################################
+library('MASS') # required for ginv
+library(multtest)
+library(gplots)
+library(compiler) #required for cmpfun
+library("scatterplot3d")
+
+source("http://www.zzlab.net/GAPIT/emma.txt")
+source("http://www.zzlab.net/GAPIT/gapit_functions.txt")
+
+# curl::curl_download("http://www.zzlab.net/GAPIT/GAPIT_Tutorial_Data.zip", "~/Downloads/GAPIT/")
+```
+
+## Config
+
+User specific, needs to be modified.
+
+Good practice: Include a config file for all installation dependent settings (file paths, operating systems)
+
+```{r Config}
+gapit_data <- "~/Downloads/GAPIT_Tutorial_Data/"
+```
+
+
+## Reading data
+
+Y: Traits
+G: Genotypes
+
+```{r loading, echo=FALSE}
+myY <- read.table(file.path(gapit_data, "mdp_traits.txt"), head=TRUE)
+
+
+```
+
+
+## Genotypes in hapmap format
+
+
+```{r genotypes}
+genotypes <- read.table(file.path(gapit_data, "mdp_genotype_test.hmp.txt"), head = TRUE)
+head(genotypes)
+
+# For analysis we need another format
+myG <- read.delim(file.path(gapit_data, "mdp_genotype_test.hmp.txt"), head = FALSE)
+
+```
+
+
+## Run GAPIT
+```{r GAPIT}
+
+myGAPIT <- GAPIT(
+Y=myY,
+G=myG,
+PCA.total=3,
+)
+
+```
+
