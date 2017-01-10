@@ -1,5 +1,5 @@
 ---
-title: "R continued"
+title: "Reproducible data analysis in R "
 author: "Roland Krause"
 date: "January 10, 2017"
 highlighter : highlight.js
@@ -13,22 +13,30 @@ output:
 ---
 
 ## Learning objectives
- * Good and data structures -- building your own data frames
+ * Good data structures -- building your own data frames
  * Reproducible data using RMarkdown
  * Access to databases using R
 
 # Coding remarks
 
-
-## Preamble
+## Preamble | Don't be scared
  * You are about as forgetful as the average programmer
  * The average programmer achieves 10 lines of code per day
  * You need to find out how to help yourself
  
 ## Standard tactics
+ * Read the man or help page or the official documentation well **before** turning to Google
+ * Use stack exchange, forums and related resources carefully
+ * Write down what you want to achieve in # comments
+ * Asking for help
+    * Rubberducking
+    * Explain to outsiders, including the environment of the question
+    * Prepare well to ask an expert
 
- 
+
+## Read a book (or do a course) 
 <img src="jander.png" width="300px" /> 
+
  
 ## Note from the internet
 
@@ -37,9 +45,6 @@ output:
 <!--![Jorge Cham](../Databases/jorgecham.png)-->
 
 # Introduction to reproducible data analysis
-
-## Cost of Genome 
-![Cost of genomes](./costgenome.png)
 
 ## Big data
 ![Big data](bigdata.png)
@@ -67,8 +72,6 @@ Excel manipulations are inherently non-tractable
  - Manual text entry
  - Data from downloaded from "some website" 
  - Code version not tractable
-
-
 
 ## Levels of reproducibility
 
@@ -102,7 +105,25 @@ Separate
  - Analysis
      - R scripts, Markdown documents, Manuscripts
 
+## My requirements
+ - Document before you write code
+ - Repositories as sources for data (incl. versions)
+ - All files are text files or in an appropiate standard format
+ - All steps are coded
+ - No manual intervention
+ - Manual input audited
+ - Code versioning
+ 
+ 
+## What this means to you
+ 1. Obtain basic coding capacity 
 
+ 1.  Just because you are not typing your code when compiling an analysis in
+Excel, you are still coding
+ 1. Prepare to share your data with
+    - your colleagues
+    - your consortium
+    - everyone
 
 
 # Tidy data
@@ -143,25 +164,7 @@ Separate
  
 # RMarkdown | Reproducible data analysis
 
-## My requirements
- - Document before you write code
- - Repositories as sources for data (incl. versions)
- - All files are text files or in an appropiate standard format
- - All steps are coded
- - No manual intervention
- - Manual input audited
- - Code versioning
- 
- 
-## What this means to you
- 1. Obtain basic coding capacity 
 
- 1.  Just because you are not typing your code when compiling an analysis in
-Excel, you are still coding
- 1. Prepare to share your data with
-    - your colleagues
-    - your consortium
-    - everyone
 
 ## Literate programming
  - An article is a stream of text and code 
@@ -177,9 +180,8 @@ Excel, you are still coding
 
 
 ## Pros and cons
-<div class="columns-2">
 
-**Strong points**
+###Strong points
  * Short/medium-length technical documents 
  * Tutorials and manuals
  * Reports
@@ -187,10 +189,9 @@ Excel, you are still coding
  * Data preprocessing documents/summaries
 
 
-**Weaker areas**
+###Weaker areas
  - Larger papers with technical requirements
  - Fixed image placements
-</div>
 
 
-# Thank you for your attention
+# Thank you for your attention!
