@@ -2,10 +2,14 @@
 title: "R continued"
 author: "Roland Krause"
 date: "January 10, 2017"
+highlighter : highlight.js
 output: 
   ioslides_presentation:
+    fig_width: 2
+    fig_retina: 1
     smaller: true
     logo: ../logo-lcsb.png
+    
 ---
 
 ## Learning objectives
@@ -13,17 +17,38 @@ output:
  * Reproducible data using RMarkdown
  * Access to databases using R
 
+# Coding remarks
 
+
+## Preamble
+ * You are about as forgetful as the average programmer
+ * The average programmer achieves 10 lines of code per day
+ * You need to find out how to help yourself
+ 
+## Standard tactics
+
+ 
+<img src="jander.png" width="300px" /> 
+ 
+## Note from the internet
+
+<img src="jorgecham.png" width="700px" />
+
+<!--![Jorge Cham](../Databases/jorgecham.png)-->
+
+# Introduction to reproducible data analysis
 
 ## Cost of Genome 
-<img src="costgenome.png" width="700px" />
+![Cost of genomes](./costgenome.png)
 
-## Bigdata
-<img src="bigdata.png" width="700px" />
+## Big data
+![Big data](bigdata.png)
 
 
 ## Real data management
 <img src="yourdesktop.png" width="700px" />
+
+<!--![Your desktop](./yourdesktop.png)-->
 
 
 ## How bad is Excel
@@ -37,10 +62,15 @@ Examples where things went bad
 
 Excel manipulations are inherently non-tractable 
 
+## Why is computational research not reproducible?
+ - Copy & paste
+ - Manual text entry
+ - Data from downloaded from "some website" 
+ - Code version not tractable
 
 
 
-## Reproducibility
+## Levels of reproducibility
 
  * Rerun - Robust to variations in expirement and set-up (days, operators)
  * Replicate - Defend - Same lab, same set up, same experiment
@@ -49,28 +79,118 @@ Excel manipulations are inherently non-tractable
  * Reuse - Transfer - Different experiments
 
 
+
+
 ## Structuring data analysis
 (WB)
 
+
 # Data analysis as one computation
 
-## Note from the internet
-<img src="jorgecham.png" width="700px" />
 
+
+ 
+## General set up
+Separate 
+
+ - Data collection - “raw data”!
+    - Experimental data - omics and small scale!
+    - Electronic data collection, clinical support!
+    - Web-scraped resources, data downloads!
+ - Processed
+    - Computed results
+ - Analysis
+     - R scripts, Markdown documents, Manuscripts
+
+
+
+
+# Tidy data
+
+## Analysis ready data
+ - All data in tractable structures
+ - Load data into memory
+
+## Let's take a look at bad data
+
+
+## Bad elements
+ 1. Patient names
+ 2. Identical column names
+ 1. Inconsistent variables
+ 2. Non-English columns names
+ 3. Color coding
+ 1. Inconsistent dates (ISO8601)
+ 1. “Disease”
+ 1. Multiple columns for one item
+ 1. Redundant information
+ 1. Repeated rows
+ 1. Comment field
+ 1. Uncoded syndromes
+ 1. Unnecessary information (birthdate, comments)
+
+## Tidy data
+ -	One variable per column
+ -  One observation per row
+ -  Tables hold elements of only one kind
+
+## Even tidier data
+ - Column names are easy to use and informative
+ - Row names are easy to use and informative
+ - Obvious mistakes in the data have been removed
+ - Variable values are internally consistent
+ - Appropriate transformed variables have been added
+ 
+# RMarkdown | Reproducible data analysis
+
+## My requirements
+ - Document before you write code
+ - Repositories as sources for data (incl. versions)
+ - All files are text files or in an appropiate standard format
+ - All steps are coded
+ - No manual intervention
+ - Manual input audited
+ - Code versioning
+ 
+ 
+## What this means to you
+ 1. Obtain basic coding capacity 
+
+ 1.  Just because you are not typing your code when compiling an analysis in
+Excel, you are still coding
+ 1. Prepare to share your data with
+    - your colleagues
+    - your consortium
+    - everyone
+
+## Literate programming
+ - An article is a stream of text and code 
+ - Analysis code is divided into text and code “chunks”
+ - Presentaiton codeformats results (tables, figures, etc.)
+ - Article text explains what is going on
+ - Literate programs are weaved to produce (human-readable documents and tangled to produce machine-readable documents
+
+
+ 
 ## RMarkdown
 (Demo)
 
 
+## Pros and cons
+<div class="columns-2">
 
-## Basic joins
+**Strong points**
+ * Short/medium-length technical documents 
+ * Tutorials and manuals
+ * Reports
+ * Home work
+ * Data preprocessing documents/summaries
 
-1. An inner join of `df1` and `df2`
-Return only the rows in which the left table have matching keys in the right table.
 
-2. An outer join of `df1` and `df2`
-Returns all rows from both tables, join records from the left which have matching keys in the right table.
-3. A left outer join (or simply left join) of `df1` and `df2`
-Return all rows from the left table, and any rows with matching keys from the right table.
-4. A right outer join of df1 and df2
-Return all rows from the right table, and any rows with matching keys from the left table.
+**Weaker areas**
+ - Larger papers with technical requirements
+ - Fixed image placements
+</div>
 
+
+# Thank you for your attention
