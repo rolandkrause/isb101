@@ -1,0 +1,76 @@
+---
+title: "R continued"
+author: "Roland Krause"
+date: "January 10, 2017"
+output: 
+  ioslides_presentation:
+    smaller: true
+    logo: ../logo-lcsb.png
+---
+
+## Learning objectives
+ * Good and data structures -- building your own data frames
+ * Reproducible data using RMarkdown
+ * Access to databases using R
+
+
+
+## Cost of Genome 
+<img src="costgenome.png" width="700px" />
+
+## Bigdata
+<img src="bigdata.png" width="700px" />
+
+
+## Real data management
+<img src="yourdesktop.png" width="700px" />
+
+
+## How bad is Excel
+All your analysis will be required to be made available eventually
+
+Examples where things went bad
+
+ * Reinhart-Rogoff “Growth in a time of debt”
+ * Potti et al., “Genomic signatures to guide the use of chemotherapeutics”
+ * CLCN2 variants in IGE
+
+Excel manipulations are inherently non-tractable 
+
+
+
+
+## Reproducibility
+
+ * Rerun - Robust to variations in expirement and set-up (days, operators)
+ * Replicate - Defend - Same lab, same set up, same experiment
+ * Repeat - Certify - Independent lab
+ * Reproduce - Compare - Variants in independent labs
+ * Reuse - Transfer - Different experiments
+
+
+## Structuring data analysis
+(WB)
+
+# Data analysis as one computation
+
+## Note from the internet
+<img src="jorgecham.png" width="700px" />
+
+## RMarkdown
+(Demo)
+
+
+
+## Basic joins
+
+1. An inner join of `df1` and `df2`
+Return only the rows in which the left table have matching keys in the right table.
+
+2. An outer join of `df1` and `df2`
+Returns all rows from both tables, join records from the left which have matching keys in the right table.
+3. A left outer join (or simply left join) of `df1` and `df2`
+Return all rows from the left table, and any rows with matching keys from the right table.
+4. A right outer join of df1 and df2
+Return all rows from the right table, and any rows with matching keys from the left table.
+
