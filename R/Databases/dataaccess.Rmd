@@ -1,12 +1,13 @@
 ---
 title: "Access to databases"
 author: "Roland Krause"
-date: "January 7, 2016"
-highlighter : highlight.js
-output: 
+date: "January 11, 2017"
+output:
   ioslides_presentation:
-    smaller: true
     logo: logo-lcsb.png
+    smaller: yes
+  beamer_presentation: default
+highlighter: highlight.js
 ---
 
 ## Objectives|Discovering and access of biological information
@@ -15,18 +16,20 @@ output:
 2. Access data programmatically - e.g. using R, wget or other 
 via an Application Program Interface (API)
 
-## Big data in bioinformatics
-
-![alt text](../Databases/bigdata.png)
-
-## Cost of sequencing
-
-![alt text](../Databases/costgenome.png)
-
+## Standard text formats for data
+> -  ### Tab-separated text files ('''.tab/.tsv''')
+> -  ### eXtensible Markup Language (XML)
+> -  ### JSON
 
 ## How data is organized|Large institutions to host data
-- NCBI  - National Center for Biotechnology Information
+- NCBI - National Center for Biotechnology Information
 - EBI - European Institute for Bioinformatics
+
+## Some databases
+ * [NCBI Gene](http://www.ncbi.nlm.nih.gov/gene) - Gene sequences
+ * [Uniprot](http://www.uniprot.org) - Protein sequences
+ * [STRING](www.string-dg.org) - Protein-protein interactions
+ * [OMIM](https://www.ncbi.nlm.nih.gov/omim/) - Mendelian diseases and genes   
 
 ## Genome browsers
 
@@ -34,7 +37,43 @@ via an Application Program Interface (API)
 - ENSEMBL - [www.ensembl.org](www.ensembl.org)
 
 
+## Curated resources | Uniprot and Refseq
 
+[Uniprot](http://www.uniprot.org)
+
+
+# Working with biological database
+
+## Advice for your projects
+
+#### Looking up data on the web -- not a reliable resource for your thesis
+ $\to$ Save your queries
+ 
+#### Occasional look-up in your database or from a linked resource
+ $\to$ Programmatic access
+
+#### Full resource, e.g. when computing statistics
+ $\to$ Download full resource, denote version, date and URL or (ideally Digital Object Identifier) 
+ Script but ensure that it's not automatically triggered!  
+ Your institute's bioinformatics facility might already hold copy
+
+#### Mirror installation of larger resourcer for bigger project
+
+## Downloading data in R 
+
+Ensure you are not downloading files on every execution of your script.
+```{r download}
+ destfile="./hordeum_variants.txt.gz" 
+ fileURL <- "ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/variants/hordeum_vulgare_variation.txt.gz"
+
+ if (!file.exists(destfile)) {
+    download.file(fileURL ,destfile,method="auto") }
+ 
+ 
+```
+
+
+# Programmatic access to databases 
 
 ## BioMart installation
 
@@ -43,7 +82,9 @@ source("http://bioconductor.org/biocLite.R")
 biocLite("biomaRt")
 
 ```
-```{r}
+
+
+```{r eval=FALSE}
 library("biomaRt")
 listMarts(host="www.ensembl.org")
 ```
@@ -51,14 +92,14 @@ listMarts(host="www.ensembl.org")
 
 ## Using ENSEMBL Mart
 
-```{r}
+```{r eval=FALSE}
 ensembl.mart = useMart(biomart="ENSEMBL_MART_ENSEMBL", 
                        host="www.ensembl.org")
 head(listDatasets(ensembl.mart))
 ```
 
 ## Using a specific database
-```{r}
+```{r eval=FALSE}
 human.genes.mart = useDataset(ensembl.mart, dataset="hsapiens_gene_ensembl")
 head(listAttributes(human.genes.mart))
 
@@ -66,7 +107,7 @@ head(listAttributes(human.genes.mart))
 
 ## Get data from the database
 
-```{r}
+```{r eval=FALSE}
 chr21_genes <- getBM(attributes=c('ensembl_gene_id',
 'ensembl_transcript_id','hgnc_symbol','chromosome_name','start_position','end_position'), filters =
 'chromosome_name', values ="21", mart = human.genes.mart)
@@ -77,7 +118,7 @@ head(chr21_genes)
 ## Links between databases
 
 
-```{r}
+```{r eval=FALSE}
 hgnc_swissprot <- getBM(attributes=c('ensembl_gene_id','ensembl_transcript_id','hgnc_symbol','hgnc_id','uniprot_swissprot'),filters = 'ensembl_gene_id', values = 'ENSG00000139618', mart = human.genes.mart)
 head(hgnc_swissprot)
 ```
