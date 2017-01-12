@@ -9,7 +9,25 @@
 </head>
 <body>
 <h1>Bioinf UNIX Tutorial</h1>
-<h2>Other Helpfull Commands </h2>
+
+<h2>Connecting to servers</h2>
+<samp>ssh</samp>
+<p>The standard way to connect to a server is via <code>ssh user@server</code>.
+<p>To connect to the main server of the university, gaia, things need to be set up.
+Download the zip file from the <a href="https://moodle.fstc.uni.lu/mod/resource/view.php?id=28544">moodle</a>
+ and unzip.
+ 
+ <code>
+ ssh –X –p 8022 student01@access-gaia.uni.lu
+
+ ssh –X –p 8022 –I $HOME/.ssh/student<no>.key student<no>@access-gaia.uni.lu
+
+ oarsub –lcore=4,walltime=12 –I
+ </code>
+
+
+
+<h2>Other Helpful Commands </h2>
 <h3><samp>cut</samp> </h3>
 <p>The command <code>cut</code> can be used to extract columns from a file.</p>
 <p class="command"> % echo -e "b\t300\na\t2\nb\t31\n" >s.txt<br>
