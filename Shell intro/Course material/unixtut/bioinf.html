@@ -16,17 +16,25 @@
 <p>To connect to the main server of the university, gaia, things need to be set up.
 Download the zip file from the <a href="https://moodle.fstc.uni.lu/mod/resource/view.php?id=28544">moodle</a>
  and unzip.
- 
+ <p> 
  <code>
- ssh –X –p 8022 student01@access-gaia.uni.lu
-
- ssh –X –p 8022 –I $HOME/.ssh/student<no>.key student<no>@access-gaia.uni.lu
-
- oarsub –lcore=4,walltime=12 –I
+ ssh -p 8022 student01@access-gaia.uni.lu
+ </code><p>
+ <code>
+ ssh -p 8022 -i $HOME/.ssh/student<no>.key student<no>@access-gaia.uni.lu
+ </code><p><code>
+     oarsub -n "my first job" "sleep 100"
+ </code><p>
+ <code>
+     oarstat
+ </code><p>
+ Interactive jobs are most convenient for working on the cluster when starting.
+ <code>
+     oarsub -lcore=4,walltime=12 -I
  </code>
 
-
-
+ <p>
+ Please consult the pages of the <a href="http://hpc.uni.lu">HPC</a>. <p>
 <h2>Other Helpful Commands </h2>
 <h3><samp>cut</samp> </h3>
 <p>The command <code>cut</code> can be used to extract columns from a file.</p>
