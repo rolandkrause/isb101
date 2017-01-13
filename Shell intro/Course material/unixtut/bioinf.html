@@ -18,24 +18,26 @@ Download the zip file from the <a href="https://moodle.fstc.uni.lu/mod/resource/
  and unzip.
  <p> 
  <code>
- ssh -p 8022 student01@access-gaia.uni.lu
- </code><p>
- <code>
- ssh -p 8022 -i $HOME/.ssh/student<no>.key student<no>@access-gaia.uni.lu
+ ssh -p 8022 -i $HOME/.ssh/student-no-.key student-no-@access-gaia.uni.lu
  </code><p><code>
-     oarsub -n "my first job" "sleep 100"
+     oarsub -n "first_job" "sleep 100"
  </code><p>
  <code>
      oarstat
  </code><p>
  Interactive jobs are most convenient for working on the cluster when starting.
- <code>
+ <br><code>
      oarsub -lcore=4,walltime=12 -I
  </code>
 
  <p>
  Please consult the pages of the <a href="http://hpc.uni.lu">HPC</a>. <p>
-<h2>Other Helpful Commands </h2>
+
+ On the first login to the cluster, execute the following
+ <code>
+     echo 'export LC_ALL=en_US.UTF-8' &gt;&gt; ~/.bash_profile</code>
+ <h2>Other Helpful Commands </h2>
+
 <h3><samp>cut</samp> </h3>
 <p>The command <code>cut</code> can be used to extract columns from a file.</p>
 <p class="command"> % echo -e "b\t300\na\t2\nb\t31\n" >s.txt<br>
