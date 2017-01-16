@@ -1,0 +1,337 @@
+---
+title: "Genome-wide association studies"
+author: "Roland Krause"
+date: "1/6/2017"
+output:
+  ioslides_presentation:
+    logo: ../logo-lcsb.png
+    smaller: yes
+    widescreen: yes
+  beamer_presentation: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir='/Users/roland.krause/Dropbox/Teaching/MISB/')
+```
+
+
+## Candidate gene and genome-wide association
+
+ - Family studies (see NGS)
+
+ - Case/control studies
+    - Candidate gene studies (CG) - dense arrays for particular regions
+    - Genome-wide studies (GWAS) - less dense, genome-wide coverage
+ 
+ 
+
+# Configuration
+
+## Basic configuration
+
+```{r Config}
+suppressPackageStartupMessages(library(knitr))
+suppressPackageStartupMessages(library(dplyr))
+
+data_dir <- "~/Dropbox/Teaching/MISB/"
+  
+  
+```
+
+## Getting (simulated) data
+
+```{r cars, eval=F, cache=TRUE}
+dest_file <- "cg-data.tgz"
+if (!file.exists())
+download.file("http://www.well.ox.ac.uk/ggeu/NPanalysis/cg-data.tgz", dest_file )
+
+
+```
+
+
+## Common tools for GWAS
+
+### Software  
+ * R - General data manipulation
+ * PLINK - Download and install from http://pngu.mgh.harvard.edu/~purcell/plink/plink2.shtml
+ 
+### Standard protocols
+ * Clarke et al. Basic statistical analysis in genetic case-control
+studies. *Nature protocols*, 2011
+ * Anderson et al. Data quality control in genetic case-control association studies. *Nature protocols*, 2010
+ 
+ 
+# Standard file formats
+
+
+## PED | "Pedigree" files
+
+ - Family ID, Individual ID
+ - Paternal ID,  Maternal ID
+ - Sex (1=male; 2=female; other=unknown)
+ - Phenotype (1 = unaffected; 2 = affected; 0 = missing)
+ - Genotype (all following columns, one pos, minor and major allele)
+
+```{r ped, echo=FALSE}
+plink_ped <- read.table(file.path(data_dir, "cg.ped"), header=F)
+n_genotype= ((ncol(plink_ped)-6)/2)
+plink_colnames <- c("FID", "IID", "PID", "MID", "Sex", "Ph", paste("G", ceiling(seq(n_genotype*2)/2), c("M", "F"), sep=""))
+
+kable(head(plink_ped), col.names= plink_colnames)
+```
+
+## MAP | Marker file
+
+   - Chromosome (1-22, X, Y or 0 if unplaced)
+   - SNP identifier
+   - Genetic distance (morgans)
+   - Base-pair position (bp units)
+
+```{r MAP, echo=FALSE}
+plink_map <- read.table(file.path(data_dir, "cg.map"), header=F)
+kable(head(plink_map), col.names = c("CHR", "SNP", "Dist", "bp") )
+```
+
+
+
+
+## Standard descriptive analysis
+```{bash, eval=F}
+#DATA_DIR="~/Dropbox/Teaching/MISB/"
+#cd $DATA_DIR
+plink2 --file cg --assoc --out data
+
+```
+
+
+
+## Association file
+Open the output file ‘data.assoc’. 
+One row per SNP containing 
+  - the chromosome (CHR), 
+  - the SNP identifier (SNP), 
+  - the base-pair location (BP),
+  - the minor allele (A1), 
+  - the frequency of the minor allele in the cases (F_A) and controls (F_U), 
+  - the major allele (A2) 
+  
+  - P value (P) 
+  - estimated OR for association between the minor allele and disease (OR).
+  - $\chi^2$-test statistic (CHISQ)
+
+```{r data_assoc}
+data_assoc <- read.table(file.path(data_dir, "data.assoc"), header=TRUE)
+
+knitr::kable(head(data_assoc[order(data_assoc$P),]))
+```
+## Genotype count
+
+Genotype  | a/a  | A/a    | A/A    | Total
+----------|------|--------|--------|-------
+Case    | $n_11$ | $n_12$ | $n_13$ | $n_1.$
+Control | $n_21$ | $n_22$ | $n_23$ | $n_2.$
+Total   | $n_.1$ | $n_.2$ | $n_.3$ | $n$  
+
+  
+The allelic odds ratio is $$OR_A = \frac{m_{11}m_{12}}{ m_{21}m_{22}} $$
+
+
+
+## Simple test of association
+
+```{r assoc_explained}
+case_status = as.character(plink_ped$V6)
+
+## marker: rs1801282 (p = 0.0000005)
+plink_map[plink_map$V2=="rs1801282",]
+n_sig <- as.numeric(row.names(plink_map[plink_map$V2=="rs1801282",]))
+my_col_id <- 2 *n_sig +6
+
+## First allele marker (from father) for RS1885366 resided in column V15
+sig.father = as.character(plink_ped$V25)
+
+## Second allele marker (from mother) for RS1885366 resided in column V16
+sig.mother = as.character(plink_ped$V26)
+
+## Putting together (pasting) both father and mother alleles
+sig.genotype = paste(sig.father, sig.mother, sep = "")
+
+
+```
+## Contigenty table
+
+```{r contigency}
+(sig.table = table(case_status, sig.genotype))
+kable(as.data.frame.matrix(sig.table))
+chisq.test(sig.table)
+```
+
+## Simple SNP model tests
+
+No covariates.
+
+```{bash}
+#cd $DATA_DIR
+plink2 --file cg --model --out data
+```
+
+
+## Tests of genotypic association
+![](gwastest.png)
+
+
+
+## Simple association - Results
+
+Open the output file ‘data.model’. It contains five rows per SNP, one for each of the association tests. Each row contains 
+
+ - the chromosome (CHR), 
+ - the SNP identifier (SNP), 
+ - the minor allele (A1), 
+ - the major allele (A2), 
+ 
+ - the test performed (TEST) the $\chi^2$-test statistic (CHISQ),
+ - the degrees of freedom for the test (DF) and
+ - the asymptotic P value (P).
+
+## data.model
+```{r }
+data_model <- read.table(file.path(data_dir, "data.model"), header=T)
+knitr::kable(head(data_model[order(data_model$P),]))
+
+```
+
+
+# GWAS
+
+
+## Steps included in standard QC
+
+### Markers
+ - Markers with an excessive missing data rate 
+ - Deviation from Hardy-Weinberg equilibrium
+ - Very low Minor Allele Frequency (MAF)
+
+### Individuals
+ - Discordant sex information
+ - Elevated missing data rates or outlying heterozygosity rate
+ - Duplicated or related individuals
+ - Divergent ancestry
+ - Removal of all individuals failing QC 
+
+
+
+## Association using logistic regression
+
+Conversion to binary file (not covered here)
+
+```{bash logreg, eval=F}
+plink2 --bfile gwa --logistic --covar gwa.covar --out data
+```
+
+## Including covariates
+
+```{r covariates}
+covar <- read.table(file.path(data_dir, "gwa.covar"), header=T)
+dim(covar)
+kable(head(covar))
+```
+
+
+
+
+
+
+
+# Visualization
+
+## Quantile-quantile plot
+
+
+```{r qqplot}
+# TODO: Consider using ggplot2 http://docs.ggplot2.org/current/stat_qq.html
+
+library(car)
+data_model <-read.table(file.path(data_dir, 
+                                  "data.model"), 
+                        header = TRUE)
+
+model <- "TREND"
+
+obs <- data_model[data_model$TEST == model,]$CHISQ; 
+
+qqPlot(obs, distribution = "chisq", 
+       df = 1, 
+       xlab = "Expected chi-squared values", 
+       ylab = "Observed test statistic", 
+       grid = FALSE) 
+```
+
+## Quantile-quantile plot
+
+```{r qqplot_display, echo=FALSE} 
+qqPlot(obs, distribution = "chisq", 
+       df = 1, 
+       xlab = "Expected chi-squared values", 
+       ylab = "Observed test statistic", 
+       grid = FALSE) 
+
+
+```
+
+
+## Manhattan plot
+
+```{r Manhattan plot, cache=TRUE}
+library(qqman)
+
+assoc <- read.table(file.path(data_dir,
+                              "data.assoc"),
+                    header=T)
+
+results <- na.omit(assoc)
+manhattan(results)
+```
+
+## Manhattan plot
+
+```{r Manhattan_draw, cache=TRUE}
+manhattan(gwasResults)
+```
+
+
+
+
+## LD plot | Linkage disequilibrium (`ldblock` package)
+
+![](ldblock.png)
+
+
+## Multiple testing
+
+ - Control family-wise error rate (FWER)
+    * Bonferroni ($\alpha^*  = \alpha/n$ or $p^*=p*n$)
+    * Sidak
+    * Holm (less strict than others)
+ - Control false-discovery rate (FDR)
+ - Permutation tests
+  
+
+
+## Running model with p-value adjustment
+
+```{bash eval=F}
+plink2 --bfile gwa --covar gwa.covar --adjust --out data-adjust
+```
+
+
+```{ adjusted, cache=T, eval=F}
+kable(head(read.table(file.path(data_dir, "data-adjus.assoc.logistic.adjusted"), header =T)))
+
+```
+
+
+# Thank you for your attention!
+
+
