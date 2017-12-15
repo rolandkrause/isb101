@@ -3,66 +3,126 @@ title: "Introduction to R"
 author: "Ganna Androsova"
 date: "2017-01-09"
 output: 
+  iosp::ioslides_plus:
+    widescreen: true
+    smaller: yes
   ioslides_presentation:
     widescreen: true
 ---
+
+```{r, include = FALSE}
+library(tidyverse)
+```
+
+
 ## What is R?
 
-R is a language and environment for <b>statistical</b> computing and <b>graphics</b>.
+### {.box-8 .offset-2 .bg-yellow}
 
-Advantages of R:
+R is a language and environment for **statistical** computing and **graphics**.
+
+### Advantages of R {.box-8 .offset-2 .bg-blue}
+
 - FREE software
 - easy to download/install/update
 - easy to process big files and analyze huge amounts of data
 - integrated data visualization tools
-- programs can be integrated in the text (for instance, .pdf file will contain then results of calculations, figures, etc. - RMarkdown)
+- programs can be integrated in the text (for instance, `.pdf` file will contain the results of calculations, figures, etc. - __**RMarkdown**__)
 
 More details on https://www.r-project.org/about.html
 
-## What can I do with R?
+## What can I do with R?{.build}
 
-- Data input/import
-- Data output/export
-- Basic operations (arithmetical, etc)
-- Data visualization
-- Data analysis
-- much more...
+### {.box-4 .bg-blue .large}
+
+Data input/import
+
+### {.box-4 .bg-blue .large}
+
+Data output/export
+
+### {.box-4 .bg-blue .large}
+
+Basic operations (arithmetical, etc)
+
+### {.box-4 .bg-blue .large}
+
+Data visualization
+
+### {.box-4 .bg-blue .large}
+
+Data analysis
+
+### {.box-4 .bg-blue .large}
+
+much more...
 
 ## How to install R on my PC?
 
+### R{.box-8 .offset-2 .bg-green}
+
 - go to http://cran.r-project.org
 - choose your system
-- choose <b>base</b>
+- choose **base**
 - download R
+- run the downloaded file
+
+### Rstudio {.box-8 .offset-2 .bg-blue}
+
+- go to https://www.rstudio.com/
+- choose the **free RStudio Desktop** version
+- choose your system
+- download
 - run the downloaded file
 
 ## How to start coding?
 
 Create a new script with:
 
-<img src="1.png" width="700px" />
+### {.box-10 .bg-white .offset-1}
 
-## What is called "inputs"?
+![](1.png)
+
+## What are "inputs"?
+
+###{.box-10 .offset-1 .bg-yellow}
 
 Inputs are your data, something you will work with further in your program.
 
-Inputs may be:
+### Inputs may be {.box-10 .offset-1 .bg-white}
 
-<img src="2.png" width="700px" />
+![](2.png)
 
 ## Data types in R
 
-<img src="3.png" width="700px" />
+### Inputs may be {.box-10 .offset-1 .bg-red .small}
 
-Call command <b>class( )</b> to see what data you are working with.
+```{r, echo = FALSE}
+tribble(~`Your data`, ~`R data type`,
+"Number(s)", "Numeric: Integer; Double; Complex",
+"Letter(s)", "Character",
+"Logical expression", "Logical, TRUE and FALSE are the logical constants",
+"Vector", "Vector (with elements of numeric, character, logical, etc. type)",
+"Matrix", "Matrix or Array (elemetns of the above types)",
+"Table", "Data frame, List",
+"", "Factors"
+) %>%
+  knitr::kable()
+```
+
+<!-- ![](3.png) -->
+
+### {.box-10 .bg-yellow}
+
+Call the command **`class()`** to see what data you are working with.
 
 ## Variables in R
 
-Let's say your cases are Bob, Fred, Barb, Sue, and Jeff. 
+- Let's say your cases are Bob, Fred, Barb, Sue, and Jeff. 
+- Age, height, weight, race, year in school, and SAT score are called **variables**. 
+- You would ordinarily put this information into a data frame as follows:
 
-Age, height, weight, race, year in school, and SAT score are called <b>variables</b>. 
-
-You would ordinarily put this information into a data frame as follows:
+### {.box-8 .offset-2 .bg-red}
 
 name   |  age | hgt | wgt | race |gender|SAT 
 -------|------|-----|-----|------|------|----
@@ -73,11 +133,13 @@ Sue    |   24 |  66 | 118 | Cauc |  F   |1340
 
 ## Variables in R
 
-Numbers, like age and weight, are called <b>numerical variables</b>. 
+Numbers, like age and weight, are called **numerical variables**. 
 
 The names of categories that the subject falls into, for example race ad gender, are called <b>categorical variables</b>.
 
-Categorical variables are often called <b>factors</b> in R.
+Categorical variables are often called **factors** in R.
+
+### {.box-8 .offset-2 .bg-white}
 
 name   |  age | hgt | wgt | race |gender|SAT 
 -------|------|-----|-----|------|------|----
@@ -88,13 +150,13 @@ Sue    |   24 |  66 | 118 | Cauc |  F   |1340
 
 ## Variables in R
 
-When we think of categorical variables or factors, we are thinking of variables that have relatively few possible values. These values are called <b>levels</b>. The levels of gender, for example, are F and M.
+When we think of categorical variables or factors, we are thinking of variables that have relatively few possible values. These values are called **levels**. The levels of gender, for example, are F and M.
 
-When a variable has a different value for everyone, like the subject's name or address for example, it's often called a <b>character variable</b>.
+When a variable has a different value for everyone, like the subject's name or address for example, it's often called a **character variable**.
 
 ## Assignment
 
-In R you create things, called "objects", by a process called <b>assignment</b>.
+In R you create things, called "objects", by a process called **assignment**.
 
 To assign data to an object name in R:
 ```{r}
@@ -105,6 +167,7 @@ Here is another way to do assignment:
 ```{r}
 x = 7
 ```
+
 This SHOULD NOT be read as "x equals 7", which will result in confusion later. Instead, the single equals sign means "takes the value" or "is assigned the value."
 
 ## Workspace
@@ -119,54 +182,88 @@ There are several ways to check content of variable:
 print(x)
 ```
 
-- In R Console type <b>x</b> to see it's value.
+- In R Console type **x** to see it's value.
 
 ## Workspace
 
-As you work in R and create new vectors it can be easy to lose track of what variables you have defined. To get a list of all of the variables that have been defined use the ls() command:
+As you work in R and create new vectors it can be easy to lose track of what variables you have defined.
 
-```{r}
-ls()
-```
+### Listing variables {.box-6 .offset-3 .bg-red}
 
+- To get a list of all of the variables that have been defined use the `ls()` command:
+    ```{r}
+    ls()
+    ```
 - Check "Environment" tab in RStudio
 
 ## Workspace and Files
 
-To find what is your working directory:
-```{r}
+```{r, title = "Find out your working directory", width = 8, class = "offset-2"}
 getwd()
 ```
 
-Check the files that it contains:
-```{r}
+```{r, title = "List its files" , width = 8, class = "offset-2"}
 list.files()
 ```
 
 ## Numeric variables
 
-Numeric data in R in either "double" or "integer". In practice, numeric computations always produce "double" results thus "numeric" name is used as a synonym. 
+### Numeric data in R {.box-8 .offset-2 .bg-red}
 
-Integers are a little more than 2 billion, while the other numerics are much bigger.
-They can be bigger because they are stored as double precision floating point numbers, which have two pieces: the exponent (like 308 below), and the "significant" (like 1.797693 below).
+- double
+- integer
+
+In practice, numeric computations always produce `double` results thus `numeric` name is used as a synonym. 
+
+### Integers {.box-6 .bg-red}
+
+Integers are a little more than 2 billion.
+
 ```{r}
 .Machine$integer.max
+
+```
+
+### Double{.box-6 .bg-red}
+
+Doubles can be bigger because they are stored as **double precision floating point numbers**, which have two pieces:
+
+```{r, echo = FALSE}
+# Using R for the double example
+#round(.Machine$double.xmax), options()[["digits"]]
+double_precision <- as.character(.Machine$double.xmax) %>%
+  str_split("e\\+") %>%
+  flatten_chr() %>%
+  parse_number()
+```
+
+- the exponent (like `r double_precision[2]` below)
+- the "significant" (like  `r round(double_precision[1], options()[["digits"]] - 1)`  below).
+
+```{r}
 .Machine$double.xmax
 ```
 
 ## Numeric variables
 
-R will automatically convert between the numeric classes when needed.
+R will automatically convert (coerce) between the numeric classes when needed.
 
-Most math is done using double precision, so that is often the default storage.
+### `double` is the default {.box-6 .bg-red .stretch}
+
+- Most math is done using double precision
+- Thus it is the default storage.
+
 ```{r}
 is.numeric(1)
 is.integer(1)
 ```
 
-## Numeric variables
+### `integer` must be forced {.box-6 .bg-red .stretch}
 
-Sometimes you may want to specifically store a vector as integers if you know that they will never be converted to doubles (used as ID values or indexing) since integers require less storage space. 
+- Sometimes you may want to specifically store a vector as integers
+    + if you know that they will never be converted to doubles (used as ID values or indexing)
+    + since integers require less storage space.
+
 ```{r}
 is.numeric(1L)
 is.integer(1L) #Putting capital 'L' after an integer forces it to be stored as an integer.
@@ -181,44 +278,50 @@ c <- (a^5 - a)
 c
 ```
 
-## Practice time!
+## Practice time!{.bg-green}
+
+### Using `swirl`{} {.box-10 .offset-1 .bg-white}
 
 Type in R console:
-```{r, eval = F}
+```{r, eval = FALSE}
 library(swirl)
 swirl()
 #Lesson 1, 2, 3
 ```
 
-Choose the "R Programming E" course.
-Complete lessons <b>1, 2</b>  and <b>3</b>. In the end of the lesson send the email to ganna.androsova@uni.lu
+- Choose the "R Programming E" course.
+- Complete lessons **1, 2**  and **3**.
+- In the end of the lesson send the email to ganna.androsova@uni.lu\
+  The email subject should be generated automaticly by swirl, in the email body place your last command used in the lesson.
 
-The email subject should be generated automaticly by swirl, in the email body place your last command used in the lesson.
+## Naming of variables{.middle}
 
-## Naming of variables
+### **Be consistent with naming!** {.box-6 .bg-yellow}
 
-Among R naming conventions, the period.separated lowercase is the most preffered one.
+- Use [naming conventions](https://journal.r-project.org/archive/2012-2/RJournal_2012-2_Baaaath.pdf):
+    + alllowercase
+    + period.separated
+    + **underscore_separated** (_recommended by [Hadley Wickham](http://adv-r.had.co.nz/Style.html)_)
+    + lowerCamelCase
+    + UpperCamelCase
+<!-- - _e.g._ `new_plot`, `my_list`, `new_function`, `transition_matrix` ... -->
 
-E.g. new.plot, my.list, new.function, transition.matrix...
+### Use **MEANINGFUL** names {.box-6 .bg-yellow}
 
-Give <b>MEANINGFUL</b> names:
+**matrix_multiplication** is better than **mult**
 
-- <b>matrix.multiplication</b> is better than <b>mult</b>
-
-Andy Lester declared <b>The World's Worst Variable Name</b> to be:
-
-                          data
-
-Of course it's data! That's what variables contain! That's all they ever can contain. It's like you're packing up your belongings to move to a new house, and on the side of the box you write, in big black marker, "things".
-
-## Naming of variables
-
-Guess: what is the <b>second</b> worst variable name?
 
 ## Naming of variables
 
-                          data2
-```{r, eval=FALSE}
+> **The World's Worst Variable Name** to be: data\
+Of course it's data! That's what variables contain! That's all they ever can contain. It's like you're packing up your belongings to move to a new house, and on the side of the box you write, in big black marker, "things".| [Andy Lester](http://archive.oreilly.com/pub/post/the_worlds_two_worst_variable.html) {.bg-red}
+
+### Guess {.box-6 .bg-blue .build}
+
+- What is the **second** worst variable name?
+- data2
+
+```{r, eval = FALSE}
 total <- price * qty
 total2 <- total - discount
 total2 <- total2 + total * taxrate
@@ -233,9 +336,10 @@ If you're faced with naming something total2, change the existing name to someth
 
 ## Create a vector in R
 
-- create a vector with several elements by command <b>c(object,object,...)</b>, which combines objects into a vector
+- create a vector with several elements by command **c(object, object, ...)**, which combines objects into a vector
+
 ```{r}
-a <- c(1,2,3)
+a <- c(1, 2, 3)
 a
 a <- c(1:3)
 a
@@ -253,7 +357,7 @@ log(a)
 
 ## Basic R operations
 
-We can save the results in another vector called <b>b</b> and use parentheses for more complicated expressions:
+We can save the results in another vector called **b** and use parentheses for more complicated expressions:
 ```{r}
 b <- (a + sqrt(a))/(exp(2)+1)
 print(b)
