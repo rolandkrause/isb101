@@ -1,0 +1,411 @@
+---
+title: "Tidy data"
+subtitle: "`tidyr`"
+author: "Eric Koncina, Aurélien Ginolhac, Roland Krause"
+date: "09 January 2018"
+output:
+  iosp::ioslides_plus:
+    box_colours:
+      bg-blue-white: ["white", "#005C99"]
+---
+
+```{block, include = FALSE}
+Adapted from the biostat2 tidyverse lecture https://biostat2.uni.lu/lecture02_tidyverse.html
+```
+
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE, fig.align = "center")
+library(tidyverse)
+```
+
+
+## Learning objectives
+
+### You will learn to: {.box-10 .offset-1 .bg-red .icon}
+
+![](img/00/kt.png)
+
+- know principles of tidy data
+- tidy up data using `tidyr`
+
+## Basic: everything in the data rectangle | with header {.middle}
+
+###{.box-6 .bg-white .offset-3}
+
+![](img/02/data_rectangle.png)
+
+<span class="small">[Jenny Bryan](https://speakerdeck.com/jennybc/data-rectangling) in Jeff Leek [blog post](https://simplystatistics.org/2017/05/24/toward-tidy-analysis/)</span>
+
+## Rationale {.vs3 .build}
+
+> tidy datasets are all alike but every messy dataset is messy in its own way | Hadley Wickham (see `vignette("tidy-data")`) {.col-8 .offset-2 .bg-yellow}
+
+> All happy families are alike; each unhappy family is unhappy in its own way. | Leo Tolstoy, Anna Karenina{.col-8 .offset-2}
+
+## Semantics {.vs2}
+
+### Definitions {.box-8 .offset-2 .bg-blue}
+
+- **Variable**: A quantity, quality, or property that you can measure.
+- **Observation**: A set of values that display the relationship between variables. To be an observation, values need to be measured under similar conditions, usually measured on the same observational unit at the same time.
+- **Value**: The state of a variable that you observe when you measure it.
+
+<span class = "small">[source: Garret Grolemund](http://garrettgman.github.io/tidying/) and `vignette("tidy-data")`</span> 
+
+
+## Definition {.vs2}
+
+### Tidy data {.col-8 .offset-2 .box .bg-yellow}
+
+1. Each variable is in its own column
+2. Each observation is in its own row
+3. Each value is in its own cell
+
+![](img/02/tidy_data.png)
+
+## Bad data exercise {.bg-green .build}
+
+### {.box-10 .offset-1 .bg-gray .icon}
+
+![](img/02/excel_icon.png)
+
+- Open the [`badtable.xlsx` file](data/badtable.xlsx).
+- The table lists missense variants in a gene in a group of patients.
+- What's wrong with this sheet?
+- Which problems are _tidy_ issues?
+
+###{.col-10 .offset-1}
+
+![](img/02/tidy_excelbad.png)
+
+## Bad data exercise | Summary of problems {.bg-green .build}
+
+### {.box-10 .offset-1 .small .bg-white}
+
+Tidy error                    | Tidy violation | Comment
+------------------------------|----------------|--------
+Patient names                 | No             | Data protection violation
+Identical column names        | **Yes**        | Variable error
+Inconsistent variables names  | No             | Bad practice
+Non-English columns names     | No             | Bad practice
+Color coding                  | No             | The horror, the horror
+Inconsistent dates            | No             | Use ISO8601 
+Multiple columns for one item | **Yes**        | One observation per line
+Redundant information         | **Yes**        | Each variable is in its own column
+Repeated rows                 | **Yes**        | Each observation is in its own row
+Uncoded syndromes             | **Yes**/No     | Each value in its own cell
+Unnecessary information       | No             | like _birthdate_, _comments_: bad practice
+Name of the table             | No             | You'll see this often
+
+
+## Bad data exercise | Manual cleaning {.bg-green}
+
+### Clean the "bad table" {.box-8 .offset-2 .bg-white}
+
+- Bring data into shape such that it conforms to tidy data requirements
+- Pay attention to details of format, less to actual data
+- Do not use **R** for doing the manipulations
+  
+## Common tidy data violations {.vs3}
+
+### Problems {.box-10 .bg-yellow .offset-1}
+
+- Column headers are values, not variable names (`gather()`)
+- Multiple variables stored in one column (`separate()`)
+- Variables are stored in both rows and columns (`gather()`-`spread()`)
+- Repeated observations (`nest()` or table)
+- Multiple types in one table (`dplyr()` data transformation)
+- One type in multiple tables (`dplyr()`, combine into single table)
+
+
+# `tidyr`
+
+![](img/00/logo_tidyr.png)
+
+## `tidyr` | introduction | [cheatsheet](https://www.rstudio.com/resources/cheatsheets/)
+
+![](img/02/tidyr_cheatsheet.jpg)
+
+## Convert long / wide format
+
+### {.box-10 .offset-1 .bg-yellow}
+
+- The wide format is generally **untidy** _but_ found in the majority of datasets
+- The **wide** format makes computation on columns sometimes easier
+
+### gather {.box-6 .bg-blue-white .stretch}
+
+![](img/02/tidy_gather_450.png)
+
+### spread {.box-6 .bg-blue-white .stretch}
+
+![](img/02/tidy_spread_450.png)
+
+
+## Demo with the iris dataset | `gather()`
+
+```{r, message = FALSE, warning = FALSE, title = "From **large to long** with `gather()`"}
+library("tidyverse")
+iris_melt <- iris %>%
+  rownames_to_column(var = "observation") %>%
+  as_tibble() %>%
+  gather(key = "parameter", value = "value", -Species, -observation)
+
+iris_melt
+```
+
+## Demo with the iris dataset | `spread()` {.vs2}
+
+```{r, title = "From **long to large** with `spread()`"}
+iris_melt %>%
+  spread(parameter, value)
+```
+
+## `separate()` and `unite()`{} {.build}
+
+```{r, title = "Demo tibble", row = c(8, 4)}
+demo_tibble <- tibble(year  = c(2015, 2014, 2014),
+                      month = c(11L, 2L, 4L), # integer vector
+                      day   = c(23, 1, 30),
+                      value = c("high", "low", "low"))
+demo_tibble
+```
+
+```{r, title = "`unite()`", width = 6}
+demo_tibble_unite <- demo_tibble %>%
+  unite(date, c(year, month, day), sep = "-")
+demo_tibble_unite
+```
+
+```{r, title = "`separate()`", width = 6}
+# use **quotes** since we are not refering to objects
+demo_tibble_unite %>%
+  separate(date, c("year", "month", "day"))
+```
+
+# Basic data cleaning
+
+## Separate rows {.build}
+
+### Multiple values per cell {.box-6 .bg-green .stretch}
+
+```{r}
+patient_df <- tibble(
+    subject_id = 1001:1003, 
+    visit_id = c("1,2,3", "1,2", "1"),
+    measured = c("9,0, 11", "11, 3" , "12")  )
+patient_df
+```
+
+Note the incoherent white space
+
+### Combinations of variables {.box-6 .bg-blue .stretch}
+
+```{r}
+separate_rows(patient_df,
+              visit_id, measured,
+              convert = TRUE) # chr -> int
+```
+
+### {.box-6 .offset-3 .bg-yellow .icon-small}
+
+![](img/00/tip.png)
+
+To split different variables use `separate()`
+
+## `separate()` | splitting values {.build}
+
+```{r, row = c(8, 4), title = "Demo dataset"}
+patient <- tibble(
+  subject_id = 1001:1006,
+  gender_age = paste(c("m", "f"), floor(runif(6, 21, 65)),
+                     sep = "-"))
+patient
+```
+
+```{r, row = c(8,4), title = "splitting by key-value pairs"}
+separate(patient,
+         gender_age, c("sex", "age"),
+         convert = TRUE)
+```
+
+## `separate()` and `unite()` | exercice {.vs1 .build .bg-green}
+
+### create valid dates format YYYY-MM-DD {.box-12 .bg-blue}
+
+<!-- FIXME: date is not valid!!-->
+
+```{r, row = c(8, 4)}
+dummy <- data_frame(year = c(2015, 2014, 2014),
+                    month = c(11, 2, 4),
+                    day = c(23, 1, 30),
+                    value = c("high", "low", "low"))
+dummy
+```
+
+### solution `unite()`  {.box-12 .bg-gray}
+
+```{r, row = c(8, 4)}
+dummy %>%
+  unite(date,
+        year, month, day,
+        sep = "-") -> dummy_unite
+dummy_unite
+```
+
+## `separate()` and `unite()` | exercice {.vs1 .build .bg-green}
+
+
+### explode YYYY-MM-DD by the '-' {.box-12 .bg-blue}
+
+
+### solution `separate()` {.box-12 .bg-gray}
+
+ - Use **quotes** since we are not refering to objects
+ - Default split on non-alphanumeric characters 
+
+```{r, row = c(8, 4)}
+dummy_unite %>%
+  separate(date, c("year", "month", "day"))
+```
+
+## Fill all combinations {.build}
+
+```{r, title = "Demo dataset"}
+kelpdf <- tibble(
+  Year = c(1999, 2000, 2004, 1999, 2004),
+  Taxon = c("Saccharina", "Saccharina", "Saccharina", "Agarum", "Agarum"),
+  Abundance = c(4, 5, 2, 1, 8)
+)
+kelpdf
+```
+
+<span class = "small">example from [imachorda.com](http://www.imachordata.com/you-complete-me/)</span> 
+
+## Fill all combinations {.build}
+
+### _Agarum_ was not recorded in 2000  {.box-6 .offset-3 .bg-green}
+
+how to fill out the missing info?
+
+%end%
+
+```{r, width = 6, class = "offset-3", title = "Use `complete()`"}
+complete(kelpdf,
+         Year, Taxon)
+```
+
+## Fill all combinations {.build}
+
+### _Agarum_ was recorded in 2000, but **absent** {.box-6 .offset-3 .bg-green}
+
+how to fill out this info with 0?
+
+%end%
+
+```{r, width = 6, class = "offset-3", title = "Use `complete()` and option `fill`"}
+complete(kelpdf,
+         Year, Taxon,
+         fill = list(Abundance = 0))
+```
+
+<span class = "small">example from [imachorda.com](http://www.imachordata.com/you-complete-me/)</span> 
+
+## fill all combinations {.build}
+
+### Wait, what happened between 2000 and 2004? {.box-12 .bg-yellow}
+
+how to fill out this info with 0s?
+
+### Use `complete()`, option `fill` and helper `full_seq()` {.box-12 .bg-blue}
+
+```{r, row = c(8, 4)}
+complete(kelpdf,
+         # helper tidyr::full_seq
+         Year = full_seq(Year, period = 1),
+         Taxon,
+         fill = list(Abundance = 0))
+```
+
+<span class = "small">example from [imachorda.com](http://www.imachordata.com/you-complete-me/)</span> 
+
+## nesting completion | combinations of variables {.nvs1 .build}
+
+### Do we have all visits per patient? {.box-12 .bg-grgold}
+
+```{r, row = c(8, 4)}
+separate_rows(patient_df,
+              visit_id, measured,
+              convert = TRUE)
+```
+
+
+### solution: `complete()`, with helper `nesting()` {.box-12 .bg-blue .compact-output}
+
+```{r, row = c(8, 4)}
+separate_rows(patient_df,
+              visit_id, measured,
+              convert = TRUE) %>% 
+  complete(subject_id, 
+           nesting(visit_id)) -> patient_complete
+patient_complete
+```
+
+
+## How to keep hierachical data in a rectangle? | nesting tables {.build}
+
+### solution: `nest()` {.box-6 .bg-blue}
+
+```{r out.width = '50%'}
+patient_complete %>% 
+  nest(visit_id, measured) -> patient_nested
+patient_nested
+```
+
+### Advantages {.box-6 .bg-green .stretch}
+
+ * common data structures are hierarchical, e.g. patient-centric with repeat observations
+ * **nesting** allows to store *collapsed* tibbles and simplifies data management
+ * **unnesting** unfold the data
+
+### `unnest()` {.box-12 .bg-blue .compact-output}
+```{r, row = TRUE}
+patient_nested %>% 
+  unnest()
+```
+
+
+## better described as grouped data {.vs2}
+
+### `group_by` and `nest()` {.box-12 .bg-blue}
+```{r, row = TRUE}
+patient_complete %>%
+  group_by(subject_id) %>%
+  nest(.key = "visit")
+```
+
+%end%
+
+- nested column ([list-column](https://github.com/rstudio/cheatsheets/raw/master/old/pdfs/list-columns-cheatsheet.pdf)) is named `data` by default
+
+
+## Wrap up
+
+### Covered here {.box-10 .offset-1 .bg-blue }
+
+- tidyverse, introduction
+- tidy data
+    + <http://tidyr.tidyverse.org/>
+    + `vignette("tidy-data")`
+- `tidyr`
+    + long / wide with `gather` / `spread`
+    + data cleaning
+    + present helpers: `complete`, `separate_rows` and `nest()`
+- switch from `base` to `tidyverse`, [Rajesh Korde, blog' post](http://www.significantdigits.org/2017/10/switching-from-base-r-to-tidyverse/)
+
+### Acknowledgments {.box-4 .offset-3 .bg-grgold}
+
+* Hadley Wickham
+* Roland Krause
+* Jeremy Stanley
