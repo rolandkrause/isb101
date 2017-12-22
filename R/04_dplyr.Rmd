@@ -16,10 +16,21 @@ knitr::opts_chunk$set(echo = TRUE)
 options(max.print = 500)
 library(tidyverse)
 library(biomaRt)
-
-# Here we load each single object found in the cache folder: It is possible to specify the object to be loaded
-bs2site::read_cache()
 ```
+
+
+```{r, include = FALSE}
+# Adds a `tibble_rows` chunk option to set the number of rows to show
+knitr::knit_hooks$set(tibble_rows = function(before, options, envir) {
+    if (before) {
+        old_tib_prnt_opt <<- options(tibble.print_min = options$tibble_rows,
+                                     tibble.print_max = options$tibble_rows)
+    } else {
+        options(old_tib_prnt_opt)
+    }
+})
+```
+
 
 ## Data transformation | Introduction {.build}
 
@@ -76,7 +87,7 @@ biocLite("biomaRt")
 
 ## Retrieving sample data {.bg-green} 
 
-```{r biomart_library, eval = FALSE, title = "Genes from chromosome 21 using biomaRt", width = 10, class = "offset-1"}
+```{r biomart_library, eval = TRUE, cache = TRUE, title = "Genes from chromosome 21 using biomaRt", width = 10, class = "offset-1"}
 # Load the library
 library(biomaRt)
 gene_mart <- useMart(biomart = "ENSEMBL_MART_ENSEMBL",
@@ -97,13 +108,6 @@ gene_by_exon <- getBM(mart = gene_set,
                       filters = "chromosome_name",
                       values = "21"
 )
-```
-
-```{r, include = FALSE, eval = FALSE}
-bs2site::write_cache(gene_mart)
-bs2site::write_cache(gene_set)
-bs2site::write_cache(gene_by_exon)
-# Objects are loaded by the call to read_cache() in the first chunk
 ```
 
 ## `as_tibble()` from the tibble package | ![](img/00/logo_tibble.png){} {.nvs3}
@@ -143,6 +147,8 @@ verb(subject, complement)
 ```{r, eval = FALSE, title = "With pipe", class = "offset-2 x-large", width = 8}
 subject %>% verb(complement)
 ```
+
+###{.col-6 .offset-6 .small .show}
 
 Example adapted from [Romain François](https://twitter.com/ParisRaddict/status/781267225420435461)
 
@@ -259,13 +265,13 @@ gene_by_exon %>%
 ```
 
 
-## `arrange()` | sort columns
+## `arrange()` 
 
 ### perform a nested sorting of all genes: {.box-12 .bg-yellow .compact-output}
 
 1. remove empty strings in gene symbols
-2. hgnc_symbol
-3. ensembl_transcript
+2. sort by `hgnc_symbol`
+3. within each group of `hgnc_symbol`, sort by `ensembl_transcript`
 
 ```{r}
 gene_by_exon %>%
@@ -274,9 +280,11 @@ gene_by_exon %>%
   dplyr::select(hgnc_symbol, ensembl_transcript_id, everything())
 ```
 
-## `arrange()` | `desc` to reverse sort columns {.vs1}
+## `arrange()` | sort columns
 
-- find the *last* gene on chromosome 21.
+### Reverse sort columns using `desc()` {.box-6 .offset-3 .bg-yellow}
+
+- Find the *last* gene on chromosome 21.
 
 ```{r}
 gene_by_exon %>%
@@ -284,47 +292,46 @@ gene_by_exon %>%
   dplyr::select(hgnc_symbol, ends_with("position"))
 ```
 
-
-## Verbs for inspecting data {.vs2}
+## Verbs to inspect data
 
 ### summary {.box-10 .offset-1 .bg-blue}
 
-* `as_tibble()` to convert to a tibble
-* `glimpse()` - some of each column
-* `filter()` - subsetting
+- `as_tibble()` converts to a tibble
+- `glimpse()` gives an overview of each column's content
+- `filter()` to subset
     + AND/OR conditions
-* `arrange()` - sorting (`desc` to reverse the sort)
-* `select()` - picking (and omiting) columns
-    + helpers
+- `arrange()` to sort
+    + combine with `desc()` to reverse the sorting
+- `select()` to pick and/or omit columns
+    + helper functions
 
-# columns transformation
+# Transforming columns
 
-## `rename()` | renaming columns {.vs1}
+## `rename()` | renaming columns
 
+### Usage{.box-8 .offset-2 .bg-yellow}
 
 - rename columns with `rename(new_name = old_name)`.
-    + to keep the order correct, read/remember the renaming `=` as "was".
+    + to remember the order of appearance, consider `=` as "was".
     + rename will replace column names
 
-```{r}
+%end%
+
+
+```{r, title = "Example", tibble_rows = 6}
 gene_by_exon %>%
   rename(stop = end_position, start = start_position)
 ```
 
 ## `mutate()` | add columns {.build}
 
-
-### gene length {.box-12 .bg-blue .compact-output}
-
-```{r, row = c(7, 5)}
+```{r, row = c(7, 5), tibble_rows = 6, title = "gene length"}
 gene_by_exon %>%
   mutate(length = end_position - start_position) %>% 
   dplyr::select(hgnc_symbol, length)  
 ```
 
-### new variables can be used right away {.box-12 .bg-blue .compact-output}
-
-```{r, row = c(7, 5)}
+```{r, row = c(7, 5), tibble_rows = 6, title = "new variables can be used right away"}
 gene_by_exon %>%
   mutate(length = end_position - start_position,
          codons = length %% 3 == 0) %>% 
@@ -333,53 +340,49 @@ gene_by_exon %>%
 
 <!-- add filter(codons) then filter(!codon) --> 
 
-
 ## `mutate()` | replace columns {.vs1}
 
-
-### gene coordinates in Mb {.box-12 .bg-blue .compact-output}
-
-```{r, row = TRUE}
+```{r, width = 8, class = "offset-2", title = "Gene coordinates in Mb"}
 gene_by_exon %>%
   mutate(start_position = start_position / 1e6,
          end_position   = end_position / 1e6) %>% 
   dplyr::select(hgnc_symbol, ends_with("position"))  
 ```
 
+## `distinct()` | unique rows
 
-## `distinct()` | unique rows {.build}
+### Symbol and length {.box-12 .offset-0 .bg-green .build}
 
-### symbol and length {.box-12 .bg-yellow .compact-output}
-
-```{r, row = c(8, 4)}
+```{r, row = c(8, 4), tibble_rows = 6}
 gene_by_exon %>%
   filter(gene_biotype == "protein_coding") %>% 
   mutate(length = end_position - start_position) %>% 
   dplyr::select(hgnc_symbol, length)
 ```
 
-### symbol and length {.box-12 .bg-blue .compact-output}
-
-```{r, row = c(8, 4)}
+```{r, row = c(8, 4), tibble_rows = 6}
 gene_by_exon %>%
   filter(gene_biotype == "protein_coding") %>% 
   mutate(length = end_position - start_position) %>% 
-  dplyr::select(hgnc_symbol, length) %>% 
+  dplyr::select(hgnc_symbol, length) %>%
   distinct()
 ```
 
-## `mutate_at(), mutate_all(), mutate_if()` | changing many columns
+## `mutate_at(), mutate_all(), mutate_if()` | change multiple columns
 
-
-### usage {.box-12 .bg-blue}
+### Usage {.box-6 .bg-blue}
 
  * `select` **helpers** with `vars()` in `mutate_at()`
  * Use column **conditions** for `mutate_if()`
  * `funs()` to wrap functions
 
-%end% 
+### {.box-6 .bg-yellow .icon-small .middle}
 
-- `mutate_at()`, placeholder **'.'** is the dynamic variable
+![](img/00/tip.png)
+
+The placeholder **`.`** is the dynamic variable when using `mutate_at()`
+
+%end% 
 
 ```{css, echo = FALSE}
 .smaller_code pre:not(.lang-r) {
@@ -392,83 +395,126 @@ gene_by_exon %>%
 gene_by_exon %>% 
   mutate_at(vars(contains("position")),
             funs(. + 1)) %>%
-   dplyr::select(-ends_with("id"))
+  dplyr::select(-ends_with("id"))
 ```
 
-## `mutate_if()` | changing many columns {.vs2 .build}
+## `mutate_if()` | change multiple columns {.build}
 
-```{r, row = c(5, 7), title = "Coordinate conversion", class = "compact-output smaller_code"}
+```{r, row = c(5, 7), title = "Coordinate conversion", class = "compact-output smaller_code show"}
 gene_by_exon %>% 
   mutate_if(is.numeric, funs(. + 1)) %>%
   dplyr::select(-ends_with("id"))
 ```
 
-### oops! chr **22** and stand! {.bg-yellow2 .offset-3 .box-6}
+### Watchout {.bg-red .offset-3 .box-6}
 
-## `mutate_all()` | changing all columns {.vs1}
+Now we get a chromosome **22** and look at the strands!
 
-- **replace** all columns by unnamed action in `funs()`
+## `mutate_all()` | change all columns
 
-```{r, title = "convert iris from cm to inches", class = "compact-output"}
-iris %>%
-  as_tibble() %>%
-  group_by(Species) %>%
-  mutate_all(funs(. / 2.54))
-```
+### Replace columns {.box-6 .offset-3 .bg-yellow}
 
-## `mutate_all()` | changing all columns {.vs1}
-
-- **add** columns by naming the action in `funs()`
-
-```{r, title = "convert iris from cm to inches", class = "compact-output"}
-iris %>%
-  as_tibble() %>%
-  group_by(Species) %>%
-  mutate_all(funs(inches = . / 2.54))
-```
-
-# Grouping and summarizing
-
-## `group_by()` | summarise returns 1 row per group
-
- * Not a summarising transformation but frequently used in conjunction 
- * Grouping by more than one or more variables
- * Use `ungroup()` once grouped computing done
+Use **unnamed** actions in `funs()` to **replace** all columns
 
 %end%
 
-```{r, title = "compute the average number of transcripts, `n_distinct()`", class = "compact-output"}
+```{r, title = "Convert iris from cm to inches", class = "compact-output"}
+iris %>%
+  as_tibble() %>%
+  dplyr::select(-Species) %>%
+  mutate_all(funs(. / 2.54))
+```
+
+## `mutate_all()` | change all columns
+
+### Add columns {.box-6 .offset-3 .bg-yellow}
+
+Use **named** actions in `funs()` to **add** new columns
+
+%end%
+
+```{r, title = "Convert iris from cm to inches", class = "compact-output"}
+iris %>%
+  as_tibble() %>%
+  dplyr::select(-Species) %>%
+  mutate_all(funs(inches = . / 2.54))
+```
+
+# Grouping and summarising
+
+## `group_by()` and `summarise()`
+
+### `group_by`{} {.box-6 .bg-blue}
+
+- Not a summarising transformation but frequently used in conjunction 
+- Grouping by more than one variable
+- Use `ungroup()` once the grouped computing is done
+
+### `summarise`{} {.box-6 .bg-red}
+
+- returns 1 row per group
+
+%end%
+
+```{r, title = "Find out the number of transcripts by genes using `n_distinct()`", class = "compact-output offset-1", tibble_rows = 6, width = 10}
 gene_by_exon %>%
   group_by(ensembl_gene_id, hgnc_symbol) %>% 
   summarise(n_trans = n_distinct(ensembl_transcript_id))
 ```
 
-## transcripts number per gene | get the gene with highest # transcripts {.build .bg-green}
+## Your turn {.build .bg-green}
 
-```{r, title = "solution: arrange", class = "compact-output", row = c(7, 5)}
+### Exercise {.box-6 .offset-3 .bg-blue-white .show}
+
+Identify the gene with highest number of transcripts
+
+%end%
+
+```{r, title = "Using `arrange()`", class = "compact-output", row = c(7, 5)}
 gene_by_exon %>%
   group_by(ensembl_gene_id, hgnc_symbol) %>% 
   summarise(n_trans = n_distinct(ensembl_transcript_id)) %>%
   arrange(desc(n_trans))
 ```
 
-### {.col-12 .bg-orange}
+## Your turn {.build .bg-green}
 
-```{r, title = "solution: filter the max", class = "compact-output", row = c(7, 5)}
+### Exercise {.box-6 .offset-3 .bg-blue-white .show}
+
+Identify the gene with highest number of transcripts
+
+%end%
+
+```{r, title = "Filter the max", class = "compact-output", row = c(7, 5), tibble_rows = 6}
 gene_by_exon %>%
   group_by(ensembl_gene_id, hgnc_symbol) %>% 
   summarise(n_exon = n_distinct(ensembl_transcript_id)) %>%
   filter(n_exon == max(n_exon))
 ```
+### What happened? {.box-8 .offset-2 .bg-red .icon-small .build .x-large}
 
+```{block, class = "show"}
+![](img/00/warning.png)
+```
 
-## transcripts number per gene | get the gene with highest # transcripts {.build .bg-green .vs2}
+Results were still grouped!
 
-### results were still grouped! {.box-8 .offset-2 .bg-yellow2}
+## Your turn {.build .bg-green}
+
+### Exercise {.box-6 .bg-blue-white .show .stretch}
+
+Identify the gene with highest number of transcripts
+
+### What happened? {.box-6 .bg-red .icon-small .show}
+
+![](img/00/warning.png)
+
+Results were still grouped!\
+Use `ungroup()`
 
 %end%
 
-```{r, title = "solution: ungroup + filter the max", class = "compact-output", row = c(7, 5)}
+```{r, title = "Ungroup and filter the max", class = "compact-output offset-1", width = 10}
 gene_by_exon %>%
   group_by(ensembl_gene_id, hgnc_symbol) %>% 
   summarise(n_exon = n_distinct(ensembl_transcript_id)) %>%
@@ -478,100 +524,66 @@ gene_by_exon %>%
 
 ## `count()` {.build}
 
-### Replacing calls to `table()` {.box-12 .bg-yellow}
-
-```{r, row = c(7, 5)}
-head(as.data.frame(table(gene_by_exon$hgnc_symbol) ))
-```
-
-
-###  `count()` does the grouping for you and returns a `tibble` {.box-12 .bg-cobalt .compact-output}
-
-```{r, row = c(7, 5)}
+```{r, title = "Observations by group", width = 4, tibble_rows = 6, class = "show"}
 gene_by_exon %>%
   count(hgnc_symbol)
 ```
 
-##  mimic `count()`  {.vs2}
+### Replaces `base::table()` {.box-8 .bg-yellow .compact-output .stretch}
 
-### with `summarise()` and `n()` {.box-12 .bg-cobalt .compact-output}
+```{r}
+head(as.data.frame(table(gene_by_exon$hgnc_symbol)))
+```
 
-```{r, row = c(7, 5)}
+%end%
+
+```{r, row = c(7, 5), tibble_rows = 6, title = "Or use `summarise()` and `n()`", class = "offset-1 compact-output", width = 10}
 gene_by_exon %>%
   group_by(hgnc_symbol) %>%
   summarise(n = n())
 ```
 
-
-## Non-standard evaluation, great in interactive analysis, tough for prog.  {.build}
-
-### problem, dplyr in functions {.box-6 .bg-yellow .stretch}
-
-* `dplyr` functions take unquoted variable names 
-
-```{r, error=TRUE}
-my_summarise <- function(df, group_var) {
-  df %>%
-    group_by(group_var) %>%
-    summarise(mean_mpg = mean(mpg))
-}
-
-my_summarise(mtcars, am)
-my_summarise(mtcars, carb)
-```
-
-### solution `tidyeval` {.box-6 .bg-grgold .stretch}
-
-```{r, error=TRUE}
-my_summarise <- function(df, group_var) {
-  g_var <- enquo(group_var)
-  df %>%
-    group_by(!! g_var) %>%
-    summarise(mean_mpg = mean(mpg))
-}
-
-my_summarise(mtcars, am)
-my_summarise(mtcars, carb)
-```
- 
-
 # Joining data frames
 
-## merge 2 separate tables {.build}
+## Merge 2 separate tables {.build}
 
-### UK bands {.bg-gray .box-12 .compact-output}
+### UK bands: `band_members` {.bg-green .box-6 .show}
 
 ```{r, row = TRUE}
-band_instruments
 band_members
 ```
 
-### join common key {.bg-grgold .box-6 .compact-output .stretch}
+### UK bands: `band_instruments` {.bg-green .box-6}
 
-```{r}
+```{r, row = TRUE}
+band_instruments
+```
+
+%end%
+
+<!-- FIXME: stretch still not working for chunk boxes: I need to fix the chunk rendering and create the box-body container... -->
+
+```{r, title = "Join by common key", width = 6}
 inner_join(band_instruments,
            band_members)
 ```
 
-### join for all left {.bg-grgold .box-6 .compact-output}
-
-```{r}
+```{r, title = "Join for all left", width = 6}
 left_join(band_instruments,
            band_members)
 ```
-
 
 ## Relational operations, **mutating** joins {.nvs3 .build}
 
 ### inner join {.box-6 .bg-aquamarine2 .middle}
 
-![](img/06/join-inner.png)
+![](img/04/join-inner.png)
 
 <span class = "small">credit: [Hadley Wickham, R for data science](http://r4ds.had.co.nz/relational-data.html)</span>
 
 ### outer join {.box-6 .bg-aquamarine2}
 
-![](img/06/join-outer.png)
+![](img/04/join-outer.png)
 
 
 ## Relational operations, **filtering** joins {.build .vs1}
@@ -581,7 +593,7 @@ left_join(band_instruments,
 
 - extract what does **not** match
 
-![](img/06/join-anti.png)
+![](img/04/join-anti.png)
 
 <span class = "small">source: Wickam, [R for data science](http://r4ds.had.co.nz/relational-data.html#filtering-joins)</span> 
 
@@ -589,13 +601,13 @@ left_join(band_instruments,
 
 - filter matches in x, no duplicates
 
-![](img/06/join-semi-many.png)
+![](img/04/join-semi-many.png)
 
 %end%
 
->Only the existence of a match is important; it doesn’t matter which observation is matched. This means that filtering joins never duplicate rows like mutating joins do | Hadley Wickam, R for Data Science {.bg-yellow2}
+>Only the existence of a match is important; it doesn’t matter which observation is matched. This means that filtering joins never duplicate rows like mutating joins do | Hadley Wickam, R for Data Science {.bg-gray}
 
-
+<!--
 
 ## `semi_join()` does not alter original {.build}
 
@@ -625,38 +637,49 @@ semi_join(tx, ty)
 inner_join(tx, ty)
 ```
 
-## join columns of different names {.build}
+-->
 
-### UK bands {.bg-gray .box-12 .compact-output}
+## Join by columns of different names {.build}
+
+## Merge 2 separate tables {.build}
+
+### UK bands: `band_members` {.bg-green .box-6 .show}
 
 ```{r, row = TRUE}
-band_instruments2
 band_members
 ```
 
-### no common key {.bg-red .box-6 .compact-output .stretch}
+### UK bands: `band_instruments2` {.bg-green .box-6 .show}
+
+```{r, row = TRUE}
+band_instruments2
+```
+
+%end%
+
+### No common key is found {.bg-red .box-6 .compact-output .stretch}
 
 ```{r, error = TRUE}
 inner_join(band_instruments2,
            band_members)
 ```
 
-### specify common key with `by` {.bg-grgold .box-6 .compact-output .stretch}
+### Use `by` to specify the common key {.bg-blue .box-6 .compact-output .stretch}
 
-```{r, error = TRUE}
+```{r}
 inner_join(band_instruments2,
            band_members,
            by = c(artist = "name"))
 ```
 
+# Helpers
 
-# helpers
+## `pull()` | `select()` as a vector {.build}
 
-## `pull()` | `select` as a vector {.build}
-
-```{r, row = c(5, 7), title = "extract first column"}
+```{r, row = c(5, 7), title = "extract column by index"}
 pull(gene_by_exon, 2)[1:2]
 ```
+
 ```{r, row = c(5, 7), title = "using negative indexes"}
 pull(gene_by_exon, -2)[1:10]
 ```
@@ -666,20 +689,18 @@ pull(gene_by_exon, gene_biotype) %>%
   unique()
 ```
 
-## `near()` | deal with float numbers rounding {.vs3 .build}
 
+## `near()` | addresses the rounded float number issue {.vs2 .build}
 
-### predict the outcome of: {.box-6 .bg-yellow}
+### Predict the outcome of: {.box-6 .offset-3 .bg-green .show}
 
-TRUE or FALSE?
+Is the following `TRUE` or `FALSE`?
 
 ```{r, eval = FALSE}
 sqrt(2) ^ 2 == 2
 ```
 
-
-### FALSE! {.box-6 .bg-orange}
-
+### FALSE! {.box-6 .bg-red}
 
 ```{r}
 sqrt(2) ^ 2 == 2
@@ -687,14 +708,15 @@ sqrt(2) ^ 2 == 2
 
 %end%
 
-```{r, title = "Solution, `near()` that tolerate machine's precision"}
+```{r, title = "`near()` tolerates the machine's precision", width = 6}
 near(sqrt(2) ^ 2, 2)
+
 .Machine$double.eps^0.5
 ```
 
+<!--
 
 ## `case_when()` | vectorized ifelse {.vs1}
-
 
 ```{r, title = "nested conditional tests"}
 gene_by_exon %>%
@@ -709,8 +731,9 @@ gene_by_exon %>%
   count(category)
 ```
 
-## `recode()` | vectorized switch
 
+
+## `recode()` | Vectorized switch
 
 ```{r, title = "recode using either backstick or quotes", row = c(7, 5)}
 mtcars %>%
@@ -729,7 +752,7 @@ mtcars %>%
 
 - but no **missing** element
 
-
+-->
 <!--
 
 ## `top_n()`
@@ -759,11 +782,7 @@ gene_by_exon %>%
 
 ## `lead()` and `lag()` | comparing rows above and below {.vs1}
 
-### Calculate intergenic distance {.box-12 .bg-blue .compact-output}
-
-- **tip**: renaming in `select()` call
-
-```{r, row = FALSE}
+```{r, title = "Calculate intergenic distance", tibble_rows = 6}
 gene_by_exon %>%
   dplyr::select(ensembl_gene_id, start = start_position, end = end_position) %>% 
   distinct() %>% 
@@ -773,8 +792,13 @@ gene_by_exon %>%
 ```
 
 
-## `ntile()` | breaks data into n buckets {.vs1}
+### Tip{.box-6 .offset-3 .bg-yellow .icon-small}
 
+![](img/00/tip.png)
+
+You can rename columns within a `select()` call
+
+## `ntile()` | breaks data into n buckets {.vs1}
 
 ```{r, title = "finding quartiles"}
 tibble(x = rnorm(101)) %>% 
@@ -785,9 +809,9 @@ tibble(x = rnorm(101)) %>%
 
 <span class = "small">Nick Strayer' [gist](https://gist.github.com/nstrayer/6b57760c2d089c2d2c281e2393d405a7)</span> 
 
-## Summary 
+## Summary | the verbs you will use 80% of your time {.build}
 
-### Most commonly used - 80% {.box-6 .bg-grgold}
+### Most commonly used verbs {.box-6 .bg-blue .show}
 
  - `select()` - columns
  - `filter()` - rows meeting condition
@@ -801,41 +825,45 @@ tibble(x = rnorm(101)) %>%
  - `inner_join` and friends - Merging tables
 
 
-### dplyr schema {.col-6}
+### dplyr schema {.box-6 .bg-blue-white}
 
-![](img/06/vaudor_dplyr_schema.png)
+![](img/04/vaudor_dplyr_schema.png)
 
 <span class = "small">source: Lise Vaudor [blog](http://perso.ens-lyon.fr/lise.vaudor/dplyr/)</span> 
 
+## Summary | The remaining 20%
 
-
-## Other 20% {.nvs2}
-
-### Occasionally handy {.box-6  .bg-blue .middle}
+### Occasionally handy {.box-6 .bg-blue .middle .offset-3}
 
 - Assembly: `bind_rows`, `bind_cols`
 - Set operations: `intersect`, `union`, `setdiff`
 - Windows function, `min_rank`, `dense_rank`, `cumsum`. See [vignette](https://cran.r-project.org/web/packages/dplyr/vignettes/window-functions.html)
 
-### {.col-6}
-
-<!-- add a mini example to demosntrate bind_cols(.id = "id") --> 
+<!-- add a mini example to demonstrate bind_cols(.id = "id") --> 
 <!-- to be done better and adding the union.png, maybe not --> 
 
-![](img/06/bind_cols.png)
-![](img/06/bind_rows.png)
-![](img/06/intersect.png)
+### Bind columns {.box-4 .bg-blue-white .stretch}
 
-## Data base access, when your RAM is not enough {.vs1}
+![](img/04/bind_cols.png)
 
-### SQL mapping {.box-8 .offset-2 .bg-gray}
+### Bind rows {.box-4 .bg-blue-white .stretch}
 
- - `dplyr` code can be translated into SQL and query databases online (using `dbplyr`)
- - different types of tabular data ([dplyr SQL backend](https://cran.r-project.org/web/packages/dplyr/vignettes/databases.html), databases,
+![](img/04/bind_rows.png)
+
+### Intersect {.box-4 .bg-blue-white .stretch}
+
+![](img/04/intersect.png)
+
+## Data base access, when your RAM is not enough
+
+### SQL mapping using `dbplyr` {.box-8 .offset-2 .bg-gray}
+
+ - `dplyr` code can be translated into SQL to query databases online
+ - different types of tabular data ([dplyr SQL backend](https://cran.r-project.org/web/packages/dplyr/vignettes/databases.html), databases.
 
 %end%
 
-```{r, eval = FALSE, title = "Example"}
+```{r, title = "Example", message = FALSE, tibble_rows = 4, width = 10, class = "offset-1"}
 library(dbplyr)
 
 con <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
@@ -843,6 +871,9 @@ copy_to(con, mtcars)
 
 mtcars2 <- tbl(con, "mtcars")
 mtcars2
+```
+
+<!-- 
 #> # Source:   table<mtcars> [?? x 11]
 #> # Database: sqlite 3.19.3 [:memory:]
 #>      mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb
@@ -853,10 +884,10 @@ mtcars2
 #>  4  21.4     6 258.0   110  3.08 3.215 19.44     1     0     3     1
 #>  5  18.7     8 360.0   175  3.15 3.440 17.02     0     0     3     2
 #> # ... with more rows
-```
+
+-->
 
 <span class = "small">README from [dbplyr on github](https://github.com/tidyverse/dbplyr)</span> 
-
 
 ## Bigger data, go for `data.table`
 
@@ -864,17 +895,14 @@ mtcars2
 
 ![](img/00/logo_datatable.png)
 
- + See this interesting [thread](http://stackoverflow.com/questions/21435339/data-table-vs-dplyr-can-one-do-something-well-the-other-cant-or-does-poorly) about comparing `data.table` versus `dplyr` 
- + [`data.table`](https://cran.r-project.org/web/packages/data.table/index.html), see  [introduction](https://github.com/Rdatatable/data.table/wiki) is very efficient but the syntax is not so easy.
- + Main advantage: inline replacement (tidyverse is frequently copying)
- + As a summary:      _tl;dr   data.table for speed, dplyr for readability and convenience_ [Prashanth Sriram](https://www.quora.com/Which-is-better-to-use-for-data-manipulation-dplyr-package-or-data-table-library)
-  + Hadley recommends that for data > 1-2 Gb, if speed is your main matter, go for `data.table` 
-  + `dtplyr` is a `dplyr` interface to `data.table` but slower than native `data.table`
-
-
+- See this interesting [thread](http://stackoverflow.com/questions/21435339/data-table-vs-dplyr-can-one-do-something-well-the-other-cant-or-does-poorly) comparing `data.table` and `dplyr` 
+- [`data.table`](https://cran.r-project.org/web/packages/data.table/index.html) is very efficient but the syntax is not so easy (see [introduction](https://github.com/Rdatatable/data.table/wiki)).
+- Main advantage: inline replacement (tidyverse is frequently copying)
+- As a summary:      _tl;dr   data.table for speed, dplyr for readability and convenience_ [Prashanth Sriram](https://www.quora.com/Which-is-better-to-use-for-data-manipulation-dplyr-package-or-data-table-library)
+- Hadley recommends that for data > 1-2 Gb, if speed is your main matter, go for `data.table` 
+- `dtplyr` is a `dplyr` interface to `data.table` but slower than native `data.table`
 
 ### Acknowledgments {.box-8 .offset-2 .vs1 .bg-yellow}
-
 
 - Lise Vaudor
 - Bruno Rodrigues
