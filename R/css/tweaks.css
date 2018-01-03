@@ -177,3 +177,9 @@ article > ul {
 article .to-build {
   visibility: hidden;
 }
+
+.center-img img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
