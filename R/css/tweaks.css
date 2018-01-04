@@ -183,3 +183,10 @@ article .to-build {
   margin-left: auto;
   margin-right: auto;
 }
+
+/* Should be fixed in IOSP */
+/* Check if it breaks something else... */
+
+.chunk .r-output pre {
+  height: unset;
+}

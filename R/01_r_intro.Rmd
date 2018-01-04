@@ -4,13 +4,22 @@ author: "G. Androsova, E. Koncina, A. Ginolhac, R. Krause"
 date: "2018-01-08"
 output: 
   iosp::ioslides_plus:
-    box_colours:
-      bg-blue-white: ["white", "#005C99"]
+    keep_md: no
 ---
 
 ```{r, include = FALSE}
 library(tidyverse)
 swirl_mailto <- "roland.krause@uni.lu" #"eric.koncina@uni.lu"
+```
+
+```{r, include = FALSE}
+knitr::knit_hooks$set(chunk_col = function(before, options, envir) {
+    if (before) {
+        old_col <<- options(width = options$chunk_col)
+    } else {
+        options(old_col)
+    }
+})
 ```
 
 
@@ -20,7 +29,22 @@ swirl_mailto <- "roland.krause@uni.lu" #"eric.koncina@uni.lu"
 
 R is a language and environment for **statistical** computing and **graphics**.
 
-### Advantages of R {.box-8 .offset-2 .bg-blue}
+```{css, echo = FALSE}
+.double-list ul {
+  columns: 2;
+  -webkit-columns: 2;
+  -moz-columns: 2;
+}
+
+.double-list li {
+  -webkit-column-break-inside: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+```
+
+
+### Advantages of R {.box-10 .offset-1 .bg-blue .double-list}
 
 - free software (unlike Matlab)
 - easy to download/install/update
@@ -32,7 +56,11 @@ R is a language and environment for **statistical** computing and **graphics**.
 More details on https://www.r-project.org/about.html
 
 
-### Learning objectives {.box-8 .offset-2 .bg-red}
+## {.bg-blue .middle}
+
+### Learning objectives {.box-10 .offset-1 .bg-red .icon}
+
+![](img/00/kt.png)
 
 - Apply your knowledge from Introduction to Bioinformatics in a new environment
 - Learn Base R
@@ -42,11 +70,10 @@ More details on https://www.r-project.org/about.html
 - Practice R in a learning environment and with first projects
 - Eventually, write your project report in RMarkdown
 
-
-
 ## Set up for R 
 
 ### R lecture {.box-8 .offset-2 .bg-green}
+
 - R1 Intro
 - R2 Tidy data (Tue morning)
 - R3 Getting data into R (Tue afternoon)
@@ -54,12 +81,15 @@ More details on https://www.r-project.org/about.html
 - R5 Visualization (Thu afternoon)
 - R6 Genomics in R (Fri morning)
 
-
 ## How to install R on my PC?
 
-R is installed on your computers already, this is for reference.
+### {.box-8 .offset-2 .bg-yellow .icon-small}
 
-### R{.box-8 .offset-2 .bg-green}
+![](img/00/tip.png)
+
+R is already installed on your computers, this is for reference.
+
+### R{.box-6 .bg-blue}
 
 - go to http://cran.r-project.org
 - choose your system
@@ -67,7 +97,7 @@ R is installed on your computers already, this is for reference.
 - download R
 - run the downloaded file
 
-### Rstudio {.box-8 .offset-2 .bg-blue}
+### Rstudio {.box-6 .bg-blue}
 
 - go to https://www.rstudio.com/
 - choose the **free RStudio Desktop** version
@@ -75,27 +105,25 @@ R is installed on your computers already, this is for reference.
 - download
 - run the downloaded file
 
-
 # RStudio
 
 ![](img/00/logo_rstudio.png)
 
 ## Rstudio | What is it? {.build}
 
-### IDE {.box-6  .bg-yellow}
+### IDE {.box-8 .offset-2 .bg-yellow}
 
 [RStudio](https://www.rstudio.com/products/RStudio/) is an Integrated Development Environment.\  
-It makes working with R much easier
+It makes working with R much easier.
 
-### Warning {.box-6 .bg-red .icon-small}
+### Warning {.box-6 .bg-red .offset-3 .icon-small}
 
 ![](img/00/warning.png)
 
 Don't mix up **R** and **RStudio**.  
 **R** needs to be installed first.
 
-
-### Features {.box-6 .bg-green}
+### Features {.box-12 .bg-blue .double-list}
 
 - _Console_ to run **R**, with syntax highlighter
 - _Editor_ to work with scripts
@@ -106,37 +134,35 @@ Don't mix up **R** and **RStudio**.
 - _Git_ integration for versioning
 - _Inline_ outputs 
 - _Keyboard shortcuts_
-- [_Notebooks_](https://rviews.rstudio.com/2017/03/15/why-i-love-r-notebooks/)
-
 
 ## Rstudio | The 4 panels layout
 
-### {.box-12 .bg-white .center-img}
+### {.box-12 .bg-bluew .center-img}
 
 ![](img/01/rstudio_layout.jpg)
 
-## Four panels
+## Four panels {data-background="img/01/rstudio_layout.jpg" .middle}
 
-### Scripting {.box-6 .bg-green .stretch}
+### Scripting {.box-6 .bg-bluew .stretch}
 
 - Represents the main window
 - Using a **Rmarkdown** document is highly recommended
 - Tabs to switch documents
 
-### Environment {.box-6 .bg-yellow .stretch}
+### Environment {.box-6 .bg-bluew .stretch}
 
 - Environment: shows loaded objects and their `str()`
 - History
 - nice `git` integration
 - database **connections** interface
 
-### Console {.box-6 .bg-red .stretch}
+### Console {.box-6 .bg-bluew .stretch}
 
 - Can be hidden when using **inline** outputs
 - `rmarkdown` output logs
 - An optional `terminal` tab
 
-### Files / Plots / Help {.col-6 .box .bg-blue .stretch}
+### Files / Plots / Help {.box-6 .bg-bluew .stretch}
 
 - package management tab
 - Plots panel might be unecessary when using **inline** outputs
@@ -145,7 +171,7 @@ Don't mix up **R** and **RStudio**.
 
 ## Getting started {.bg-green}
 
-### Use **R** and **RStudio** {.box-8 .offset-2 .bg-blue-white}
+### Use **R** and **RStudio** {.box-8 .offset-2 .bg-bluew}
 
 Do the following:
 
@@ -180,9 +206,9 @@ Do the following:
 If you need to change the priority during the evaluation, use parentheses – _i.e._ `(` and `)` – to group calculations.
 
 
-## Data types in R
+## Data types in R {.build}
 
-### Four main types {.box-6 .bg-blue-white}
+### Four main types {.box-6 .bg-blue .show}
 
 Type                | Example
 ------------------- | ---------------------------
@@ -192,7 +218,7 @@ boolean             | TRUE / FALSE
 complex             | 2+0i
 
 
-### Special types {.box-6 .bg-blue-white .stretch .build}
+### Special types {.box-6 .bg-blue .stretch}
 
 ```{r, eval = FALSE}
 NA   # not available, missing data
@@ -210,19 +236,17 @@ NaN # Not a Number
 
 Call the command **`class()`** to see what data you are working with.
 
+## Numeric variables {.build}
 
-## Numeric variables
-
-### Integers {.box-8 .offset-2 .bg-blue-white}
+### Integers {.box-6 .bg-blue .show}
 
 Integers are stored 32-bit long registers and limited to a little more than 2 billion.
 
 ```{r}
 .Machine$integer.max
-
 ```
 
-### Double {.box-8 .offset-2 .bg-blue-white}
+### Double {.box-6 .bg-blue .show}
 
 Doubles can be bigger because they are stored as **double precision floating point numbers**, which have two pieces:
 
@@ -242,16 +266,24 @@ double_precision <- as.character(.Machine$double.xmax) %>%
 .Machine$double.xmax
 ```
 
-In practice, numeric computations always produce `double` results thus `numeric` name is used as a synonym. 
+```{r}
+# Clear some variables to clean the env for ls() demo
+rm(double_precision)
+```
+
+
+### {.box-8 .offset-2 .bg-yellow}
+
+In practice, numeric computations always produce `double` results thus the name `numeric` is used as a synonym. 
 
 ## Numeric variables
 
 R will automatically convert (coerce) between the numeric classes when needed.
 
-### `double` is the default {.box-6 .bg-blue-white .stretch}
+### `double` is the default {.box-6 .bg-blue .stretch}
+
 - Most math is done using double precision
 - Thus it is the default storage.
-
 
 ```{r}
 is.numeric(1)
@@ -260,18 +292,17 @@ is.integer(1)
 
 ### `integer` must be forced {.box-6 .bg-red .stretch}
 
-- Sometimes you may want to specifically store a vector as integers
-    + if you know that they will never be converted to doubles (used as ID values or indexing)
-    + since integers require less storage space.
+Sometimes you may want to specifically store a vector as integers:
+
+- if you know that they will never be converted to doubles (used as ID values or indexing)
+- since integers require less storage space.
 
 ```{r}
 is.numeric(1L)
 is.integer(1L) #Putting capital 'L' after an integer forces it to be stored as an integer.
 ```
 
-
-
-## Structures {.nvs1 .build}
+## Structures
 
 ### Vectors {.box-6 .stretch .bg-blue}
 
@@ -279,32 +310,55 @@ is.integer(1L) #Putting capital 'L' after an integer forces it to be stored as a
 - a single number is already a vector
 - `c()` is the function to **concatenate** elements
 
-```{r, row = TRUE, collapse = TRUE}
+### Atomic vectors {.box-6 .bg-blue}
+
+Each **atomic** vector contains only a single type of data
+
+- The type of each atom is the same
+- The size of each atom is 1 (single element)
+
+%end%
+
+```{r, title = "Example", width = 8, class = "offset-2", row = c(6, 6)}
+# Logical
+c(TRUE, FALSE, TRUE)
+
+# double
+c(1, 5, 7)
+
+# character
+c("character", "sequence")
+
 4
-c(43, 5.6, 2.90)
+
+is.vector(4)
+
+identical(4, c(4))
 ```
 
+## Structures
 
-### Factors {.box-6 .stretch .bg-blues}
-
-convert strings to factors, `levels` is the dictionary
-
-```{r, row = TRUE, collapse = TRUE}
-factor(c("AA", "BB", "AA", "CC"))
-```
-
-### Lists {.box-6 .bg-blue}
+### Lists {.box-6 .offset-3 .bg-blue}
 
 - Can contain anything!
+- are **vectors** which are **not atomic**.
+  + Elements can be of different types
+  + The length of each element (atom) might be greater than 1.
+  
+%end%
 
-```{r, row = TRUE, class = "compact-output"}
-list(f = factor(c("AA", "AA")),
-     v = c(43, 5.6, 2.90),
-     s = 4)
+```{r, title = "Example", width = 8, row = c(7, 5), class = "offset-2"}
+my_list <- list(1, 3, "seven")
+str(my_list)
+is.vector(my_list)
+is.atomic(my_list)
 ```
 
+<span class = "small">Adapted from the tutorial of [Jenny Bryan](https://jennybc.github.io/purrr-tutorial/bk00_vectors-and-lists.html)</span>
 
-### Matrix and Arrays {.box-6 .bg-blue .stretch}
+## Structures{.build}
+
+### Matrix and Arrays {.box-6 .offset-3 .bg-blue .show}
 
 - Matrix (2D)
 - Arrays ($\geq$ 3D)
@@ -313,19 +367,45 @@ list(f = factor(c("AA", "AA")),
 matrix(1:4, nrow = 2)
 ```
 
-## Data frames
-Fundamental data structure for combining diverse data into tables.
-```{r, dataframe, row = TRUE, collapse = TRUE}
-L3 <- LETTERS[1:3]
-fac <- sample(L3, 10, replace = TRUE)
-(d <- data.frame(x = 1, y = 1:10, fac = fac))
+### Data frames {.box-8 .offset-2 .bg-blue}
 
+Fundamental data structure for combining diverse data into tables.
+
+```{r, dataframe, row = c(8, 4), collapse = TRUE}
+data.frame(x = 1:3,
+           y =4:6,
+           f = c("abc", "def", "ghi"))
+```
+
+## Structures
+
+### Factors {.box-8 .offset-2 .bg-blue}
+
+- The function `factor()` converts strings to factors
+- `levels` is the dictionary
+
+```{r, collapse = TRUE}
+fac <- factor(c("AA", "BB", "AA", "CC"))
+fac
+str(fac)
+is.vector(fac)
+```
+
+## Variables in R {.build}
+
+```{css, echo = FALSE}
+.box-body > .chunk {
+  margin-top: 10px;
+}
+
+.box-body > .chunk > h3 {
+  font-size: 22px;
+  line-height: 30px;
+}
 ```
 
 
-## Variables in R
-
-### Assignment {.box-6 .bg-yellow}
+### Assignment {.box-8 .offset-2 .bg-yellow .show}
 
 In R you create **`objects`** by a process called **assignment**.
 
@@ -341,7 +421,7 @@ c
 ```
 
 
-### Warning {.box-6 .bg-red .icon-small}
+### Warning {.box-10 .offset-1 .bg-red .icon-small}
 
 ![](img/00/warning.png)
 
@@ -353,14 +433,8 @@ x = 7
 This **SHOULD NOT** be read as "x equals 7", which will result in confusion later.\
 Using `<-` instead of `=` is encouraged.
 
-
-
-## Naming of variables{.middle}
-
-
-
-
 ## Naming of variables{.build}
+
 > **The World's Worst Variable Name** to be: data\
 Of course it's data! That's what variables contain! That's all they ever can contain. It's like you're packing up your belongings to move to a new house, and on the side of the box you write, in big black marker, "things".| [Andy Lester](http://archive.oreilly.com/pub/post/the_worlds_two_worst_variable.html) {.bg-red .show}
 
@@ -489,7 +563,7 @@ How would you arrange your vector in a decreasing order using `sort()`?
 
 ## Operations with vectors {.bg-green .build}
 
-### Help{.box-8 .offset-2 .bg-blue-white .show}
+### Help{.box-8 .offset-2 .bg-bluew .show}
 
 - **`help()`** returns a full description of the query command: what it does, what it needs as input, what will be produced in output
 - Use the help tab in the lower right Rstudio panel
@@ -508,7 +582,7 @@ sort(a, decreasing = TRUE)
 
 ## Logical
 
-### Locical binary {.box-6 .bg-blue}
+### Logical binary {.box-6 .bg-blue}
 
 Two possible values represented by `TRUE` and `FALSE`.
 
@@ -567,7 +641,7 @@ c(FALSE, TRUE, TRUE) && c(TRUE, TRUE, FALSE)
 
 ## Practice time! {.bg-green}
 
-### {.box-10 .offset-1 .bg-blue-white}
+### {.box-10 .offset-1 .bg-bluew}
 
 Type in R console:
 ```{r, eval = F}
@@ -587,7 +661,7 @@ The email subject should be generated automaticly by swirl, in the email body pl
 - R has a few built in vectors.
 - One of these is **LETTERS**.
 
-```{r}
+```{r, chunk_col = 60}
 LETTERS
 ```
 
@@ -612,7 +686,7 @@ LETTERS[c(1:5, length(LETTERS) - 1)]
 
 ## Named vectors{.build}
 
-```{r, title = "Example", width = 6, class = "show"}
+```{r, title = "Example", width = 8, class = "offset-2 show", row = c(8, 4)}
 v = c("Mary", "Sue")
 names(v) <- c("First", "Last")
 v
@@ -620,20 +694,21 @@ v <- c(First = "Mary", Last = "Sue")
 v
 ```
 
-### Retrieve elements by names {.box-6 .bg-yellow}
+### Retrieve elements by names {.box-10 .offset-1 .bg-yellow .icon-small}
 
-- We can retrieve the first member by its name.
-    ```{r}
-    v["First"] 
-    ```
-- Or reverse the order with a character string index vector.
-    ```{r}
-    v[c("Last", "First")] 
-    ```
+![](img/00/tip.png)
+
+```{r, title = "retrieve the first member by its name", width = 10}
+v["First"]
+```
+
+```{r, title = "reverse the order with a character string index vector", width = 10}
+v[c("Last", "First")] 
+```
 
 ## Practice time!{.bg-green}
 
-### {.box-10 .offset-1 .bg-blue-white}
+### {.box-10 .offset-1 .bg-bluew}
 
 Type in R console:
 ```{r, eval = F}
@@ -666,34 +741,42 @@ The email subject should be generated automaticly by swirl, in the email body pl
 
 ![](img/01/gene_expr_db.jpg)
 
-## Row and column naming
+## Matrix 
 
-Give a vector with names, the length of which corresponds to dimentions of matrix:
+### Row and column naming {.box-10 .offset-1 .bg-blue}
+
+Give a vector with names, the length of which corresponds to dimensions of matrix:
 
 ```{r}
-c <- matrix(c(1, 2, 3, 4, 5, 6, 7, 8, 9), nrow = 3, ncol = 3)
-names <- c("first_row", "second_row", "third_row")
-length(names)
-rownames(c) <- names
-colnames(c) <- c("A", "B", "C")
-print(c)
+my_matrix <- matrix(c(1, 2, 3, 4, 5, 6, 7, 8, 9), nrow = 3, ncol = 3)
+
+rownames(my_matrix) <- c("first_row", "second_row", "third_row")
+colnames(my_matrix) <- c("A", "B", "C")
+my_matrix
 ```
 
-## Addressing elements
+## Matrix 
 
-To access an element in matrix, specify row index (or row name) and then column index (or name) as <b>[row_index, col_index]</b>
-```{r}
-c
-c[1, 2]
-c[2, "B"]
+### Addressing elements {.box-10 .offset-1 .bg-blue}
+
+To access an element in matrix, specify row index (or row name) and then column index (or name) as **[row_index, col_index]**
+
+```{r, row = T}
+my_matrix
+my_matrix[1, 2]
+my_matrix[2, "B"]
 ```
 
-## Addressing elements in matrix
+### {.box-10 .offset-1 .bg-yellow .icon-small}
 
-Within the brackets you may specify various arguments, including not only numbers, but also conditions to which the desired elements must satisfy:
-```{r}
-c[1,]
-c[c>3]
+![](img/00/tip.png)
+
+- Omit the column of you would like to retrieve the complete row
+- Use conditions to extract the desired elements
+
+```{r, row = TRUE, width = 10}
+my_matrix[1,]
+my_matrix[my_matrix > 3]
 ```
 
 <!--
@@ -752,36 +835,76 @@ table(kids) # even though one level has 0 entries!
 
 ## Lists
 
+### {.box-8 .offset-2 .bg-blue}
+
 - An ordered collection of objects (components).
 - A list allows to gather a variety of (possibly unrelated) objects under one name.
 
-
-```{r, row = TRUE}
+```{r}
 # example of a list with 4 components - a string, a numeric vector, a matrix, and a scaler 
-my_list <- list(name = "Fred", my_numbers = a, my_matrix = c, age = 5.3)
+my_list <- list(name = "Fred",
+                my_numbers = a,
+                my_matrix = my_matrix,
+                age = 5.3)
 
 # example of a list containing two lists 
-two_lists <- list(my_list, list("first_element", "second_element"))
+two_lists <- list(my_list,
+                  list("first_element", "second_element"))
+```
+
+## Indexing lists
+
+### `[`{} {.box-6 .bg-blue}
+
+To get a list containing the selected element(**s**)
+
+```{r, class = "compact-output"}
+ex1 <- my_list[2]
+str(ex1)
+typeof(ex1)
+
+my_list[1:2]
+```
+
+### `[[`{} {.box-6 .bg-blue}
+
+To get the **single** selected element
+
+```{r, error = TRUE, class = "compact-output"}
+ex2 <- my_list[[2]]
+str(ex2)
+typeof(ex2)
+
+my_list[[1:2]]
+```
+
+### {.box-8 .offset-2 .bg-yellow .icon-small}
+
+![](img/00/tip.png)
+
+For named lists, you can use `$` as a shortcut for `[[`.
+Enjoy the code completion in RStudio! 
+
+```{r, width = 10}
+my_list[["my_numbers"]]
+my_list$my_numbers
 ```
 
 ## Lists
 
-Extract elements of a list using the `[[]]` convention
-```{r}
-my_list[[1]] # 1st component of the list
-my_list[["my_numbers"]] # component named mynumbers in list
-```
+### Nested lists{.box-8 .offset-2 .bg-yellow}
 
-## Lists
+You can chain `[[` and `[` to extract elements from nested lists
 
-If you have nested lists: indicate with `[[]]` number of list followed by `[]` number of element of that list
 ```{r}
-two_lists[[1]][3]
+two_lists[[2]][[1]]
 two_lists[[2]][1]
-```
 
-<!-- Add salt and pepper example... -->
-<!-- Using `[]` with `[[]]` above might be confusing... -->
+two_lists[[1]][1:2]
+
+two_lists[2][1]
+
+```
 
 ## Data frames
 
@@ -832,7 +955,7 @@ Rows and columns of a matrix must have the same class (numeric, character, etc).
 You can have mixture of different classes\
 (remember its a "**list** of columns").
   
-### Coercion {.box-6 .offset-3 .bg-blue-white .show}
+### Coercion {.box-6 .offset-3 .bg-bluew .show}
 
 You can coerce from one to the other using `as.data.frame()` or `as.matrix()`
 
@@ -925,7 +1048,7 @@ head(mtcars) #Gives first 6 rows if n is not specified
 
 ## Practice time!{.bg-green}
 
-### {.box-10 .offset-1 .bg-blue-white}
+### {.box-10 .offset-1 .bg-bluew}
 
 Type in R console:
 ```{r, eval = F}
@@ -942,14 +1065,17 @@ The email subject should be generated automaticly by swirl, in the email body pl
 
 ## Functions | Introduction {.build}
 
-### What is a function? Tip{.box-10 .offset-1 .bg-yellow .icon-small}
- A function is a  piece of code that is to be re-used multiple time to perform a particular task. Functions are called subroutines or methods in other computer languages. 
- 
- Use functions for units of code that are performing similar or identical tasks.  
+### What is a function? {.box-10 .offset-1 .bg-yellow .icon-small .show}
 
-```{r, title = "Create your custom functions", width = 6, class = "offset-3 show"}
-myfun <- function(x){ 
-  x*x
+A function is a piece of code that is to be re-used multiple time to perform a particular task. Functions are called subroutines or methods in other computer languages. 
+ 
+Use functions for units of code that are performing similar or identical tasks.
+
+%end%
+
+```{r, title = "Create your custom functions", width = 6, class = "offset-3"}
+myfun <- function(x) { 
+  x * x
 }
 
 myfun(2)
@@ -957,7 +1083,7 @@ myfun(2)
 
 ## Functions | Return values
 
-### Tip{.box-10 .offset-1 .bg-yellow .icon-small}
+### Tip {.box-10 .offset-1 .bg-yellow .icon-small}
 
 ![](img/00/tip.png)
 
@@ -966,7 +1092,7 @@ myfun(2)
     ```{r}
     myfun <- function(x) {
       if (x < 1) return(NULL)
-      x*x
+      x * x
     }
     ``` 
 
@@ -1040,7 +1166,7 @@ print(local_var)
 
 ## Practice time!{.bg-green}
 
-### {.box-10 .offset-1 .bg-blue-white}
+### {.box-10 .offset-1 .bg-bluew}
 
 Type in R console:
 ```{r, eval = F}
@@ -1053,14 +1179,19 @@ Complete lesson **9**. In the end of the lesson send the email to `r swirl_mailt
 
 The email subject should be generated automaticly by swirl, in the email body place your last command used in the lesson.
 
-## Control statements
+## Control statements{.build}
 
-### Conditions {.box-8 .bg-yellow}
+### Conditions {.box-6 .bg-yellow .show}
 
 To check whether your data satisfy some particular condition:
 
 ```{r, eval = FALSE}
-if (expression1) { expression2 } else { expression3 }
+if (expression1)
+{ 
+  expression2
+} else {
+  expression3
+}
 ```
 
 - Here `expression1` must be evaluated to a single logical value (`TRUE` or `FALSE`).
@@ -1069,25 +1200,25 @@ if (expression1) { expression2 } else { expression3 }
 - If TRUE, then the `expression2` is executed.
 - If FALSE, then `expression3` is executed.
 
-## Control statements: conditions
+### `if` / `else` example {.box-6 .bg-green }
 
-![](img/01/9.png)
+What will be the output?
 
-```{r, warning = FALSE}
+```{r, eval = T, class = "build"}
 x <- c(2, 3, 4, 5)
 
-if (all(x) == 0) { 
+if (all(x == 0)) { 
   x[length(x) + 1] <- 5
-  print(x) 
+  x
 } else { 
   x[length(x) + 1] <- 16 
-  print(x) 
+  x
 }
 ```
 
-## Repetitive execution 
+## Repetitive execution{.build} 
 
-### for loop {.box-8 .bg-yellow}
+### for loop {.box-6 .bg-yellow .show}
 
 If there's a need in multiple execution of the same command (or sequence of commands) you can use:
 
@@ -1101,9 +1232,9 @@ for (x in expression1) { expression2 }
 
 - `expression2` is repeatedly evaluated as `x` ranges through the values in the vector result of `expression1`.
 
-## For loop {.bg-green}
+%end%
 
-```{r, title = "Example 1"}
+```{r, title = "Example", width = 6}
 mymat <- matrix(nrow=30, ncol=30) # create a 30 x 30 matrix
 
 for(i in 1:dim(mymat)[1]){   # for each row
@@ -1114,7 +1245,9 @@ for(i in 1:dim(mymat)[1]){   # for each row
 mymat[1:8, 1:8]
 ```
 
-### Example 2{.box-10 .offset-1 .bg-blue-white}
+<!--
+
+### Example 2 {.box-8 .bg-bluew}
 
 The Fibonacci numbers have many mathematical relationships and have been discovered repeatedly in nature. They are constructed as the sum of the previous two values, initialized with the values 1 and 1.
 
@@ -1128,7 +1261,7 @@ for (i in 3:10) {
 } 
 fibvals
 ```
-
+-->
 <!--
 
 ## Other loops: repeat and while
@@ -1181,7 +1314,9 @@ If no <b>break</b> is given, loop runs forever!
 -->
 
 
-## The `apply()` family of commands
+## Repetitive execution
+
+### The `apply()` family of commands {.box-8 .offset-2 .bg-blue}
 
 these commands allow functions to be run on vectors or matrices.
 
@@ -1195,7 +1330,7 @@ these commands allow functions to be run on vectors or matrices.
 
 `mapply()` multivariate `sapply()`
 
-## The `apply()` family of commands {.build}
+## Repetitive execution | The `apply()` family of commands {.build}
 
 ### `apply()`{} {.box-6 .bg-red .show .stretch}
 
@@ -1231,7 +1366,7 @@ lapply(c, mean)
 sapply(c, mean)
 ```
 
-## The `apply()` family of commands{.build}
+## Repetitive execution | The `apply()` family of commands {.build}
 
 ### `mapply()`{} {.box-6 .bg-red}
 
@@ -1282,7 +1417,7 @@ non_vectorised_log <- function(nums) {
 }
 ```
 
-### Compare vectorised and non-vectorised `log()` {.box-12 .bg-blue-white}
+### Compare vectorised and non-vectorised `log()` {.box-12 .bg-bluew}
 
 ```{r}
 microbenchmark::microbenchmark(non_vectorised_log(nums),
@@ -1294,7 +1429,7 @@ Conclusion: vectorisation is important because it allows you to operate on vecto
 
 ## Practice time! {.bg-green}
 
-### {.box-10 .offset-1 .bg-blue-white}
+### {.box-10 .offset-1 .bg-bluew}
 
 Type in R console:
 ```{r, eval = F}
