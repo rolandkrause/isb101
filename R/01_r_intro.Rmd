@@ -13,7 +13,8 @@ library(tidyverse)
 swirl_mailto <- "roland.krause@uni.lu" #"eric.koncina@uni.lu"
 ```
 
-## What is R?
+
+## Why learning R?
 
 ### {.box-8 .offset-2 .bg-yellow}
 
@@ -21,41 +22,42 @@ R is a language and environment for **statistical** computing and **graphics**.
 
 ### Advantages of R {.box-8 .offset-2 .bg-blue}
 
-- FREE software
+- free software (unlike Matlab)
 - easy to download/install/update
 - easy to process big files and analyze huge amounts of data
 - integrated data visualization tools
-- programs can be integrated in the text (for instance, `.pdf` file will contain the results of calculations, figures, etc. - __**RMarkdown**__)
+- programs can be integrated with the text to produce fully reproducible manuscripts
+- most relevant statistical environment for data analysis in the life sciences
 
 More details on https://www.r-project.org/about.html
 
-## What can I do with R?{.build}
 
-### {.box-4 .bg-blue .large}
+### Learning objectives {.box-8 .offset-2 .bg-red}
 
-Data input/import
+- Apply your knowledge from Introduction to Bioinformatics in a new environment
+- Learn Base R
+- Structure your research data (*tidy data*)
+- Learn about *literate programming* using RMarkdown to produce reproducible research
+- Get to know a set of packages for easy data manipulation and visualization (*tidyverse* including *dplyr* and *ggplot*)
+- Practice R in a learning environment and with first projects
+- Eventually, write your project report in RMarkdown
 
-### {.box-4 .bg-blue .large}
 
-Data output/export
 
-### {.box-4 .bg-blue .large}
+## Set up for R 
 
-Basic operations (arithmetical, etc)
+### R lecture {.box-8 .offset-2 .bg-green}
+- R1 Intro
+- R2 Tidy data (Tue morning)
+- R3 Getting data into R (Tue afternoon)
+- R4 Data manipulation (Wed afternoon)
+- R5 Visualization (Thu afternoon)
+- R6 Genomics in R (Fri morning)
 
-### {.box-4 .bg-blue .large}
-
-Data visualization
-
-### {.box-4 .bg-blue .large}
-
-Data analysis
-
-### {.box-4 .bg-blue .large}
-
-much more...
 
 ## How to install R on my PC?
+
+R is installed on your computers already, this is for reference.
 
 ### R{.box-8 .offset-2 .bg-green}
 
@@ -80,24 +82,10 @@ much more...
 
 ## Rstudio | What is it? {.build}
 
-### IDE {.box-6 .offset-3 .bg-yellow}
+### IDE {.box-6  .bg-yellow}
 
 [RStudio](https://www.rstudio.com/products/RStudio/) is an Integrated Development Environment.\  
 It makes working with R much easier
-
-
-### Features {.box-6 .bg-green}
-
->- _Console_ to run **R**, with syntax highlighter
->- _Editor_ to work with scripts
->- _Viewer_ for data / plots / website
->- _Package management_ (including building)
->- _Autocompletion_ using <kbd>TAB</kbd>
->- [_Cheatsheets_](https://www.rstudio.com/resources/cheatsheets/)
->- _Git_ integration for versioning
->- _Inline_ outputs (>= v1.03)
->- _Keyboard shortcuts_
->- [_Notebooks_](https://rviews.rstudio.com/2017/03/15/why-i-love-r-notebooks/)
 
 ### Warning {.box-6 .bg-red .icon-small}
 
@@ -105,6 +93,21 @@ It makes working with R much easier
 
 Don't mix up **R** and **RStudio**.  
 **R** needs to be installed first.
+
+
+### Features {.box-6 .bg-green}
+
+- _Console_ to run **R**, with syntax highlighter
+- _Editor_ to work with scripts
+- _Viewer_ for data / plots / website
+- _Package management_ (including building)
+- _Autocompletion_ using <kbdTAB</kbd>
+- [_Cheatsheets_](https://www.rstudio.com/resources/cheatsheets/)
+- _Git_ integration for versioning
+- _Inline_ outputs 
+- _Keyboard shortcuts_
+- [_Notebooks_](https://rviews.rstudio.com/2017/03/15/why-i-love-r-notebooks/)
+
 
 ## Rstudio | The 4 panels layout
 
@@ -123,7 +126,7 @@ Don't mix up **R** and **RStudio**.
 ### Environment {.box-6 .bg-yellow .stretch}
 
 - Environment: shows loaded objects and their `str()`
-- History is useless IMO
+- History
 - nice `git` integration
 - database **connections** interface
 
@@ -139,42 +142,6 @@ Don't mix up **R** and **RStudio**.
 - Plots panel might be unecessary when using **inline** outputs
 - useful help tab
 
-## For reproducibility, options to activate / deactivate
-
-### {.box-8 .offset-2 .bg-white .img-center}
-
-![](img/01/rstudio_repro.png)
-
-## Code diagnostics
-
-### {.box-6 .bg-yellow}
-
-Go to:\
-`Global Options`\
-` -> Code`\
-` -> Diagnostics`
-
-### Adjust settings {.box-6 .bg-blue-white .small}
-
-![](img/01/diag_rstudio.png)
-source: [Kevin Ushey' article](https://support.rstudio.com/hc/en-us/articles/205753617-Code-Diagnostics?version=1.1.133&mode=desktop)
-
-## Code diagnostics
-
-### check argument calls {.box-6 .bg-blue-white}
-
-![](img/01/rstudio_check_args.png)
-
-
-###  missing arguments {.box-6 .bg-blue-white}
-
-![](img/01/rstudio_check_missing.png)
-
-### variable definitions {.box-6 .offset-3 .bg-blue-white}
-
-![](img/01/rstudio_check_vars.png)
-
-- unused variables & style recommendations
 
 ## Getting started {.bg-green}
 
@@ -192,7 +159,7 @@ Do the following:
 
 ## Arithmetic operations
 
-### {.box-6 .offset-3 .bg-blue}
+### {.box-6 .bg-blue}
 
 - `+`: addition  
 - `-`: subtraction  
@@ -202,7 +169,7 @@ Do the following:
 - `%%`: modulo (remainder after division)
 - `%/%`: integer division
 
-### **Remember** that R will: {.box-10 .offset-1 .bg-yellow .icon-small}
+### **Remember** that R will: {.box-6 .bg-yellow .icon-small}
 
 ![](img/00/tip.png)
 
@@ -212,22 +179,10 @@ Do the following:
 
 If you need to change the priority during the evaluation, use parentheses – _i.e._ `(` and `)` – to group calculations.
 
-## What are "inputs"?
-
-###{.box-10 .offset-1 .bg-yellow}
-
-Inputs are your data, something you will work with further in your program.
-
-### Inputs may be {.box-8 .offset-2 .bg-blue}
-
-- numbers (_e.g._ 1, 5652654, 163.0056 ...)
-- letters (_e.g._ "x", "My agenda" or "Anny likes John")
-- logical expressions (_e.g._ "if time < 10 am then I'll stay in bed!")
-- matrices/tables
 
 ## Data types in R
 
-### 4 main types {.box-6 .bg-blue-white}
+### Four main types {.box-6 .bg-blue-white}
 
 Type                | Example
 ------------------- | ---------------------------
@@ -236,9 +191,10 @@ character (strings) | "Hello !"
 boolean             | TRUE / FALSE
 complex             | 2+0i
 
-%end%
 
-```{r, eval = FALSE, title = "Special case", width = 6}
+### Special types {.box-6 .bg-blue-white .stretch .build}
+
+```{r, eval = FALSE}
 NA   # not available, missing data
 NA_real_
 NA_integer_
@@ -249,15 +205,78 @@ NULL # empty
 NaN # Not a Number
 ```
 
-### {.box-10 .offset-1 .bg-yellow}
+
+### {.box-10 .offset-1 .bg-yellow .nvs2}
 
 Call the command **`class()`** to see what data you are working with.
 
+
+## Numeric variables
+
+### Integers {.box-8 .offset-2 .bg-blue-white}
+
+Integers are stored 32-bit long registers and limited to a little more than 2 billion.
+
+```{r}
+.Machine$integer.max
+
+```
+
+### Double {.box-8 .offset-2 .bg-blue-white}
+
+Doubles can be bigger because they are stored as **double precision floating point numbers**, which have two pieces:
+
+```{r, echo = FALSE}
+# Using R for the double example
+#round(.Machine$double.xmax), options()[["digits"]]
+double_precision <- as.character(.Machine$double.xmax) %>%
+  str_split("e\\+") %>%
+  flatten_chr() %>%
+  parse_number()
+```
+
+- the exponent (like `r double_precision[2]` below)
+- the "significant" (like  `r round(double_precision[1], options()[["digits"]] - 1)`  below).
+
+```{r}
+.Machine$double.xmax
+```
+
+In practice, numeric computations always produce `double` results thus `numeric` name is used as a synonym. 
+
+## Numeric variables
+
+R will automatically convert (coerce) between the numeric classes when needed.
+
+### `double` is the default {.box-6 .bg-blue-white .stretch}
+- Most math is done using double precision
+- Thus it is the default storage.
+
+
+```{r}
+is.numeric(1)
+is.integer(1)
+```
+
+### `integer` must be forced {.box-6 .bg-red .stretch}
+
+- Sometimes you may want to specifically store a vector as integers
+    + if you know that they will never be converted to doubles (used as ID values or indexing)
+    + since integers require less storage space.
+
+```{r}
+is.numeric(1L)
+is.integer(1L) #Putting capital 'L' after an integer forces it to be stored as an integer.
+```
+
+
+
 ## Structures {.nvs1 .build}
 
-### Vectors {.box-6 .stretch .bg-yellow}
+### Vectors {.box-6 .stretch .bg-blue}
 
 - elements of the same type are organised as vectors
+- a single number is already a vector
 - `c()` is the function to **concatenate** elements
 
 ```{r, row = TRUE, collapse = TRUE}
@@ -266,7 +285,7 @@ c(43, 5.6, 2.90)
 ```
 
 
-### Factors {.box-6 .stretch .bg-blue}
+### Factors {.box-6 .stretch .bg-blues}
 
 convert strings to factors, `levels` is the dictionary
 
@@ -274,7 +293,7 @@ convert strings to factors, `levels` is the dictionary
 factor(c("AA", "BB", "AA", "CC"))
 ```
 
-### Lists {.box-6 .bg-red}
+### Lists {.box-6 .bg-blue}
 
 - Can contain anything!
 
@@ -285,7 +304,7 @@ list(f = factor(c("AA", "AA")),
 ```
 
 
-### Matrix and Arrays {.box-6 .bg-green .stretch}
+### Matrix and Arrays {.box-6 .bg-blue .stretch}
 
 - Matrix (2D)
 - Arrays ($\geq$ 3D)
@@ -294,20 +313,35 @@ list(f = factor(c("AA", "AA")),
 matrix(1:4, nrow = 2)
 ```
 
+## Data frames
+Fundamental data structure for combining diverse data into tables.
+```{r, dataframe, row = TRUE, collapse = TRUE}
+L3 <- LETTERS[1:3]
+fac <- sample(L3, 10, replace = TRUE)
+(d <- data.frame(x = 1, y = 1:10, fac = fac))
+
+```
+
 
 ## Variables in R
 
 ### Assignment {.box-6 .bg-yellow}
 
-In R you create **`objects`** to store anyting by a process called **assignment**.
+In R you create **`objects`** by a process called **assignment**.
 
-%end%
-
-```{r, title = "Example of assignment", width = 6}
+```{r, title = "Example of assignment"}
 x <- 7
 ```
 
-### Warning {.box-6 .offset-3 .bg-red .icon-small}
+
+```{r, title="Create a new variable based on <b>a</b>" }
+a <- 2
+c <- (a^5 - a)
+c
+```
+
+
+### Warning {.box-6 .bg-red .icon-small}
 
 ![](img/00/warning.png)
 
@@ -319,32 +353,32 @@ x = 7
 This **SHOULD NOT** be read as "x equals 7", which will result in confusion later.\
 Using `<-` instead of `=` is encouraged.
 
+
+
 ## Naming of variables{.middle}
 
-### **Be consistent with naming!** {.box-6 .bg-yellow}
 
-- Use [naming conventions](https://journal.r-project.org/archive/2012-2/RJournal_2012-2_Baaaath.pdf):
-    + alllowercase
-    + period.separated
-    + **underscore_separated** (_recommended by [Hadley Wickham](http://adv-r.had.co.nz/Style.html)_)
-    + lowerCamelCase
-    + UpperCamelCase
-<!-- - _e.g._ `new_plot`, `my_list`, `new_function`, `transition_matrix` ... -->
-
-### Use **MEANINGFUL** names {.box-6 .bg-yellow}
-
-**matrix_multiplication** is better than **mult**
 
 
 ## Naming of variables{.build}
-
 > **The World's Worst Variable Name** to be: data\
 Of course it's data! That's what variables contain! That's all they ever can contain. It's like you're packing up your belongings to move to a new house, and on the side of the box you write, in big black marker, "things".| [Andy Lester](http://archive.oreilly.com/pub/post/the_worlds_two_worst_variable.html) {.bg-red .show}
 
-### Guess {.box-6 .bg-green .build .middle}
+### Use meaningful names {.box-6 .bg-yellow}
 
-- What is the **second** worst variable name?
-- data2
+- **matrix_multiplication** is better than **mult**
+- Do not fear long variable names!
+
+#### Stay consistent {.box-6 .bg-yellow}
+
+- Choose a [naming convention](https://journal.r-project.org/archive/2012-2/RJournal_2012-2_Baaaath.pdf):
+- alllowercase
+- period.separated
+- **underscore_separated** (_recommended by [Hadley Wickham](http://adv-r.had.co.nz/Style.html)_)
+- lowerCamelCase
+- UpperCamelCase
+<!-- - _e.g._ `new_plot`, `my_list`, `new_function`, `transition_matrix` ... -->
+
 
 ### Use specific names {.box-6 .bg-blue}
 
@@ -383,77 +417,6 @@ There are several ways to check content of variable:
 - Check "Environment" tab in RStudio
 
 
-## Numeric variables
-
-### Numeric data in R {.box-8 .offset-2 .bg-red}
-
-- double
-- integer
-
-In practice, numeric computations always produce `double` results thus `numeric` name is used as a synonym. 
-
-### Integers {.box-6 .bg-red}
-
-Integers are a little more than 2 billion.
-
-```{r}
-.Machine$integer.max
-
-```
-
-### Double {.box-6 .bg-red}
-
-Doubles can be bigger because they are stored as **double precision floating point numbers**, which have two pieces:
-
-```{r, echo = FALSE}
-# Using R for the double example
-#round(.Machine$double.xmax), options()[["digits"]]
-double_precision <- as.character(.Machine$double.xmax) %>%
-  str_split("e\\+") %>%
-  flatten_chr() %>%
-  parse_number()
-```
-
-- the exponent (like `r double_precision[2]` below)
-- the "significant" (like  `r round(double_precision[1], options()[["digits"]] - 1)`  below).
-
-```{r}
-.Machine$double.xmax
-```
-
-## Numeric variables
-
-R will automatically convert (coerce) between the numeric classes when needed.
-
-### `double` is the default {.box-6 .bg-red .stretch}
-
-- Most math is done using double precision
-- Thus it is the default storage.
-
-```{r}
-is.numeric(1)
-is.integer(1)
-```
-
-### `integer` must be forced {.box-6 .bg-red .stretch}
-
-- Sometimes you may want to specifically store a vector as integers
-    + if you know that they will never be converted to doubles (used as ID values or indexing)
-    + since integers require less storage space.
-
-```{r}
-is.numeric(1L)
-is.integer(1L) #Putting capital 'L' after an integer forces it to be stored as an integer.
-```
-
-## Create variable in R
-
-- create a new variable based on <b>a</b>
-```{r}
-a <- 2
-c <- (a^5 - a)
-c
-```
 
 ## Practice time!{.bg-green}
 
@@ -932,6 +895,7 @@ as.matrix(mtcars[1:5,1:5])
 ```{r, title = "Get the dimensions", width = 4}
 nrow(mtcars)
 ncol(mtcars)
+dim(mtcars)
 ```
 
 ## Working with data frames
@@ -950,9 +914,9 @@ summary(mtcars[, 1:4])
 ## Working with data frames
 
 ### Some useful `base` functions for data frames {.box-10 .offset-1 .bg-yellow}
-- Change the column names of data frame using `names()`
+- Change the column names of data frame using `colnames()`
     ```{r}
-    names(mtcars)[1] <- "new_name"
+    colnames(mtcars)[1] <- "new_name"
     ```
 - To see first n elements of your data frame use `head(data_frame, n)`
 ```{r}
@@ -976,7 +940,12 @@ The email subject should be generated automaticly by swirl, in the email body pl
 
 # Functions
 
-## Functions {.build}
+## Functions | Introduction {.build}
+
+### What is a function? Tip{.box-10 .offset-1 .bg-yellow .icon-small}
+ A function is a  piece of code that is to be re-used multiple time to perform a particular task. Functions are called subroutines or methods in other computer languages. 
+ 
+ Use functions for units of code that are performing similar or identical tasks.  
 
 ```{r, title = "Create your custom functions", width = 6, class = "offset-3 show"}
 myfun <- function(x){ 
@@ -985,6 +954,8 @@ myfun <- function(x){
 
 myfun(2)
 ```
+
+## Functions | Return values
 
 ### Tip{.box-10 .offset-1 .bg-yellow .icon-small}
 
@@ -998,6 +969,10 @@ myfun(2)
       x*x
     }
     ``` 
+
+### Use functions! {.box-10 .offset-1 .bg-red }
+
+Whenever you find yourself repeating lines of code by copy/paste, think of creating a function.
 
 ## Functions
 
@@ -1030,7 +1005,7 @@ myfun4(pi/2)
 ```
 - R doesn't handle `return(sin_x, cos_x)`
 
-## Global and local scope
+## Functions | Global and local scope
 
 ### {.box-8 .offset-2 .bg-white .center-img}
 
@@ -1316,49 +1291,6 @@ microbenchmark::microbenchmark(non_vectorised_log(nums),
 
 Conclusion: vectorisation is important because it allows you to operate on vectors quickly (unlike looping).
 
-<!--
-
-## Vectorised functions
-
-### Vectorised conditionals {.box-8 .offset-2 .bg-blue}
-
-R has `ifelse()` function that works with vectors:
-
-```{r}
-x <- c(6:-4)
-sqrt(x)  # gives warning
-sqrt(ifelse(x >= 0, x, NA))  # no warning
-```
-
-
-## Vectorised functions
-
-R has `ifelse()` function that works with vectors:
-
-```{r, warning=TRUE}
-## Note: the following also gives the warning !
-ifelse(x >= 0, sqrt(x), NA_real_)
-```
-
--->
-
-## Vectorised functions
-
-### Vectorised conditionals {.box-6 .bg-blue}
-
-`ifelse()`
-
-### Default vectorised matrix functions {.box-6 .bg-blue}
-
-`rowSums()`, `colSums()`, `rowMeans()`, `colMeans()`
-
-### Vectorized matrix functions in package genefilter {.box-6 .bg-blue}
-
-`rowSds()`, `colSds()`, `rowVars()`, `colVars()`, `rowttests()`, `rowFtests()`
-
-### Vectorized matrix functions in package matrixStats {.box-6 .bg-blue}
-
-`colMedians()`, `rowMedians()`
 
 ## Practice time! {.bg-green}
 
