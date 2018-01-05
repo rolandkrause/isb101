@@ -1,0 +1,72 @@
+- Class: meta
+  Course: Tidying Data with tidyr part3
+  Lesson: isb101
+  Author: Eric Koncina
+  Type: Standard
+  Organization: University of Luxembourg
+  Version: 2.4.3
+
+- Class: text
+  Output: In this lesson, We'll continue to learn how to use some functions of the tidyr package.
+  
+- Class: cmd_question
+  Output: Hadley Wickham created an example with a simple dataset called 'experiment' to deal with the scenario where you would like to expand combinations. Type experiment to take a look.
+  CorrectAnswer: experiment
+  AnswerTests: prints_var('experiment')
+  Hint: Type experiment to view its contents.
+  
+- Class: text  
+  Output: "Sometimes a dataset contains implicit missing values that you would like to expand into explicit missing values."
+  
+- Class: cmd_question
+  Output: We'll use the complete() function from tidyr to accomplish this. Pull up the documentation for this function with ?tidyr::complete.
+  CorrectAnswer: ?tidyr::complete
+  AnswerTests: gets_help('tidyr::complete')
+  Hint: Use ?tidyr::complete to pull up the documentation.
+
+- Class: cmd_question
+  Output: "Using the help file as a guide, call complete() with the following arguments (in order): experiment, person, treatment, replicate."
+  CorrectAnswer: complete(experiment, person, treatment, replicate)
+  AnswerTests: match_call('complete(experiment, person, treatment, replicate)')
+  Hint: "complete(experiment, person, treatment, replicate) will expand the combinations."
+  
+- Class: text  
+  Output: "Note that we can now see all combinations of persons, treatments and replicates and missing measurements are now explicitely visible (NA)"
+
+- Class: text  
+  Output: "It turns out that each person was attributed to a single treatment. Thus, when using 'complete()', we would like to avoid expanding the combination of persons and treatments."
+
+- Class: text
+  Output: "tidyr provides the helper function 'nesting()' where you can prevent specific columns from being expanded."
+
+- Class: cmd_question
+  Output: "Use nesting() together with your your previous function call to prevent person and treatment from being expanded"
+  CorrectAnswer: complete(experiment, nesting(person, treatment), replicate)
+  AnswerTests: match_call('complete(experiment, nesting(person, treatment), replicate)')
+  Hint: "replace person and treatment by nesting(person, treatment) to avoid the expansion of these combinations."
+  
+- Class: text
+  Output: Each missing measure is now explicitely visible and we were able to avoid generating unwanted combinations of treatment and persons.
+  
+- Class: text
+  Output: "Now, let's suppose that these values were not reported because they were below the detection limit. Now we would like to consider these values as being equal to 0."
+
+- Class: text
+  Output: "Look at the help page (?tidyr::complete) to identify the argument which will help you to replace the default NA values by 0."
+
+- Class: cmd_question
+  Output: "This argument expects a named list. Type in the list that should be provided to replace NA values by 0. Remember that we would like to replace the values in two measurment columns."
+  CorrectAnswer: list(measurment_1 = 0, measurment_2 = 0)
+  AnswerTests: match_call('list(measurment_1 = 0, measurment_2 = 0)')
+  Hint: "Create a list (using list()) to set both measurment variables as being equal to 0"
+  
+- Class: script
+  Output: "measurment_1 and measurment_2 represent a variable. Read the directions in the script carefully to gather() the dataset and replace the missing values by 0"
+  AnswerTests: script_vals_identical()
+  Hint: Read the directions in the script carefully. If R is giving you an error, try to understand what it is telling you. Save the script and type submit() at the prompt when you are ready, or type reset() to reset the script to its original state.
+  Script: script1.R
+
+- Class: text
+  Output: In this lesson, you learned how to expand implicit missing values into explicit missing values.
+
+
