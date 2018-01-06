@@ -17,3 +17,10 @@ This repository contains a modified version of the swirl lesson available on [gi
 -   Removed the row number column from `2014-07-08.csv` and replaced the `X` column by `date` in the questions.
 -   Changed calls from `summarize()` to `summarise()`.
 -   Introduced the same tweak as in the [*R Programming E* lesson](%60https://github.com/swirldev/R_Programming_E%60) to send an email at the end of the lesson.
+
+### Grouping and Chaining with dplyr
+
+-   Adapts the original lesson in *Getting and Cleaning Data* found on [Github](https://github.com/swirldev/swirl_courses)
+-   Changed calls from `summarize()` to `summarise()`.
+-   Replaced `tbl_df` by `tibble`.
+-   Introduced the same tweak as in the [*R Programming E* lesson](%60https://github.com/swirldev/R_Programming_E%60) to send an email at the end of the lesson.

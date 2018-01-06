@@ -5,7 +5,7 @@
 # here for clarity.
 
 by_package <- group_by(cran, package)
-pack_sum <- summarize(by_package,
+pack_sum <- summarise(by_package,
                       count = n(),
                       unique = n_distinct(ip_id),
                       countries = n_distinct(country),

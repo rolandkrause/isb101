@@ -5,7 +5,7 @@
 result2 <-
   arrange(
     filter(
-      summarize(
+      summarise(
         group_by(cran,
                  package
         ),

@@ -1,6 +1,6 @@
 # select() the following columns from cran. Keep in mind
 # that when you're using the chaining operator, you don't
-# need to specify the name of the data tbl in your call to
+# need to specify the name of the tibble in your call to
 # select().
 #
 # 1. ip_id

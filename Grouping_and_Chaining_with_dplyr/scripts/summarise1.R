@@ -16,8 +16,8 @@
 # You should also take a look at ?n and ?n_distinct, so
 # that you really understand what is going on.
 
-pack_sum <- summarize(by_package,
-                      count = n(),
-                      unique = n_distinct(ip_id),
-                      countries = n_distinct(country),
-                      avg_bytes = mean(size))
+pack_sum <- summarise(by_package,
+                      count = ,
+                      unique = ,
+                      countries = ,
+                      avg_bytes = )
