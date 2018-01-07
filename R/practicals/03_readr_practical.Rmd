@@ -1,0 +1,239 @@
+---
+title: "Readr practical"
+author: "Your name"
+date: "9 January 2018"
+output: html_document
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+#library()
+```
+
+# Importing flat files
+
+In this practical, you'll learn how to import flat files using the readr package which is part of the tidyverse.
+
+To perform reproducible research it is a good practice to store the files in a standardised location. For example, you could take advantage of the RStudio projects and store data files in a subfolder called `data`.
+
+If you did not create an Rstudio project for this tutorial start to do it now. As this file will be closed during the process keep on reading the following points:
+
+- Create a project named readr_tutorial.
+- Move this Rmarkdown file you downloaded from moodle to the project's folder.
+- Open this file again and move on to the next question.
+
+## Prepare your project's folder
+
+1. Check that the project is active: the name `readr_tutorial` should appear on the top-right corner. You can also execute the following chunk which should yield "readr_tutorial":
+    ```{r project_folder, eval = FALSE}
+    basename(rstudioapi::getActiveProject())
+    ```
+    
+2. Use the `Files` pane in the lower right Rstudio panel to create a folder named `data` within your project's folder.
+
+3. Download the files `mtcars.csv` and `mtcars2.csv` from moodle and place them in the `data` subfolder you just created. Try to use your operating system file browser to place the files at the appropriate location. In that way you'll get used to the place where your project's files are located on your computer. If you're lost try to determine the current project's folder which is likely your project's directory:
+
+```{r show_wd}
+getwd()
+```
+
+- Check that the files are indeed where they should be by executing the following chunk which should return `TRUE`:
+
+```{r check_files}
+all(file.exists(c("data/mtcars.csv", "data/mtcars2.csv")))
+```
+
+## Use readr to load your first file
+
+Now let's try to load the content of the `mtcars.csv` file using `readr`.
+
+First load the `tidyverse` package (which contains `readr`) or at least load the `readr` package:
+
+- Check that the first chunk of this document, contains a call to `library()` with the proper argument to load the `tidyverse` or `readr` package.
+- Don't forget to run the chunk's code to load the library during your interactive session (or load the package using the console).
+- If you load the library only in the console and forget to place a chunk to load it (before the first call to a tidyverse function), the knitting process will fail. Indeed, when you click on the `knit` button, the chunks are evaluated in a new environment.
+
+Call `read_csv()` from the `readr` package with "data/mtcars.csv" as argument and save the result in a new variable called `my_cars.` Check `?read_csv` if you need help.
+
+```{r csv1}
+# Place your code in this chunk
+# You should use read_csv() to load "data/mtcars.csv" and save the output in an object called my_cars.
+# When you assign the result of read_csv() to an object, nothing will be printed out exept the message telling you which columns were detected.
+```
+
+### The tibble
+
+`read_csv()` loaded the data as a tibble. The main advantage to use tibbles over a regular data frame is the printing.
+
+- Go to the console pane below and type in `my_cars` (followed by Enter).
+- Tibbles show some useful informations such as the number of rows and columns:
+    + Look at the top of the tibble and find the information "A tibble rows x cols"
+    + How many rows are in the tibble? The tibble contains ___ rows.
+- The columns of a tibble report their type:
+    + Look at the tibble header, the type of a columns is reported just below its name.
+    + What is the type of the `wt` column? The type is _____
+    + What is the type of the `cyl` column? The type is _____
+
+However, when unsing RStudio's inline output, the output is slightly changed: The tibble size is reported at the bottom of the rendered table (which is styled with some navigation options).
+
+Create a chunk below (replace the markdown verbatim code), type in `my_cars` and execute the chunk to see how Rstudio renders the content of the tibble.
+
+```
+YOU SHOULD INSERT AN R CHUNK YOURSELF HERE USING RSTUDIO. THEN FILL THE CHUNK WITH THE REQUIRED COMMAND AND EXECUTE IT.
+```
+
+Alternatively you can also click on the object `my_cars` in the `Environment` tab of the upper right Rstudio pane where your objects are listed (like when you're using `ls()`). When clicking on the object, RStudio calls `View()` which opens the object and allows you to view more of the content.
+
+Now you are able to import a simple `.csv` flat file. `csv` stands for comma separated values.
+
+---
+
+## Import a tricky `.csv` file
+
+Sometimes importing a file is not as straightforward and needs some adjustments. Let's try to load the `mtcars2.csv` file. The file extension is the same, thus we are going to use `read_csv()` as we did before:
+
+### Trying `read_csv()` again...
+
+```{r}
+# Uncomment the line below and adjust the argument to the path to your mtcars2.csv file.
+
+# read_csv()
+```
+
+If you didn't adjust and execute the chunk above do it now.
+
+Look at the generated tibble: The output is probably not what we would expect...
+
+- It seems that `read_csv()` recognized only a single column.
+- If you look a the column name you'll see that there is indeed only a single name with all expected names being separated by a **semicolon** instead of the expected **comma** (remind `csv` should stand for **comma separated values**).
+
+It seems that `.csv` files are not necessary delimited by **commas**.
+
+### Using `read_delim()`
+
+In fact, `read_csv()` is a shortcut to a more general `readr` function which is `read_delim()`.
+
+- Let's use `read_delim()` instead of `read_csv()`:
+    + Adjust the `delim` argument accordingly (don't hesitate to look at the help page `?read_delim`).
+    + Store the output in an object called `my_cars2`
+
+```{r delim_1}
+# Here you should call read_delim() to load the file "data/mtcars2.csv" into an object called my_cars2
+```
+
+The content (tibble) does not appear as we assigned it to an object. Nevertheless, we can see the message generated by `read_delim()` as we didn't adjust the `col_types` argument. It turns out that now the columns are again detected as they should.
+
+Now, let's look again at the generated output (the tibble):
+
+- Create a chunk below containing only `my_cars2` and execute it in order to print the content of `my_cars2`.
+- You can also type `my_cars2` in the console below to get the standard `tibble` output.
+
+```
+INSERT YOUR RCHUNK HERE
+```
+
+Seems that adjusting the delim did it. We get a tibble with the same dimensions as before.
+
+**But wait... Something seems different...**
+
+Let's look again at our previous tibble `my_cars`. Type again `my_cars` to the console to print the tibble and compare both outputs.
+
+Look at the `mpg` colum: the values seem much higher in `my_cars2` than in `my_cars`...
+
+It seems that the decimal separator was not recognized as it should... Maybe it is lacking in the file or something went wrong during the import. As you learned during the lecture, `readr` guesses the content of each column using some helper functions. To display the content as it is in the file (and avoid any coercion), we can force `read_delim` to import it as **text**.
+
+- Remember, during the lecture, you learned that calling the `read_*` functions without adjusting the `col_types` argument is similar to setting it to `col_types = cols(.default = col_guess())`
+- Using the `.default` argument enables you to apply the setting to all columns without having to explicitely name them.
+- Change the code in the chunk below to import all columns as **text**. 
+
+```{r delim_3}
+# I have already written the code below. You will have to uncomment and adjust the .default argument in order to import all columns as text.
+# read_delim("data/mtcars2.csv", delim = ";", col_types = cols(.default = col_guess()))
+```
+
+Now you can figure out that in `mtcars2.csv`, decimals are separated using **commas** while in the original `mtcars.csv` decimals are separated using **dots**.
+
+`readr` first reads in the content of the file as text and tries to guess the column types. It is possible to test this process on a character vector using the `parse_guess()` function (from the `readr` package).
+
+Below I've prepared a chunk that creates two vectors: `vdot` and `vcomma`. Both contain decimal numbers encoded as characters with the first one using dots as a decimal separator while the second one uses commas.
+
+```{r chr_dbl}
+vdot <- c("1.5", "1.7", "10020.5")
+vcomma <- c("1,5", "1,7", "10020,5")
+str(vdot)
+str(vcomma)
+```
+
+- Execute the chunk above to assign the `vdot` and `vcomma` objects.
+- Look at the output of both calls to `str()`. You can confirm that both vectors are indeed characters (note the `chr` at the beginning and the quotes `"` surrounding each number).
+
+Now, let's test how `parse_guess()` detects both vectors:
+
+- In the chunk below, use `parse_guess()` with `vdot` as argument. Nest the call in the `str()` function to see the structure:
+
+```{r parse_1}
+# Use str() to test how parse_guess() detects vdot
+```
+
+`parse_guess()` did the job: The numbers are the same but our resulting vector is now a numerical (num).
+
+- Similarly, in the chunk below, use `parse_guess()` with `vcomma` as argument and place the call in the `str()` function to see the structure:
+
+```{r parse_2}
+# Use str() to test how parse_guess() detects vcomma
+```
+
+This time, `parse_guess()` messed up the detection. We lost our decimal separators and the values are not the expected ones.
+
+We need to tell `parse_guess()` that our numbers are encoded using `commas` as a decimal separator (a notation common in Europe). Look at the help of `parse_guess()` (type in `?parse_guess`) and check which argument you should adjust.
+
+You just read that readr is configured to be US-centric by default (the decimal separator being `.` and thousands being grouped using `,`). You can override these settings with the help of the `locale` argument and the `locale()` function.
+
+Test out the `locale()` function. Simply execute it (running `locale()` in the console or executing the chunk below) and it will show you how the numbers are formatted.
+
+```{r locale_1}
+#locale()
+```
+
+You can see that thousands are separated by commas while decimals are separated by dots.
+
+Now, look at the help page (type in `?locale`) to identify how to adjust the decimal separator and run `locale()` again but after having adjusted the relevant argument (setting the decimal separator to a comma).
+
+```{r locale_2}
+# Uncomment the call to locale() and add an argument 
+# in order to set the decimal separator to a comma ","
+#locale() 
+```
+
+Now use the setting above to call again `parse_guess()` with the adjusted `locale` argument. Uncomment and change the code in the chunk below to parse the numbers correctly:
+
+```{r parse_3}
+#parse_guess(vcomma, locale = locale())
+```
+
+That's it. We are now able to retrieve the decimal numbers (encoded as characters using a comma as decimal separators), as a vector containing double formatted numbers.
+ 
+`read_delim()` also contains a locale argument. Use `read_delim()` again to read "data/mtcars2.csv", but this time adjust also the locale argument to the same `locale()` function call you used for `parse_guess()`. Store the result in `my_cars2`.
+
+```{r}
+# Call read_delim again to import mtcars2.csv but adjust the locale argument to parse numbers using commas as a decimal separator
+```
+
+Now let's look at the generated tibble: create a chunk below to show the content of `my_cars2`
+
+```
+PUT YOUR R CODE CHUNK HERE
+```
+
+It seems now that both files (the one used in the first question of this practical and this one) generate the same tibble.
+
+Using commas as a decimal separator and semicolons to separate values is common in Europe. This is why readr also contains a shortcut function `read_csv2` which expects a semicolon as the delimiter and commas as a decimal separators.
+
+In the chunk below, use `read_csv2()` to load "data/mtcars2.csv" again. Do not store the result in an object.
+
+```{r}
+# Use read_csv2() to load mtcars2.csv
+```
+
+Now you are able to import flat files using readr into R. You learned about the existence of two convenient functions `read_csv()` and `read_csv2()` which can help you in quickly reading in `.csv` files.
+You also learned how to adjust the arguments to the more general `read_delim()` function which allows you to read in a variety of different flat file formats.
