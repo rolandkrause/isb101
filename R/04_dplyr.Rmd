@@ -639,9 +639,7 @@ inner_join(tx, ty)
 
 -->
 
-## Join by columns of different names {.build}
-
-## Merge 2 separate tables {.build}
+## Join tables by different column names {.build}
 
 ### UK bands: `band_members` {.bg-green .box-6 .show}
 
@@ -660,16 +658,16 @@ band_instruments2
 ### No common key is found {.bg-red .box-6 .compact-output .stretch}
 
 ```{r, error = TRUE}
-inner_join(band_instruments2,
-           band_members)
+inner_join(band_members,
+           band_instruments2)
 ```
 
 ### Use `by` to specify the common key {.bg-blue .box-6 .compact-output .stretch}
 
 ```{r}
-inner_join(band_instruments2,
-           band_members,
-           by = c(artist = "name"))
+inner_join(band_members,
+           band_instruments2,
+           by = c(name = "artist"))
 ```
 
 # Helpers
