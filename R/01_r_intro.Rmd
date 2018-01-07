@@ -1,18 +1,17 @@
 ---
 title: "Introduction to R"
-author: "G. Androsova, E. Koncina, A. Ginolhac, R. Krause"
+author: "E. Koncina, G. Androsova, A. Ginolhac, R. Krause"
 date: "2018-01-08"
-output: 
-  iosp::ioslides_plus:
-    keep_md: no
+output: iosp::ioslides_plus
 ---
 
 ```{r, include = FALSE}
 library(tidyverse)
-swirl_mailto <- "roland.krause@uni.lu" #"eric.koncina@uni.lu"
+swirl_mailto <- "eric.koncina@uni.lu" #"roland.krause@uni.lu"
 ```
 
 ```{r, include = FALSE}
+# A chunk hook to adjust the width of the output (console/terminal width)
 knitr::knit_hooks$set(chunk_col = function(before, options, envir) {
     if (before) {
         old_col <<- options(width = options$chunk_col)
@@ -21,7 +20,6 @@ knitr::knit_hooks$set(chunk_col = function(before, options, envir) {
     }
 })
 ```
-
 
 ## Why learning R?
 
@@ -43,13 +41,12 @@ R is a language and environment for **statistical** computing and **graphics**.
 }
 ```
 
-
 ### Advantages of R {.box-10 .offset-1 .bg-blue .double-list}
 
 - free software (unlike Matlab)
 - easy to download/install/update
-- easy to process big files and analyze huge amounts of data
-- integrated data visualization tools
+- easy to process big files and analyse huge amounts of data
+- integrated data visualisation tools
 - programs can be integrated with the text to produce fully reproducible manuscripts
 - most relevant statistical environment for data analysis in the life sciences
 
@@ -66,7 +63,7 @@ More details on https://www.r-project.org/about.html
 - Learn Base R
 - Structure your research data (*tidy data*)
 - Learn about *literate programming* using RMarkdown to produce reproducible research
-- Get to know a set of packages for easy data manipulation and visualization (*tidyverse* including *dplyr* and *ggplot*)
+- Get to know a set of packages for easy data manipulation and visualisation (*tidyverse* including *dplyr* and *ggplot*)
 - Practice R in a learning environment and with first projects
 - Eventually, write your project report in RMarkdown
 
@@ -78,7 +75,7 @@ More details on https://www.r-project.org/about.html
 - R2 Tidy data (Tue morning)
 - R3 Getting data into R (Tue afternoon)
 - R4 Data manipulation (Wed afternoon)
-- R5 Visualization (Thu afternoon)
+- R5 Visualisation (Thu afternoon)
 - R6 Genomics in R (Fri morning)
 
 ## How to install R on my PC?
@@ -129,7 +126,7 @@ Don't mix up **R** and **RStudio**.
 - _Editor_ to work with scripts
 - _Viewer_ for data / plots / website
 - _Package management_ (including building)
-- _Autocompletion_ using <kbdTAB</kbd>
+- _Autocompletion_ using <kbd>TAB</kbd>
 - [_Cheatsheets_](https://www.rstudio.com/resources/cheatsheets/)
 - _Git_ integration for versioning
 - _Inline_ outputs 
@@ -234,7 +231,7 @@ NaN # Not a Number
 
 ### {.box-10 .offset-1 .bg-yellow .nvs2}
 
-Call the command **`class()`** to see what data you are working with.
+Call the command **`class()`** or **`typeof()`** to see what data you are working with.
 
 ## Numeric variables {.build}
 
@@ -414,10 +411,10 @@ x <- 7
 ```
 
 
-```{r, title="Create a new variable based on <b>a</b>" }
-a <- 2
-c <- (a^5 - a)
-c
+```{r, title="Create a new variable based on **v1**" }
+v1 <- 2
+v2 <- (v1^5 - v1)
+v2
 ```
 
 
@@ -433,19 +430,20 @@ x = 7
 This **SHOULD NOT** be read as "x equals 7", which will result in confusion later.\
 Using `<-` instead of `=` is encouraged.
 
-## Naming of variables{.build}
+## Naming of variables{.build .nvs1}
 
 > **The World's Worst Variable Name** to be: data\
 Of course it's data! That's what variables contain! That's all they ever can contain. It's like you're packing up your belongings to move to a new house, and on the side of the box you write, in big black marker, "things".| [Andy Lester](http://archive.oreilly.com/pub/post/the_worlds_two_worst_variable.html) {.bg-red .show}
 
-### Use meaningful names {.box-6 .bg-yellow}
+<div class = "col-6 build" style = "z-index: 999;">
+
+### Use meaningful names {.box-12 .bg-yellow .show}
 
 - **matrix_multiplication** is better than **mult**
 - Do not fear long variable names!
 
-#### Stay consistent {.box-6 .bg-yellow}
+### Stay consistent: use a [naming convention](https://journal.r-project.org/archive/2012-2/RJournal_2012-2_Baaaath.pdf) {.box-12 .bg-yellow}
 
-- Choose a [naming convention](https://journal.r-project.org/archive/2012-2/RJournal_2012-2_Baaaath.pdf):
 - alllowercase
 - period.separated
 - **underscore_separated** (_recommended by [Hadley Wickham](http://adv-r.had.co.nz/Style.html)_)
@@ -453,6 +451,7 @@ Of course it's data! That's what variables contain! That's all they ever can con
 - UpperCamelCase
 <!-- - _e.g._ `new_plot`, `my_list`, `new_function`, `transition_matrix` ... -->
 
+</div>
 
 ### Use specific names {.box-6 .bg-blue}
 
@@ -485,12 +484,10 @@ There are several ways to check content of variable:
 ### Listing variables {.box-6 .bg-red}
 
 - To get a list of all of the variables that have been defined use the `ls()` command:
-    ```{r}
+    ```{r, chunk_col = 40}
     ls()
     ```
 - Check "Environment" tab in RStudio
-
-
 
 ## Practice time!{.bg-green}
 
@@ -499,7 +496,9 @@ There are several ways to check content of variable:
 Type in R console:
 ```{r, eval = FALSE}
 library(swirl)
+#install_course("R Programming E")
 swirl()
+
 #Lesson 1, 2, 3
 ```
 
@@ -555,7 +554,7 @@ a + b
 - `sum(x)` sums all elements of `x`
 - `mean(x)` computes the mean (`sum(x) / length(x)`)
 - `var(x)` is the variance (`sum((x - mean(x))^2) / (length(x) - 1)`)
-- use `sort()` to arrange elements in increasing order or `order()` to make more complex sorting.
+- use `sort()` to arrange elements in increasing order (or `order()` to get the sorted indices and make more complex sorting).
 
 ### Mini-task{.box-6 .offset-3 .bg-green}
 
@@ -687,7 +686,7 @@ LETTERS[c(1:5, length(LETTERS) - 1)]
 ## Named vectors{.build}
 
 ```{r, title = "Example", width = 8, class = "offset-2 show", row = c(8, 4)}
-v = c("Mary", "Sue")
+v <- c("Mary", "Sue")
 names(v) <- c("First", "Last")
 v
 v <- c(First = "Mary", Last = "Sue")
@@ -771,36 +770,13 @@ my_matrix[2, "B"]
 
 ![](img/00/tip.png)
 
-- Omit the column of you would like to retrieve the complete row
+- Omit the column if you would like to retrieve the complete row
 - Use conditions to extract the desired elements
 
 ```{r, row = TRUE, width = 10}
 my_matrix[1,]
 my_matrix[my_matrix > 3]
 ```
-
-<!--
-
-## Operations with matrix
-
-Other operations like <b>transpose</b>, <b>matrix multiplication</b> can be performed:
-```{r}
-d <- t(c)
-d
-c %*% d
-```
-
-## Operations with matrix
-
-Be careful with the * operator: it does not perform matrix multiplication, but rather an entry-wise multiplication:
-```{r}
-c
-d
-c * d
-```
-
-
--->
 
 ## Factors{.build}
 
@@ -843,7 +819,7 @@ table(kids) # even though one level has 0 entries!
 ```{r}
 # example of a list with 4 components - a string, a numeric vector, a matrix, and a scaler 
 my_list <- list(name = "Fred",
-                my_numbers = a,
+                my_numbers = v1,
                 my_matrix = my_matrix,
                 age = 5.3)
 
@@ -934,13 +910,13 @@ Sue    |   24 |  66 | 118 | Cauc |  F   |1340
 ### A data frame is a particular **list** {.box-8 .offset-2 .bg-red}
 
 - It is a **list** of **vectors of equal length**.
-- For example, the following variable `df` is a data frame containing three vectors `n`, `s`, `b`.
+- For example, the following variable `df` is a data frame containing three vectors `my_numbers`, `my_letters`, `my_logicals`.
 
 ```{r}
-numbers <- c(2, 3, 5)
-letters <- c("aa", "bb", "cc")
-logicals <- c(TRUE, FALSE, TRUE)
-df <- data.frame(numbers, letters, logicals)
+my_numbers <- c(2, 3, 5)
+my_letters <- c("aa", "bb", "cc")
+my_logicals <- c(TRUE, FALSE, TRUE)
+df <- data.frame(my_numbers, my_letters, my_logicals)
 df
 ```
 
@@ -1109,7 +1085,7 @@ myfun <- function(x, a){
 } 
 
 #Shorter version
-myfun <- function(x, a){ a*sin(x) }
+myfun <- function(x, a){ a * sin(x) }
 
 result <- myfun(pi/2,2)
 result
@@ -1126,7 +1102,8 @@ myfun4 <- function(x, a = 1){
   sin_x <- a * sin(x)
   cos_x <- a * cos(x)
   list(a_sin_x = sin_x, a_cos_x = cos_x) # one list as result
-} 
+}
+
 myfun4(pi/2)
 ```
 - R doesn't handle `return(sin_x, cos_x)`
@@ -1235,14 +1212,18 @@ for (x in expression1) { expression2 }
 %end%
 
 ```{r, title = "Example", width = 6}
-mymat <- matrix(nrow=30, ncol=30) # create a 30 x 30 matrix
+# create a 30 x 30 matrix
+my_matrix <- matrix(nrow = 30, ncol = 30) 
 
-for(i in 1:dim(mymat)[1]){   # for each row
-  for(j in 1:dim(mymat)[2]){ # for each column
-    mymat[i, j] <- i * j     # assign a product of two indexes
+# for each row
+for(i in 1:dim(my_matrix)[1]) {
+  # for each column
+  for(j in 1:dim(my_matrix)[2]) {
+    # assign a product of two indices
+    my_matrix[i, j] <- i * j     
   }
 }  
-mymat[1:8, 1:8]
+my_matrix[1:8, 1:8]
 ```
 
 <!--
@@ -1313,7 +1294,6 @@ repeat {
 If no <b>break</b> is given, loop runs forever!
 -->
 
-
 ## Repetitive execution
 
 ### The `apply()` family of commands {.box-8 .offset-2 .bg-blue}
@@ -1337,13 +1317,13 @@ these commands allow functions to be run on vectors or matrices.
 `apply(DATA, MARGIN, FUNCTION)`
 
 ```{r}
-a <- matrix(1:10, nrow = 2)
+my_matrix <- matrix(1:10, nrow = 2)
 
-apply(a, 1, mean) # 1 = by rows
-apply(a, 2, mean) # 2 = by columns
+apply(my_matrix, 1, mean) # 1 = by rows
+apply(my_matrix, 2, mean) # 2 = by columns
 
 # the function can also be anonymous
-apply(a, 2, function(x){ x[[sample.int(length(x), 1)]] })
+apply(my_matrix, 2, function(x){ x[[sample.int(length(x), 1)]] })
 ```
 
 ###  `lapply()`{} {.box-6 .bg-red .compact-output .stretch}
@@ -1351,11 +1331,11 @@ apply(a, 2, function(x){ x[[sample.int(length(x), 1)]] })
 `lapply(LIST or VECTOR, FUNCTION)`
 
 ```{r}
-a <- matrix(2:11, nrow = 2)
-b <- matrix(1:10, nrow = 2)
-c <- list(a, b)
+m1 <- matrix(2:11, nrow = 2)
+m2 <- matrix(1:10, nrow = 2)
+my_list <- list(m1, m2)
 
-lapply(c, mean)
+lapply(my_list, mean)
 ```
 
 ### `sapply()`{} {.box-6 .offset-3 .bg-red}
@@ -1363,7 +1343,7 @@ lapply(c, mean)
 `sapply()` is like `lapply()` but simplifies the output to a vector if possible
 
 ```{r}
-sapply(c, mean)
+sapply(my_list, mean)
 ```
 
 ## Repetitive execution | The `apply()` family of commands {.build}
@@ -1419,7 +1399,7 @@ non_vectorised_log <- function(nums) {
 
 ### Compare vectorised and non-vectorised `log()` {.box-12 .bg-bluew}
 
-```{r}
+```{r, chunk_col = 100}
 microbenchmark::microbenchmark(non_vectorised_log(nums),
                                log(nums))
 ```

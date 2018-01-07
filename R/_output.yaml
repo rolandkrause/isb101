@@ -5,7 +5,7 @@ iosp::ioslides_plus:
   footer: "ISB101"
   smaller: yes
   widescreen: yes
-  self_contained: false
+  self_contained: true
   fig_retina: null
   css: css/tweaks.css
   box_colours:

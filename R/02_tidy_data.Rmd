@@ -1,12 +1,9 @@
 ---
-title: "Tidy data and the tidyverse"
-subtitle: "`tidyr`"
+title: "Tidy data"
+subtitle: "The tidyverse and `tidyr`"
 author: "Eric Koncina, Aurélien Ginolhac, Roland Krause"
 date: "09 January 2018"
-output:
-  iosp::ioslides_plus:
-    box_colours:
-      bg-blue-white: ["white", "#005C99"]
+output: iosp::ioslides_plus
 ---
 
 ```{block, include = FALSE}

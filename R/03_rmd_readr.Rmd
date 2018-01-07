@@ -1,11 +1,8 @@
 ---
 title: "Rmarkdown and data import"
 author: "E. Koncina, A. Ginolhac"
-date: "09 January 2017"
-output:
-  iosp::ioslides_plus:
-    box_colours:
-      bg-blue-white: ["white", "#005C99"]
+date: "09 January 2018"
+output: iosp::ioslides_plus
 ---
 
 ```{r setup, include=FALSE}
@@ -303,7 +300,7 @@ To integrate small pieces of _R_ codes
 - Look on the [rmarkdown website](http://rmarkdown.rstudio.com/gallery.html)
 - Documents (HTML, PDF, MS Word...)
 - **interactive** documents (`shiny` package)
-- websites (like the [Biostat2](http://biostat2.uni.lu) or [rmarkdown](http://rmarkdown.rstudio.com) sites)
+- websites (like the [rmarkdown](http://rmarkdown.rstudio.com) sites)
 
 ### Books{.box-6 .bg-green .icon}
 
@@ -391,7 +388,15 @@ Use `as_tibble()` to convert a `data.frame` to a tibble
 
 ### {.col-8 .offset-2 .compact-output}
 
-```{r, class = "build", title = "`data.frame`"}
+```{css, echo = FALSE}
+#dfexample > h3 {
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+```
+
+
+```{r dfexample, class = "build", title = "`data.frame`"}
 iris
 ```
 
@@ -405,10 +410,12 @@ as_tibble(iris)
 
 ### {.col-4 .bg-cobalt .compact-output}
 
-```{r, echo = 2, title = "`tibble` adjusts to width"}
+```{r, echo = 3, title = "`tibble` adjusts to width"}
 options(tibble.width = 30)
+old_w = options(width = 30)
 as_tibble(iris)
 options(tibble.width = NULL)
+options(old_w)
 ```
 
 ### tibble printing enhancements {.box-6 .offset-3 .bg-yellow}
@@ -486,7 +493,7 @@ To import excel files (`.xls` and `.xlsx`):
 ```
 
 
-### Flat file example: _mtcars.csv_{.box-10 .offset-1 .bg-blue-white .flatfile}
+### Flat file example: _mtcars.csv_{.box-10 .offset-1 .bg-bluew .flatfile}
 
 - Create a new project (finding your files will be easier)
 - Download the [`mtcars.csv`](data/mtcars.csv) file to your project folder (using your favourite browser)
@@ -622,6 +629,13 @@ read_csv("data/example.csv",
            value = col_integer()
          ))
 ```
+
+### {.box-8 .offset-2 .bg-yellow .icon-small}
+
+![](img/00/tip.png)
+
+Calling `read_csv()` with `col_types = cols()` works and removes the message as it actually keeps guessing by calling `col_guess()`\
+`col_types = cols(.default = col_guess())`
 
 ## Column types {.build}
 
