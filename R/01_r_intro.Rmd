@@ -5,12 +5,12 @@ date: "2018-01-08"
 output: iosp::ioslides_plus
 ---
 
-```{r, include = FALSE}
+```{r setup, include = FALSE}
 library(tidyverse)
 swirl_mailto <- "eric.koncina@uni.lu" #"roland.krause@uni.lu"
 ```
 
-```{r, include = FALSE}
+```{r hook_col, include = FALSE}
 # A chunk hook to adjust the width of the output (console/terminal width)
 knitr::knit_hooks$set(chunk_col = function(before, options, envir) {
     if (before) {
@@ -176,7 +176,7 @@ Do the following:
 - Maximise the RStudio window
 - Click the Console pane, at the prompt (`>`) type in `3 + 2` and hit enter
 
-```{r, eval = FALSE, prompt = TRUE}
+```{r calc, eval = FALSE, prompt = TRUE}
 3 + 2
 ```
 
@@ -217,7 +217,7 @@ complex             | 2+0i
 
 ### Special types {.box-6 .bg-blue .stretch}
 
-```{r, eval = FALSE}
+```{r type_na, eval = FALSE}
 NA   # not available, missing data
 NA_real_
 NA_integer_
@@ -239,7 +239,7 @@ Call the command **`class()`** or **`typeof()`** to see what data you are workin
 
 Integers are stored 32-bit long registers and limited to a little more than 2 billion.
 
-```{r}
+```{r int_max}
 .Machine$integer.max
 ```
 
@@ -247,7 +247,7 @@ Integers are stored 32-bit long registers and limited to a little more than 2 bi
 
 Doubles can be bigger because they are stored as **double precision floating point numbers**, which have two pieces:
 
-```{r, echo = FALSE}
+```{r dbl_precision, echo = FALSE}
 # Using R for the double example
 #round(.Machine$double.xmax), options()[["digits"]]
 double_precision <- as.character(.Machine$double.xmax) %>%
@@ -259,11 +259,11 @@ double_precision <- as.character(.Machine$double.xmax) %>%
 - the exponent (like `r double_precision[2]` below)
 - the "significant" (like  `r round(double_precision[1], options()[["digits"]] - 1)`  below).
 
-```{r}
+```{r dbl_max}
 .Machine$double.xmax
 ```
 
-```{r}
+```{r rm_dbl_precision}
 # Clear some variables to clean the env for ls() demo
 rm(double_precision)
 ```
@@ -282,7 +282,7 @@ R will automatically convert (coerce) between the numeric classes when needed.
 - Most math is done using double precision
 - Thus it is the default storage.
 
-```{r}
+```{r int_default}
 is.numeric(1)
 is.integer(1)
 ```
@@ -294,7 +294,7 @@ Sometimes you may want to specifically store a vector as integers:
 - if you know that they will never be converted to doubles (used as ID values or indexing)
 - since integers require less storage space.
 
-```{r}
+```{r int_force}
 is.numeric(1L)
 is.integer(1L) #Putting capital 'L' after an integer forces it to be stored as an integer.
 ```
@@ -316,7 +316,7 @@ Each **atomic** vector contains only a single type of data
 
 %end%
 
-```{r, title = "Example", width = 8, class = "offset-2", row = c(6, 6)}
+```{r vec_example, title = "Example", width = 8, class = "offset-2", row = c(6, 6)}
 # Logical
 c(TRUE, FALSE, TRUE)
 
@@ -331,61 +331,6 @@ c("character", "sequence")
 is.vector(4)
 
 identical(4, c(4))
-```
-
-## Structures
-
-### Lists {.box-6 .offset-3 .bg-blue}
-
-- Can contain anything!
-- are **vectors** which are **not atomic**.
-  + Elements can be of different types
-  + The length of each element (atom) might be greater than 1.
-  
-%end%
-
-```{r, title = "Example", width = 8, row = c(7, 5), class = "offset-2"}
-my_list <- list(1, 3, "seven")
-str(my_list)
-is.vector(my_list)
-is.atomic(my_list)
-```
-
-<span class = "small">Adapted from the tutorial of [Jenny Bryan](https://jennybc.github.io/purrr-tutorial/bk00_vectors-and-lists.html)</span>
-
-## Structures{.build}
-
-### Matrix and Arrays {.box-6 .offset-3 .bg-blue .show}
-
-- Matrix (2D)
-- Arrays ($\geq$ 3D)
-
-```{r, row = TRUE, collapse = TRUE}
-matrix(1:4, nrow = 2)
-```
-
-### Data frames {.box-8 .offset-2 .bg-blue}
-
-Fundamental data structure for combining diverse data into tables.
-
-```{r, dataframe, row = c(8, 4), collapse = TRUE}
-data.frame(x = 1:3,
-           y =4:6,
-           f = c("abc", "def", "ghi"))
-```
-
-## Structures
-
-### Factors {.box-8 .offset-2 .bg-blue}
-
-- The function `factor()` converts strings to factors
-- `levels` is the dictionary
-
-```{r, collapse = TRUE}
-fac <- factor(c("AA", "BB", "AA", "CC"))
-fac
-str(fac)
-is.vector(fac)
 ```
 
 ## Variables in R {.build}
@@ -406,12 +351,12 @@ is.vector(fac)
 
 In R you create **`objects`** by a process called **assignment**.
 
-```{r, title = "Example of assignment"}
+```{r assign, title = "Example of assignment"}
 x <- 7
 ```
 
 
-```{r, title="Create a new variable based on **v1**" }
+```{r assign_2, title="Create a new variable based on **v1**" }
 v1 <- 2
 v2 <- (v1^5 - v1)
 v2
@@ -455,7 +400,7 @@ Of course it's data! That's what variables contain! That's all they ever can con
 
 ### Use specific names {.box-6 .bg-blue}
 
-```{r, eval = FALSE}
+```{r naming, eval = FALSE}
 total <- price * qty
 total2 <- total - discount
 total2 <- total2 + total * taxrate
@@ -476,7 +421,7 @@ There are several ways to check content of variable:
 
 - Select the variable and press Ctrl+Enter (cmd + Enter for Mac)
 - run command
-    ```{r}
+    ```{r print}
     print(x)
     ```
 - In R Console type **x** to see it's value.
@@ -484,7 +429,7 @@ There are several ways to check content of variable:
 ### Listing variables {.box-6 .bg-red}
 
 - To get a list of all of the variables that have been defined use the `ls()` command:
-    ```{r, chunk_col = 40}
+    ```{r ls, chunk_col = 40}
     ls()
     ```
 - Check "Environment" tab in RStudio
@@ -494,7 +439,7 @@ There are several ways to check content of variable:
 ### Using `swirl`{} {.box-10 .offset-1 .bg-white}
 
 Type in R console:
-```{r, eval = FALSE}
+```{r swirl_1, eval = FALSE}
 library(swirl)
 #install_course("R Programming E")
 swirl()
@@ -513,7 +458,7 @@ swirl()
 
 - Create a vector with several elements using `c()`
 
-```{r, row = TRUE}
+```{r concatenate, row = TRUE}
 a <- c(1, 2, 3)
 a
 a <- c(1:3)
@@ -523,7 +468,7 @@ a + 5
 
 %end%
 
-```{r, title = "Basic R operations", width = 6}
+```{r operations, title = "Basic R operations", width = 6}
 a * 4
 sqrt(a)
 exp(a)
@@ -537,7 +482,7 @@ log(a)
 - R is vectorised which is a very powerful feature.
 - If two vectors of different length are used, _R_ recycles the smallest one:
 
-```{r}
+```{r vectorised_example}
 a <- c(1, 2, 3, 4, 5, 6)
 b <- c(10, 11, 12) 
 a + b
@@ -556,48 +501,27 @@ a + b
 - `var(x)` is the variance (`sum((x - mean(x))^2) / (length(x) - 1)`)
 - use `sort()` to arrange elements in increasing order (or `order()` to get the sorted indices and make more complex sorting).
 
-### Mini-task{.box-6 .offset-3 .bg-green}
+## Operations with vectors {.bg-green .build}
+
+### Mini-task{.box-10 .offset-1 .bg-bluew .show}
 
 How would you arrange your vector in a decreasing order using `sort()`?
 
-## Operations with vectors {.bg-green .build}
-
-### Help{.box-8 .offset-2 .bg-bluew .show}
+### Help{.box-10 .offset-1 .bg-bluew}
 
 - **`help()`** returns a full description of the query command: what it does, what it needs as input, what will be produced in output
 - Use the help tab in the lower right Rstudio panel
 
-```{r, eval = FALSE, width = 6}
+```{r help, eval = FALSE, width = 6}
 help(sort)
 ?sort
 ```
 
 %end%
 
-```{r, title = "Solution", width = 6, class = "offset-3"}
+```{r sort, title = "Solution", width = 6, class = "offset-3"}
 sort(a, decreasing = FALSE)
 sort(a, decreasing = TRUE)
-```
-
-## Logical
-
-### Logical binary {.box-6 .bg-blue}
-
-Two possible values represented by `TRUE` and `FALSE`.
-
-```{r}
-a <- c(3, 7, 1, 2, 4)
-a > 2
-a == 2
-!(a <= 3)
-```
-
-### Find which element is...{.box-6 .bg-red}
-
-```{r}
-a
-which(a > 2)
-a[which(a > 2)]
 ```
 
 ## Functions to Provide Information about Vectors
@@ -636,6 +560,27 @@ a[which(a > 2)]
 c(FALSE, TRUE, TRUE) & c(TRUE, TRUE, FALSE)
 
 c(FALSE, TRUE, TRUE) && c(TRUE, TRUE, FALSE)
+```
+
+## Logical
+
+### Logical binary {.box-6 .bg-blue}
+
+Two possible values represented by `TRUE` and `FALSE`.
+
+```{r logical_test}
+a <- c(3, 7, 1, 2, 4)
+a > 2
+a == 2
+!(a <= 3)
+```
+
+### Find which element is...{.box-6 .bg-red}
+
+```{r which}
+a
+which(a > 2)
+a[which(a > 2)]
 ```
 
 ## Practice time! {.bg-green}
@@ -720,6 +665,162 @@ Complete lessons **5**  and **6**. In the end of the lesson send the email to `r
 
 The email subject should be generated automaticly by swirl, in the email body place your last command used in the lesson.
 
+## Structures
+
+### Factors {.box-8 .offset-2 .bg-blue}
+
+- The function `factor()` converts strings to factors
+- `levels` is the dictionary
+
+```{r fct_example, collapse = TRUE}
+fac <- factor(c("AA", "BB", "AA", "CC"))
+fac
+str(fac)
+is.vector(fac)
+```
+
+## Factors{.build}
+
+### {.box-7 .bg-yellow .show}
+
+- A factor-type vector contains a set of numeric codes with character-valued levels.
+- Example: A family of two girls (1) and four boys (0):
+    ```{r}
+    kids <- factor(c(1, 0, 1, 0, 0, 0),
+                   levels = c(0, 1),
+                   labels = c("boy", "girl"))
+    kids
+    class(kids)
+    typeof(kids)
+    ```
+
+### Remark {.box-5 .bg-red .stretch}
+
+- Required for (some) statistical analysis
+- When manipulating the data, factors are a total pain
+- Factor levels remain around even if you remove all examples of a particular level.
+- It is a good practice to introduce factors at the very end of your analysis pipeline once required.
+
+%end%
+
+```{r, title = "Example", row = c(8, 4), class = "compact-output"}
+levels(kids)
+kids <- kids[kids != "boy"]
+levels(kids) # still the same levels
+table(kids) # even though one level has 0 entries!
+```
+
+## Structures
+
+### Lists {.box-6 .offset-3 .bg-blue}
+
+- Can contain anything!
+- are **vectors** which are **not atomic**.
+  + Elements can be of different types
+  + The length of each element (atom) might be greater than 1.
+  
+%end%
+
+```{r list_example, title = "Example", width = 8, row = c(7, 5), class = "offset-2"}
+my_list <- list(1, 3, "seven")
+str(my_list)
+is.vector(my_list)
+is.atomic(my_list)
+```
+
+## Lists
+
+### {.box-8 .offset-2 .bg-blue}
+
+- An ordered collection of objects (components).
+- A list allows to gather a variety of (possibly unrelated) objects under one name.
+
+```{r}
+# example of a list with 4 components - a string, a numeric vector, and a scaler 
+my_list <- list(name = "Fred",
+                my_numbers = v1,
+                age = 5.3)
+
+# example of a list containing two lists 
+two_lists <- list(my_list,
+                  list("first_element", "second_element"))
+```
+
+## Indexing lists{.build}
+
+### `[`{} {.box-6 .bg-blue}
+
+To get a list containing the selected element(**s**)
+
+```{r, class = "compact-output"}
+ex1 <- my_list[2]
+str(ex1)
+typeof(ex1)
+
+my_list[1:2]
+```
+
+### `[[`{} {.box-6 .bg-blue}
+
+To get the **single** selected element
+
+```{r, error = TRUE, class = "compact-output"}
+ex2 <- my_list[[2]]
+str(ex2)
+typeof(ex2)
+
+my_list[[1:2]]
+```
+
+### {.box-8 .offset-2 .bg-yellow .icon-small}
+
+![](img/00/tip.png)
+
+For named lists, you can use `$` as a shortcut for `[[`.
+Enjoy the code completion in RStudio! 
+
+```{r, width = 10}
+my_list[["my_numbers"]]
+my_list$my_numbers
+```
+
+## Lists
+
+### Nested lists{.box-8 .offset-2 .bg-yellow}
+
+You can chain `[[` and `[` to extract elements from nested lists
+
+```{r}
+two_lists[[2]][[1]]
+two_lists[[2]][1]
+
+two_lists[[1]][1:2]
+
+two_lists[2][1]
+
+```
+
+## Structures{.build}
+
+### Matrix and Arrays {.box-6 .offset-3 .bg-blue .show}
+
+- Matrix (2D)
+- Arrays ($\geq$ 3D)
+
+```{r matrix_example, row = TRUE, collapse = TRUE}
+matrix(1:4, nrow = 2)
+```
+
+### Data frames {.box-8 .offset-2 .bg-blue}
+
+Fundamental data structure for combining diverse data into tables.
+
+```{r df_example, dataframe, row = c(8, 4), collapse = TRUE}
+data.frame(x = 1:3,
+           y =4:6,
+           f = c("abc", "def", "ghi"))
+```
+
 ## Matrix {.build}
 
 ### From vectors to matrices {.box-6 .bg-blue .show}
@@ -776,110 +877,6 @@ my_matrix[2, "B"]
 ```{r, row = TRUE, width = 10}
 my_matrix[1,]
 my_matrix[my_matrix > 3]
-```
-
-## Factors{.build}
-
-### {.box-7 .bg-yellow .show}
-
-- A factor-type vector contains a set of numeric codes with character-valued levels.
-- Example: A family of two girls (1) and four boys (0):
-    ```{r}
-    kids <- factor(c(1, 0, 1, 0, 0, 0),
-                   levels = c(0, 1),
-                   labels = c("boy", "girl"))
-    kids
-    class(kids)
-    typeof(kids)
-    ```
-
-### Remark {.box-5 .bg-red .stretch}
-
-- Required for (some) statistical analysis
-- When manipulating the data, factors are a total pain
-- Factor levels remain around even if you remove all examples of a particular level.
-- It is a good practice to introduce factors at the very end of your analysis pipeline once required.
-
-%end%
-
-```{r, title = "Example", row = c(8, 4), class = "compact-output"}
-levels(kids)
-kids <- kids[kids != "boy"]
-levels(kids) # still the same levels
-table(kids) # even though one level has 0 entries!
-```
-
-## Lists
-
-### {.box-8 .offset-2 .bg-blue}
-
-- An ordered collection of objects (components).
-- A list allows to gather a variety of (possibly unrelated) objects under one name.
-
-```{r}
-# example of a list with 4 components - a string, a numeric vector, a matrix, and a scaler 
-my_list <- list(name = "Fred",
-                my_numbers = v1,
-                my_matrix = my_matrix,
-                age = 5.3)
-
-# example of a list containing two lists 
-two_lists <- list(my_list,
-                  list("first_element", "second_element"))
-```
-
-## Indexing lists
-
-### `[`{} {.box-6 .bg-blue}
-
-To get a list containing the selected element(**s**)
-
-```{r, class = "compact-output"}
-ex1 <- my_list[2]
-str(ex1)
-typeof(ex1)
-
-my_list[1:2]
-```
-
-### `[[`{} {.box-6 .bg-blue}
-
-To get the **single** selected element
-
-```{r, error = TRUE, class = "compact-output"}
-ex2 <- my_list[[2]]
-str(ex2)
-typeof(ex2)
-
-my_list[[1:2]]
-```
-
-### {.box-8 .offset-2 .bg-yellow .icon-small}
-
-![](img/00/tip.png)
-
-For named lists, you can use `$` as a shortcut for `[[`.
-Enjoy the code completion in RStudio! 
-
-```{r, width = 10}
-my_list[["my_numbers"]]
-my_list$my_numbers
-```
-
-## Lists
-
-### Nested lists{.box-8 .offset-2 .bg-yellow}
-
-You can chain `[[` and `[` to extract elements from nested lists
-
-```{r}
-two_lists[[2]][[1]]
-two_lists[[2]][1]
-
-two_lists[[1]][1:2]
-
-two_lists[2][1]
-
 ```
 
 ## Data frames
@@ -977,6 +974,7 @@ as.matrix(mtcars[1:5,1:5])
 
 ### Extract a cell or column {.box-8 .bg-red}
 
+- Use the coordinates like you did for a matrix.
 - We can use the row and column names instead of the numeric coordinates.
     ```{r}
     mtcars["Mazda RX4", "cyl"]
@@ -997,6 +995,7 @@ ncol(mtcars)
 dim(mtcars)
 ```
 
+<!--
 ## Working with data frames
 
 
@@ -1009,15 +1008,16 @@ sd(mtcars$cyl)
 ```{r, title = "Get some summary statistics"}
 summary(mtcars[, 1:4])
 ```
-
+-->
 ## Working with data frames
 
 ### Some useful `base` functions for data frames {.box-10 .offset-1 .bg-yellow}
-- Change the column names of data frame using `colnames()`
+
+- Change the column names of a data frame using `colnames()`
     ```{r}
     colnames(mtcars)[1] <- "new_name"
     ```
-- To see first n elements of your data frame use `head(data_frame, n)`
+- To see the first n elements of your data frame use `head(data_frame, n)`
 ```{r}
 head(mtcars) #Gives first 6 rows if n is not specified
 ```
@@ -1368,6 +1368,12 @@ rep(pi, 1)
 ```
 
 </div>
+
+### Tip {.box-6 .bg-yellow .icon-small}
+
+![](img/00/tip.png)
+
+Look at the `purrr` package from the `tidyverse` to perform functional programming...
 
 ## Vectorisation
 
