@@ -68,12 +68,13 @@ article .code-transparent > pre {
 
 ![](img/03/rmarkdown_output.png)
 
-- write detailed reports
-- ensure reproducibility
-- keep track of your analyses
-- comment/describe each step of your analysis
+- write **detailed** reports
+- ensure **reproducibility**
+- separate the **raw data**, the end report and/or processed data.
+- **keep track** of your analyses
+- **comment/describe** each step of your analysis
 - export a single (Rmd) document to various formats (Pdf, Html...)
-- text file that can be managed by a version control system (like [git](https://git-scm.com/))
+- text file that can be managed by a **version control system** (like [git](https://git-scm.com/))
 
 ### Rmarkdown {.box-8 .offset-2 .bg-red .my-flex .vs1}
 
@@ -571,7 +572,7 @@ read_csv("data/mtcars.csv")
 - to hide this message:
     + **lazy method 1**: set `message = FALSE` in your rmarkdown chunk option.
     + **lazy method 2**: set `col_types = cols()`
-    + Hadley Wickham recommends to adjust the `col_types` to avoid any problem
+    + It's a **good practice** to **adjust `col_types`** and tell which columns you expect. This allows for example to detect any deviation during the import of an updated dataset.
     
 ### {.col-5 .stretch}
 
