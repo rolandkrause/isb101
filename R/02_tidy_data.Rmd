@@ -410,6 +410,58 @@ dummy_unite %>%
   separate(date, c("year", "month", "day"))
 ```
 
+## Practice time! {.bg-green}
+
+### {.box-10 .offset-1 .bg-bluew}
+
+Type in R console:
+
+```{r, eval = F}
+library(swirl)
+install_course_github("rolandkrause", "isb101", branch = "swirl")
+swirl()
+```
+
+### {.box-10 .offset-1 .bg-bluew}
+
+Download the `swc` file from [Moodle](https://moodle.uni.lu/) and, to install the course, run the following commands in R (select the file when asked).
+
+```{r, eval = FALSE}
+library(swirl)
+install_course()
+# Cboose the file you just downloaded when asked
+```
+
+Choose the "isb101" course and complete the lesson:
+
+- **Tidying Data with tidyr**.
+
+## Wrap up
+
+### We covered: {.box-10 .offset-1 .bg-red .icon}
+
+![](img/00/kt.png)
+
+- tidyverse, introduction
+- tidy data
+    + <http://tidyr.tidyverse.org/>
+    + `vignette("tidy-data")`
+- `tidyr`
+    + long / wide with `gather()` / `spread()`
+    + data cleaning with `separate()` / `unite()`
+- switch from `base` to `tidyverse`, [Rajesh Korde, blog' post](http://www.significantdigits.org/2017/10/switching-from-base-r-to-tidyverse/)
+
+### Acknowledgments {.box-4 .offset-3 .bg-yellow}
+
+* Hadley Wickham
+* Jeremy Stanley
+
+```{r, echo = FALSE}
+knitr::knit_exit()
+```
+
+
+
 ## Fill all combinations
 
 ```{r, title = "Demo dataset"}
@@ -487,46 +539,7 @@ complete(kelpdf,
 
 example from [imachorda.com](http://www.imachordata.com/you-complete-me/)
 
-## Practice time! {.bg-green}
 
-### {.box-10 .offset-1 .bg-bluew}
-
-Type in R console:
-
-```{r, eval = F}
-library(swirl)
-install_course_github("rolandkrause", "isb101", branch = "swirl")
-swirl()
-```
-
-### {.box-10 .offset-1 .bg-bluew}
-
-Choose the "isb101" course and complete the lessons:
-
-- **Tidying Data with tidyr part1**.
-- **Tidying Data with tidyr part3**.
-
-## Wrap up
-
-### We covered: {.box-10 .offset-1 .bg-red .icon}
-
-![](img/00/kt.png)
-
-- tidyverse, introduction
-- tidy data
-    + <http://tidyr.tidyverse.org/>
-    + `vignette("tidy-data")`
-- `tidyr`
-    + long / wide with `gather` / `spread`
-    + data cleaning
-    + present helpers: `complete`, `separate_rows` and `nest()`
-- switch from `base` to `tidyverse`, [Rajesh Korde, blog' post](http://www.significantdigits.org/2017/10/switching-from-base-r-to-tidyverse/)
-
-### Acknowledgments {.box-4 .offset-3 .bg-yellow}
-
-* Hadley Wickham
-* Roland Krause
-* Jeremy Stanley
 
 
 ```{r, echo = FALSE}
