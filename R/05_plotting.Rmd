@@ -122,308 +122,11 @@ x     y    shape
 
 ------------------
 
-## Motivation for this layered system | football example {.vs1}
+## Motivation for this layered system {.middle}
+
+###{.col-10 .offset-1}
 
 > *Data visualisation* is not meant just to be seen but to be read, like written text | Alberto Cairo {.bg-yellow}
-
-```{r, echo = FALSE}
-# https://github.com/johnburnmurdoch/johnburnmurdoch.github.io/blob/master/slides/r-ggplot/r-scripts.R
-#allSeasons <- read_csv("https://raw.githubusercontent.com/johnburnmurdoch/johnburnmurdoch.github.io/master/slides/r-ggplot/changing-tides-of-football.csv")
-#write_rds(allSeasons, "data/allseasons.rds")
-```
-
-
-```{r, echo = FALSE, title = "Using the [Euro Club Index](http://www.euroclubindex.com/asp/Methodology.asp) dataset", class = "compact-output"}
-library(tidyverse)
-allSeasons <- read_rds("data/allseasons.rds")
-oneSeason <- allSeasons %>% filter(year == 2016)
-allSeasons
-```
-
-<span class = "small">source [John Burn-Murdoch](http://johnburnmurdoch.github.io/slides/r-ggplot/) working at the Financial Times</span> 
-
-## questions & solutions {.build}
-
-### Questions {.box-5 .bg-yellow .compact-output}
-
-1. which countries have the best teams?
-2. which leagues are the most/least balanced?
-3. what is the 'quality gap' between a given pair of leagues?
-4. how does the nth best team in league x today compare to its predecessors?
-5. how have all of the above changed over time?
-
-### Stat solutions  {.box-4 .bg-green .stretch}
-
-1. linear comparison
-2. distribution of parts within the whole
-3. difference in area between two curves
-4. value in context
-5. evolution of an already detailed pattern over time
-  
-### Visual solutions  {.box-3 .bg-blue .stretch}
-
-1. points
-2. points on a line
-3. ribbon
-4. shaded range
-5. faceted plots
-
-%end%
-
-<span class = "small">source [John Burn-Murdoch](http://johnburnmurdoch.github.io/slides/r-ggplot/) working at the Financial Times</span> 
-
-## 1. which countries had the best teams in 2016?  {.build}
-
-### {.col-12}
-
-```{r, row = c(8, 4), fig.height=3, fig.width=3}
-oneSeason %>%
-  ggplot(aes(x = year, y = score, colour = country)) + 
-  geom_point(size = 3) +
-  scale_x_discrete() +
-  theme_bw(base_size = 18)
-```
-
-
-### comments {.box-8 .bg-yellow .icon-small}
-
-![](img/00/tip.png)
-
-- `size = 3` increases the size of *all* dots (is not mapped in `aes()`).
-- `scale_x_discrete` forces the x axis to be discrete.
-- `theme_bw()` is a pre-defined *black/white* theme.
-
-### Issue {.box-4 .bg-red}
-
-we can't see much: Improve the **x** mapping
-
-## 1. which countries had the best teams in 2016? | with rank {.build}
-
-```{r, row = c(5, 7), fig.height = 3.5, fig.width = 5}
-oneSeason %>%
-  ggplot(aes(x = rank, y = score,
-             colour = country)) + 
-  geom_point(size = 3) +
-  theme_bw(18)
-```
-
-### comments {.box-8 .bg-yellow .icon-small}
-
-![](img/00/tip.png)
-
-- `scale_x_discrete` was removed: rank is a **continuous** variable.
-- omit `base_size =` in `theme_bw()` (1st argument)
-
-### Spain {.box-4 .bg-red .stretch}
-
-Now, it's obvious that Spain has good teams including lower ranked clubs.
-
-
-## 2. which leagues are most/least balanced in 2016? {.build}
-
-### {.col-12}
-
-```{r, row = c(5, 7), fig.height = 3.5, fig.width = 5}
-oneSeason %>%
-  ggplot(aes(rank, score, 
-             colour = country)) +
-   geom_line() + 
-   geom_point(size = 3) + 
-   theme_bw(18)
-```
-
-### comments {.box-8 .bg-yellow .stretch}
-
-- `aes()` defined in the `ggplot()` main function are passed to **all** subsequent `geom`
-- Here we omitted to explicitely name `x` and `y`: It's better to specify these arguments.
-
-
-### Issue {.box-4 .bg-red}
-
-Hard to see differences, ENG seems more coherent
-
-## 2. which leagues are most/least balanced in 2016? | with range {.vs2 .build}
-
-### {.col-12}
-
-```{r, row = c(8, 4), fig.height=4, fig.width=5}
-oneSeason %>%
-  group_by(country) %>%
-  summarise(min = min(score),
-            max = max(score),
-            range = max - min) %>%
-  mutate(country = forcats::fct_reorder(country, range)) %>%
-  ggplot(aes(x = "2016", y = range, fill = country)) +
-  geom_col(position = "dodge") +
-  theme_classic(18)
-```
-
-
-### Tips  {.box-10 .offset-1 .bg-yellow .stretch .icon-small}
-
-![](img/00/tip.png)
-
-- force the **x-axis** tp be discrete using `"2016"` as character
-- **position**: use dodging to get all bars on the same x index
-- reorder levels based on a numeric variable using `fct_reorder`
-
-
-## 3. _Quality gap_ between England and Spain in 2016? | score diff at each rank  {.build}
-
-### {.col-12}
-
-```{r, row = c(7, 5), fig.height=4, fig.width=5}
-oneSeason %>%
-  select(score, rank, country) %>%
-  filter(country %in% c("ENG", "ESP")) %>%
-  spread(country, score) %>%
-  rowwise() %>%
-  mutate(gap = ESP - ENG,
-         min = min(ESP, ENG),
-         max = max(ESP, ENG)) %>%
-  ggplot(aes(x = rank, fill = gap > 0)) + 
-  geom_rect(aes(xmin = rank - 0.5, 
-                xmax = rank + 0.5, 
-                ymin = min, ymax = max), alpha = 0.8) + 
-  theme_classic(18) +
-  scale_fill_manual(name = "gap", labels = c("ENG", "ESP"), 
-                    values = c("royalblue", "red3")) +
-  labs(title = "quality gap",
-       subtitle = "between England and Spain",
-       caption = "by John Burn-Murdoch")
-```
-
-### comments {.box-8 .bg-yellow .stretch .icon-small}
-
-![](img/00/tip.png)
-
-- Using `spread()` computing a difference between two columns is easy
-- `rowwise()` is mandatory to get the right min and max
-
-### Spain clubs { .box-4 .bg-red}
-
-are performing better at every rank except #11
-
-## 4.How does the _nth_ best English team in 2016 compare to its predecessors? {.build .vs2}
-
-### {.col-12}
-
-```{r, row = c(7, 5), fig.height=5, fig.width=5}
-oneSeason %>%
-  filter(country == "ENG") %>%
-  ggplot(aes(x = rank, y = score)) + 
-  geom_ribbon(aes(ymin = atw, ymax = atb),
-              fill = "royalblue", alpha = 0.5) + 
-  geom_line(size = 1.5, colour = "royalblue") + 
-  geom_point(size = 3, colour = "royalblue") + 
-  theme_bw(18) + 
-  scale_fill_manual(name = "gap", labels = c("ENG", "ESP"), 
-                    values = c("royalblue", "red3")) +
-  labs(title = "Comparison of the nth best \nteam to its predecessors",
-       subtitle = "in England in 2016",
-       caption = "by John Burn-Murdoch")
-```
-
-## 5. How to visualise over time? | facet: best country {.build}
-
-### {.col-12}
-
-```{r, fig.height = 4, fig.width = 10}
-allSeasons %>%
-  ggplot(aes(rank, score, colour = country)) +
-  geom_line() + 
-  theme_classic(18) +
-  facet_wrap(~ year, ncol = 8)
-```
-
-## 5. How to visualise over time? | facet {.build}
-
-### {.col-12}
-
-```{r, eval = FALSE, fig.height=6, fig.width=6, title = "gap code"}
-allSeasons %>%
-  select(score, year, rank, country) %>%
-  filter(country %in% c("ENG", "ESP")) %>%
-  spread(country, score) %>%
-  rowwise() %>%
-  mutate(gap = ESP - ENG,
-         min = min(ESP, ENG),
-         max = max(ESP, ENG)) %>%
-  ggplot(aes(x = rank, fill = gap > 0)) + 
-  geom_rect(aes(xmin = rank - 0.5, 
-                xmax = rank + 0.5, 
-                ymin = min, ymax = max), alpha = 0.8) + 
-  theme_classic(18) +
-  scale_fill_manual(name = "gap", labels = c("ENG", "ESP"), 
-                    values = c("royalblue", "red3")) +
-  labs(title = "quality gap",
-       subtitle = "between England and Spain",
-       caption = "by John Burn-Murdoch") +
-  facet_wrap(~ year)
-```
-
-### Using tidy data {.box-8 .offset-2 .bg-red}
-
-Split into mutliple panels by only adding the `facet` layer.
-
-## 5. How to visualise over time? | facet: gap plot 
-
-```{r, echo = FALSE, fig.height = 5, fig.width = 10}
-allSeasons %>%
-  select(score, year, rank, country) %>%
-  filter(country %in% c("ENG", "ESP")) %>%
-  spread(country, score) %>%
-  rowwise() %>%
-  mutate(gap = ESP - ENG,
-         min = min(ESP, ENG),
-         max = max(ESP, ENG)) %>%
-  ggplot(aes(x = rank, fill = gap > 0)) + 
-  geom_rect(aes(xmin = rank - 0.5, 
-                xmax = rank + 0.5, 
-                ymin = min, ymax = max), alpha = 0.8) + 
-  theme_classic(18) +
-  scale_fill_manual(name = "gap", labels = c("ENG", "ESP"), 
-                    values = c("royalblue", "red3")) +
-  labs(title = "quality gap",
-       subtitle = "between England and Spain",
-       caption = "by John Burn-Murdoch") +
-  facet_wrap(~ year, ncol = 8)
-```
-
-
-## Your turn {.bg-green}
-
-<!-- rstudio [cheatsheet](https://www.rstudio.org/links/data_visualization_cheat_sheet) -->
-
-```{r, title = "save iris as a `tibble`", width = 8, class = "offset-2 compact-output"}
-iris <- as_tibble(iris)
-iris
-```
-
-###  Tip {.box-6 .offset-3 .bg-yellow .icon-small}
-
-![](img/00/tip.png)
-
-saving the data frame as a `tibble` enables the smart tibble printing and avoids to list all 150 rows
-
-<!--
-
-### change default theme {.box-6 .bg-aquamarine2}
-
-I set for this course the following to avoid the grey background and print bigger text
-```{r}
-ggplot2::theme_set(ggplot2::theme_bw(18))
-```
--->
-
-## Your turn {.bg-green}
-
-```{r, fig.height = 4, title = "Draw your first plot", width = 10, class = "offset-1"}
-iris %>%
-  ggplot() +
-  geom_point(aes(x = Petal.Width, y = Petal.Length))
-```
-
 
 ## Geometric objects | geoms define the type of plot which will be drawn {.build .nvs1}
 
@@ -438,18 +141,15 @@ iris %>%
 ### `geom_line()` {.box-4 .bg-cobalt}
 
 ```{r, echo = FALSE}
-oneSeason %>%
-  ggplot(aes(rank, score, 
-             colour = country)) +
+  ggplot(mtcars, aes(wt, mpg)) +
   geom_line()
 ```
 
 ### `geom_bar()` {.box-4 .bg-cobalt}
 
 ```{r, echo = FALSE}
-oneSeason %>%
-  ggplot(aes(rank, score, 
-             fill = country)) +
+ggplot(mtcars, aes(am, mpg, 
+             fill = factor(cyl))) +
   geom_col(position = "dodge")
 ```
 
@@ -488,60 +188,100 @@ ggplot(iris) +
 
 Have a look at the [cheatsheet](https://www.rstudio.org/links/data_visualization_cheat_sheet) or the ggplot2 online [documentation](http://ggplot2.tidyverse.org/) to list more possibilities.
 
+
+
+## The dataset {.bg-green}
+
+```{r, title = "Convert iris as a `tibble`", width = 8, class = "offset-2 compact-output"}
+iris <- as_tibble(iris)
+iris
+```
+
+###  Tip {.box-6 .offset-3 .bg-yellow .icon-small}
+
+![](img/00/tip.png)
+
+saving the data frame as a `tibble` enables the smart tibble printing and avoids to list all 150 rows
+
+## Your first plot {.bg-green}
+
+```{r first_plot, title = "Draw your first plot", width = 10, class = "offset-1", eval = FALSE}
+iris %>%
+  ggplot() +
+  geom_point(aes(x = Petal.Width, y = Petal.Length))
+```
+
+###{.box-8 .offset-2 .bg-bluew}
+
+```{r first_plot, echo = FALSE, fig.height = 4}
+```
+
 ## Mapping aesthetics
 
 ### definitions {.box-12 .bg-yellow}
 
-- **aesthetics** map the columns of a `data.frame`/`tibble` to the variable each ggplot2 `geom` is expecting.
+- **aesthetics** map the columns of a `tibble` to the variable each ggplot2 `geom` is expecting.
 - `geom_point()` for example requires **at least** the _**x**_ and _**y**_ coordinates to draw each point.
 
 %end%
 
-```{r, fig.height = 4, eval = FALSE, width = 5}
+### {.box-8 .offset-2 .bg-blue}
+
+In our example we need to tell `geom_point()` which columns should be used as `x` and `y`
+
+```{r, fig.height = 4, eval = FALSE}
 ggplot(iris) +
-  geom_point(aes(x = Petal.Width,
-                 y = Petal.Length))
+  geom_point(aes(x = Petal.Width, y = Petal.Length))
 ```
 
-### {.box-7 .x-small .bg-bluew}
-
-```{r, echo = FALSE}
-head(iris, 5) %>% 
-  knitr::kable()
-```
-
-## Unmapped parameters{.column .build}
+## Unmapped parameters{.build}
 
 <!-- FIXME: image is not rendered as it should in firefox in column mode... Browser bug? -->
 
-### {.box-6 .bg-blue .show}
+### {.box-10 .offset-1 .bg-blue .show}
 
 - `geom_point()` accepts additional arguments such as the `colour`, the transparency (`alpha`) or the `size` (see `?geom_point`).
 - It is possible to define them to a fixed value wihout mapping them to a variable.
+
+%end%
+
+```{r iris_fixed_colour, width = 8, class = "offset-2", eval = FALSE}
+ggplot(iris) +
+  geom_point(aes(x = Petal.Width, y = Petal.Length),
+             colour = "blue", alpha = 0.6, size = 3)
+```
+
+###{.box-6 .bg-bluew}
+
+```{r iris_fixed_colour, echo = FALSE, fig.height = 3.5}
+```
 
 ### important {.box-6 .bg-red .icon-small}
 
 ![](img/00/warning.png)
 
-Note that parameters are defined **outside** the aesthetics `aes()` are applied to **all** data.
+Note that parameters defined **outside** the aesthetics `aes()` are applied to **all** data.
 
 %end%
 
-```{r, fig.height = 4, width = 6, class = "show"}
-ggplot(iris) +
-  geom_point(aes(x = Petal.Width,
-                 y = Petal.Length),
-             colour = "blue",
-             alpha = 0.6,
-             size = 3)
-```
+## Mapping aesthetics | colour{.build}
 
-## Mapping aesthetics | colour{.column .build}
-
-### {.box-6 .bg-blue .show}
+### {.box-10 .offset-1 .bg-blue .show}
 
 - `colour`, `alpha` or `size` can also be mapped to a column in the data frame.
 - We can for example attribute a different colour to each species.
+
+%end%
+
+```{r iris_map_colour, fig.height = 3.5, width = 8, class = "offset-2", eval = FALSE}
+ggplot(iris) +
+  geom_point(aes(x = Petal.Width, y = Petal.Length, colour = Species), alpha = 0.6, size = 3)
+```
+
+###{.box-6 .bg-bluew}
+
+```{r iris_map_colour, echo = FALSE, fig.height = 3.5}
+```
 
 ### important {.box-6 .bg-red .icon-small}
 
@@ -551,69 +291,24 @@ Note that the `colour` argument is now **inside** `aes()` and **must** refer to 
 
 %end%
 
-```{r, fig.height = 4, width = 6, class = "show"}
-ggplot(iris) +
-  geom_point(aes(x = Petal.Width,
-                 y = Petal.Length,
-                 colour = Species),
-             alpha = 0.6, size = 3)
-```
-
 ## Mapping aesthetics | shape
 
-```{r, title = "Mapping `shape` and `colour` to `Species`", fig.height = 4}
+```{r iris_shape, title = "Mapping `shape` and `colour` to `Species`", fig.height = 4, eval = FALSE}
 ggplot(iris) +
   geom_point(aes(x = Petal.Width, y = Petal.Length, shape = Species, colour = Species),
              alpha = 0.6, size = 3)
 ```
 
-## Mapping aesthetics | group {.build}
+###{.box-8 .offset-2 .bg-bluew}
 
-```{r, title = "Example of data causing \"trouble\"", width = 6}
-# Sample data
-set.seed(12)
-d <- data.frame(expand.grid(x = letters[1:4],
-                        g = factor(1:2)),
-                        y = rnorm(8))
-d
-```
-
-### problem, plot data {.box-6 .bg-red .stretch}
-
-```{r}
-ggplot(d, aes(x, y, colour = g)) +
-  geom_line() + 
-  geom_point()
-```
-
-## Mapping aesthetics | group {.build}
-
-### solution: grouping {.box-6 .bg-grgold .stretch}
-
-```{r}
-ggplot(d, aes(x, y, colour = g, group = g)) +
-  geom_line() +
-  geom_point()
-```
-
-### force grouping {.box-6 .bg-blue .stretch}
-
-```{r}
-ggplot(d, aes(x, y, colour = g, group = 1)) +
-  geom_line() +
-  geom_point()
+```{r iris_shape, echo = FALSE, fig.height = 3.5}
 ```
 
 ## Labels
 
-It is easy to adjust axis labels and the title
-
-```{r, row = TRUE, fig.height = 4}
+```{r iris_labels, title = "It is easy to adjust axis labels and the title using the `labs()` function", eval = FALSE}
 ggplot(iris) +
-  geom_point(aes(x = Petal.Width,
-                 y = Petal.Length,
-                 colour = Species), 
-             alpha = 0.6, size = 3) +
+  geom_point(aes(x = Petal.Width, y = Petal.Length, colour = Species), alpha = 0.6, size = 3) +
   labs(x = "Width",
        y = "Length",
        colour = "flower",
@@ -622,37 +317,56 @@ ggplot(iris) +
        caption = "Fisher, R. A. (1936)")
 ```
 
+###{.box-8 .offset-2 .bg-bluew}
+
+```{r iris_labels, fig.height = 3, echo = FALSE}
+```
+
 ## Histograms
 
-```{r, fig.height = 4, row = TRUE}
+```{r iris_histo, eval = FALSE, width = 8, class = "offset-2"}
 ggplot(iris) +
-  geom_histogram(aes(x = Petal.Length,
-                     fill = Species),
-                 alpha = 0.8,
-                 bins = 30)
-
-# default #' bin is 30
-# to avoid warnings
+  geom_histogram(aes(x = Petal.Length, fill = Species), alpha = 0.8, bins = 30)
 ```
+
+###{.box-6 .bg-bluew}
+
+```{r iris_histo, fig.height = 4, echo = FALSE}
+```
+
+### Tip {.box-6 .bg-yellow .icon-small}
+
+![](img/00/tip.png)
+
+The default bin value is 30 and will be printed out as a warning.\
+Specify your own to avoid the warning.
 
 ## Density plot
 
 The density is the count divided by the total number of occurences.
 
-```{r, row = TRUE}
+```{r density, eval = FALSE, width = 8, class = "offset-2"}
 ggplot(iris) +
-  geom_density(aes(x = Petal.Length,
-                   fill = Species),
-               alpha = 0.6)
+  geom_density(aes(x = Petal.Length, fill = Species), alpha = 0.6)
+```
+
+### {.box-8 .bg-bluew .offset-2}
+
+```{r density, fig.height = 3.5, eval = TRUE, echo = FALSE}
 ```
 
 ## Overlaying plots | Density plot and histogram
 
-```{r}
+```{r dens_hist, eval = FALSE}
 ggplot(iris) +
   geom_histogram(aes(x = Petal.Length, y = ..density..), fill = "darkgrey", binwidth = 0.1) +
   geom_density(aes(x = Petal.Length, fill = Species, colour = Species), alpha = 0.4) +
   theme_classic()
+```
+
+### {.box-8 .bg-bluew .offset-2}
+
+```{r dens_hist, eval = TRUE, echo = FALSE, fig.height = 3.5}
 ```
 
 ## Stat functions
@@ -670,35 +384,11 @@ are intermediate values calculated by `ggplot2` using stat functions
     + stat variable used in density plots: `..density..`.
     + `stat_identity` is used for scatter plots or `geom_col()` (no transformation).
 
-
-## Stat functions{.middle}
-  
-### 1D {.box-4 .bg-yellow .stretch}
-
-- `stat_count()`
-- `stat_bin()`
-- `stat_density()`
-
-### 2D {.box-4 .bg-yellow .stretch}
-
-- `stat_density_2d()`
-- `stat_bin_2d()`
-- `stat_ellipse()`
-
-### 3D {.box-4 .bg-yellow .stretch}
-
-- `stat_contour()`
-- `stat_summary_hex()`
-
-### {.col-12 .small}
-
-source: ggplot2 cheatsheet by Rstudio
-    
 ## Barcharts | categorical variables
 
 ### `geom_bar()`{} {.box-6 .bg-yellow}
 
-- `geom_bar()` counts the number of values in each categories.
+- `geom_bar()` counts the number of values in each category
 - `geom_bar()` uses `stat_count()` (creates a new `count` column).
 
 %end%
@@ -708,6 +398,7 @@ ggplot(iris) +
   geom_bar(aes(x = Species))
 # or: geom_bar(aes(x = Species, y = ..count..))
 ```
+
 ## Barcharts | categorical variables
 
 ### `geom_col()`{} {.box-6 .bg-yellow}
@@ -742,31 +433,35 @@ mtcars %>%
 mtcars %>%
   mutate(cyl = factor(cyl),
          gear = factor(gear)) %>%
-  complete(cyl, gear) %>%
   ggplot() +
   geom_bar(aes(x = cyl, 
                fill = gear),
            position = "dodge", na.rm = FALSE)
 ```
 
-### Complete {.box-8 .bg-grgold .offset-2}
-
-the combination `gear` 4 / `cyl` 8 is missing. Using `tidyr::complete()` to avoid bars with different widths.
-
 ## Stacked barchart for proportions | categorical variables
 
-```{r, row = TRUE}
+```{r iris_stack, eval = FALSE}
 mtcars %>%
   mutate(cyl = factor(cyl),
          gear = factor(gear)) %>%
-  complete(cyl, gear) %>%
   ggplot() +
   geom_bar(aes(x = cyl, 
                fill = gear),
            position = "fill")
 ```
 
+
+### {.box-8 .offset-2 .bluew}
+
+```{r iris_stack, eval = FALSE}
+```
+
+
+
 ## Stacked barchart for proportions | pie charts
+
+
 
 We can easily switch to polar coordinates:
 
@@ -774,7 +469,6 @@ We can easily switch to polar coordinates:
 mtcars %>%
   mutate(cyl = factor(cyl),
          gear = factor(gear)) %>%
-  complete(cyl, gear) %>%
   ggplot() +
   geom_bar(aes(x = cyl, 
                fill = gear),
@@ -784,64 +478,67 @@ mtcars %>%
 
 ## Boxplot | IQR, median {.vs1}
 
-```{r, row = TRUE}
+```{r boxplot, eval = FALSE, width = 8, class = "offset-2"}
 ggplot(mtcars) +
-  geom_boxplot(aes(x = factor(cyl),
-                   y = mpg))
+  geom_boxplot(aes(x = factor(cyl), y = mpg))
 ```
 
-## Boxplot | dodge by default {.vs1}
+### {.box-8 .bg-bluew .offset-2}
 
-```{r, row = TRUE}
+```{r boxplot, echo = FALSE, fig.height = 3.5}
+```
+
+## Boxplot | dodges by default {.vs1}
+
+```{r boxplot2, eval = FALSE, width = 8, class = "offset-2"}
 ggplot(mtcars) +
   geom_boxplot(aes(x = factor(cyl),
                    y = mpg,
                    fill = factor(am)))
 ```
 
-## Boxplots are unreliable | n = 2!
+### {.box-8 .bg-bluew .offset-2}
 
-
-```{r, row = TRUE, title = "ggbeeswarm", fig.height=3.5}
-ggplot(mtcars) +
-  ggbeeswarm::geom_quasirandom(aes(x = factor(cyl),
-                   y = mpg,
-                   colour = factor(am)))
+```{r boxplot2, echo = FALSE, fig.height = 3.5}
 ```
 
-```{r, row = TRUE, fig.height=3.5}
-ggplot(iris, aes(x = Species, y = Petal.Length)) +
-  geom_violin() +
-  ggbeeswarm::geom_quasirandom()
-```
+## Customising the colours {.nvs1}
 
+### manual definition {.box-8 .offset-2 .bg-blue}
 
-
-## Custom colors {.nvs1}
-
-### manual entry {.box-12 .bg-gray}
 - using `scale_fill_manual()` and `scale_color_manual()`
-- not handy as you **must** provide as much colours as groups
+- not handy as you **must** provide as much colours as they are groups
 
-```{r, fig.height = 3.5}
+%end%
+
+```{r colour_man, eval = FALSE}
 ggplot(mtcars) +
-  geom_boxplot(aes(x = factor(cyl), y = mpg,
-                   fill = factor(am), color = factor(am))) +
+  geom_boxplot(aes(x = factor(cyl), y = mpg, fill = factor(am), color = factor(am))) +
   scale_fill_manual(values = c("red", "lightblue")) +
   scale_color_manual(values = c("purple", "blue"))
 ```
 
-## Predefined color palettes
+### {.box-8 .bg-bluew .offset-2}
 
-```{r, echo = c(1, 3), fig.height = 5.5}
+```{r colour_man, fig.height = 2.5, echo = FALSE}
+```
+
+## Predefined colour palettes
+
+```{r brewer, echo = c(1, 3), eval = FALSE, width = 4}
 library(RColorBrewer)
 par(mar = c(0, 4, 0, 0))
 display.brewer.all()
 ```
 
-## Custom colors | using brewer
+### {.box-8 .bg-bluew}
 
-```{r, fig.height = 4}
+```{r brewer, fig.height = 5.5, echo = FALSE}
+```
+
+## Custom colours | using brewer
+
+```{r brewer2, eval = FALSE, width = 8, class = "offset-2"}
 ggplot(mtcars) +
   geom_boxplot(aes(x = factor(cyl), y = mpg,
                    fill = factor(am), colour = factor(am))) +
@@ -849,69 +546,68 @@ ggplot(mtcars) +
   scale_colour_brewer(palette = "Set1")
 ```
 
-## colour gradient | ggplot2 default is ugly {.build}
+### {.box-8 .bg-bluew .offset-2}
 
+```{r brewer2, fig.height = 4, echo = FALSE}
+```
 
-### default {.bg-blue .box-6}
+## Colour gradient
 
-```{r, row = TRUE}
-mtcars %>%
-  ggplot(aes(x = wt,
-             y = mpg,
-             colour = hp)) +
+### {.bg-yellow .box-8 .offset-2 .icon-small}
+
+![](img/00/tip.png)
+
+The default gradient generated by ggplot2 is not very good...
+
+%end%
+
+```{r grad_default, eval = FALSE, width = 8, class = "offset-2"}
+ggplot(mtcars, aes(x = wt, y = mpg, colour = hp)) +
   geom_point(size = 3)
 ```
 
-### viridis {.bg-grgold .box-6}
+### {.box-8 .bg-bluew .offset-2}
 
-```{r, row = TRUE}
-mtcars %>%
-  ggplot(aes(x = wt,
-             y = mpg,
-             colour = hp)) +
+```{r grad_default, echo = FALSE, fig.height = 3}
+```
+
+
+## Colour gradient
+
+### {.bg-yellow .box-8 .offset-2 .icon-small}
+
+![](img/00/tip.png)
+
+Use the `viridis` package instead...
+
+%end%
+
+```{r viridis, eval = FALSE}
+ggplot(mtcars, aes(x = wt, y = mpg, colour = hp)) +
   geom_point(size = 3) +
   viridis::scale_colour_viridis()
 ```
 
+### {.box-8 .bg-bluew .offset-2}
 
-### viridis {.box-12 .bg-pink2 .icon}
+```{r viridis, echo = FALSE, fig.height = 3}
+```
 
-![](img/07/viridis_palette.png)
+## Colour gradient
+
+
+### viridis {.box-8 .offset-2 .bg-bluew}
+
+![](img/05/viridis_palette.png)
 
 - 4 different scales
 - [viridis](https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html) is color blind friendly and nice in b&w
-- default in `ggplot2` dev version
+- Is now the default in the `ggplot2` dev version
 
-
-
-
-## aesthetic trick
-
-### using strings {.box-12 .bg-aquamarine2}
-
-- use a plain character inside `aes()`
-- goes into the legend.
-- only for few layers when lazy enough to create the variable in the dataframe.
-
-```{r, row = c(6, 6), fig.height=5}
-set.seed(123)
-dens <- tibble(x = c(rnorm(500), 
-                     rnorm(200, 3, 3)))
-ggplot(dens) +
-  geom_line(aes(x), stat = "density") +
-  geom_vline(aes(xintercept = mean(x),
-                 colour = "mean"),
-             size = 1.1) +
-  geom_vline(aes(xintercept = median(x),
-                 colour = "median"),
-             size = 1.1) -> p
-p
-```
-
+<!--
 ## the data argument | each layer can get its own 
 
-
-```{r, fig.height=4.5}
+```{r, fig.height=4.5, eval = FALSE}
 dens_mode <- tibble(mode = density(dens$x)$x[which.max(density(dens$x)$y)])
 p + geom_vline(data = dens_mode,
                aes(xintercept = mode, colour = "mode"), size = 1.1) +
@@ -919,9 +615,8 @@ p + geom_vline(data = dens_mode,
   scale_colour_hue(name = NULL) # could be: labs(colour = NULL)
 ```
 
-
+-->
 ## Facets | facet_wrap()
-
 
 ```{r, row = c(5, 7), fig.height = 2.8, title = "easiest way to create facet with a column name"}
 ggplot(mtcars) +
@@ -981,16 +676,6 @@ ggplot(mtcars) +
 ```
 
 
-## Facets | labeller {.vs1}
-
-Add the column names with `labeller`
-
-```{r, row = c(5, 7), fig.height = 4.5}
-ggplot(mtcars) +
-  geom_point(aes(x = wt, y = mpg)) +
-  facet_grid(am ~ cyl,
-             labeller = label_both)
-```
 
 
 ## Exporting | interactive or passive mode {.nvs1 .build}
@@ -1003,8 +688,7 @@ ggplot(mtcars) +
 
 ### {.col-6}
 
-![](img/07/export_plot.png)
-
+![](img/05/export_plot.png)
 
 ### Rmarkdown reports {.box-6 .bg-grgold}
 
@@ -1015,7 +699,7 @@ ggplot(mtcars) +
       
 ### {.col-6}
 
-![](img/07/chunk_options.png)
+![](img/05/chunk_options.png)
 
 
 ### ggsave {.box-6 .bg-grgold}
@@ -1024,15 +708,12 @@ ggplot(mtcars) +
 - guess the type of graphics by the extension
 
 ```{r eval = FALSE}
-ggsave("aes_trick.png", p,
+ggsave("my_name.png", p,
        width = 60, height = 30, units = "mm")
-ggsave("aes_trick.pdf", p,
+ggsave("my_name.pdf", p,
        width = 50, height = 50, units = "mm")
 ```
 
-### {.col-6 }
-
-![](img/07/aes_trick.png)
 
 ## Extensions
 
@@ -1041,7 +722,7 @@ ggsave("aes_trick.pdf", p,
 They are referenced on a [dedicated site](https://www.ggplot2-exts.org/)
 
 
-![](img/07/extensions.png)
+![](img/05/extensions.png)
 
 
 
@@ -1053,7 +734,6 @@ They are referenced on a [dedicated site](https://www.ggplot2-exts.org/)
 
 <span class = "small">source: Justin Matejka, George Fitzmaurice [Same Stats, Different Graphs...](https://www.autodeskresearch.com/publications/samestats)</span>
 
-![](img/05/anscombe_1_0.png)
 
 ```{r, echo = FALSE}
 knitr::knit_exit()
