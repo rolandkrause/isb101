@@ -2,19 +2,17 @@
 title: "Data transformation"
 subtitle: dplyr
 author: "A. Ginolhac, E. Koncina, R. Krause"
-date: "11 October 2017"
-output:
-  iosp::ioslides_plus:
-    box_colours:
-      bg-blue-white: ["white", "#005C99"]
+date: "10 January 2018"
+output: iosp::ioslides_plus
 ---
 
 <!-- Adapted from https://biostat2.uni.lu/lecture06_dplyr.html -->
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-options(max.print = 500)
-
+options(width = 100)
+#options(max.print = 500)
+options(tibble.print_max = 10)
 library(tidyverse)
 #library(biomaRt)
 ```
@@ -28,6 +26,14 @@ knitr::knit_hooks$set(tibble_rows = function(before, options, envir) {
                                      tibble.print_max = options$tibble_rows)
     } else {
         options(old_tib_prnt_opt)
+    }
+})
+
+knitr::knit_hooks$set(col_width = function(before, options, envir) {
+    if (before) {
+        old_col_width <<- options(width = options$col_width)
+    } else {
+        options(old_col_width)
     }
 })
 ```
@@ -106,7 +112,7 @@ If you need to install `dplyr` or `tidyverse` you can also use the Packages tab 
 ### The dataset {.box-10 .offset-1 .bg-blue}
 
 - Genes from chromosome 21 
-- Was downloaded from bioMart and saved as a `.csv` and provided on Moodle.
+- Was downloaded from bioMart, saved as a `.csv` and provided on Moodle.
 - To load the `csv` file (once downloaded):
 
 ```{r}
@@ -120,7 +126,7 @@ biocLite("biomaRt")
 ```
 
 
-## Retrieving sample data {.bg-green} 
+## Retrieving sa$mple data {.bg-green} 
 
 
 
@@ -190,32 +196,31 @@ Example adapted from [Romain François](https://twitter.com/ParisRaddict/status/
 
 ## Outline
 
-### {.box-6 .bg-green}
+### {.box-6 .offset-3 .bg-green}
 
-Using the `tibble` stored in `gene_by_exon`, provide an overview of some intersting functions provided by `dplyr`
+Here, we will use the  the `gene_by_exon` tibble to show some of the main functions (verbs) provided by `dplyr`
 
-### {.box-10 .bg-blue}
+### Use `dplyr()` to: {.box-8 .offset-2 .bg-blue}
 
 - Inspect your tibble (`glimpse()`)
 - Select specific *columns* (`select()`)
+- Filter out a subset of rows (`filter()`)
 - Change or add columns (`mutate()`)
 - Group observations by a grouping variable (`group_by()`)
 - Get a summary (in particular per group) (`summarise()`)
-
+- Join two distinct tibbles by a common column (`left_join()`, `right_join()` and `full_join()`)
 
 ## Inspect tibbles
 
 ### `glimpse()` {.box-10 .bg-blue .offset-1}
 
-- Shows some values and types per column. 
-- The *Environment* tab in RStudio tab does it too (expand it clicking on the button left to your object `gene_by_exon`)
+- Shows some values and the type of **each** column. 
+- The *Environment* tab in RStudio tab does it too (for example, click on the blue button left to your object `gene_by_exon` to expand the view)
 - Similar to the `base::str()` function
 
-```{r}
+```{r, col_width = 80}
 glimpse(gene_by_exon)
 ```
-
-
 
 ## Selecting *columns*
 
@@ -232,7 +237,7 @@ The `biomaRt` package also provides a `select()` function. If loaded, we need to
 
 ### `select()` {.box-10 .bg-blue .offset-1}
 
-- Select the columns you want
+- Select the columns you want: `select(tibble, your_column1, ...)`
 
 ```{r, title = "select example", class = "offset-1"}
 select(gene_by_exon, hgnc_symbol, start_position, end_position)
@@ -280,9 +285,9 @@ select(gene_by_exon, -strand, -starts_with("ensembl"), -ends_with("id"))
 
 ### `filter()` {.box-10 .offset-1 .bg-blue}
 
-- Let's take a look at the amyloid precursor protein gene **_APP_** 
+- Suppose you would like to take a look at the amyloid precursor protein gene **_APP_** 
 
-```{r}
+```{r, col_width = 80}
 filter(gene_by_exon, hgnc_symbol == "APP") 
 ```
 
@@ -290,37 +295,35 @@ filter(gene_by_exon, hgnc_symbol == "APP")
 
 ### `filter()` {.box-10 .offset-1 .bg-blue}
 
-- Let's take a look at the amyloid precursor protein gene **_APP_** 
+- Suppose you would like to take a look at the amyloid precursor protein gene **_APP_** 
 - **and** let's place the `hgnc_symbol` column first using `select()`
     + use select to put it at the first place
     + combine it with the `everything()` helper to reintegrate the remaining columns
-```{r}
+```{r, tibble_rows = 6, col_width = 80}
 filter(gene_by_exon, hgnc_symbol == "APP") %>% 
   select(hgnc_symbol, everything())
 ```
 
 ## Filtering out rows | multiple conditions, AND (`&`)
 
-### multiple conditions: AND {.box-8 .offset-2 .bg-blue}
+### multiple conditions: AND {.box-10 .offset-1 .bg-blue}
 
-**comma** separated conditions are combined with `&`
+- **comma** separated conditions are combined with `&`
+- For example, suppose you would like to filter out genes located in a particular range:
 
-%end%
-
-```{r, title = "genes in a particular range"}
+```{r, col_width = 80}
 filter(gene_by_exon, start_position > 1.05e7, end_position < 1.1e7)
 ```
 
 
-## `filter()` | multiple conditions, OR (`|`) {.vs1}
+## Filtering out rows | multiple conditions, OR (`|`) {.vs1}
 
-### multiple conditions: OR {.box-8 .offset-2 .bg-blue}
+### multiple conditions: OR {.box-10 .offset-1 .bg-blue}
 
-**pipe (`|`)** separated conditions are combined with OR
+- **pipe (`|`)** separated conditions are combined with OR
+- For example, suppose you would like to filter out genes that are close the telomers:
 
-%end%
-
-```{r, title = "genes close to the telomers"}
+```{r, col_width = 80}
 filter(gene_by_exon, start_position < 5.02e6 | end_position > 46665124 )
 ```
 
@@ -356,105 +359,124 @@ gene_by_exon %>%
 
 -->
 
-## Sort columns using  
+## Sort columns 
 
+### `arrange()` {.box-12 .bg-blue .compact-output}
 
+Can even perform a nested sorting, for example:
 
-### `arrange()` {.box-12 .bg-yellow .compact-output}
-
-Can even perform a nested sorting:
-
-1. remove empty strings in gene symbols
-2. sort by `hgnc_symbol`
-3. within each group of `hgnc_symbol`, sort by `ensembl_transcript`
-
-```{r, echo = 2}
-o <- options(width = 100)
-arrange(gene_by_exon, hgnc_symbol, ensembl_transcript_id)
-options(o)
-```
-
-## `arrange()` | sort columns
-
-### Reverse sort columns using `desc()` {.box-6 .offset-3 .bg-yellow}
-
-- Find the *last* gene on chromosome 21.
+1. sort by `hgnc_symbol`
+2. within each group of `hgnc_symbol`, sort by `ensembl_transcript`
 
 ```{r}
-gene_by_exon %>%
-  arrange(desc(end_position)) %>%
-  select(hgnc_symbol, ends_with("position"))
+arrange(gene_by_exon, hgnc_symbol, ensembl_transcript_id)
+```
+
+## Sort columns
+
+### Reverse sort columns using{.box-12 .bg-blue}
+
+- Use `arrange()` together with the helper function `desc()`
+- For example, to put the *last* gene on chromosome 21 on top of the tibble:
+
+```{r}
+arrange(gene_by_exon, desc(end_position)) 
 ```
 
 ## Verbs to inspect data
 
-### summary {.box-10 .offset-1 .bg-blue}
+### summary {.box-10 .offset-1 .bg-red}
 
-- `as_tibble()` converts to a tibble
-- `glimpse()` gives an overview of each column's content
-- `filter()` to subset
-    + AND/OR conditions
-- `arrange()` to sort
-    + combine with `desc()` to reverse the sorting
+- `glimpse()` to get an overview of each column's content
 - `select()` to pick and/or omit columns
     + helper functions
+- `filter()` to subset
+    + AND/OR conditions (`,`, `|`)
+- `arrange()` to sort
+    + combine with `desc()` to reverse the sorting
 
 # Transforming columns
 
-## `rename()` | renaming columns
+## Renaming columns 
 
-### Usage{.box-8 .offset-2 .bg-yellow}
+### `rename()` {.box-8 .offset-2 .bg-blue}
 
-- rename columns with `rename(new_name = old_name)`.
-    + to remember the order of appearance, consider `=` as "was".
-    + rename will replace column names
+Rename columns with:\
+`rename(tibble, new_name = old_name)`.
+
+_to remember the order of appearance, consider `=` as "was"._
 
 %end%
 
-
-```{r, title = "Example", tibble_rows = 6}
-gene_by_exon %>%
-  rename(stop = end_position, start = start_position)
+```{r, tibble_rows = 6}
+rename(gene_by_exon, stop = end_position, start = start_position)
 ```
 
-## `mutate()` | add columns {.build}
+## Adding columns
 
-```{r, row = c(7, 5), tibble_rows = 6, title = "gene length"}
+### `mutate()` {.box-10 .offset-1 .bg-blue}
+
+- To add columns, use `mutate()`
+- For example, to create a new column `length` containing the length of a gene (calculated using the columns `end_position` and `start_position`) do:
+
+```{r, col_width = 80}
 gene_by_exon %>%
   mutate(length = end_position - start_position) %>% 
-  select(hgnc_symbol, length)  
+  glimpse() 
 ```
 
-```{r, row = c(7, 5), tibble_rows = 6, title = "new variables can be used right away"}
+## Adding columns
+
+### New variables can be used right away in `mutate()` {.box-10 .offset-1 .bg-blue}
+
+For example:
+
+- Let's create a `length` column (calculated as before)
+- Add a second column `codons` in which we test whether the length is a multiple of 3
+
+```{r, col_width = 80}
 gene_by_exon %>%
   mutate(length = end_position - start_position,
          codons = length %% 3 == 0) %>% 
-  select(hgnc_symbol, length, codons)  
+  glimpse() 
 ```
 
 <!-- add filter(codons) then filter(!codon) --> 
 
-## `mutate()` | replace columns {.vs1}
 
-```{r, width = 8, class = "offset-2", title = "Gene coordinates in Mb"}
+
+
+## Replace columns
+
+### `mutate()` existing columns {.box-10 .offset-1 .bg-blue}
+
+- Use existing column names to change their content
+- For example, let's convert the gene coordinates (positions) in Mb:
+
+```{r}
 gene_by_exon %>%
   mutate(start_position = start_position / 1e6,
          end_position   = end_position / 1e6) %>% 
   select(hgnc_symbol, ends_with("position"))  
 ```
 
-## `distinct()` | unique rows
+## Filter out rows that are unique
 
-### Symbol and length {.box-12 .offset-0 .bg-green .build}
+### `distinct()` {.box-12 .offset-0 .bg-blue .build}
 
-```{r, row = c(8, 4), tibble_rows = 6}
+For example suppose we select only the gene's symbol and length of protein coding sequences:
+
+```{r, row = c(8, 4), tibble_rows = 4}
 gene_by_exon %>%
   filter(gene_biotype == "protein_coding") %>% 
   mutate(length = end_position - start_position) %>% 
   select(hgnc_symbol, length)
 ```
 
-```{r, row = c(8, 4), tibble_rows = 6}
+- We obtain mutiple identical rows.
+- Use `distinct()` to remove duplicated rows:
+
+```{r, row = c(8, 4), tibble_rows = 4}
 gene_by_exon %>%
   filter(gene_biotype == "protein_coding") %>% 
   mutate(length = end_position - start_position) %>% 
@@ -536,109 +558,51 @@ iris %>%
   mutate_all(funs(inches = . / 2.54))
 ```
 -->
+
+
 # Grouping and summarising
 
 ## `group_by()` and `summarise()`
 
 ### `group_by`{} {.box-6 .bg-blue}
 
-- Not a summarising transformation but frequently used in conjunction 
-- Grouping by more than one variable
-- Use `ungroup()` once the grouped computing is done
+- It is frequently used in conjunction with a summarising transformation
+- You can group by more than one variable
+- Use `ungroup()` to remove the grouping once your computing is done
 
-### `summarise`{} {.box-6 .bg-red}
+### `summarise`{} {.box-6 .bg-blue}
 
-- returns 1 row per group
-
-%end%
-
-```{r, title = "Find out the number of transcripts by genes using `n_distinct()`", class = "compact-output offset-1", tibble_rows = 6, width = 10}
-gene_by_exon %>%
-  group_by(ensembl_gene_id, hgnc_symbol) %>% 
-  summarise(n_trans = n_distinct(ensembl_transcript_id))
-```
-
-## Your turn {.build .bg-green}
-
-### Exercise {.box-6 .offset-3 .bg-blue-white .show}
-
-Identify the gene with highest number of transcripts
+Returns a single row for each group
 
 %end%
 
-```{r, title = "Using `arrange()`", class = "compact-output", row = c(7, 5)}
+### {.box-12 .bg-green}
+
+For example, suppose you would like to identify the smallest starting position in each group of `gene_biotype`:
+
+```{r, row = TRUE,tibble_rows = 6}
+gene_by_exon %>% 
+  group_by(gene_biotype) %>%
+  summarise(min_pos = min(start_position))
+```
+
+## Groupwise summary
+
+### Useful helper function: {.box-10 .bg-blue .offset-1}
+
+- `n()` : to get the number of elements within each group
+- `n_distinct()`: to get the number of **unique** elements within each group
+
+For example, we would like to find out the number of unique transcripts for each gene:
+
+```{r, class = "compact-output offset-1", tibble_rows = 6, width = 10}
 gene_by_exon %>%
-  group_by(ensembl_gene_id, hgnc_symbol) %>% 
-  summarise(n_trans = n_distinct(ensembl_transcript_id)) %>%
-  arrange(desc(n_trans))
+  group_by(ensembl_gene_id, hgnc_symbol) %>%
+  summarise(group_size = n(),
+            n_transcript = n_distinct(ensembl_transcript_id))
 ```
 
-## Your turn {.build .bg-green}
 
-### Exercise {.box-6 .offset-3 .bg-blue-white .show}
-
-Identify the gene with highest number of transcripts
-
-%end%
-
-```{r, title = "Filter the max", class = "compact-output", row = c(7, 5), tibble_rows = 6}
-gene_by_exon %>%
-  group_by(ensembl_gene_id, hgnc_symbol) %>% 
-  summarise(n_exon = n_distinct(ensembl_transcript_id)) %>%
-  filter(n_exon == max(n_exon))
-```
-### What happened? {.box-8 .offset-2 .bg-red .icon-small .build .x-large}
-
-```{block, class = "show"}
-![](img/00/warning.png)
-```
-
-Results were still grouped!
-
-## Your turn {.build .bg-green}
-
-### Exercise {.box-6 .bg-blue-white .show .stretch}
-
-Identify the gene with highest number of transcripts
-
-### What happened? {.box-6 .bg-red .icon-small .show}
-
-![](img/00/warning.png)
-
-Results were still grouped!\
-Use `ungroup()`
-
-%end%
-
-```{r, title = "Ungroup and filter the max", class = "compact-output offset-1", width = 10}
-gene_by_exon %>%
-  group_by(ensembl_gene_id, hgnc_symbol) %>% 
-  summarise(n_exon = n_distinct(ensembl_transcript_id)) %>%
-  ungroup() %>%
-  filter(n_exon == max(n_exon))
-```
-<!--
-## `count()` {.build}
-
-```{r, title = "Observations by group", width = 4, tibble_rows = 6, class = "show"}
-gene_by_exon %>%
-  count(hgnc_symbol)
-```
-
-### Replaces `base::table()` {.box-8 .bg-yellow .compact-output .stretch}
-
-```{r}
-head(as.data.frame(table(gene_by_exon$hgnc_symbol)))
-```
-
-%end%
-
-```{r, row = c(7, 5), tibble_rows = 6, title = "Or use `summarise()` and `n()`", class = "offset-1 compact-output", width = 10}
-gene_by_exon %>%
-  group_by(hgnc_symbol) %>%
-  summarise(n = n())
-```
--->
 # Joining data frames
 
 ## Merge 2 separate tables {.build}
@@ -855,7 +819,7 @@ mtcars %>%
 
 -->
 <!--
-
+i
 ## `top_n()`
 
 
@@ -881,24 +845,6 @@ gene_by_exon %>%
 ```
 -->
 
-## `lead()` and `lag()` | comparing rows above and below {.vs1}
-
-```{r, title = "Calculate intergenic distance", tibble_rows = 6}
-gene_by_exon %>%
-  select(ensembl_gene_id, start = start_position, end = end_position) %>% 
-  distinct() %>% 
-  arrange(start) %>% 
-  mutate(lag_end = lag(end),
-         intergenic_lg = start - lag(end)) 
-```
-
-
-### Tip{.box-6 .offset-3 .bg-yellow .icon-small}
-
-![](img/00/tip.png)
-
-You can rename columns within a `select()` call
-
 <!--
 
 ## `ntile()` | breaks data into n buckets {.vs1}
@@ -912,101 +858,72 @@ tibble(x = rnorm(101)) %>%
 
 <span class = "small">Nick Strayer' [gist](https://gist.github.com/nstrayer/6b57760c2d089c2d2c281e2393d405a7)</span> 
 -->
-## Summary | the verbs you will use 80% of your time {.build}
 
-### Most commonly used verbs {.box-6 .bg-blue .show}
 
+
+## Summary
+
+### Most commonly used verbs {.box-8 .offset-2 .bg-blue}
+
+ - `glimpse()` - inspect
+ - `rename()` - change column names (variable names)
  - `select()` - columns
  - `filter()` - rows meeting condition
  - `arrange()` - sort
- - `glimpse()` - inspect
- - `rename()` - change column name 
- - `mutate()` - copy manipulated values
+ - `mutate()` - manipulated values to modify or create new columns
  - `group_by()`, `ungroup()`
- - `summarise()` - group-wise, table-wise summaries
- - `lead()` and `lag()` - Values in other rows
+ - `summarise()` - group-wise summaries
  - `inner_join` and friends - Merging tables
 
 
-### dplyr schema {.box-6 .bg-blue-white}
+### {.box-8 .offset-2 .bg-yellow .icon-small}
+
+![](img/00/tip.png)
+
+Represent the verbs you will use 80% of your time.\
+Go to the website to see additional functions.
+
+## Graphical summary
+
+### {.box-6 .offset-3 .bg-bluew .small}
 
 ![](img/04/vaudor_dplyr_schema.png)
 
-<span class = "small">source: Lise Vaudor [blog](http://perso.ens-lyon.fr/lise.vaudor/dplyr/)</span> 
-<!--
-## Summary | The remaining 20%
+source: Lise Vaudor [blog](http://perso.ens-lyon.fr/lise.vaudor/dplyr/)
 
-### Occasionally handy {.box-6 .bg-blue .middle .offset-3}
 
-- Assembly: `bind_rows`, `bind_cols`
-- Set operations: `intersect`, `union`, `setdiff`
-- Windows function, `min_rank`, `dense_rank`, `cumsum`. See [vignette](https://cran.r-project.org/web/packages/dplyr/vignettes/window-functions.html)
+## Acknowledgments
 
-<!-- add a mini example to demonstrate bind_cols(.id = "id") --> 
-<!-- to be done better and adding the union.png, maybe not --> 
-<!--
-### Bind columns {.box-4 .bg-blue-white .stretch}
 
-![](img/04/bind_cols.png)
-
-### Bind rows {.box-4 .bg-blue-white .stretch}
-
-![](img/04/bind_rows.png)
-
-### Intersect {.box-4 .bg-blue-white .stretch}
-
-![](img/04/intersect.png)
-
-## Data base access, when your RAM is not enough
-
-### SQL mapping using `dbplyr` {.box-8 .offset-2 .bg-gray}
-
- - `dplyr` code can be translated into SQL to query databases online
- - different types of tabular data ([dplyr SQL backend](https://cran.r-project.org/web/packages/dplyr/vignettes/databases.html), databases.
-
-%end%
-
-```{r, title = "Example", message = FALSE, tibble_rows = 4, width = 10, class = "offset-1"}
-library(dbplyr)
-
-con <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
-copy_to(con, mtcars)
-
-mtcars2 <- tbl(con, "mtcars")
-mtcars2
-```
--->
-<!-- 
-#> # Source:   table<mtcars> [?? x 11]
-#> # Database: sqlite 3.19.3 [:memory:]
-#>      mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb
-#>    <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
-#>  1  21.0     6 160.0   110  3.90 2.620 16.46     0     1     4     4
-#>  2  21.0     6 160.0   110  3.90 2.875 17.02     0     1     4     4
-#>  3  22.8     4 108.0    93  3.85 2.320 18.61     1     1     4     1
-#>  4  21.4     6 258.0   110  3.08 3.215 19.44     1     0     3     1
-#>  5  18.7     8 360.0   175  3.15 3.440 17.02     0     0     3     2
-#> # ... with more rows
-
--->
-
-<span class = "small">README from [dbplyr on github](https://github.com/tidyverse/dbplyr)</span> 
-
-## Bigger data, go for `data.table`
-
-### {.box-10 .offset-1 .bg-blue .icon}
-
-![](img/00/logo_datatable.png)
-
-- See this interesting [thread](http://stackoverflow.com/questions/21435339/data-table-vs-dplyr-can-one-do-something-well-the-other-cant-or-does-poorly) comparing `data.table` and `dplyr` 
-- [`data.table`](https://cran.r-project.org/web/packages/data.table/index.html) is very efficient but the syntax is not so easy (see [introduction](https://github.com/Rdatatable/data.table/wiki)).
-- Main advantage: inline replacement (tidyverse is frequently copying)
-- As a summary:      _tl;dr   data.table for speed, dplyr for readability and convenience_ [Prashanth Sriram](https://www.quora.com/Which-is-better-to-use-for-data-manipulation-dplyr-package-or-data-table-library)
-- Hadley recommends that for data > 1-2 Gb, if speed is your main matter, go for `data.table` 
-- `dtplyr` is a `dplyr` interface to `data.table` but slower than native `data.table`
-
-### Acknowledgments {.box-8 .offset-2 .vs1 .bg-yellow}
+###  {.box-8 .offset-2 .vs1 .bg-yellow}
 
 - Lise Vaudor
 - Bruno Rodrigues
 - Hadley Wickham
+
+
+## Practice time! {.bg-green}
+
+### {.box-10 .offset-1 .bg-green}
+
+If you didn't during the `tidyr` lecture, download the `swc` file from [Moodle](https://moodle.uni.lu/) and, to install the course, run the following commands in R (select the file when asked).
+
+```{r, eval = FALSE}
+library(swirl)
+install_course()
+# Choose the file you just downloaded when asked
+```
+
+### {.box-10 .offset-1 .bg-bluew}
+
+Type in R console:
+
+```{r, eval = FALSE}
+library(swirl)
+swirl()
+```
+
+Choose the "isb101" course and complete the lessons:
+
+- **Manipulating Data with dplyr**.
+- **Grouping and Chaining with dplyr**.
