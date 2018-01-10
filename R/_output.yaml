@@ -1,11 +1,12 @@
 iosp::ioslides_plus:
   fig_height: 5
   fig_width: 6
-  keep_md: no
   logo: img/00/uni.png
   footer: "ISB101"
   smaller: yes
   widescreen: yes
-  self_contained: false
+  self_contained: true
   fig_retina: null
   css: css/tweaks.css
+  box_colours:
+    bg-bluew: ["white", "#005C99"]

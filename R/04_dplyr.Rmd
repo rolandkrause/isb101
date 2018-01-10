@@ -14,8 +14,9 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 options(max.print = 500)
+
 library(tidyverse)
-library(biomaRt)
+#library(biomaRt)
 ```
 
 
@@ -31,6 +32,16 @@ knitr::knit_hooks$set(tibble_rows = function(before, options, envir) {
 })
 ```
 
+```{css, echo = FALSE}
+.box-body > .chunk {
+  margin-top: 10px;
+}
+
+.box-body > .chunk > h3 {
+  font-size: 22px;
+  line-height: 30px;
+}
+```
 
 ## Data transformation | Introduction {.build}
 
@@ -50,8 +61,6 @@ Preparing data is the most time consuming part of of data analysis
      + Joining and intersecting tibbles
   * In a workflow typically follows reshaping operations from `tidyr`
   * Fast, by writing key pieces in C++ (using Rcpp)
-  * Standard interfaces to database ([`dbplyr`](https://github.com/tidyverse/dbplyr)) or `data.table` ([`dtplyr`](https://github.com/hadley/dtplyr)).
-
 
 ## Learning objectives {.vs3}
 
@@ -71,25 +80,53 @@ Preparing data is the most time consuming part of of data analysis
 
 <!-- http://perso.ens-lyon.fr/lise.vaudor/dplyr/ -->
 
+## Preparing your environment {.middle}
 
-## Installation {.vs2}
-
-```{r, eval = FALSE, title = "`dplyr` is in the `tidyverse` package", width = 6, class = "offset-3"}
+```{r, eval = FALSE, title = "`dplyr` installation (if required)", width = 6, class = "stretch"}
 install.packages("dplyr")
 # OR
 install.packages("tidyverse")
 ```
 
+```{r, eval = FALSE, title = "Loading the `dplyr` functions", width = 6, class = "stretch"}
+library("dplyr")
+# OR
+library("tidyverse")
+```
+
+### Tip {.box-8 .offset-2 .bg-yellow .icon-small}
+
+![](img/00/tip.png)
+
+If you need to install `dplyr` or `tidyverse` you can also use the Packages tab in RStudio...
+
+
+## Preparing your environment {.middle}
+
+### The dataset {.box-10 .offset-1 .bg-blue}
+
+- Genes from chromosome 21 
+- Was downloaded from bioMart and saved as a `.csv` and provided on Moodle.
+- To load the `csv` file (once downloaded):
+
+```{r}
+gene_by_exon <- read_csv("data/gene_by_exon.csv")
+```
+
+<!--
 ```{r, eval = FALSE, title = "`biomaRt` is part of bioconductor", width = 6, class = "offset-3"}
 source("https://bioconductor.org/biocLite.R")
 biocLite("biomaRt")
 ```
 
+
 ## Retrieving sample data {.bg-green} 
 
-```{r biomart_library, eval = TRUE, cache = TRUE, title = "Genes from chromosome 21 using biomaRt", width = 10, class = "offset-1"}
+
+
+```{r biomart_library, eval = F, cache = TRUE, title = "Genes from chromosome 21 using biomaRt", width = 10, class = "offset-1"}
 # Load the library
-library(biomaRt)
+#library(biomaRt)
 gene_mart <- useMart(biomart = "ENSEMBL_MART_ENSEMBL",
                      host = "www.ensembl.org")
 gene_set <- useDataset(gene_mart , dataset = "hsapiens_gene_ensembl")
@@ -110,25 +147,19 @@ gene_by_exon <- getBM(mart = gene_set,
 )
 ```
 
-## `as_tibble()` from the tibble package | ![](img/00/logo_tibble.png){} {.nvs3}
 
+
+
+
+## `as_tibble()` from the tibble package | ![](img/00/logo_tibble.png){} {.nvs3}
 
 ```{r, width = 10, class = "offset-1", title = "Useful when dealing with large tables"}
 gene_by_exon <- as_tibble(gene_by_exon)
 gene_by_exon
 ```
+-->
 
-
-## `glimpse()` | inspect data frames / tibbles {.vs2}  
-
-- Use `glimpse()` to show some values and types per column. 
-- The *Environment* tab in RStudio tab does it too
-
-```{r, title = "column' types and glance"}
-glimpse(gene_by_exon)
-```
-
-## Pipes in R | magrittr {.vs2 .build}
+## Reminder: Pipes in R | magrittr {.build .bg-blue}
 
 <!-- Didn't extend the font size formatting to chunks -->
 
@@ -152,8 +183,43 @@ subject %>% verb(complement)
 
 Example adapted from [Romain François](https://twitter.com/ParisRaddict/status/781267225420435461)
 
-## `select()` | selecting specific *columns*
+### Remark {.box-6 .offset-3 .bg-yellow .icon-small}
 
+`tidyverse` functions are consistently designed to work with `%>%`: **data** (_subject_) is the  **first** argument.
+
+
+## Outline
+
+### {.box-6 .bg-green}
+
+Using the `tibble` stored in `gene_by_exon`, provide an overview of some intersting functions provided by `dplyr`
+
+### {.box-10 .bg-blue}
+
+- Inspect your tibble (`glimpse()`)
+- Select specific *columns* (`select()`)
+- Change or add columns (`mutate()`)
+- Group observations by a grouping variable (`group_by()`)
+- Get a summary (in particular per group) (`summarise()`)
+
+
+## Inspect tibbles
+
+### `glimpse()` {.box-10 .bg-blue .offset-1}
+
+- Shows some values and types per column. 
+- The *Environment* tab in RStudio tab does it too (expand it clicking on the button left to your object `gene_by_exon`)
+- Similar to the `base::str()` function
+
+```{r}
+glimpse(gene_by_exon)
+```
+
+
+
+## Selecting *columns*
+
+<!--
 ### Warning {.box-8 .offset-2 .bg-red .icon-small}
 
 ![](img/00/warning.png)
@@ -162,76 +228,100 @@ The `biomaRt` package also provides a `select()` function. If loaded, we need to
 
 %end%
 
-```{r, title = "select example", class = "offset-1", width = 10}
-gene_by_exon %>%
-  dplyr::select(hgnc_symbol, chromosome_name, start_position, end_position)
+-->
+
+### `select()` {.box-10 .bg-blue .offset-1}
+
+- Select the columns you want
+
+```{r, title = "select example", class = "offset-1"}
+select(gene_by_exon, hgnc_symbol, start_position, end_position)
 ```
 
-## `select()` | helper functions {.vs2}
+## Selecting *columns* using `select()` 
 
-### `select()` has many helper functions {.box-10 .offset-1 .bg-blue}
+### helper functions {.box-6 .bg-blue}
 
-- `contains()`, `starts_with()`, `ends_with()` for literal strings
-- `matches()` for regular expressions
-- `one_of()` variables in a character vector
-- `everything()` all remaining variable
-- Can be combined
+To select columns with names that:
 
-## `select()` | negative selection
+- `contains()` (a character sequence)
+- `starts_with()` (a character sequence)
+- `ends_with()` (a character sequence)
+- `one_of()` names in a character **vector**
+<!-- - `matches()` (using regular expressions)-->
+- `everything()` all **remaining** columns
 
-### Dropping columns {.box-10 .offset-1 .bg-blue}
+### Tip {.box-5 .offset-1 .bg-yellow .icon-small}
 
-We can drop columns by "negating" their names. Since helpers return column indices, we can negate them too.
+![](img/00/tip.png)
+
+You can combine different helpers
+
+%end%
+
+```{r, width = 6, class = "offset-3 compact-output"}
+select(gene_by_exon, ends_with("position"))
+```
+
+## Selecting *columns* using `select()` 
+
+### Dropping columns (negative selection) {.box-10 .offset-1 .bg-blue}
+
+- We can drop columns by "negating" their names.
+- Works also with the helper functions
 
 %end%
 
 ```{r, title = "negative selection example", class = "offset-1", width = 10}
-gene_by_exon %>%
-  dplyr::select(-strand, -starts_with("ensembl"),
-                -ends_with("id"))
+select(gene_by_exon, -strand, -starts_with("ensembl"), -ends_with("id"))
 ```
 
-## `filter()` | select **rows**
+## Filtering out rows
+
+### `filter()` {.box-10 .offset-1 .bg-blue}
 
 - Let's take a look at the amyloid precursor protein gene **_APP_** 
-- Let's place the `hgnc_symbol` column first
-    + use select to put it at the first place
-    + combine it with the `everything()` helper to reintegrate the remaining columns
-
-### {.col-10 .offset-1 .compact-output}
 
 ```{r}
-gene_by_exon %>%
-  filter(hgnc_symbol == "APP") %>% 
-  dplyr::select(hgnc_symbol, everything())
+filter(gene_by_exon, hgnc_symbol == "APP") 
 ```
 
-## `filter()` | multiple conditions, AND (`&`)
+## Filtering out rows
 
-### multiple conditions: AND {.box-8 .offset-2 .bg-yellow}
+### `filter()` {.box-10 .offset-1 .bg-blue}
 
-Comma separated conditions are combined with `&`
+- Let's take a look at the amyloid precursor protein gene **_APP_** 
+- **and** let's place the `hgnc_symbol` column first using `select()`
+    + use select to put it at the first place
+    + combine it with the `everything()` helper to reintegrate the remaining columns
+```{r}
+filter(gene_by_exon, hgnc_symbol == "APP") %>% 
+  select(hgnc_symbol, everything())
+```
+
+## Filtering out rows | multiple conditions, AND (`&`)
+
+### multiple conditions: AND {.box-8 .offset-2 .bg-blue}
+
+**comma** separated conditions are combined with `&`
 
 %end%
 
 ```{r, title = "genes in a particular range"}
-gene_by_exon %>%
-  filter(start_position > 1.05e7, end_position < 1.1e7) %>% 
-  dplyr::select(hgnc_symbol, start_position, end_position)
+filter(gene_by_exon, start_position > 1.05e7, end_position < 1.1e7)
 ```
 
 
 ## `filter()` | multiple conditions, OR (`|`) {.vs1}
 
-### multiple conditions: OR {.box-8 .offset-2 .bg-yellow}
+### multiple conditions: OR {.box-8 .offset-2 .bg-blue}
 
-- pipe (`|`) separated conditions are combined with OR
+**pipe (`|`)** separated conditions are combined with OR
 
 %end%
 
 ```{r, title = "genes close to the telomers"}
-gene_by_exon %>%
-  filter(start_position < 5.02e6 | end_position > 46665124 )
+filter(gene_by_exon, start_position < 5.02e6 | end_position > 46665124 )
 ```
 
 <!-- 
@@ -240,10 +330,10 @@ add this example
 ```{r}
 gene_by_exon %>%
   filter(between(start_position, 1.05e7, 1.1e7)) %>% 
-  dplyr::select(hgnc_symbol, start_position, end_position)
+  select(hgnc_symbol, start_position, end_position)
 ```
 --> 
-
+<!-- 
 
 ## `filter()` | set operations {.vs1}
 
@@ -254,30 +344,34 @@ gene_by_exon %>%
 ```{r, row = TRUE, title = "is.element()"}
 gene_by_exon %>%
   filter(is.element(hgnc_symbol, c("AATBC", "AIRE"))) %>%
-  dplyr::select(hgnc_symbol:strand)
+  select(hgnc_symbol:strand)
 ```
 ### {.col-12 .compact-output}
 
 ```{r, row = TRUE, title = " infix `%in%`"}
 gene_by_exon %>%
   filter(hgnc_symbol %in% c("AATBC", "AIRE")) %>%
-    dplyr::select(hgnc_symbol:strand)
+    select(hgnc_symbol:strand)
 ```
 
+-->
 
-## `arrange()` 
+## Sort columns using  
 
-### perform a nested sorting of all genes: {.box-12 .bg-yellow .compact-output}
+
+
+### `arrange()` {.box-12 .bg-yellow .compact-output}
+
+Can even perform a nested sorting:
 
 1. remove empty strings in gene symbols
 2. sort by `hgnc_symbol`
 3. within each group of `hgnc_symbol`, sort by `ensembl_transcript`
 
-```{r}
-gene_by_exon %>%
-  filter(hgnc_symbol != "") %>%
-  arrange(hgnc_symbol, ensembl_transcript_id) %>% 
-  dplyr::select(hgnc_symbol, ensembl_transcript_id, everything())
+```{r, echo = 2}
+o <- options(width = 100)
+arrange(gene_by_exon, hgnc_symbol, ensembl_transcript_id)
+options(o)
 ```
 
 ## `arrange()` | sort columns
@@ -289,7 +383,7 @@ gene_by_exon %>%
 ```{r}
 gene_by_exon %>%
   arrange(desc(end_position)) %>%
-  dplyr::select(hgnc_symbol, ends_with("position"))
+  select(hgnc_symbol, ends_with("position"))
 ```
 
 ## Verbs to inspect data
@@ -328,14 +422,14 @@ gene_by_exon %>%
 ```{r, row = c(7, 5), tibble_rows = 6, title = "gene length"}
 gene_by_exon %>%
   mutate(length = end_position - start_position) %>% 
-  dplyr::select(hgnc_symbol, length)  
+  select(hgnc_symbol, length)  
 ```
 
 ```{r, row = c(7, 5), tibble_rows = 6, title = "new variables can be used right away"}
 gene_by_exon %>%
   mutate(length = end_position - start_position,
          codons = length %% 3 == 0) %>% 
-  dplyr::select(hgnc_symbol, length, codons)  
+  select(hgnc_symbol, length, codons)  
 ```
 
 <!-- add filter(codons) then filter(!codon) --> 
@@ -346,7 +440,7 @@ gene_by_exon %>%
 gene_by_exon %>%
   mutate(start_position = start_position / 1e6,
          end_position   = end_position / 1e6) %>% 
-  dplyr::select(hgnc_symbol, ends_with("position"))  
+  select(hgnc_symbol, ends_with("position"))  
 ```
 
 ## `distinct()` | unique rows
@@ -357,16 +451,18 @@ gene_by_exon %>%
 gene_by_exon %>%
   filter(gene_biotype == "protein_coding") %>% 
   mutate(length = end_position - start_position) %>% 
-  dplyr::select(hgnc_symbol, length)
+  select(hgnc_symbol, length)
 ```
 
 ```{r, row = c(8, 4), tibble_rows = 6}
 gene_by_exon %>%
   filter(gene_biotype == "protein_coding") %>% 
   mutate(length = end_position - start_position) %>% 
-  dplyr::select(hgnc_symbol, length) %>%
+  select(hgnc_symbol, length) %>%
   distinct()
 ```
+
+<!--
 
 ## `mutate_at(), mutate_all(), mutate_if()` | change multiple columns
 
@@ -395,7 +491,7 @@ The placeholder **`.`** is the dynamic variable when using `mutate_at()`
 gene_by_exon %>% 
   mutate_at(vars(contains("position")),
             funs(. + 1)) %>%
-  dplyr::select(-ends_with("id"))
+  select(-ends_with("id"))
 ```
 
 ## `mutate_if()` | change multiple columns {.build}
@@ -403,7 +499,7 @@ gene_by_exon %>%
 ```{r, row = c(5, 7), title = "Coordinate conversion", class = "compact-output smaller_code show"}
 gene_by_exon %>% 
   mutate_if(is.numeric, funs(. + 1)) %>%
-  dplyr::select(-ends_with("id"))
+  select(-ends_with("id"))
 ```
 
 ### Watchout {.bg-red .offset-3 .box-6}
@@ -421,7 +517,7 @@ Use **unnamed** actions in `funs()` to **replace** all columns
 ```{r, title = "Convert iris from cm to inches", class = "compact-output"}
 iris %>%
   as_tibble() %>%
-  dplyr::select(-Species) %>%
+  select(-Species) %>%
   mutate_all(funs(. / 2.54))
 ```
 
@@ -436,10 +532,10 @@ Use **named** actions in `funs()` to **add** new columns
 ```{r, title = "Convert iris from cm to inches", class = "compact-output"}
 iris %>%
   as_tibble() %>%
-  dplyr::select(-Species) %>%
+  select(-Species) %>%
   mutate_all(funs(inches = . / 2.54))
 ```
-
+-->
 # Grouping and summarising
 
 ## `group_by()` and `summarise()`
@@ -521,7 +617,7 @@ gene_by_exon %>%
   ungroup() %>%
   filter(n_exon == max(n_exon))
 ```
-
+<!--
 ## `count()` {.build}
 
 ```{r, title = "Observations by group", width = 4, tibble_rows = 6, class = "show"}
@@ -542,7 +638,7 @@ gene_by_exon %>%
   group_by(hgnc_symbol) %>%
   summarise(n = n())
 ```
-
+-->
 # Joining data frames
 
 ## Merge 2 separate tables {.build}
@@ -585,6 +681,7 @@ left_join(band_instruments,
 
 ![](img/04/join-outer.png)
 
+<!--
 
 ## Relational operations, **filtering** joins {.build .vs1}
 
@@ -606,7 +703,7 @@ left_join(band_instruments,
 %end%
 
 >Only the existence of a match is important; it doesn’t matter which observation is matched. This means that filtering joins never duplicate rows like mutating joins do | Hadley Wickam, R for Data Science {.bg-gray}
-
+-->
 <!--
 
 ## `semi_join()` does not alter original {.build}
@@ -639,9 +736,7 @@ inner_join(tx, ty)
 
 -->
 
-## Join by columns of different names {.build}
-
-## Merge 2 separate tables {.build}
+## Join tables by different column names {.build}
 
 ### UK bands: `band_members` {.bg-green .box-6 .show}
 
@@ -660,20 +755,20 @@ band_instruments2
 ### No common key is found {.bg-red .box-6 .compact-output .stretch}
 
 ```{r, error = TRUE}
-inner_join(band_instruments2,
-           band_members)
+inner_join(band_members,
+           band_instruments2)
 ```
 
 ### Use `by` to specify the common key {.bg-blue .box-6 .compact-output .stretch}
 
 ```{r}
-inner_join(band_instruments2,
-           band_members,
-           by = c(artist = "name"))
+inner_join(band_members,
+           band_instruments2,
+           by = c(name = "artist"))
 ```
 
 # Helpers
-
+<!--
 ## `pull()` | `select()` as a vector {.build}
 
 ```{r, row = c(5, 7), title = "extract column by index"}
@@ -689,10 +784,10 @@ pull(gene_by_exon, gene_biotype) %>%
   unique()
 ```
 
-
+-->
 ## `near()` | addresses the rounded float number issue {.vs2 .build}
 
-### Predict the outcome of: {.box-6 .offset-3 .bg-green .show}
+### Predict the outcome of: {.box-6 .bg-green .show}
 
 Is the following `TRUE` or `FALSE`?
 
@@ -708,11 +803,17 @@ sqrt(2) ^ 2 == 2
 
 %end%
 
-```{r, title = "`near()` tolerates the machine's precision", width = 6}
-near(sqrt(2) ^ 2, 2)
 
-.Machine$double.eps^0.5
+
+### Tolerates the machine's precision using `near()` {.box-8 .offset-2 .bg-blue}
+
+```{r}
+near(sqrt(2) ^ 2, 2)
 ```
+
+- Uses by default a tolerance `tol = .Machine$double.eps^0.5`
+- `.Machine$double.eps` is the smallest possible double greater than zero
+- Look at `?.Machine`
 
 <!--
 
@@ -727,7 +828,7 @@ gene_by_exon %>%
     gene_biotype == "protein_coding" ~ "small_size_coding",
     TRUE ~ "other"
   )) %>%
-  dplyr::select(ends_with("position"), category) %>%
+  select(ends_with("position"), category) %>%
   count(category)
 ```
 
@@ -739,14 +840,14 @@ gene_by_exon %>%
 mtcars %>%
   mutate(trans = recode(am, `0` = "manual",
                             "1" = "automatic")) %>%
-  dplyr::select(am, trans) %>%
+  select(am, trans) %>%
   slice(1:5)
 ```
 
 ```{r, title = "for 2 cases, `if_else`", row = c(7, 5)}
 mtcars %>%
   mutate(trans = if_else(am == 0, "manual", "automatic")) %>%
-  dplyr::select(am, trans) %>%
+  select(am, trans) %>%
   slice(1:5)
 ```
 
@@ -763,12 +864,12 @@ gene_by_exon %>%
   group_by(ensembl_gene_id) %>%
   arrange(start_position) %>%
   top_n(1) %>%
-  dplyr::select(ends_with("id"))
+  select(ends_with("id"))
 ```
 
 
 -->
-
+<!--
 ## `slice()`
 
 ```{r, title = "first transcript per gene"}
@@ -776,15 +877,15 @@ gene_by_exon %>%
   group_by(ensembl_gene_id) %>%
   arrange(start_position) %>%
   slice(1) %>%
-  dplyr::select(ends_with("id"))
+  select(ends_with("id"))
 ```
-
+-->
 
 ## `lead()` and `lag()` | comparing rows above and below {.vs1}
 
 ```{r, title = "Calculate intergenic distance", tibble_rows = 6}
 gene_by_exon %>%
-  dplyr::select(ensembl_gene_id, start = start_position, end = end_position) %>% 
+  select(ensembl_gene_id, start = start_position, end = end_position) %>% 
   distinct() %>% 
   arrange(start) %>% 
   mutate(lag_end = lag(end),
@@ -798,6 +899,8 @@ gene_by_exon %>%
 
 You can rename columns within a `select()` call
 
+<!--
+
 ## `ntile()` | breaks data into n buckets {.vs1}
 
 ```{r, title = "finding quartiles"}
@@ -808,7 +911,7 @@ tibble(x = rnorm(101)) %>%
 
 
 <span class = "small">Nick Strayer' [gist](https://gist.github.com/nstrayer/6b57760c2d089c2d2c281e2393d405a7)</span> 
-
+-->
 ## Summary | the verbs you will use 80% of your time {.build}
 
 ### Most commonly used verbs {.box-6 .bg-blue .show}
@@ -830,7 +933,7 @@ tibble(x = rnorm(101)) %>%
 ![](img/04/vaudor_dplyr_schema.png)
 
 <span class = "small">source: Lise Vaudor [blog](http://perso.ens-lyon.fr/lise.vaudor/dplyr/)</span> 
-
+<!--
 ## Summary | The remaining 20%
 
 ### Occasionally handy {.box-6 .bg-blue .middle .offset-3}
@@ -841,7 +944,7 @@ tibble(x = rnorm(101)) %>%
 
 <!-- add a mini example to demonstrate bind_cols(.id = "id") --> 
 <!-- to be done better and adding the union.png, maybe not --> 
-
+<!--
 ### Bind columns {.box-4 .bg-blue-white .stretch}
 
 ![](img/04/bind_cols.png)
@@ -872,7 +975,7 @@ copy_to(con, mtcars)
 mtcars2 <- tbl(con, "mtcars")
 mtcars2
 ```
-
+-->
 <!-- 
 #> # Source:   table<mtcars> [?? x 11]
 #> # Database: sqlite 3.19.3 [:memory:]

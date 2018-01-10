@@ -1,29 +1,24 @@
 ---
 title: "Data plotting"
 subtitle: ggplot2
-author: "A. Ginolhac, E. Koncina"
-date: "18 October 2017"
+author: "E. Koncina, A. Ginolhac, R. Krause"
+date: "11 January 2018"
 output:
   iosp::ioslides_plus:
-    box_colours:
-      bg-blue-white: ["white", "#005C99"]
+    keep_md: no
 ---
 
 ```{r setup, include = FALSE}
 library(tidyverse)
 ```
 
-# ggplot2
-
-![](img/05/ggplot2_overview.jpg)
+# ggplot2 {data-background="img/05/ggplot2_overview.jpg"}
 
 ## Learning objectives
 
 ### You will learn to: {.box-10 .offset-1 .bg-red .icon}
 
 ![](img/00/kt.png)
-
-By the end you should be able to:
 
 - Understand the basic grammar of ggplot2 (data, geoms, aesthetics, facets).
 - Make quick exploratory plots of your multidimensional data.
@@ -41,9 +36,11 @@ By the end you should be able to:
 - split a graph into layers: _e.g._ axis, curve(s), labels.
 - **3** main elements are required: **data**, **aesthetics** and at least one **geometry**
 
-### {.box-8 .bg-gray}
+### {.box-8 .bg-gray .small}
 
 ![](img/05/graphic_objects.png)
+
+[Wickham H. 2007. _J. Comp. Graph. Stat._ **19**:3–28](http://www.tandfonline.com/doi/abs/10.1198/jcgs.2009.07098)
 
 ### {.box-4 .bg-gray .stretch}
 
@@ -53,12 +50,10 @@ By the end you should be able to:
 
 %end%
 
-<span class = "small show">[Wickham H. 2007. _J. Comp. Graph. Stat._ **19**:3–28](http://www.tandfonline.com/doi/abs/10.1198/jcgs.2009.07098)</span>
-
 
 ## Simple example | Wickham 2007 {.build}
 
-### dataset {.box-4 .bg-green}
+### dataset {.box-4 .bg-green .offset-1}
 
 ------------------
 x     y    shape
@@ -73,20 +68,25 @@ x     y    shape
 
 ------------------
 
-### 3 layers combined {.box-6 .bg-green}
-
-- **aesthetics**: _x_ = x, _y_ = y, _shape_ = shape
-- **geometric** object: dot / point
+### {.box-4 .bg-bluew .offset-2}
 
 ![](img/05/simple_plot.png)
 
-### Faceting (_aka_ trellis or lattice plots) {.box-8 .offset-2 .bg-grgold}
+### aesthetics {.box-4 .offset-2 .bg-blue}
+
+_x_ = x, _y_ = y, _shape_ = shape
+
+### **geometric** object {.box-4 .bg-red}
+
+dot / point
+
+### {.box-6 .offset-3 .bg-yellow}
 
 What if we want to split _circles_ and _squares_?
 
-## Faceting  {.build}
+## Faceting | _aka_ trellis or lattice plots {.build}
 
-### Split by the **shape** {.box-8 .offset-2 .bg-blue-white}
+### Split by the **shape** {.box-8 .offset-2 .bg-bluew}
 
 ![](img/05/simple_facet.png)
 
@@ -97,12 +97,13 @@ What if we want to split _circles_ and _squares_?
 
 ![](img/00/tip.png)
 
-Now, **dot shapes** and **facets** provide the same information. Shapes could be freed for another meaningful variable
+Now, **dot shapes** and **facets** provide the same information.\
+We could use the shape for another meaningful variable...
 
 
 ## Layers
 
-### {.col-8}
+### {.box-8 .bg-bluew}
 
 ![](img/05/ggplot2_layers.png)
 
@@ -390,19 +391,22 @@ allSeasons %>%
 ```
 
 
-# Your turn {.bg-green}
+## Your turn {.bg-green}
 
+<!-- rstudio [cheatsheet](https://www.rstudio.org/links/data_visualization_cheat_sheet) -->
 
-## Iris dataset | rstudio [cheatsheet](https://www.rstudio.org/links/data_visualization_cheat_sheet)
-
-```{r, title = "save as `tibble` the long `data.frame`", class = "compact-output"}
+```{r, title = "save iris as a `tibble`", width = 8, class = "offset-2 compact-output"}
 iris <- as_tibble(iris)
 iris
 ```
 
-### smart printing of the iris dataset {.box-6 .bg-yellow .stretch}
+###  Tip {.box-6 .offset-3 .bg-yellow .icon-small}
 
-as a `tibble` to avoid printing all 150 rows
+![](img/00/tip.png)
+
+saving the data frame as a `tibble` enables the smart tibble printing and avoids to list all 150 rows
+
+<!--
 
 ### change default theme {.box-6 .bg-aquamarine2}
 
@@ -410,19 +414,18 @@ I set for this course the following to avoid the grey background and print bigge
 ```{r}
 ggplot2::theme_set(ggplot2::theme_bw(18))
 ```
+-->
 
+## Your turn {.bg-green}
 
-
-## Draw your first plot
-
-```{r, fig.height = 4, title = "Petal: Length versus Width"}
+```{r, fig.height = 4, title = "Draw your first plot", width = 10, class = "offset-1"}
 iris %>%
   ggplot() +
   geom_point(aes(x = Petal.Width, y = Petal.Length))
 ```
 
 
-## geometric objects | geoms define the type of plot which will be drawn {.build .nvs1}
+## Geometric objects | geoms define the type of plot which will be drawn {.build .nvs1}
 
 ### `geom_point()` {.box-4 .bg-cobalt}
 
@@ -472,56 +475,83 @@ ggplot(iris) +
   geom_density(aes(x = Sepal.Width, fill = Species, colour = Species), alpha = 0.6)
 ```
 
+```{css, echo = FALSE}
+.shift-up {
+  margin-top: -500px;
+}
+```
 
-- Have a look at the [cheatsheet](https://www.rstudio.org/links/data_visualization_cheat_sheet) or the ggplot2 online [documentation](http://ggplot2.tidyverse.org/) to list more possibilities.
 
-## Mapping aesthetics {.vs2}
+### Cheatsheet {.box-8 .offset-2 .bg-yellow .shift-up .icon-small}
 
-### definitions {.box-12 .bg-gray}
+![](img/00/tip.png)
+
+Have a look at the [cheatsheet](https://www.rstudio.org/links/data_visualization_cheat_sheet) or the ggplot2 online [documentation](http://ggplot2.tidyverse.org/) to list more possibilities.
+
+## Mapping aesthetics
+
+### definitions {.box-12 .bg-yellow}
 
 - **aesthetics** map the columns of a `data.frame`/`tibble` to the variable each ggplot2 `geom` is expecting.
-- example `geom_point()` requires **at least** the _**x**_ and _**y**_ coordinates for each point.
+- `geom_point()` for example requires **at least** the _**x**_ and _**y**_ coordinates to draw each point.
 
 %end%
 
-```{r, fig.height = 4, eval = FALSE}
+```{r, fig.height = 4, eval = FALSE, width = 5}
 ggplot(iris) +
-  geom_point(aes(x = Petal.Width, y = Petal.Length))
+  geom_point(aes(x = Petal.Width,
+                 y = Petal.Length))
 ```
 
-```{r, results = "asis", echo = FALSE, class = "compact-table"}
-iris %>%
-  head(5) %>%
+### {.box-7 .x-small .bg-bluew}
+
+```{r, echo = FALSE}
+head(iris, 5) %>% 
   knitr::kable()
 ```
 
-## Unmapped paramaters
+## Unmapped parameters{.column .build}
 
-Additional arguments such as the `colour`, the transparency (`alpha`) or the `size`.
+<!-- FIXME: image is not rendered as it should in firefox in column mode... Browser bug? -->
 
-### {.col-6}
+### {.box-6 .bg-blue .show}
 
-```{r, fig.height = 4}
+- `geom_point()` accepts additional arguments such as the `colour`, the transparency (`alpha`) or the `size` (see `?geom_point`).
+- It is possible to define them to a fixed value wihout mapping them to a variable.
+
+### important {.box-6 .bg-red .icon-small}
+
+![](img/00/warning.png)
+
+Note that parameters are defined **outside** the aesthetics `aes()` are applied to **all** data.
+
+%end%
+
+```{r, fig.height = 4, width = 6, class = "show"}
 ggplot(iris) +
   geom_point(aes(x = Petal.Width,
                  y = Petal.Length),
-             colour = "blue", alpha = 0.6, 
+             colour = "blue",
+             alpha = 0.6,
              size = 3)
 ```
 
-### important {.box-6 .bg-red}
+## Mapping aesthetics | colour{.column .build}
 
-see that paramaters define **outside** the aesthetics `aes()` are applied to **all** data
+### {.box-6 .bg-blue .show}
 
-## Mapping aesthetics | colour
+- `colour`, `alpha` or `size` can also be mapped to a column in the data frame.
+- We can for example attribute a different colour to each species.
 
-`colour`, `alpha` or `size` can also be mapped to a column in the data frame.
+### important {.box-6 .bg-red .icon-small}
 
-For example: We can attribute a different color to each species:
+![](img/00/warning.png)
 
-### {.col-6}
+Note that the `colour` argument is now **inside** `aes()` and **must** refer to a column in the dataframe.
 
-```{r, fig.height = 3.5}
+%end%
+
+```{r, fig.height = 4, width = 6, class = "show"}
 ggplot(iris) +
   geom_point(aes(x = Petal.Width,
                  y = Petal.Length,
@@ -529,13 +559,9 @@ ggplot(iris) +
              alpha = 0.6, size = 3)
 ```
 
-### important {.box-6 .bg-red}
+## Mapping aesthetics | shape
 
-Note that the `colour` argument now is **inside** `aes()` and **must** refer to a column in the dataframe.
-
-## Mapping aesthetics | shape {.vs1}
-
-```{r}
+```{r, title = "Mapping `shape` and `colour` to `Species`", fig.height = 4}
 ggplot(iris) +
   geom_point(aes(x = Petal.Width, y = Petal.Length, shape = Species, colour = Species),
              alpha = 0.6, size = 3)
@@ -543,10 +569,8 @@ ggplot(iris) +
 
 ## Mapping aesthetics | group {.build}
 
-### problem, toy data {.box-6 .bg-red .stretch}
-
-```{r}
-# sample data
+```{r, title = "Example of data causing \"trouble\"", width = 6}
+# Sample data
 set.seed(12)
 d <- data.frame(expand.grid(x = letters[1:4],
                         g = factor(1:2)),
@@ -572,8 +596,6 @@ ggplot(d, aes(x, y, colour = g, group = g)) +
   geom_point()
 ```
 
-
-
 ### force grouping {.box-6 .bg-blue .stretch}
 
 ```{r}
@@ -582,9 +604,7 @@ ggplot(d, aes(x, y, colour = g, group = 1)) +
   geom_point()
 ```
 
-
-
-## Labels {.vs2}
+## Labels
 
 It is easy to adjust axis labels and the title
 
@@ -615,8 +635,6 @@ ggplot(iris) +
 # to avoid warnings
 ```
 
-
-
 ## Density plot
 
 The density is the count divided by the total number of occurences.
@@ -637,77 +655,76 @@ ggplot(iris) +
   theme_classic()
 ```
 
+## Stat functions
 
-## Stat functions {.nvs1 .build}
+### transform data {.bg-bluew .box-12 .icon}
 
-### transform data {.bg-aquamarine2 .box-12 .icon}
-
-![](img/07/stats.png)
+![](img/05/stats.png)
 
 - variables surrounded by two pair of dots (`..variable..`) 
 are intermediate values calculated by `ggplot2` using stat functions
 - `geom` uses a `stat` function to transform the data:
-    + `geom_histogram()` uses `stat_bin()` divide and count values into _bins_
-    + `stat_bin()` computes for example: `..count..`, `..density..`, `..ncount..` and `..ndensity..` (see `?stat_bin()`)
-    + stat variable for density plot: `..density..`
-    + `stat_identity` is used for scatter plots or `geom_col()`, no transformation
-    
-### 1D {.box-4 .bg-yellow}
+    + `geom_histogram()` uses `stat_bin()`.
+    + `stat_bin()` divides the values into _bins_ and counts the number of observations.
+    + `stat_bin()` computes: `..count..`, `..density..`, `..ncount..` and `..ndensity..` (see `?stat_bin()`).
+    + stat variable used in density plots: `..density..`.
+    + `stat_identity` is used for scatter plots or `geom_col()` (no transformation).
+
+
+## Stat functions{.middle}
+  
+### 1D {.box-4 .bg-yellow .stretch}
 
 - `stat_count()`
 - `stat_bin()`
 - `stat_density()`
 
-### 2D {.box-4 .bg-yellow}
+### 2D {.box-4 .bg-yellow .stretch}
 
 - `stat_density_2d()`
 - `stat_bin_2d()`
 - `stat_ellipse()`
 
-### 3D {.box-4 .bg-yellow}
+### 3D {.box-4 .bg-yellow .stretch}
 
 - `stat_contour()`
 - `stat_summary_hex()`
 
-<span class = "small">source: ggplot2 cheatsheet by Rstudio</span> 
+### {.col-12 .small}
+
+source: ggplot2 cheatsheet by Rstudio
     
 ## Barcharts | categorical variables
 
-### definitions {.box-12 .bg-gray}
+### `geom_bar()`{} {.box-6 .bg-yellow}
 
 - `geom_bar()` counts the number of values in each categories.
-- `geom_bar()` uses `stat_count()` to compute (creating a new `count` column)
+- `geom_bar()` uses `stat_count()` (creates a new `count` column).
 
-```{r, fig.height = 3.5}
+%end%
+
+```{r, fig.height = 3.5, width = 6}
 ggplot(iris) +
   geom_bar(aes(x = Species))
 # or: geom_bar(aes(x = Species, y = ..count..))
 ```
+## Barcharts | categorical variables
 
+### `geom_col()`{} {.box-6 .bg-yellow}
 
-## Barcharts | categorical variables {.build}
+- `geom_col()` uses `stat_identity()` leaving the data as is.
+- The `y` aesthetic is **mandatory** for `geom_col()`
+- Using `geom_bar()` with `stat = "identity"` will let `geom_bar()` to behave like `geom_col()`
 
-### map a continous variable on `y` axis{.box-12 .bg-gray}
+%end%
 
--  we need to override the default call to `stat_count()`
-- `stat = "identity"` will force `geom_bar()` to use `stat_identity()` instead
-
-```{r, row = TRUE, fig.height = 3}
-ggplot(iris) +
-  geom_bar(aes(x = Species, y = Petal.Length),
-           stat = "identity")
-```
-
-### Update v2.1 {.box-6 .bg-grgold .stretch}
-
-since version 2.1, thanks to Bob Rudis, `geom_col()` does require a **y** variable
-
-### `geom_col` {.box-6 .bg-cobalt .stretch}
-
-```{r, eval = FALSE}
+```{r, width = 6}
 ggplot(iris) +
   geom_col(aes(x = Species,
                y = Petal.Length))
+#ggplot(iris) +
+#  geom_bar(aes(x = Species, y = Petal.Length),
+#           stat = "identity")
 ```
 
 ## Stacked barchart | categorical variables
@@ -729,7 +746,7 @@ mtcars %>%
   ggplot() +
   geom_bar(aes(x = cyl, 
                fill = gear),
-           position = "dodge")
+           position = "dodge", na.rm = FALSE)
 ```
 
 ### Complete {.box-8 .bg-grgold .offset-2}
@@ -1036,7 +1053,12 @@ They are referenced on a [dedicated site](https://www.ggplot2-exts.org/)
 
 <span class = "small">source: Justin Matejka, George Fitzmaurice [Same Stats, Different Graphs...](https://www.autodeskresearch.com/publications/samestats)</span>
 
-![](img/07/Anscombe_1_0.png)
+![](img/05/anscombe_1_0.png)
+
+```{r, echo = FALSE}
+knitr::knit_exit()
+```
+
 
 ## Art | by Marcus Volz
 
@@ -1101,6 +1123,8 @@ vembedr::embed_youtube("DQiKHlpy70Q") %>% htmltools::div(class = "vembedr")
 - labels & ticks
 - strip positions
 
+
+
 ## programming {.build}
 
 ### `Sepal.Length` is not exposed {.box-6 .bg-red}
@@ -1125,6 +1149,7 @@ iris_plot <- function(flower) {
 iris_plot(flower = "Sepal.Length")
 ```
 
+##
 
 ### `aes_string()` expects strings {.box-6 .bg-grgold}
 
