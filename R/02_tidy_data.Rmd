@@ -416,7 +416,7 @@ dummy_unite %>%
 
 Type in R console:
 
-```{r, eval = F}
+```{r, eval = F, echo = FALSE}
 library(swirl)
 install_course_github("rolandkrause", "isb101", branch = "swirl")
 swirl()
