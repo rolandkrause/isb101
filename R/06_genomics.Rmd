@@ -1,28 +1,52 @@
 ---
-title: "Genome-wide association studies"
-author: "Roland Krause"
-date: "1/6/2017"
-output:
-  ioslides_presentation:
-    logo: ../logo-lcsb.png
+title: "Basic Genomics in R"
+author: "Roland Krause, Patrick May"
+date: "2018-01-12"
+output: 
+  iosp::ioslides_plus:
+    widescreen: true
     smaller: yes
-    widescreen: yes
-  beamer_presentation: default
+  ioslides_presentation:
+    widescreen: true
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 knitr::opts_knit$set(root.dir='/Users/roland.krause/Dropbox/Teaching/MISB/')
+library(tidyverse)
 ```
 
+## Introduction {.build}
 
-## Candidate gene and genome-wide association
+### Learning objective {.box-10 .offset-1 .bg-green}
 
- - Family studies (see NGS)
+
+
+- First glance at manipulating genomic data in R
+- Learn about common file formats
+- Exercise your R skills
+
+
+### Genomics and R {.box-10 .offset-1 .bg-yellow}
+
+- Native R data structure such as `tibble` or `data.frames` are not well suited to manipulating or analyzing data in large projects, e.g. where complete of many patients are to be analysed as they load all data into memory 
+- Specialized programs are typically employed
+  + `plink` for GWAS analysis PLINK - install from http://pngu.mgh.harvard.edu/~purcell/plink/plink2.shtml
+  + Specialized packages for R
+  + The shell (to be introduced later)
+
+
+## Candidate gene and genome-wide association studies
+
+### Typical set ups  {.box-10 .offset-1 .bg-green}
+
+ - Family studies
+  + Trio studies of father, mother and child (see NGS work)
+  + Larger pedigrees
 
  - Case/control studies
-    - Candidate gene studies (CG) - dense arrays for particular regions
-    - Genome-wide studies (GWAS) - less dense, genome-wide coverage
+    + Candidate gene studies (CG) - dense arrays for particular regions
+    + Genome-wide studies (GWAS) - less dense, genome-wide coverage
  
  
 
@@ -52,10 +76,7 @@ download.file("http://www.well.ox.ac.uk/ggeu/NPanalysis/cg-data.tgz", dest_file 
 
 ## Common tools for GWAS
 
-### Software  
- * R - General data manipulation
- * PLINK - Download and install from http://pngu.mgh.harvard.edu/~purcell/plink/plink2.shtml
- 
+
 ### Standard protocols
  * Clarke et al. Basic statistical analysis in genetic case-control
 studies. *Nature protocols*, 2011
@@ -67,6 +88,7 @@ studies. *Nature protocols*, 2011
 
 ## PED | "Pedigree" files
 
+### Columns {.bg-blue-white .offset-1 .box-10}
  - Family ID, Individual ID
  - Paternal ID,  Maternal ID
  - Sex (1=male; 2=female; other=unknown)
@@ -83,20 +105,23 @@ kable(head(plink_ped), col.names= plink_colnames)
 
 ## MAP | Marker file
 
+### {.bg-blue-white .offset-1 .box-10}
    - Chromosome (1-22, X, Y or 0 if unplaced)
    - SNP identifier
    - Genetic distance (morgans)
    - Base-pair position (bp units)
 
 ```{r MAP, echo=FALSE}
-plink_map <- read.table(file.path(data_dir, "cg.map"), header=F)
-kable(head(plink_map), col.names = c("CHR", "SNP", "Dist", "bp") )
+plink_map <- read_tsv(file.path(data_dir, "cg.map"), col_names = c("CHR", "SNP", "Dist", "bp"))
+kable(head(plink_map)  )
 ```
 
 
 
 
 ## Standard descriptive analysis
+
+### Association {.bg-blue-white .box-8 .offset-2}
 ```{bash, eval=F}
 #DATA_DIR="~/Dropbox/Teaching/MISB/"
 #cd $DATA_DIR
@@ -107,8 +132,9 @@ plink2 --file cg --assoc --out data
 
 
 ## Association file
+
 Open the output file ‘data.assoc’. 
-One row per SNP containing 
+### One row per SNP containing {.bg-white-blue .offset-1 .box-10}
   - the chromosome (CHR), 
   - the SNP identifier (SNP), 
   - the base-pair location (BP),
@@ -120,10 +146,10 @@ One row per SNP containing
   - estimated OR for association between the minor allele and disease (OR).
   - $\chi^2$-test statistic (CHISQ)
 
-```{r data_assoc}
-data_assoc <- read.table(file.path(data_dir, "data.assoc"), header=TRUE)
+```{r data_assoc, echo=FALSE}
+data_assoc <- read_table(file.path(data_dir, "data.assoc"))
 
-knitr::kable(head(data_assoc[order(data_assoc$P),]))
+knitr::kable(head(data_assoc %>% arrange(P)))
 ```
 ## Genotype count
 
@@ -233,7 +259,7 @@ plink2 --bfile gwa --logistic --covar gwa.covar --out data
 ## Including covariates
 
 ```{r covariates}
-covar <- read.table(file.path(data_dir, "gwa.covar"), header=T)
+covar <- read_table(file.path(data_dir, "gwa.covar"))
 dim(covar)
 kable(head(covar))
 ```
@@ -257,15 +283,33 @@ data_model <-read.table(file.path(data_dir,
                                   "data.model"), 
                         header = TRUE)
 
+data_model <- read_table(file.path(data_dir, 
+                                  "data.model"))
+
+
 model <- "TREND"
 
-obs <- data_model[data_model$TEST == model,]$CHISQ; 
+obs <- data_model %>% 
+  filter(TEST == "TREND") %>% 
+  .$CHISQ
+
+obs_df <- data_model %>% 
+  filter(TEST == "TREND") %>% 
+  select(CHISQ)
+
 
 qqPlot(obs, distribution = "chisq", 
        df = 1, 
        xlab = "Expected chi-squared values", 
        ylab = "Observed test statistic", 
        grid = FALSE) 
+
+ggplot(obs_df, aes(sample=CHISQ)) + stat_qq()
+  
+geom_qq(mapping = NULL,  geom = "point",
+  position = "identity", distribution = stats::qchisq,
+  dparams = list(), na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)
+
 ```
 
 ## Quantile-quantile plot
@@ -330,6 +374,11 @@ plink2 --bfile gwa --covar gwa.covar --adjust --out data-adjust
 kable(head(read.table(file.path(data_dir, "data-adjus.assoc.logistic.adjusted"), header =T)))
 
 ```
+
+
+## Variant Call Formats
+
+## 
 
 
 # Thank you for your attention!
