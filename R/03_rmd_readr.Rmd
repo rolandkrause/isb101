@@ -1,6 +1,6 @@
 ---
 title: "Rmarkdown and data import"
-author: "E. Koncina, A. Ginolhac"
+author: "E. Koncina, A. Ginolhac, R. Krause"
 date: "09 January 2018"
 output: iosp::ioslides_plus
 ---
