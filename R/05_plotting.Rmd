@@ -12,6 +12,17 @@ output:
 library(tidyverse)
 ```
 
+```{css, echo = FALSE}
+.box-body > .chunk {
+  margin-top: 10px;
+}
+
+.box-body > .chunk > h3 {
+  font-size: 22px;
+  line-height: 30px;
+}
+```
+
 # ggplot2 {data-background="img/05/ggplot2_overview.jpg"}
 
 ## Learning objectives
@@ -153,7 +164,6 @@ ggplot(mtcars, aes(am, mpg,
   geom_col(position = "dodge")
 ```
 
-
 ### `geom_boxplot()` {.box-4 .bg-cobalt}
 
 ```{r, echo = FALSE}
@@ -188,8 +198,6 @@ ggplot(iris) +
 
 Have a look at the [cheatsheet](https://www.rstudio.org/links/data_visualization_cheat_sheet) or the ggplot2 online [documentation](http://ggplot2.tidyverse.org/) to list more possibilities.
 
-
-
 ## The dataset {.bg-green}
 
 ```{r, title = "Convert iris as a `tibble`", width = 8, class = "offset-2 compact-output"}
@@ -206,15 +214,57 @@ saving the data frame as a `tibble` enables the smart tibble printing and avoids
 ## Your first plot {.bg-green}
 
 ```{r first_plot, title = "Draw your first plot", width = 10, class = "offset-1", eval = FALSE}
-iris %>%
-  ggplot() +
-  geom_point(aes(x = Petal.Width, y = Petal.Length))
+ggplot(data = iris) +
+  geom_point(mapping = aes(x = Petal.Width, y = Petal.Length))
 ```
 
 ###{.box-8 .offset-2 .bg-bluew}
 
 ```{r first_plot, echo = FALSE, fig.height = 4}
 ```
+
+## Layers and pipes {.build}
+
+### Warning {.box-6 .bg-red .icon-small}
+
+![](img/00/warning.png)
+
+`ggplot2` introduces a break in the workflow from ` %>% ` to `+`
+
+### `ggplot1`
+
+`ggplot1` was released in **2005** until **2008** by [Hadley Wickham](https://github.com/hadley/ggplot1).
+
+> If the pipe ( %>% in 2014) had been invented before, `ggplot2` would have never existed | Hadley Wickham
+
+### {.box-6 .bg-bluew}
+
+```{r, eval = FALSE, title = "`ggplot1`: original syntax"}
+# devtools::install_github("hadley/ggplot1")
+library(ggplot1)
+p <- ggplot(mtcars, list(x = mpg, y = wt))
+# need temp p object to avoid too many ()'s
+scbrewer(ggpoint(p, list(colour = gear)))
+```
+
+```{r, eval = FALSE, title = "`ggplot1` with the pipe"}
+library(ggplot1)
+mtcars %>% 
+  ggplot(list(x = mpg, y = wt)) %>% 
+  ggpoint(list(colour = gear)) %>% 
+  scbrewer()
+```
+
+```{r, eval = FALSE, title = "`ggplot2`"}
+library(ggplot2)
+mtcars %>% 
+  ggplot(aes(x = mpg, y = wt)) + 
+  geom_point(aes(colour = as.factor(gear))) +
+  scale_color_brewer("gear", type = "qual")
+```
+
+
+
 
 ## Mapping aesthetics
 
@@ -275,7 +325,8 @@ Note that parameters defined **outside** the aesthetics `aes()` are applied to *
 
 ```{r iris_map_colour, fig.height = 3.5, width = 8, class = "offset-2", eval = FALSE}
 ggplot(iris) +
-  geom_point(aes(x = Petal.Width, y = Petal.Length, colour = Species), alpha = 0.6, size = 3)
+  geom_point(aes(x = Petal.Width, y = Petal.Length,
+                 colour = Species), alpha = 0.6, size = 3)
 ```
 
 ###{.box-6 .bg-bluew}
@@ -326,7 +377,8 @@ ggplot(iris) +
 
 ```{r iris_histo, eval = FALSE, width = 8, class = "offset-2"}
 ggplot(iris) +
-  geom_histogram(aes(x = Petal.Length, fill = Species), alpha = 0.8, bins = 30)
+  geom_histogram(aes(x = Petal.Length, fill = Species),
+                 alpha = 0.8, bins = 30)
 ```
 
 ###{.box-6 .bg-bluew}
@@ -347,7 +399,8 @@ The density is the count divided by the total number of occurences.
 
 ```{r density, eval = FALSE, width = 8, class = "offset-2"}
 ggplot(iris) +
-  geom_density(aes(x = Petal.Length, fill = Species), alpha = 0.6)
+  geom_density(aes(x = Petal.Length, fill = Species),
+               alpha = 0.6)
 ```
 
 ### {.box-8 .bg-bluew .offset-2}
@@ -386,22 +439,27 @@ are intermediate values calculated by `ggplot2` using stat functions
 
 ## Barcharts | categorical variables
 
-### `geom_bar()`{} {.box-6 .bg-yellow}
+### `geom_bar()`{} {.box-6 .offset-3 .bg-yellow}
 
 - `geom_bar()` counts the number of values in each category
 - `geom_bar()` uses `stat_count()` (creates a new `count` column).
 
 %end%
 
-```{r, fig.height = 3.5, width = 6}
+```{r geom_bar, eval = FALSE, width = 6}
 ggplot(iris) +
   geom_bar(aes(x = Species))
 # or: geom_bar(aes(x = Species, y = ..count..))
 ```
 
+### {.box-6 .bg-bluew}
+
+```{r geom_bar, fig.height = 3.5, width = 6, echo = FALSE}
+```
+
 ## Barcharts | categorical variables
 
-### `geom_col()`{} {.box-6 .bg-yellow}
+### `geom_col()`{} {.box-8 .bg-yellow .offset-2}
 
 - `geom_col()` uses `stat_identity()` leaving the data as is.
 - The `y` aesthetic is **mandatory** for `geom_col()`
@@ -409,7 +467,7 @@ ggplot(iris) +
 
 %end%
 
-```{r, width = 6}
+```{r geom_col, eval = FALSE, width = 6}
 ggplot(iris) +
   geom_col(aes(x = Species,
                y = Petal.Length))
@@ -418,62 +476,92 @@ ggplot(iris) +
 #           stat = "identity")
 ```
 
+### {.box-6 .bg-bluew}
+
+```{r geom_col, width = 6, echo = FALSE, fig.height = 3.5}
+```
+
 ## Stacked barchart | categorical variables
 
-```{r, title = "force factor to convert continuous -> discrete", fig.height=3.5}
+### {.box-5 .bg-yellow .icon-small}
+
+![](img/00/tip.png)
+
+Let's use the `mtcars` dataset now.
+
+%end%
+
+```{r con_dis, title = "force factor to convert continuous -> discrete", fig.height=3.5, eval = FALSE, width = 7}
 mtcars %>%
   ggplot() +
   geom_bar(aes(x = factor(cyl),
                fill = factor(gear)))
 ```
 
-## Dodged barchart (side by side) | categorical variables {.build}
+### {.box-8 .offset-2 .bg-bluew}
 
-```{r, row = TRUE}
+```{r con_dis, fig.height = 3.5, echo = FALSE}
+```
+
+## Dodged barchart (side by side) | categorical variables
+
+### {.box-6 .bg-blue .offset-3}
+
+Do not stack the barcharts but adjust the horizontal position.
+
+%end%
+
+```{r dodge, eval = FALSE}
 mtcars %>%
-  mutate(cyl = factor(cyl),
-         gear = factor(gear)) %>%
+  mutate(cyl = factor(cyl), gear = factor(gear)) %>%
   ggplot() +
-  geom_bar(aes(x = cyl, 
-               fill = gear),
-           position = "dodge", na.rm = FALSE)
+  geom_bar(aes(x = cyl, fill = gear), position = "dodge")
+```
+
+### {.box-8 .offset-2 .bg-bluew}
+
+```{r dodge, echo = FALSE, fig.height = 3}
 ```
 
 ## Stacked barchart for proportions | categorical variables
 
+### {.box-8 .bg-blue .offset-2}
+
+Let's stack the barcharts but show proportions.
+
+%end%
+
 ```{r iris_stack, eval = FALSE}
 mtcars %>%
-  mutate(cyl = factor(cyl),
-         gear = factor(gear)) %>%
+  mutate(cyl = factor(cyl), gear = factor(gear)) %>%
   ggplot() +
-  geom_bar(aes(x = cyl, 
-               fill = gear),
-           position = "fill")
+  geom_bar(aes(x = cyl, fill = gear), position = "fill")
 ```
 
+### {.box-8 .offset-2 .bg-bluew}
 
-### {.box-8 .offset-2 .bluew}
-
-```{r iris_stack, eval = FALSE}
+```{r iris_stack, echo = FALSE, fig.height = 3}
 ```
-
-
 
 ## Stacked barchart for proportions | pie charts
 
-
+### {.box-8 .bg-blue .offset-2}
 
 We can easily switch to polar coordinates:
 
-```{r, row = TRUE}
+%end%
+
+```{r polar, eval = FALSE}
 mtcars %>%
-  mutate(cyl = factor(cyl),
-         gear = factor(gear)) %>%
+  mutate(cyl = factor(cyl), gear = factor(gear)) %>%
   ggplot() +
-  geom_bar(aes(x = cyl, 
-               fill = gear),
-           position = "fill") +
+  geom_bar(aes(x = cyl, fill = gear), position = "fill") +
   coord_polar()
+```
+
+### {.box-8 .offset-2 .bg-bluew}
+
+```{r polar, echo = FALSE, fig.height = 3}
 ```
 
 ## Boxplot | IQR, median {.vs1}
@@ -604,43 +692,57 @@ ggplot(mtcars, aes(x = wt, y = mpg, colour = hp)) +
 - [viridis](https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html) is color blind friendly and nice in b&w
 - Is now the default in the `ggplot2` dev version
 
-<!--
-## the data argument | each layer can get its own 
-
-```{r, fig.height=4.5, eval = FALSE}
-dens_mode <- tibble(mode = density(dens$x)$x[which.max(density(dens$x)$y)])
-p + geom_vline(data = dens_mode,
-               aes(xintercept = mode, colour = "mode"), size = 1.1) +
-  theme(legend.position = "top") +
-  scale_colour_hue(name = NULL) # could be: labs(colour = NULL)
-```
-
--->
 ## Facets | facet_wrap()
 
-```{r, row = c(5, 7), fig.height = 2.8, title = "easiest way to create facet with a column name"}
+### {.box-8 .offset-2 .bg-blue}
+
+- To create facets, the easiest way is to use `facet_wrap()`
+- Requires a one sided formula (in R formulas are composed using `~`: `lhs ~ rhs`)
+
+%end%
+
+```{r facet_1, eval = FALSE}
 ggplot(mtcars) +
   geom_point(aes(x = wt, y = mpg)) +
   facet_wrap(~ cyl)
 ```
 
-```{r, row = c(5, 7), fig.height = 2.5}
+### {.box-8 .bg-bluew .offset-2}
+
+```{r facet_1, fig.height = 2.8, echo = FALSE}
+```
+
+## Facets | facet_wrap()
+
+### {.box-8 .offset-2 .bg-yellow .icon-small}
+
+![](img/00/tip.png)
+
+You can specify the number of columns
+
+%end%
+
+
+```{r facet_2, eval = FALSE}
 ggplot(mtcars) +
   geom_point(aes(x = wt, y = mpg)) +
   facet_wrap(~ cyl, ncol = 2)
 ```
 
+### {.box-8 .bg-bluew .offset-2}
+
+```{r facet_2, fig.height = 2.8, echo = FALSE}
+```
 
 ## Facets | free scales
 
-
-```{r, row = c(5, 7), fig.height = 2.8}
+```{r, row = c(5, 7), fig.height = 2.5}
 ggplot(mtcars) +
   geom_point(aes(x = wt, y = mpg)) +
   facet_wrap(~ cyl, scales = "free_x")
 ```
 
-```{r, row = c(5, 7), fig.height = 2.8}
+```{r, row = c(5, 7), fig.height = 2.5}
 ggplot(mtcars) +
   geom_point(aes(x = wt, y = mpg)) +
   facet_wrap(~ cyl, scales = "free")
@@ -649,7 +751,7 @@ ggplot(mtcars) +
 
 ## Facets | `facet_grid()` to lay out panels in a grid
 
-### Specify a **formula** {.box-6 .bg-grgold}
+### Specify a **formula** {.box-6 .bg-blue}
 
 the rows on the left and columns on the right separated by a tilde `~` (_i.e_ **by**)
 
@@ -663,7 +765,7 @@ ggplot(mtcars) +
 
 ## Facets | `facet_grid()` cont.
 
-### Specify one row/column {.box-6 .bg-grgold} 
+### Specify one row/column {.box-6 .bg-blue} 
 
 A dot (`.`) means no faceting for this axis. Mimic `facet_wrap()`
 
@@ -680,7 +782,7 @@ ggplot(mtcars) +
 
 ## Exporting | interactive or passive mode {.nvs1 .build}
 
-### right panel {.box-6 .bg-grgold}
+### right panel {.box-6 .bg-blue}
 
 - Using the Export button in the _Plots_ panel
 
@@ -690,7 +792,7 @@ ggplot(mtcars) +
 
 ![](img/05/export_plot.png)
 
-### Rmarkdown reports {.box-6 .bg-grgold}
+### Rmarkdown reports {.box-6 .bg-blue}
 
 - If needed, adjust the chunk options: 
   + size: `fig.height`, `fig.width`
@@ -702,20 +804,20 @@ ggplot(mtcars) +
 ![](img/05/chunk_options.png)
 
 
-### ggsave {.box-6 .bg-grgold}
+### ggsave {.box-10 .offset-1 .bg-blue}
 
-- save the `ggplot` object, 2nd argument
-- guess the type of graphics by the extension
+- save the `ggplot` **object**, 2nd argument
+- guesses the type of graphics by the extension
 
 ```{r eval = FALSE}
-ggsave("my_name.png", p,
-       width = 60, height = 30, units = "mm")
-ggsave("my_name.pdf", p,
-       width = 50, height = 50, units = "mm")
+ggsave("my_name.png", p, width = 60, height = 30, units = "mm")
+ggsave("my_name.pdf", p, width = 50, height = 50, units = "mm")
 ```
 
 
 ## Extensions
+
+### {.box-12 .bg-bluew}
 
 `ggplot2` introduced the possibility for the community to contribute and [create **extensions**](http://ggplot2.tidyverse.org/articles/extending-ggplot2.html). 
 
