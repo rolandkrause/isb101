@@ -1,0 +1,160 @@
+---
+title: '`ggplot2` practical'
+author: 'ISB101'
+date: '11 January 2018'
+output:
+  unilur::tutorial_html_solution: default
+  unilur::tutorial_pdf: default
+  unilur::tutorial_pdf_solution: default
+  unilur::tutorial_html: default
+---
+
+```{r, include = FALSE}
+library(tidyverse)
+```
+
+
+During this practical you will learn to use `ggplot2` to plot your data which is formatted in a tabular form (as a data frame). You might also understand why having a tidy dataset will help you during the exploration of your data using visualisation tools like `ggplot2`. Indeed, `ggplot2` relies on the grammar of graphics expecting a tidy dataset.
+
+To perform this practical, open up RStudio and create a new RMarkdown document. Put your markdown knowledge into practice and add headers, lists, bold or italic text whenether you need. Your pieces of R Code should be inserted using R chunks.
+
+For each question, briefly describe what you are trying to do with your R code (_i.e._ sum up the question and add a brief literate detail on how you address an eventual problem). For this practical, you will create a new chunk for each question which will allow you to keep a track of the different steps (and reuse this document to remind how you addressed your plotting / tidy issue(s)).
+
+## The iris dataset
+
+In this practical we will use the dataset called `iris` shipped with _R_.
+
+#### Draw your first plot
+
+1. `iris` is in the old `data.frame` format. Coerce iris to a tibble and store the result in an object called `iris_t`.
+
+2. In the same chunk, print out the content of your tibble (the tibble should appear once you knit your final document)
+
+```{r, solution = TRUE}
+iris_t <- as_tibble(iris)
+iris_t
+```
+
+3. Create a scatter plot and map the `Sepal.Length` to the $x$ axis and the `Petal.Length` to the $y$ axis.
+
+```{r, solution = TRUE}
+ggplot(iris_t, aes(x = Sepal.Length, y = Petal.Length)) +
+  geom_point()
+```
+
+4. We would like to draw each different Species in a different **shape**
+
+```{r, solution = TRUE}
+ggplot(iris_t, aes(x = Sepal.Length, y = Petal.Length, shape = Species)) +
+  geom_point()
+```
+
+#### Mapping an additional variable
+
+5. Now, in addition to the relation between the length of petal and sepals we would also like to represent, on the same plot but using, the relation between the width of sepals and petals. We would like to use **different colours** to identify if the measure represents a width or a length. Do you think that it's possible to achieve this **without adding a duplicate `geom_point` layer** (which would break the rules of the grammar of graphics)?
+
+```{block, solution = TRUE}
+No, if we keep the tibble as it is we need to use a second `geom_point` layer. The measures of lengths and widths are stored in different columns.
+```
+
+```{r, solution = TRUE}
+# NOT GOOD: UNTIDY METHOD NOT RESPECTING THE GRAMMAR OF GRAPHICS:
+ggplot(iris_t, aes(shape = Species)) +
+  geom_point(aes(x = Sepal.Length, y = Petal.Length), colour = "red") +
+  geom_point(aes(x = Sepal.Width, y = Petal.Width), colour = "green")
+```
+
+```{block, solution = TRUE}
+Adding different layers to address this is not the way to go: we can see that the plot needs further adjustments in the legend (to explain what the colour is encoding) but also axis titles (by default the label is generated using only the first `geom` object).
+```
+
+6. Look again at your tibble, is the data tidy? Identify the variable you tried to plot in the previous question and use the function(s) supplied by `tidyr` to shape your tibble accordingly.
+
+```{block, box = "bisque", boxtitle = "Remember the rules of a tidy dataset"}
+- Every variable is in its own column
+- Every observation is in its own row
+```
+
+```{block, box = "lightblue", boxtitle = "Tip"}
+You might be interested in using the functions `gather()`, `separate()`, `spread()` (`tidyr`) but also `column_to_rownames()` (`tibble`)
+
+Try to solve this question stepwise. Using the pipe allows you to add or remove a step easily and to experiment if your code works or not within your current chunk.
+```
+
+```{block, solution = TRUE}
+To associate (map) a colour to the type of the measure (width vs length) we need a tibble containing this information in a unique column. **In our original table**, this information is encoded in **multiple column titles**. We need to gather this information and switch from the so called _wide format_ to the _long format_. We will use the `gather()` function from the `tidyr` package to achieve this.
+```
+
+```{r, solution = TRUE}
+iris_t %>%
+  gather(measure_param, value, - Species)
+```
+
+```{block, solution = TRUE}
+1) The tibble we obtain using `gather()` starts to look better but we still have two variables in the same column: the type of measure (width and length) and the flower part (petal or sepal). We need to use `separate()` (another function from `tidyr()`) to separate both variables.
+
+2) The lengths and widths are used as two separate variables in our plot. We need to put them again into two separate columns. We will use `separate()` to split the column into two.
+
+3) As we need length and width to be two distinct variables mapped to the $x$ and $y$ axis coordinates, we need to use `spread()` from the `tidyr` package. Before spreading the values, we also need to know which length is associated to which width. Thus we will insert a variable at the beginning of the pipeline to be able to identify each single observed plant (observational unit) and use the function `rownames_to_column()` (from the `tibble` package) to populate this column.
+```
+
+```{r, solution = TRUE}
+iris_t %>%
+  rownames_to_column("plant_id") %>%
+  gather(measure_param, value, - Species, -plant_id) %>%
+  separate(measure_param, into = c("flower_part", "measure_param")) %>%
+  spread(measure_param, value)
+```
+
+7. Now draw the scatterplot again using your tidy tibble. (Do you see the power of using a dataset shaped like this _even_ for a plotting task?)
+
+```{r, solution = TRUE}
+iris_t %>%
+  rownames_to_column("plant_id") %>%
+  gather(measure_param, value, - Species, -plant_id) %>%
+  separate(measure_param, into = c("flower_part", "measure_param")) %>%
+  spread(flower_part, value) %>%
+  ggplot() +
+  geom_point(aes(x = Petal, y = Sepal, shape = Species, colour = measure_param))
+```
+
+8. Add a title to your graph
+
+```{r, solution = TRUE}
+iris_t %>%
+  rownames_to_column("plant_id") %>%
+  gather(measure_param, value, - Species, -plant_id) %>%
+  separate(measure_param, into = c("flower_part", "measure_param")) %>%
+  spread(flower_part, value) %>%
+  ggplot() +
+  geom_point(aes(x = Petal, y = Sepal, shape = Species,  colour = measure_param)) +
+  labs(
+    title = "Relation between the size of sepals and petals among\n
+    3 different flower species",
+    colour = "Measured parameter"
+  )
+```
+
+9. The shape is not easily visible. Let's try to split the plot into 3 disctinct ones (one for each species). Use the same pipeline and add just a single line to achieve this.
+
+```{r, solution = TRUE}
+iris_t %>%
+  rownames_to_column("plant_id") %>%
+  gather(measure_param, value, - Species, -plant_id) %>%
+  separate(measure_param, into = c("flower_part", "measure_param")) %>%
+  spread(flower_part, value) %>%
+  ggplot() +
+  geom_point(aes(x = Petal, y = Sepal, shape = Species,  colour = measure_param)) +
+  labs(
+    title = "Relation between the size of sepals and petals among\n
+    3 different flower species",
+    colour = "Measured parameter"
+  ) +
+  facet_wrap(~ Species) +
+  theme_bw() + # Optional theme
+  theme(legend.position = "bottom") # Optional repositioning of the legend box
+```
+
+#### Generate your report
+
+At the end of the practical knit the document into a HTML file. Think about adjusting the title of the document and fill in your name. The rendered file should contain the plots as well as the source code used to generate those plots.
