@@ -1,0 +1,132 @@
+---
+title: "Access to gaia server"
+author: "Roland Krause"
+date: "15 January 2018"
+output: 
+  iosp::ioslides_plus
+---
+
+```{r include=FALSE}
+library(tidyverse)
+```
+# Setting 
+
+## Content 
+
+### Basic set-up {.bg-green .box-8 .offset-2}
+ * SSH keys
+ * Virtual machines
+ * Server 
+ * [HPC](hpc.uni.lu)
+ 
+
+## Access to Gaia server {.smaller}
+### Access via PuTTY {.bg-blue .box-12}
+ * Windows machines
+ * Convert given key to putty format (stored in `Documents` folder) using PuTTYgen
+ * Open PuTTY
+ * Give the key under SSH - Auth
+ * Connect to student`<no>`@access-gaia.uni.lu with Port 8022
+
+
+
+### SSH access via Shell {.bg-yellow .box-12}
+ * From linux/mac 
+ * Virtual machine under Windows
+
+```{bash eval=FALSE}
+ssh –p 8022 –i $HOME/.ssh/student<no>.key student<no>@access-gaia.uni.lu
+
+```
+
+
+
+
+## Access node, scheduling and compute node 
+
+### Basic cluster architecture {.bg-yellow .offset-2 .box-10}
+ * Access node
+    - For job submission only. 
+    - Do not use for any computation
+    - Do not use for CPU intensive jobs, e.g. unzip, compilation
+    - Only basic framework installed
+ * Compute nodes - Run jobs
+    - Enclosure, node, cpu, core
+ * Scheduler
+    - Never access by normal users, distributes task to compute clusters 
+ 
+## The OAR scheduler
+
+### Submission {.bg-blue .box-10 .offset-1}
+
+[OAR explained](https://hpc.uni.lu/users/docs/oar.html)
+
+On `access-gaia`
+```{bash eval=FALSE, title="OAR submission"}
+
+oarsub "my command"
+oarsub -I # Interactive session
+oarsub myscript.bash
+
+```
+
+## Reserved container
+
+```{bash eval=F, title="For 2018-01 only"}
+oarsub -t inner=<container job id> –lcore=4,walltime=12 
+oarsub -t inner=4274331 -lcore=1,walltime=12  # 2018-01-15 through 2018-01-20 only
+
+
+```
+
+
+## Copy data from gaia to your local computer | Mac/Linux systems
+```{bash eval=FALSE}
+
+scp –P 8022 –r –i $HOME/.ssh/student<no>.key \
+student<no>@access-gaia.uni.lu:<path-to-file/dir><destination>
+
+scp –P 8022 –r –i student<no>.key student<no>@access-gaia.uni.lu:~/WEScourse.tar.gz .
+
+export LC_ALL=en_US.UTF-8
+
+```
+
+
+
+## Copy data from gaia to your local computer | Windows
+
+### WinSCP {.bg-green .offset-1 .box-10}
+* Install WinSCP (in case it's not set-up yet)
+* Open WinSCP 
+    + File protocol `SCP`
+    + Hostname `access-gaia.uni.lu`
+    + Username student<no> i.e. `student13`
+    + Advanced: SSH - Authentification. 
+      Give Key student<no>.ppk, typically saved to Documents folder
+* Use PuTTY instructions
+* Open terminal windows
+
+
+## Worked example
+
+### Reading an Variant Call Format file produced on the server into R  {.bg-green .box-12}
+
+Create a directory to work in your home directory.
+
+```{bash eval=F}
+
+mkdir ~/work_isb/
+
+scp -P 8022 -i ~/.ssh/student<no>.key \
+student13@access-gaia.uni.lu:~/unixtut/media/Mills_and_1000G_gold_standard.indels.b37.chr22.vcf \ ~/work_isb/ 
+
+```
+
+
+## Variant Call Format 
+```{r title="Reading in a VCF file"}
+
+my_vcf <- read_delim("~/work_isb/Mills_and_1000G_gold_standard.indels.b37.chr22.vcf", delim="\t", comment="#", col_names = c("CHROM",  "POS","ID" ,"REF"  , "ALT", "QUAL" , "FILTER",   "INFO"))
+
+```
