@@ -1,0 +1,124 @@
+---
+title: "Trio-based whole exome sequencing reveals <denovo|recessive> causative mutation for <disease>"
+author: "Author list"
+date: "1/16/2018"
+output: 
+  word_document
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# 1.	Introduction
+-	2-3 sentences as introduction:
+    What is next generation sequencing, whole exome sequencing, and trio sequencing ? Get some use cases from literature. 
+-	1-2 sentences about the disease:
+    + Are there already sequencing studies done for the disease (if yes, which one) ?
+    + Are their already genetic variants known (if yes which one) and where can you find those ?
+    + Incidence of the disease (how often it occurs ?).
+    + What is the mode of inheritance ?
+
+# 2.	Materials and methods
+## 2.1 Study Participants/Whole exome sequencing
+-	Description of the Corpas family project (check http://manuelcorpas.com/exome )
+    +	http://manuelcorpas.com/2013/01/21/corpas-family-exome-data-available-for-public-download/
+    + http://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-015-1973-7
+-	Draw pedigree (mark affected child) and give alleles per individual.
+-	How was the sequencing data generated, on which machine, using which technology ? 
+
+## 2.2 NGS data preprocessing 
+-	Describe data formats used and give overview of methods with a figure showing the NGS processing workflow (could be from other publications, if  please reference).
+-	Quality control:
+  +	describe method and parameters to evaluate quality
+-	NGS processing:
+		+ Describe mapping method
+		+ GATK pipeline (see GATK webpage for documentation)
+ - Describe the different steps, what are they doing, what is the input/output.
+## 2.3 Variant annotation and filtering
+-	How variants are called ? Which parameter are used ?
+		+ Describe Annovar annotation. Which annotations are used ?
+		
+		
+-	Filter strategy:
+		+ What annotations/parameter are used for filtering down the variants ?
+```{r, eval=FALSE}
+
+# sample code to include a VCF file in R
+# In the first line of this chunk set eval=TRUE to execute this code
+# To run this code successfully ensure that the file is on your local computer in the right path
+
+my_vcf <- read_delim("~/work_isb/Mills_and_1000G_gold_standard.indels.b37.chr22.vcf", delim="\t", comment="#", col_names = c("CHROM",  "POS","ID" ,"REF"  , "ALT", "QUAL" , "FILTER",   "INFO"))
+# For filtering dplyr works well
+my_vcf %>% filter(CHROM==21) # etc
+#
+````
+
+# 3.	Results:
+## 3.1 QC
+-	Summarize results from Fastqc: (1 paragraph)
+		+ one table summarizing read statistics per sample and 
+		+ show read quality for all samples in one figure.
+
+## 3.2 Sample processing
+-	Table with read statistics (read numbers for each processing step including total number, after initial mapping, after duplicate removal, etc.)
+
+## 3.3 Variant calling
+-	How many variants were called per sample and over all samples and how many samples remaining after each filtering step (1 or 2 Tables) ?
+-	Describe impact of each filtering step
+-	How many exonic/intronic variants were called ? (1-2 sentences, 1 table)
+-	How many nonsynonymous/synonymous variants were called ? (1-2 sentences, 1 table).
+-	QC measures: calculate and discuss
+		+ transistion/transversion ratio
+		+ nonsynonymous/synonymous ratio
+-	Were candidate variants found ?
+-	Report sequencing depth for all samples for candidate variant.
+-	Report gene coverage for found candidate gene.
+-	Show variant in IGV from all three family members.
+-	Describe candidate variant and gene using HGMD (ClinVar, biobase.uni.lu or http://www.hgmd.cf.ac.uk/ac/index.php, you have to register)  and disease using OMIM. What evidence you have that the variant is causative (prediction scores, conservation, protein structure, protein domain, literature …) ?
+
+## 4. Discussion:
+Summary of analysis. What has been found ? How can the variant be related to the disease? Is the mode of inheritance of your found variant known or not known ?
+
+## References
+ * No style preferences but be consistent. 
+ * You could use e.g. https://www.zotero.org) for collecting references and including in Word or RMarkdown (ask for help to set it up)
+ 
+1.	Martin, M. Cutadapt removes adapter sequences from high-throughput sequencing reads. EMBnet.journal 17, 10 (2011).
+2.	GATK | Best Practice Workflows. at <https://www.broadinstitute.org/gatk/guide/bp_step.php?p=1>
+3.	SAMtools. at <http://samtools.sourceforge.net/>
+4.	picard / Wiki / Main_Page. at <http://sourceforge.net/p/picard/wiki/Main_Page/>
+5.	DePristo, M. A. et al. A framework for variation discovery and genotyping using next-generation DNA sequencing data. Nat. Genet. 43, 491–8 (2011).
+6.	Langille, M. G. I. & Brinkman, F. S. L. IslandViewer: an integrated interface for computational identification and visualization of genomic islands. Bioinformatics 25, 664–5 (2009).
+7.	Chong, J. X. et al. Autosomal-Dominant Multiple Pterygium Syndrome Is Caused by Mutations in MYH3. Am. J. Hum. Genet. 96, 841–9 (2015).
+11.	Bcftools by samtools. at <http://samtools.github.io/bcftools/>
+12.	Alonso, N., Lucas, G. & Hysi, P. Big data challenges in bone research: genome-wide association studies and next-generation sequencing. Bonekey Rep. 4, 635 (2015).
+15.	Vt - Genome Analysis Wiki. at <http://genome.sph.umich.edu/wiki/Vt>
+16.	Liu, X., Jian, X. & Boerwinkle, E. dbNSFP v2.0: a database of human non-synonymous SNVs and their functional predictions and annotations. Hum. Mutat. 34, E2393–402 (2013).
+17.	Sherry, S. T. dbSNP: the NCBI database of genetic variation. Nucleic Acids Res. 29, 308–311 (2001).
+18.	ExAC Browser. at <http://exac.broadinstitute.org/>
+19.	Exome Variant Server. at <http://evs.gs.washington.edu/EVS/>
+34.	De Novo Mutations in Synaptic Transmission Genes Including DNM1 Cause Epileptic Encephalopathies - mmc3.pdf. at <http://www.cell.com/cms/attachment/2018737082/2038848558/mmc3.pdf>
+
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
