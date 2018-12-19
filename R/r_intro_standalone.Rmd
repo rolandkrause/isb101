@@ -1,0 +1,1455 @@
+---
+title: "Introduction to R"
+author: "R. Krause with E. Koncina, G. Androsova, A. Ginolhac"
+date: "2018-12-13"
+output: iosp::ioslides_plus
+---
+
+```{r setup, include = FALSE}
+library(tidyverse)
+library(knitr)
+
+```
+
+```{r hook_col, include = FALSE}
+# A chunk hook to adjust the width of the output (console/terminal width)
+knitr::knit_hooks$set(chunk_col = function(before, options, envir) {
+    if (before) {
+        old_col <<- options(width = options$chunk_col)
+    } else {
+        options(old_col)
+    }
+})
+```
+
+## Why learning R?
+
+### {.box-8 .offset-2 .bg-yellow}
+
+R is a language and environment for **statistical** computing and **graphics**.
+
+```{css, echo = FALSE}
+.double-list ul {
+  columns: 2;
+  -webkit-columns: 2;
+  -moz-columns: 2;
+}
+
+.double-list li {
+  -webkit-column-break-inside: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+```
+
+### Advantages of R {.box-10 .offset-1 .bg-blue .double-list}
+
+- Free software (unlike Matlab)
+- Easy to download/install/update
+- Easy to process big files and analyse huge amounts of data
+- iIntegrated data visualisation tools
+- Programs can be integrated with the text to produce fully reproducible manuscripts
+- Most relevant statistical environment for data analysis in the life sciences
+
+More details on https://www.r-project.org/about.html
+
+
+## {.bg-blue .middle}
+
+### Learning objectives {.box-10 .offset-1 .bg-red .icon}
+
+![](img/00/kt.png)
+
+- Take a glimpse at Base R
+- Practice R in a learning environment and with first projects
+- Replacing your Excel worksheet
+
+## How to install R on my computer?  | For reference 
+
+
+### R and RStudio {.box-6 .bg-red .icon-small}
+
+![](img/00/warning.png)
+
+Don't mix up **R** and **RStudio**.  
+**R** is the actual program that needs to be installed first and runs indenpendently.
+
+### IDE {.box-6  .bg-yellow}
+
+[RStudio](https://www.rstudio.com/products/RStudio/) is an Integrated Development Environment.\  
+It makes working with R much easier.
+![](img/00/logo_rstudio.png)
+
+### R{.box-6 .bg-blue}
+
+- go to http://cran.r-project.org
+- choose your system
+- choose **base**
+- download R
+- run the downloaded file
+
+
+### Rstudio {.box-6 .bg-blue}
+
+- go to https://www.rstudio.com/
+- choose the **free RStudio Desktop** version
+- choose your system
+- download
+- run the downloaded file
+
+## Rstudio | What is it? {.build}
+
+### Features {.box-12 .bg-blue .double-list}
+
+- _Console_ to run **R**, with syntax highlighter
+- _Editor_ to work with scripts
+- _Viewer_ for data / plots / website
+- _Package management_ (including building)
+- _Autocompletion_ using <kbd>TAB</kbd>
+- [_Cheatsheets_](https://www.rstudio.com/resources/cheatsheets/)
+- _Git_ integration for versioning
+- _Inline_ outputs 
+- _Keyboard shortcuts_
+
+## Rstudio | The 4 panels layout
+
+### {.box-12 .bg-bluew .center-img}
+
+![](img/01/rstudio_layout.jpg)
+
+## Four panels {data-background="img/01/rstudio_layout.jpg" .middle}
+
+### Scripting {.box-6 .bg-bluew .stretch}
+
+- Code composition
+- The main window for development
+- Using a **Rmarkdown** document is highly recommended
+
+
+### Environment {.box-6 .bg-bluew .stretch}
+
+- Environment: shows loaded objects and their structure `str()`
+- History
+- Code versioning systems `git` 
+- database **connections** interface and others
+
+### Console {.box-6 .bg-bluew .stretch}
+
+- Code execution from scripts
+- Interactive execution of code 
+- Play here
+- An optional `terminal` tab
+
+### Files / Plots / Help {.box-6 .bg-bluew .stretch}
+
+- Package management tab
+- Plots panel
+- Highly useful *help* 
+
+
+## Getting started {.bg-green}
+
+### Use **R** and **RStudio** {.box-8 .offset-2 .bg-bluew}
+
+Do the following:
+
+- Open up RStudio
+- Maximise the RStudio window
+- Click the Console pane, at the prompt (`>`) type in `3 + 2` and hit enter
+
+```{r calc, eval = FALSE, prompt = TRUE}
+3 + 2
+```
+
+## Arithmetic operations
+
+### {.box-6 .bg-blue}
+
+- `+`: addition  
+- `-`: subtraction  
+- `*`: multiplication  
+- `/`: division  
+- `^` or `**`: exponentiation 
+- `%%`: modulo (remainder after division)
+- `%/%`: integer division
+
+### **Remember** that R will: {.box-6 .bg-yellow .icon-small}
+
+![](img/00/tip.png)
+
+- first perform **exponentiation**
+- then multiplications and/or divisions
+- and finally additions and/or subtractions.
+
+If you need to change the priority during the evaluation, use parentheses – _i.e._ `(` and `)` – to group calculations.
+
+
+## Data types in R {.build}
+
+### Four main types {.box-6 .bg-blue .show}
+
+Type                | Example
+------------------- | ---------------------------
+*numeric*             | integer (2), double (2.34)
+*character (strings)* | "Hello !"
+*boolean*             | TRUE / FALSE
+*complex*             | 2+0i
+
+
+### Special types {.box-6 .bg-blue .stretch}
+
+```{r type_na, eval = FALSE}
+NA   # not available, missing data
+NA_real_
+NA_integer_
+NA_character_
+NA_complex_
+NULL # empty
+-Inf/Inf # infinite values
+NaN # Not a Number
+```
+
+
+### {.box-6 .bg-yellow .nvs2}
+
+Call the command **`class()`** or **`typeof()`** to see what data you are working with.
+
+### {.box-6 .bg-yellow .nvs2}
+
+```{r}
+class("Hello")
+typeof(3)
+class(NA_complex_)
+```
+
+## Numeric variables {.build}
+
+### Integers {.box-6 .bg-blue .show}
+
+Integers are stored 32-bit long registers and limited to a little more than 2 billion.
+
+```{r int_max}
+.Machine$integer.max
+```
+
+### Double {.box-6 .bg-blue .show}
+
+Doubles can be bigger because they are stored as **double precision floating point numbers**, which have two pieces:
+
+```{r dbl_precision, echo = FALSE}
+# Using R for the double example
+#round(.Machine$double.xmax), options()[["digits"]]
+double_precision <- as.character(.Machine$double.xmax) %>%
+  str_split("e\\+") %>%
+  flatten_chr() %>%
+  parse_number()
+```
+
+- the exponent (like `r double_precision[2]` below)
+- the "significant" (like  `r round(double_precision[1], options()[["digits"]] - 1)`  below).
+
+```{r dbl_max}
+.Machine$double.xmax
+```
+
+```{r rm_dbl_precision}
+# Clear some variables to clean the env for ls() demo
+rm(double_precision)
+```
+
+
+
+
+## Numeric variables
+
+### {.box-8 .offset-2 .bg-yellow}
+
+In practice, numeric computations always produce `double` results thus the name `numeric` is used as a synonym. 
+R will automatically convert (coerce) between the numeric classes when needed.
+
+### `double` is the default {.box-6 .bg-blue .stretch}
+
+- Most math is done using double precision
+- Thus it is the default storage.
+
+```{r int_default}
+is.numeric(1)
+is.integer(1)
+```
+
+### `integer` must be forced {.box-6 .bg-red .stretch}
+
+Sometimes you may want to specifically store a vector as integers:
+
+- if you know that they will never be converted to doubles (used as ID values or indexing)
+- since integers require less storage space.
+
+```{r int_force}
+is.numeric(1L)
+is.integer(1L) #Putting capital 'L' after an integer forces it to be stored as an integer.
+```
+
+## Structures
+
+### Vectors {.box-6 .stretch .bg-blue}
+
+- elements of the same type are organised as vectors
+- a single number is already a vector
+- `c()` is the function to **concatenate** elements
+
+### Atomic vectors {.box-6 .bg-blue}
+
+Each **atomic** vector contains only a single type of data
+
+- The type of each atom is the same
+- The size of each atom is 1 (single element)
+
+%end%
+
+```{r vec_example, title = "Example", width = 8, class = "offset-2", row = c(6, 6)}
+# Logical
+c(TRUE, FALSE, TRUE)
+
+# double
+c(1, 5, 7)
+
+# character
+c("character", "sequence")
+
+4
+
+is.vector(4)
+
+identical(4, c(4))
+```
+
+## Variable assignment {.build}
+
+```{css, echo = FALSE}
+.box-body > .chunk {
+  margin-top: 10px;
+}
+
+.box-body > .chunk > h3 {
+  font-size: 22px;
+  line-height: 30px;
+}
+```
+
+
+### Assignment {.box-6 .bg-blue .show }
+
+The assignment operator `<-` assigns a value to a name.
+
+```{r assign, title = "Example of assignment"}
+x <- 7
+```
+
+
+```{r assign_2, title="Create a new variable based on **v1**" }
+v1 <- 2
+v2 <- (v1^5 - v1)
+v2
+```
+
+
+### Do not use `=` for assignment {.box-6  .bg-red .icon-small .show}
+
+![](img/00/warning.png)
+
+There is another way to do an assignment in R:
+```{r, width = 5}
+x = 7
+```
+
+The use of the equal sign (`=`) is a historic accident in programming languages derived from *C*.
+
+
+### Use keyboard shortcuts {.box-6  .bg-yellow .icon-small}
+ * On Mac the short cut `Alt -` will insert `<-` 
+ * `->` assigns a value to a name on the right.
+ * The name can be quoted (`"var_name" <- my_value`)
+
+
+## Workspace
+
+### Check variable content{.box-6 .bg-blue}
+
+There are several ways to check content of variable:
+
+- Select the variable and press Ctrl+Enter (cmd + Enter for Mac)
+- run command
+    ```{r print}
+    print(x)
+    ```
+- In R Console type **x** to see it's value.
+
+### Listing variables {.box-6 .bg-red}
+
+- To get a list of all of the variables that have been defined use the `ls()` command:
+    ```{r ls, chunk_col = 40}
+    ls()
+    ```
+- Check "Environment" tab in RStudio
+
+
+## Operations on vectors
+
+### Create a vector in R {.box-6 .bg-blue}
+
+- Create a vector with several elements using `c()`
+
+```{r concatenate, row = TRUE}
+a <- c(1, 2, 3)
+a
+a <- c(1:3)
+a
+a + 5
+```
+
+%end%
+
+```{r operations, title = "Basic R operations", width = 6}
+a * 4
+sqrt(a)
+exp(a)
+log(a)
+```
+
+### Warning {.box-8 .offset-2 .bg-red .icon-small}
+
+![](img/00/warning.png)
+
+- R is vectorised which is a very powerful feature.
+- If two vectors of different length are used, _R_ recycles the smallest one:
+
+```{r vectorised_example}
+a <- c(1, 2, 3, 4, 5, 6)
+b <- c(10, 11, 12) 
+a + b
+```
+
+
+## Operations with vectors
+
+### {.box-8 .offset-2 .bg-yellow}
+
+- `log()`, `exp()`, `sin()`, `cos()`, `tan()`, `sqrt()`, ...
+- `max()` and `min()`
+- `range()`
+- `sum(x)` sums all elements of `x`
+- `mean(x)` computes the mean (`sum(x) / length(x)`)
+- `var(x)` is the variance (`sum((x - mean(x))^2) / (length(x) - 1)`)
+- use `sort()` to arrange elements in increasing order (or `order()` to get the sorted indices and make more complex sorting).
+
+## Operations with vectors {.bg-green .build}
+
+### Mini-task{.box-10 .offset-1 .bg-bluew .show}
+
+How would you arrange your vector in a decreasing order using `sort()`?
+
+### Help{.box-10 .offset-1 .bg-bluew}
+
+- **`help()`** returns a full description of the query command: what it does, what it needs as input, what will be produced in output
+- Use the help tab in the lower right Rstudio panel
+
+```{r help, eval = FALSE, width = 6}
+help(sort)
+?sort
+```
+
+%end%
+
+```{r sort, title = "Solution", width = 6, class = "offset-3"}
+sort(a, decreasing = FALSE)
+sort(a, decreasing = TRUE)
+```
+
+## Functions to Provide Information about Vectors
+
+### {.box-8 .offset-2 .bg-yellow}
+
+- `length()` to get the number of elements in a vector
+- `class()` returns the type of an object
+- `is.logical()`, `is.numeric()`, `is.character()`, `is.integer()` to test for the type of an object
+- `is.null()` to test whether an object is empty (_i.e._ has no content).
+- `is.na()` to test if the value is not available
+    ```{r}
+    is.na(c(3, 1, NA))
+    ```
+- `as.numeric()`, `as.character()`, `as.logical()`, ... to coerce objects from one type to another
+
+## Logical Operators
+
+### {.box-10 .offset-1 .bg-yellow}
+
+- The usual arithmetic operators return logicals `>`, `<`, `>=`, `<=`, `==` and `!=`
+- Are also vectorised (are working element-wise on two inputs)
+- Output is a **logical vector**.
+- Combine conditions using `&` (AND) and `|` (OR).
+- `any()` returns `TRUE` if any value is TRUE
+- `all()` returns `TRUE` if all values are TRUE
+
+### Warning {.box-10 .offset-1 .bg-red .icon-small}
+
+![](img/00/warning.png)
+
+- `&` and `|` are performing elementwise
+- `&&` and `||` are only comparing the first element of each vector
+
+```{r, width = 10}
+c(FALSE, TRUE, TRUE) & c(TRUE, TRUE, FALSE)
+
+c(FALSE, TRUE, TRUE) && c(TRUE, TRUE, FALSE)
+```
+
+## Logical
+
+### Logical binary {.box-6 .bg-blue}
+
+Two possible values represented by `TRUE` and `FALSE`.
+
+```{r logical_test}
+a <- c(3, 7, 1, 2, 4)
+a > 2
+a == 2
+!(a <= 3)
+```
+
+### Find which element is...{.box-6 .bg-red}
+
+```{r which}
+a
+which(a > 2)
+a[which(a > 2)]
+```
+
+
+## Subsetting Vectors 
+
+### Build in vectors {.box-8 .offset-2 .bg-blue}
+
+- R has a few built in vectors.
+- One of these is **LETTERS**.
+
+```{r, chunk_col = 60}
+LETTERS
+```
+
+To extract the first element from `LETTERS` (the letter A), use square brackets:
+```{r}
+LETTERS[1]
+```
+
+## Your turn! {.bg-green .build}
+
+```{r, echo = FALSE, title = "How to get following outputs?", width = 10, class = "offset-1 show"}
+LETTERS[2:5]
+LETTERS[c(2:5, 7)]
+LETTERS[c(1:5, length(LETTERS) - 1)]
+```
+
+```{r, title = "Solution", width = 10, class = "offset-1"}
+LETTERS[2:5]
+LETTERS[c(2:5, 7)]
+LETTERS[c(1:5, length(LETTERS) - 1)]
+```
+
+## Named vectors{.build}
+
+```{r, title = "Example", width = 6}
+v <- c("Mary", "Sue")
+names(v) <- c("First", "Last")
+v
+v <- c(First = "Mary", Last = "Sue")
+v
+```
+
+### Retrieve elements by names {.box-6  .bg-yellow .icon-small}
+
+![](img/00/tip.png)
+
+```{r, title = "retrieve the first member by its name", width = 5}
+v["First"]
+```
+
+```{r, title = "reverse the order with a character string index vector", width = 5}
+v[c("Last", "First")] 
+```
+
+## Structures
+
+### Factors {.box-8 .offset-2 .bg-blue}
+
+- The function `factor()` converts strings to factors
+- `levels` is the dictionary
+
+```{r fct_example, collapse = TRUE}
+fac <- factor(c("AA", "BB", "AA", "CC"))
+fac
+str(fac)
+is.vector(fac)
+```
+
+## Factors{.build}
+
+### {.box-7 .bg-yellow .show}
+
+- A factor-type vector contains a set of numeric codes with character-valued levels.
+- Example: A family of two girls (1) and four boys (0):
+    ```{r}
+    kids <- factor(c(1, 0, 1, 0, 0, 0),
+                   levels = c(0, 1),
+                   labels = c("boy", "girl"))
+    kids
+    class(kids)
+    typeof(kids)
+    ```
+
+### Remark {.box-5 .bg-red .stretch}
+
+- Required for (some) statistical analysis
+- When manipulating the data, factors are a total pain
+- Factor levels remain around even if you remove all examples of a particular level.
+- It is a good practice to introduce factors at the very end of your analysis pipeline once required.
+
+%end%
+
+```{r, title = "Example", row = c(8, 4), class = "compact-output"}
+levels(kids)
+kids <- kids[kids != "boy"]
+levels(kids) # still the same levels
+table(kids) # even though one level has 0 entries!
+```
+
+## Structures
+
+### Lists {.box-6 .offset-3 .bg-blue}
+
+- Can contain anything!
+- are **vectors** which are **not atomic**.
+  + Elements can be of different types
+  + The length of each element (atom) might be greater than 1.
+  
+%end%
+
+```{r list_example, title = "Example", width = 8, row = c(7, 5), class = "offset-2"}
+my_list <- list(1, 3, "seven")
+str(my_list)
+is.vector(my_list)
+is.atomic(my_list)
+```
+
+## Lists
+
+### {.box-8 .offset-2 .bg-blue}
+
+- An ordered collection of objects (components).
+- A list allows to gather a variety of (possibly unrelated) objects under one name.
+
+```{r}
+# example of a list with 4 components - a string, a numeric vector, and a scaler 
+my_list <- list(name = "Fred",
+                my_numbers = v1,
+                age = 5.3)
+
+# example of a list containing two lists 
+two_lists <- list(my_list,
+                  list("first_element", "second_element"))
+```
+
+## Indexing lists{.build}
+
+### `[`{} {.box-6 .bg-blue}
+
+To get a list containing the selected element(**s**)
+
+```{r, class = "compact-output"}
+ex1 <- my_list[2]
+str(ex1)
+typeof(ex1)
+
+my_list[1:2]
+```
+
+### `[[`{} {.box-6 .bg-blue}
+
+To get the **single** selected element
+
+```{r, error = TRUE, class = "compact-output"}
+ex2 <- my_list[[2]]
+str(ex2)
+typeof(ex2)
+
+my_list[[1:2]]
+```
+
+### {.box-8 .offset-2 .bg-yellow .icon-small}
+
+![](img/00/tip.png)
+
+For named lists, you can use `$` as a shortcut for `[[`.
+Enjoy the code completion in RStudio! 
+
+```{r, width = 10}
+my_list[["my_numbers"]]
+my_list$my_numbers
+```
+
+## Lists
+
+### Nested lists{.box-8 .offset-2 .bg-yellow}
+
+You can chain `[[` and `[` to extract elements from nested lists
+
+```{r}
+two_lists[[2]][[1]]
+two_lists[[2]][1]
+
+two_lists[[1]][1:2]
+
+two_lists[2][1]
+
+```
+
+## Structures{.build}
+
+### Matrix and Arrays {.box-6 .offset-3 .bg-blue .show}
+
+- Matrix (2D)
+- Arrays $\ge$ 3D
+
+```{r matrix_example, row = TRUE, collapse = TRUE}
+matrix(1:4, nrow = 2)
+```
+
+### Data frames {.box-8 .offset-2 .bg-blue}
+
+Fundamental data structure for combining diverse data into tables.
+
+```{r df_example, dataframe, row = c(8, 4), collapse = TRUE}
+data.frame(x = 1:3,
+           y =4:6,
+           f = c("abc", "def", "ghi"))
+```
+
+## Matrix {.build}
+
+### From vectors to matrices {.box-6 .bg-blue .show}
+
+- Create a _x_-by-_y_ matrix of 0s
+    ```{r}
+    matrix(0, nrow = 2, ncol = 3)
+    ```
+- Create any matrix
+    ```{r}
+    matrix(c(1, 2, 3, 4, 5, 6), nrow = 2, ncol = 3)
+    ```
+
+### What is a matrix? {.box-6 .bg-yellow}
+
+- All elements of a matrix must be of the **same type** (numeric, logical, character, complex).
+- Still widely used for gene expression data, proteomics data, etc.
+
+![](img/01/gene_expr_db.jpg)
+
+## Matrix 
+
+### Row and column naming {.box-10 .offset-1 .bg-blue}
+
+Give a vector with names, the length of which corresponds to dimensions of matrix:
+
+```{r}
+my_matrix <- matrix(c(1, 2, 3, 4, 5, 6, 7, 8, 9), nrow = 3, ncol = 3)
+
+rownames(my_matrix) <- c("first_row", "second_row", "third_row")
+colnames(my_matrix) <- c("A", "B", "C")
+my_matrix
+```
+
+## Matrix 
+
+### Addressing elements {.box-10 .offset-1 .bg-blue}
+
+To access an element in matrix, specify row index (or row name) and then column index (or name) as **[row_index, col_index]**
+
+```{r, row = T}
+my_matrix
+my_matrix[1, 2]
+my_matrix[2, "B"]
+```
+
+### {.box-10 .offset-1 .bg-yellow .icon-small}
+
+![](img/00/tip.png)
+
+- Omit the column if you would like to retrieve the complete row
+- Use conditions to extract the desired elements
+
+```{r, row = TRUE, width = 10}
+my_matrix[1,]
+my_matrix[my_matrix > 3]
+```
+
+## Data frames
+
+### Tabular data {.box-6 .bg-yellow .stretch}
+
+- Most of your data will probably be organised like this
+- Allows to organise your variables in different columns
+
+
+### Example for *tidy* data {.box-6 .bg-green}
+
+- Let's say your cases (**observations**) are Bob, Fred, Barb, Sue, and Jeff. 
+- Age, height, weight, race, year in school, and SAT score are called **variables**. 
+- **Values*** are the elements in cells.
+- You would ordinarily put this information into a data frame as follows:
+
+### {.box-8 .offset-2 .bg-red}
+
+name   |  age | hgt | wgt | race |gender|SAT 
+-------|------|-----|-----|------|------|----
+Bob    |   21 |  70 | 180 | Cauc |  M   |1080
+Fred   |   18 |  67 | 156 |Af.Am |  M   |1210
+Barbara|   18 |  64 | 128 |Af.Am |  F   | 840
+Sue    |   24 |  66 | 118 | Cauc |  F   |1340
+
+
+## Data frames
+
+### A data frame is a particular **list** {.box-8 .offset-2 .bg-red}
+
+- It is a **list** of **vectors of equal length**.
+- For example, the following variable `df` is a data frame containing three vectors `my_numbers`, `my_letters`, `my_logicals`.
+
+```{r}
+my_numbers <- c(2, 3, 5)
+my_letters <- c("aa", "bb", "cc")
+my_logicals <- c(TRUE, FALSE, TRUE)
+df <- data.frame(my_numbers, my_letters, my_logicals)
+df
+```
+
+## Data frames vs matrices{.build}
+
+### Matrix {.box-6 .bg-yellow .show}
+
+All values in rows and columns of a matrix must have the same class (numeric, character, etc).
+
+### Data frame {.box-6 .bg-blue .show}
+
+You can have mixture of different classes\
+(remember its a "**list** of columns").
+  
+### Coercion {.box-6 .offset-3 .bg-bluew .show}
+
+You can coerce from one to the other using `as.data.frame()` or `as.matrix()`
+
+### Warning {.box-8 .offset-2 .bg-red .icon-small}
+
+![](img/00/warning.png)
+
+If you convert a dataframe with different classes of columns, then your data will be coerced to a unique type.
+
+## Data frames vs matrices | Coercion
+
+### Example {.box-8 .offset-2 .bg-green}
+
+- R has a built-in data frame called `mtcars`.
+- Let's take first 5 rows and 5 columns:
+    ```{r}
+    mtcars[1:5, 1:5]
+    ```
+- Now convert it into matrix:
+    ```{r}
+    as.matrix(mtcars[1:5, 1:5])
+    ```
+>- Nothing changed
+
+## Data frames vs matrices | Coercion
+
+### Example {.box-8 .offset-2 .bg-green .build}
+
+- Change the first element to a character sequence:
+```{r}
+mtcars[1, 1] <- "text"
+```
+
+- Now convert it into matrix:
+```{r}
+as.matrix(mtcars[1:5,1:5])
+```
+
+- all matrix is composed of characters (text)
+- numbers are not recognized as numbers (for algebraic operations) but as text
+
+## Data frames
+
+### Extract a cell or column {.box-8 .bg-red}
+
+- Use the coordinates like you did for a matrix.
+- We can use the row and column names instead of the numeric coordinates.
+    ```{r}
+    mtcars["Mazda RX4", "cyl"]
+    ```
+- Using `[[]]` and `$column_name` (see lists) also works
+    ```{r, row = TRUE}
+    mtcars[["cyl"]]
+    mtcars$cyl
+    class(mtcars["cyl"])
+    class(mtcars[["cyl"]])
+    ```
+
+%end%
+
+```{r, title = "Get the dimensions", width = 4}
+nrow(mtcars)
+ncol(mtcars)
+dim(mtcars)
+```
+
+<!--
+## Working with data frames
+
+
+```{r, row = TRUE, title = "Extract a column as a vector and perform calculations", width = 8, class = "offset-2"}
+quantile(mtcars$cyl)
+min(mtcars$cyl)
+sd(mtcars$cyl)
+```
+
+```{r, title = "Get some summary statistics"}
+summary(mtcars[, 1:4])
+```
+-->
+## Working with data frames
+
+### Some useful `base` functions for data frames {.box-10 .offset-1 .bg-yellow}
+
+- Change the column names of a data frame using `colnames()`
+    ```{r}
+    my_cars <- mtcars
+    colnames(my_cars)[1] <- "new_name"
+    ```
+- To see the first n elements of your data frame use `head(data_frame, n)`
+```{r}
+head(my_cars) #Gives first 6 rows if n is not specified
+```
+
+# Functions
+
+## Functions | Introduction {.build}
+
+### What is a function? {.box-10 .offset-1 .bg-yellow .icon-small .show}
+
+A function is a piece of code that is to be re-used multiple time to perform a particular task. Functions are called subroutines or methods in other computer languages. 
+ 
+Use functions for units of code that are performing similar or identical tasks.
+
+%end%
+
+```{r, title = "Create your custom functions", width = 6, class = "offset-3"}
+myfun <- function(x) { 
+  x * x
+}
+
+myfun(2)
+```
+
+## Functions | Return values
+
+### Tip {.box-10 .offset-1 .bg-yellow .icon-small}
+
+![](img/00/tip.png)
+
+- In _R_ the last created object is returned from the function
+- It is recommended to explicitely use `return()` only if you would like to exit the function earlier.
+    ```{r}
+    myfun <- function(x) {
+      if (x < 1) return(NULL)
+      x * x
+    }
+    ``` 
+
+### Use functions! {.box-10 .offset-1 .bg-red }
+
+Whenever you find yourself repeating lines of code by copy/paste, think of creating a function.
+
+## Functions
+
+```{r, title = "Using multiple arguments", width = 6}
+myfun <- function(x, a){ 
+  r <- a * sin(x) 
+  r
+} 
+
+#Shorter version
+myfun <- function(x, a){ a * sin(x) }
+
+result <- myfun(pi/2,2)
+result
+```
+
+### Returning multiple values {.box-6 .bg-red}
+
+- Multiple return values have to be returned as a **vector**
+- Use **lists** to return even object of different types
+
+```{r}
+# a is an optional argument with default = 1
+myfun4 <- function(x, a = 1){
+  sin_x <- a * sin(x)
+  cos_x <- a * cos(x)
+  list(a_sin_x = sin_x, a_cos_x = cos_x) # one list as result
+}
+
+myfun4(pi/2)
+```
+- R doesn't handle `return(sin_x, cos_x)`
+
+## Functions | Global and local scope
+
+### {.box-8 .offset-2 .bg-white .center-img}
+
+![](img/01/scope.jpg)
+
+## Global and local scope
+
+```{r, title = "Example"}
+global_var <- 10
+
+new_fun <- function(x) {
+  print(paste("Global variable", global_var))
+  
+  local_var <- x - 3
+  print(paste("Local variable", local_var))
+  
+  return(local_var)
+}
+
+new_var <- new_fun(global_var)
+```
+
+### Warning {.box-10 .offset-1 .bg-red .icon-small}
+
+![](img/00/warning.png)
+
+`local_var` is not kept outside of the function environment and trying to access it from the global environment will yield an error:
+
+```{r, error = TRUE, width = 10}
+print(local_var)
+```
+
+## Control statements{.build}
+
+### Conditions {.box-6 .bg-yellow .show}
+
+To check whether your data satisfy some particular condition:
+
+```{r, eval = FALSE}
+if (expression1)
+{ 
+  expression2
+} else {
+  expression3
+}
+```
+
+- Here `expression1` must be evaluated to a single logical value (`TRUE` or `FALSE`).
+- Include logical operators
+
+- If TRUE, then the `expression2` is executed.
+- If FALSE, then `expression3` is executed.
+
+### `if` / `else` example {.box-6 .bg-green }
+
+What will be the output?
+
+```{r, eval = T, class = "build"}
+x <- c(2, 3, 4, 5)
+
+if (all(x == 0)) { 
+  x[length(x) + 1] <- 5
+  x
+} else { 
+  x[length(x) + 1] <- 16 
+  x
+}
+```
+
+## Repetitive execution{.build} 
+
+### for loop {.box-6 .bg-yellow .show}
+
+If there's a need in multiple execution of the same command (or sequence of commands) you can use:
+
+```{r, eval = FALSE}
+for (x in expression1) { expression2 }
+```
+
+- `x` is a loop variable
+- `expression1` is the sequence of instances on which `x` should run.
+- `expression2` is the (group of) command(s) to be executed.
+
+- `expression2` is repeatedly evaluated as `x` ranges through the values in the vector result of `expression1`.
+
+%end%
+
+```{r, title = "Example", width = 6}
+# create a 30 x 30 matrix
+my_matrix <- matrix(nrow = 30, ncol = 30) 
+
+# for each row
+for(i in 1:dim(my_matrix)[1]) {
+  # for each column
+  for(j in 1:dim(my_matrix)[2]) {
+    # assign a product of two indices
+    my_matrix[i, j] <- i * j     
+  }
+}  
+my_matrix[1:8, 1:8]
+```
+
+<!--
+
+### Example 2 {.box-8 .bg-bluew}
+
+The Fibonacci numbers have many mathematical relationships and have been discovered repeatedly in nature. They are constructed as the sum of the previous two values, initialized with the values 1 and 1.
+
+```{r}
+#Let's calculate 10 Fibonacci numbers
+fibvals <- rep(0, 10) #Create vector which will contain 10 values
+fibvals[1] <- 1 #Assign 1 to first and second variable
+fibvals[2] <- 1
+for (i in 3:10) {
+   fibvals[i] <- fibvals[i-1]+fibvals[i-2]
+} 
+fibvals
+```
+-->
+<!--
+
+## Other loops: repeat and while
+
+There exist other statements for repeated expressions: <b>repeat</b> expression and <b>while</b> (condition) expression.
+
+The <b>break</b> statement can be used to terminate any loop, possibly abnormally. This is the only way to terminate <b>repeat</b> loops, usually by using <b>if'else'</b> statement to check if the desired condition is satisfied.
+
+The <b>next</b> statement can be used to discontinue one particular cycle and skip to the 'next' (this is more likely to be used in <b>for</b> and <b>while</b> loops)
+
+## While loop
+
+<b>while()</b> loop will execute a block of commands until the condition is no longer satisfied.
+```{r}
+x <- 1 
+while (x < 4) { 
+  x <- x + 1
+  print(x) 
+}
+```
+
+## While loop
+
+<b>next</b> can skip one step of the loop; <b>break</b> will end the loop abruptly.
+```{r}
+x <- 1 
+while (x < 4) { 
+  x <- x + 1
+  if (x == 3){
+    next
+  }
+  print(x) 
+}
+```
+
+## Repeat loop
+
+<b>repeat</b> is similar to while and for loop, it will execute a block of commands repeatly till break.
+```{r}
+x <- 0 
+repeat { 
+  x <- x + 1
+  print(x)
+  if (x > 5) {
+    break
+  }
+}
+```
+If no <b>break</b> is given, loop runs forever!
+-->
+
+## Repetitive execution
+
+### The `apply()` family of commands {.box-8 .offset-2 .bg-blue}
+
+these commands allow functions to be run on vectors or matrices.
+
+`apply()` function used on matrix
+ 
+`tapply()` table grouped by factors
+
+`lapply()` on lists and vectors; returns a list
+
+`sapply()` like `lapply()`; returns vector/matrix
+
+`mapply()` multivariate `sapply()`
+
+## Repetitive execution | The `apply()` family of commands {.build}
+
+### `apply()`{} {.box-6 .bg-red .show .stretch}
+
+`apply(DATA, MARGIN, FUNCTION)`
+
+```{r}
+my_matrix <- matrix(1:10, nrow = 2)
+
+apply(my_matrix, 1, mean) # 1 = by rows
+apply(my_matrix, 2, mean) # 2 = by columns
+
+# the function can also be anonymous
+apply(my_matrix, 2, function(x){ x[[sample.int(length(x), 1)]] })
+```
+
+###  `lapply()`{} {.box-6 .bg-red .compact-output .stretch}
+
+`lapply(LIST or VECTOR, FUNCTION)`
+
+```{r}
+m1 <- matrix(2:11, nrow = 2)
+m2 <- matrix(1:10, nrow = 2)
+my_list <- list(m1, m2)
+
+lapply(my_list, mean)
+```
+
+### `sapply()`{} {.box-6 .offset-3 .bg-red}
+
+`sapply()` is like `lapply()` but simplifies the output to a vector if possible
+
+```{r}
+sapply(my_list, mean)
+```
+
+## Repetitive execution | The `apply()` family of commands {.build}
+
+### `mapply()`{} {.box-6 .bg-red}
+
+Like `sapply()` but applies over the first elements of each argument
+
+`mapply(FUNCTION, LIST, LIST, ...)`
+
+<div class = "build">
+
+```{r, class = "compact-output"}
+mapply(rep, pi, 3:1)
+```
+
+```{r, class = "compact-output"}
+# equivalent to: 
+rep(pi, 3) 
+rep(pi, 2) 
+rep(pi, 1)
+```
+
+</div>
+
+### Tip {.box-6 .bg-yellow .icon-small}
+
+![](img/00/tip.png)
+
+Look at the `purrr` package from the `tidyverse` to perform functional programming...
+
+## Vectorisation
+
+### Definition {.box-8 .offset-2 .bg-yellow}
+
+A **vectorised** function `f()` takes a vector `[x1, x2, ... , xn]` as input and returns the vector `[f(x1), f(x2), f(x3), ... , f(xn)]`.
+
+### Why is vectorisation important? {.box-10 .offset-1 .bg-red}
+
+Vectorised functions usually involve a behind-the-scenes loop in a low-level language (C or Fortran), which runs way faster than a pure R loop.
+
+## Vectorisation | Example {.bg-green .build}
+
+```{r, title = "Sample data", width = 6}
+# Create a vector of 1000 random numbers
+# between 1 and 10
+nums <- sample(1:10,
+               size = 1000,
+               replace = TRUE) 
+```
+
+```{r, title = "Using for loops to calculate `log()`", width = 6}
+non_vectorised_log <- function(nums) {
+  for (x in seq_along(nums)) {
+    nums[x] <- log(nums[x])
+  }
+}
+```
+
+### Compare vectorised and non-vectorised `log()` {.box-12 .bg-bluew}
+
+```{r, chunk_col = 100}
+microbenchmark::microbenchmark(non_vectorised_log(nums),
+                               log(nums))
+```
+
+Conclusion: vectorisation is important because it allows you to operate on vectors quickly (unlike looping).
+
+
+
+## Plotting charts | Base R and *ggplot*
+
+```{r first_plot, title = "A first plot using base `plot()`", width = 6}
+plot(iris$Petal.Width, iris$Petal.Length )
+```
+
+
+```{r gplot_plot, title = "Using ggplot", width = 6}
+ggplot(iris) + geom_point(mapping = aes(x = Petal.Width, y = Petal.Length))
+```
+
+
+## Geometric objects | geoms define the type of plot which will be drawn {.build .nvs1}
+
+### `geom_point()` {.box-4 .bg-cobalt}
+
+```{r, echo = FALSE}
+iris %>%
+  ggplot() +
+  geom_point(aes(x = Petal.Width, y = Petal.Length, color = Species))
+```
+
+### `geom_line()` {.box-4 .bg-cobalt}
+
+```{r, echo = FALSE}
+ggplot(economics, aes(x = date, y = pop)) + geom_line()
+#ggplot(as.tbl(mtcars )) +
+#  geom_line(aes(x = wt, y = mpg))
+```
+
+### `geom_col()` {.box-4 .bg-cobalt}
+
+```{r, echo = FALSE}
+#ggplot(mpg, aes(class)) + geom_bar()
+ggplot(mtcars) +
+  geom_col( aes(am, mpg, 
+             fill = factor(cyl)), position = "dodge")
+```
+
+### `geom_boxplot()` {.box-4 .bg-cobalt}
+
+```{r, echo = FALSE}
+ggplot(iris) +
+  geom_boxplot(aes(x = Species, y = Sepal.Length, fill = Species))
+```
+
+### `geom_histogram()` {.box-4 .bg-cobalt}
+
+```{r, echo = FALSE}
+ggplot(iris) +
+  geom_histogram(aes(x = Sepal.Width), bins = 20)
+```
+
+### `geom_density()` {.box-4 .bg-cobalt}
+
+```{r, echo = FALSE}
+ggplot(iris) +
+  geom_density(aes(x = Sepal.Width, fill = Species, colour = Species), alpha = 0.6)
+```
+
+```{css, echo = FALSE}
+.shift-up {
+  margin-top: -500px;
+}
+```
+
+## A whole workflow in R  | `limma` package
+
+```{r, eval = FALSE}
+library(limma)
+setwd("/Users/roland.krause/Workspace/isb101/R/swirl/")
+targets <- readTargets("SwirlSample.txt")
+design <- modelMatrix(targets, ref="wild type")
+RG <- read.maimages(targets, source="spot")
+# RG
+RG$genes <- readGAL("fish.gal")
+# head(RG$genes)
+RG$printer <- getLayout(RG$genes)
+MA <- normalizeWithinArrays(RG, method="none")
+MA <- normalizeWithinArrays(RG)
+boxplot(MA$M~col(MA$M),names = colnames(MA$M))
+MA <- normalizeBetweenArrays
+```
+
+
+
+## Model and QQ plot
+```{r eval = FALSE}
+
+fit <- lmFit(MA, idesign)
+ordinary.t <- fit$coef / fit$stdev.unscaled / fit$sigma
+fit <- eBayes(fit)
+qqt(fit$t,df=fit$df.prior+fit$df.residual,pch=16,cex=0.2)
+  abline(0,1)
+```
+
+## Differentially expressed genes
+```{r eval = FALSE }
+options(digits=3)
+kable(topTable(fit,number=30,adjust="BH"))
+
+
+```
+
+## Advice for beginners {.build}
+
+### Common pitfalls {.bg-red .box-6  .icon-small}
+![](img/00/warning.png)
+
+ * `NA` - Missing values are their own type.
+ * Factors - avoid initially if you can  (e.g by `stringsAsFactors = FALSE` when reading files)
+ * Ignoring vectorisation and using `for` loops when appropiate functions exist
+ 
+%end%
+
+### Suggestions {.box-6 .bg-yellow .bg-yellow .icon-small}
+ * Learn the `tidyverse` packages for 
+    + plotting (`ggplot2`)
+    + data manipulation (`dplyr` and `tidyr`)
+    + functional programming (`purrr`)
+
+## Resources for Learning R
+
+### Swirl {.box-6 .bg-blue .stretch}
+
+```{r, eval = FALSE}
+install.packages("swirl")
+
+```
+```{r, eval = FALSE}
+library("swirl")
+swirl()
+
+```
+
+```
+1: R Programming: The basics of programming in R
+2: Regression Models: The basics of regression modeling in R
+3: Statistical Inference: The basics of statistical inference in R
+4: Exploratory Data Analysis: The basics of exploring data in R
+5: Don't install anything for me. I'll do it myself.
+```
+
+### Online training  {.box-6 .bg-yellow .stretch .icon-small}
+
+![](https://cdn.datacamp.com/main-app/assets/brand/datacamp-horizontal-rgb-f2e1d0a9be07824aca4d5aeda0975757eb511b52ee3d770b3d6fcffe790d99d5.svg)
+
+ * [www.datacamp.com](www.datacamp.com)
+    +  Ask me about setting up course work. 
+
+ *  (Coursera)[coursera.org]
+
+### Further training at UL and LIH {.box-8 .offset-2 .bg-green .stretch .icon-small}
+ * R tidyverse course in May 14-17, 2019
