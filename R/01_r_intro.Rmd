@@ -1,7 +1,7 @@
 ---
 title: "Introduction to R"
 author: "E. Koncina, G. Androsova, A. Ginolhac, R. Krause"
-date: "2018-01-08"
+date: "2019-03-25"
 output: iosp::ioslides_plus
 ---
 
@@ -71,12 +71,12 @@ More details on https://www.r-project.org/about.html
 
 ### R lecture {.box-8 .offset-2 .bg-green}
 
-- R1 Intro
-- R2 Tidy data (Tue morning)
-- R3 Getting data into R (Tue afternoon)
-- R4 Data manipulation (Wed afternoon)
-- R5 Visualisation (Thu afternoon)
-- R6 Genomics in R (Fri morning)
+- R1 Intro (this morning)
+- R2 Tidy data (Mon afternoon)
+- R3 Getting data into R (Tuesday morning)
+- R4 Data manipulation (Tue afternoon)
+- R5 Visualisation (Wed morning)
+- R6 Genomics in R (Wednesday afternoon)
 
 ## How to install R on my PC?
 
