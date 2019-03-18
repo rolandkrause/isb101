@@ -1,14 +1,26 @@
 ---
-title: "Introduction to R"
-author: "E. Koncina, G. Androsova, A. Ginolhac, R. Krause"
+title: "Getting started in R"
+subtitle: "Basic R"
+author: "Nikola de Lange and Roland Krause"
 date: "2019-03-25"
 output: iosp::ioslides_plus
 ---
 
 ```{r setup, include = FALSE}
 library(tidyverse)
-swirl_mailto <- "eric.koncina@uni.lu" #"roland.krause@uni.lu"
+swirl_mailto <- "roland.krause@uni.lu"
 ```
+
+## Acknowledgements
+
+### Original creators {.bg-blue .offset1-1 .box-10}
+
+ * Aurélien Ginolhac
+ * Eric Koncina
+ * Ganna Androsova
+ 
+### Sources  {.bg-blue .offset1-1 .box-10}
+Adapted from the biostat2 tidyverse lecture https://biostat2.uni.lu/lecture02_tidyverse.html
 
 ```{r hook_col, include = FALSE}
 # A chunk hook to adjust the width of the output (console/terminal width)
@@ -23,7 +35,7 @@ knitr::knit_hooks$set(chunk_col = function(before, options, envir) {
 
 ## Why learning R?
 
-### {.box-8 .offset-2 .bg-yellow}
+### What is R {.box-4 .bg-yellow}
 
 R is a language and environment for **statistical** computing and **graphics**.
 
@@ -41,12 +53,16 @@ R is a language and environment for **statistical** computing and **graphics**.
 }
 ```
 
-### Advantages of R {.box-10 .offset-1 .bg-blue .double-list}
+
+### Advantages of R {.box-4 .bg-blue }
 
 - free software (unlike Matlab)
 - easy to download/install/update
 - easy to process big files and analyse huge amounts of data
 - integrated data visualisation tools
+
+### Relevance for life sciences {.box-4 .bg-green }
+
 - programs can be integrated with the text to produce fully reproducible manuscripts
 - most relevant statistical environment for data analysis in the life sciences
 
