@@ -1,6 +1,6 @@
 ---
-title: "Data transformation"
-subtitle: dplyr
+title: "Databases and their transformation"
+subtitle: `dplyr` and `join`
 author: "A. Ginolhac, E. Koncina, R. Krause"
 date: "10 January 2018"
 output: iosp::ioslides_plus
@@ -309,14 +309,14 @@ filter(gene_by_exon, hgnc_symbol == "APP") %>%
 ### multiple conditions: AND {.box-10 .offset-1 .bg-blue}
 
 - **comma** separated conditions are combined with `&`
-- For example, suppose you would like to filter out genes located in a particular range:
+- For example, suppose you would like to filter genes located in a particular range:
 
 ```{r, col_width = 80}
 filter(gene_by_exon, start_position > 1.05e7, end_position < 1.1e7)
 ```
 
 
-## Filtering out rows | multiple conditions, OR (`|`) {.vs1}
+## Filtering rows | multiple conditions, OR (`|`) {.vs1}
 
 ### multiple conditions: OR {.box-10 .offset-1 .bg-blue}
 
@@ -327,16 +327,13 @@ filter(gene_by_exon, start_position > 1.05e7, end_position < 1.1e7)
 filter(gene_by_exon, start_position < 5.02e6 | end_position > 46665124 )
 ```
 
-<!-- 
-add this example
+### `between()` {.box-10 offset-1 .code}
 
 ```{r}
 gene_by_exon %>%
   filter(between(start_position, 1.05e7, 1.1e7)) %>% 
   select(hgnc_symbol, start_position, end_position)
 ```
---> 
-<!-- 
 
 ## `filter()` | set operations {.vs1}
 
@@ -357,7 +354,6 @@ gene_by_exon %>%
     select(hgnc_symbol:strand)
 ```
 
--->
 
 ## Sort columns 
 
@@ -484,7 +480,7 @@ gene_by_exon %>%
   distinct()
 ```
 
-<!--
+
 
 ## `mutate_at(), mutate_all(), mutate_if()` | change multiple columns
 
@@ -557,7 +553,7 @@ iris %>%
   select(-Species) %>%
   mutate_all(funs(inches = . / 2.54))
 ```
--->
+
 
 
 # Grouping and summarising
@@ -604,6 +600,15 @@ gene_by_exon %>%
 
 
 # Joining data frames
+
+## Joining, merging
+
+### Basic operations on more than one table  {.bg-blue .box-6 .show}
+
+ * Integrate data from two tables by **keys**
+ * Hierarchical databases
+
+### UK bands: `band_members` {.bg-green .box-6 .show}
 
 ## Merge 2 separate tables {.build}
 
