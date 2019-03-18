@@ -4,7 +4,7 @@ author:
 date: "`r Sys.Date()`"
 output:
   iosp::ioslides_plus:
-    logo: "img_shell/logo_uni.jpg"
+    logo: "/Users/nikola.delange/isb101/R/img/00/uni.png"
 ---
 
 ```{r setup, include=FALSE}
@@ -101,7 +101,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ### Mac/Linux {.bg-green .box-10}
 - `ssh -p 8022 student<no>@access-iris.uni.lu`
 
-### Windows {.bg-blue .box-8}
+### Windows PuTTY{.bg-blue .box-8}
 - Session 
     - Host Name: access-iris.uni.lu
     - Port 8022
@@ -109,6 +109,11 @@ knitr::opts_chunk$set(echo = TRUE)
     - Auto-login username: student`<no>`
 - Connection > SSH > Auth
     - Load private key
+    
+## Iris
+
+### {.box-12}
+![](img_shell/iris_access.png)
     
 
 ## On the cluster
