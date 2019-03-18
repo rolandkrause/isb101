@@ -9,4 +9,4 @@ iosp::ioslides_plus:
   fig_retina: null
   css: css/tweaks.css
   box_colours:
-    bg-bluew: ["white", "#005C99"]
+    bg-blue: ["white", "#005C99"]
