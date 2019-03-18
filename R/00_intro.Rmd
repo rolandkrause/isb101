@@ -1,0 +1,49 @@
+---
+title: "Course introduction"
+subtitle: "Getting started"
+author: "Roland Krause"
+date: "2019-03-25"
+output: iosp::ioslides_plus
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## Content | Bioinformatics {.build}
+
+
+### Genomics {.box-6 .bg-blue}
+ * Introduction to genetics
+ * Introduction to the Unix Shell
+ * Basic flow and algorithms
+ * Next-generation sequencing - exome sequencing
+ * Practical
+ 
+### Databases {.box-6 .bg-yellow .stretch}
+ * Statistical analysis environment R
+ * Basic data structures
+ * Reproducible science and reporting
+
+
+## Speakers {.bg-blue}
+
+Speaker            | Institute|Subject
+-------------------|--------|---------
+Reinhard Schneider | LCSB   | Introduction
+Nikola de Lange | LCSB      | Unix Shell, R
+Patrick May | LCSB          | NGS
+Daniel Stieber | LNS        | Genetics
+Roland Krause | LCSB        | R, Course moderator
+
+## Timing
+
+### Course times {.box-6 .bg-green}
+ * Start 9:45
+ * Lunch break 12:30 - 13:30
+ * End (17:00)
+ * Exercise/ Home work
+ 
+### Schedule  {.box-6 .bg-blue}
+ [Moodle](https://moodle.uni.lu/course/view.php?id=93#section-1)
