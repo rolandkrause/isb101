@@ -10,6 +10,7 @@ output:
 
 ```{r setup, include = FALSE}
 library(tidyverse)
+library(knitr)
 ```
 
 ```{css, echo = FALSE}
@@ -31,9 +32,104 @@ library(tidyverse)
 
 ![](img/00/kt.png)
 
+- Discuss basic ideas about data visualization, notably **data to ink**.
 - Understand the basic grammar of ggplot2 (data, geoms, aesthetics, facets).
 - Make quick exploratory plots of your multidimensional data.
 - Know how to find help on `ggplot2` when you run into problems.
+
+# Visualization principles
+
+## Data-ink ratio | Definitions
+
+### Definition Data-ink {.offset-2 .box-8 .bg-blue }
+
+Data-ink: the non-erasable core of a graphic.
+
+
+### Defintion Data-ink ratio {.offset-2 .box-8 .bg-green }
+One of the following"
+
+ 1. data-ink divided by the total ink used to print the graphic.  
+ 2. the proportion of a graphic’s ink devoted to the non-redundant display of data information.  
+ 3. One minus the proportion of a graphic that can be erased without loss of data information.  
+
+## Data to ink ratio | Edward Tufte
+
+### Five Laws of Data-Ink {.offset-2 .box-8 .bg-yellow .icon}
+
+ * Above all else show the data.
+ * Maximize the data-ink ratio.
+ * Erase non-data ink.
+ * Erase redundant data-ink.
+ * Revise and edit.
+
+## Examples 
+
+### {.center}
+
+```{r, echo = FALSE, width=8}
+
+my_dat <- tribble(~gene, ~length, 
+                  "SCN1A",  312,
+                  "SCN2A",  542,
+                  "SLC1A3", 501,
+                  "ACT1"  , 421,
+                  "IRG1" ,  387)
+                  
+ggplot(my_dat) +
+  aes(gene, length, fill=gene) +
+   geom_col() +
+  labs(title = "Length of genes by gene length", caption = "Gene length in residues") +
+  theme(plot.background = element_rect(fill = "lightblue"))
+  #scale_fill_gradientn(colours = terrain.colors(10))
+
+```
+
+Source: https://medium.com/@plotlygraphs/maximizing-the-data-ink-ratio-in-dashboards-and-slide-deck-7887f7c1fab
+
+
+## Remove redundant information | Legend
+
+```{r, echo = FALSE, width = 8}
+
+ggplot(my_dat, aes(gene, length, width = .6)) +
+   geom_col(fill = "white", colour="grey") +
+   theme_bw()+
+   guides(fill=FALSE) +
+    labs(title = "Gene length in residues")+
+   theme(
+         legend.text = element_blank(),
+         axis.title.x=element_blank(),
+         axis.ticks.x=element_blank()) 
+
+```
+
+
+## {.center}
+```{r, echo = FALSE, width = 8}
+
+ggplot(my_dat, aes(gene, length, width = .6)) +
+   geom_col(fill = "white", colour="grey") +
+   theme_minimal()+
+   guides(fill=FALSE) +
+    labs(title = "Gene length in residues")+
+   theme(
+         strip.background = element_blank(),
+         legend.text = element_blank(),
+         axis.title.x=element_blank(),
+         axis.title.y=element_blank(),
+         axis.text.y=element_blank(),
+         axis.ticks.x=element_blank()) +
+     geom_text(aes(label = length), vjust = 3)
+
+```
+
+
+## But you know ...
+
+```{r, echo = FALSE}
+kable(my_dat, col.names = c("Gene", "Length"))
+```
 
 ## Introduction {.build}
 
@@ -135,7 +231,7 @@ x     y    shape
 
 ## Motivation for this layered system {.middle}
 
-###{.col-10 .offset-1}
+### {.col-10 .offset-1}
 
 > *Data visualisation* is not meant just to be seen but to be read, like written text | Alberto Cairo {.bg-yellow}
 
@@ -215,10 +311,12 @@ saving the data frame as a `tibble` enables the smart tibble printing and avoids
 
 ```{r first_plot, title = "Draw your first plot", width = 10, class = "offset-1", eval = FALSE}
 ggplot(data = iris) +
-  geom_point(mapping = aes(x = Petal.Width, y = Petal.Length))
+  aes(x = Petal.Width) +
+  aes(y = Petal.Length) +
+  geom_point()
 ```
 
-###{.box-8 .offset-2 .bg-bluew}
+### {.box-8 .offset-2 .bg-bluew}
 
 ```{r first_plot, echo = FALSE, fig.height = 4}
 ```
@@ -229,37 +327,18 @@ ggplot(data = iris) +
 
 ![](img/00/warning.png)
 
-`ggplot2` introduces a break in the workflow from ` %>% ` to `+`
+`ggplot2` introduces a break in the workflow from ` %>% ` to `+`!
 
-### `ggplot1`
+> If the pipe ( %>% in 2014) had been invented before, ggplot2 would have never existed | Hadley Wickham
 
-`ggplot1` was released in **2005** until **2008** by [Hadley Wickham](https://github.com/hadley/ggplot1).
-
-> If the pipe ( %>% in 2014) had been invented before, `ggplot2` would have never existed | Hadley Wickham
-
-### {.box-6 .bg-bluew}
-
-```{r, eval = FALSE, title = "`ggplot1`: original syntax"}
-# devtools::install_github("hadley/ggplot1")
-library(ggplot1)
-p <- ggplot(mtcars, list(x = mpg, y = wt))
-# need temp p object to avoid too many ()'s
-scbrewer(ggpoint(p, list(colour = gear)))
-```
-
-```{r, eval = FALSE, title = "`ggplot1` with the pipe"}
-library(ggplot1)
-mtcars %>% 
-  ggplot(list(x = mpg, y = wt)) %>% 
-  ggpoint(list(colour = gear)) %>% 
-  scbrewer()
-```
-
+### ggplot2 {.box-6 .bg-blue}
 ```{r, eval = FALSE, title = "`ggplot2`"}
-library(ggplot2)
 mtcars %>% 
-  ggplot(aes(x = mpg, y = wt)) + 
-  geom_point(aes(colour = as.factor(gear))) +
+  ggplot() +
+  aes(x = mpg) +
+  aes( y = wt) + 
+  geom_point() +
+  aes(colour = as.factor(gear)) +
   scale_color_brewer("gear", type = "qual")
 ```
 
