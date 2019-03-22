@@ -252,7 +252,7 @@ NaN # Not a Number
 ```
 
 
-### {.box-6 .offset-1 .nvs2}
+### {.box-6 .nvs2}
 
 Call the command **`class()`** or **`typeof()`** to see what data you are working with.
 
@@ -479,7 +479,7 @@ swirl()
 - Choose the "R Programming E" course.
 - Complete lessons **1, 2**  and **3**.
 - In the end of the lesson send the email to `r swirl_mailto`\
-  The email subject should be generated automaticly by swirl, in the email body place your last command used in the lesson.
+  The email subject should be generated automatically by swirl, in the email body place your last command used in the lesson.
 
 ## Operations on vectors
 
@@ -625,7 +625,7 @@ swirl()
 Choose the "R Programming E" course.
 Complete lessons **4**  and **8**. In the end of the lesson send the email to `r swirl_mailto`
 
-The email subject should be generated automaticly by swirl, in the email body place your last command used in the lesson.
+The email subject should be generated automatically by swirl, in the email body place your last command used in the lesson.
 
 ## Subsetting Vectors 
 
@@ -692,7 +692,7 @@ swirl()
 Choose the "R Programming E" course.
 Complete lessons **5**  and **6**. In the end of the lesson send the email to `r swirl_mailto`
 
-The email subject should be generated automaticly by swirl, in the email body place your last command used in the lesson.
+The email subject should be generated automatically by swirl, in the email body place your last command used in the lesson.
 
 ## Structures
 
@@ -1064,7 +1064,7 @@ swirl()
 Choose the "R Programming E" course.
 Complete lesson **7**. In the end of the lesson send the email to `r swirl_mailto`
 
-The email subject should be generated automaticly by swirl, in the email body place your last command used in the lesson.
+The email subject should be generated automatically by swirl, in the email body place your last command used in the lesson.
 
 # Functions
 
@@ -1183,7 +1183,7 @@ swirl()
 Choose the "R Programming E" course.
 Complete lesson **9**. In the end of the lesson send the email to `r swirl_mailto`
 
-The email subject should be generated automaticly by swirl, in the email body place your last command used in the lesson.
+The email subject should be generated automatically by swirl, in the email body place your last command used in the lesson.
 
 ## Control statements{.build}
 
@@ -1465,7 +1465,7 @@ swirl()
 Choose the "R Programming E" course.
 Complete lesson **10**. In the end of the lesson send the email to `r swirl_mailto`
 
-The email subject should be generated automaticly by swirl, in the email body place your last command used in the lesson.
+The email subject should be generated automatically by swirl, in the email body place your last command used in the lesson.
 
 ## Conclusion {.bg-blue}
 
