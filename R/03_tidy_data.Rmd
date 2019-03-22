@@ -18,12 +18,14 @@ knitr::opts_chunk$set(echo = TRUE, fig.align = "center")
 ![](img/00/kt.png)
 
 - know principles of tidy data
-- what is the tidyverse
-- tidy up data using `tidyr`
+- know what the tidyverse is
+- use the `magrittr` pipe
+- appreciate the tibble format
+- use `readr` to import data into R
 
 ## Basic: everything in the data rectangle | with header {.middle}
 
-###{.box-6 .bg-white .offset-3}
+### {.box-6 .bg-white .offset-3}
 
 ![](img/02/data_rectangle.png)
 
@@ -67,7 +69,7 @@ knitr::opts_chunk$set(echo = TRUE, fig.align = "center")
 - What's wrong with this sheet?
 - Which problems are _tidy_ issues?
 
-###{.col-10 .offset-1}
+### {.col-10 .offset-1}
 
 ![](img/02/tidy_excelbad.png)
 
@@ -211,7 +213,7 @@ rnorm(5) %>%
 
 ## Importing data{.vs3 .build}
 
-###{.box-6 .bg-blue .offset-0 .stretch}
+### {.box-6 .bg-blue .offset-0 .stretch}
 
 - Represents probably the first step of your work
 - R can handle multiple data types
@@ -404,7 +406,7 @@ To import excel files (`.xls` and `.xlsx`):
 
 ## Rstudio data import | preview window{.bg-green}
 
-###{.col-10 .offset-1}
+### {.col-10 .offset-1}
 
 ![](img/03/rstudio_import_preview.jpg)
 
@@ -689,6 +691,8 @@ read_delim(file, delim = "|", ...)
 
 ![](img/00/kt.png)
 
+- organise data in a tidy way
+- use the `magrittr` pipe
 - appreciate the tibble printing features
     + **column types** are displayed
 - use `readr` to import your flat file data into _R_
