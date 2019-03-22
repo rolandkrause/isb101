@@ -13,14 +13,16 @@ swirl_mailto <- "roland.krause@uni.lu"
 
 ## Acknowledgements
 
-### Original creators {.bg-blue .offset1-1 .box-10}
+### Key contributors {.bg-green .offset1-1 .box-10}
 
  * Aurélien Ginolhac
  * Eric Koncina
  * Ganna Androsova
  
 ### Sources  {.bg-blue .offset1-1 .box-10}
-Adapted from the biostat2 tidyverse lecture https://biostat2.uni.lu/lecture02_tidyverse.html
+Adapted from the biostat2 tidyverse lecture https://biostat2.uni.lu/lecture02_tidyverse.html 
+Multiple contributions from 
+ * Hadely Wickham (RStudio, tidyverse)
 
 ```{r hook_col, include = FALSE}
 # A chunk hook to adjust the width of the output (console/terminal width)
@@ -35,10 +37,10 @@ knitr::knit_hooks$set(chunk_col = function(before, options, envir) {
 
 ## Why learning R? 
 
-### Stay in charge of your data analysis {.box-12 .bg-yellow}
+### Stay in charge of your data analysis {.box-12 .bg-red}
 Every biomedical researchers should learn to perform reproducible data analysis in a scripted environment. 
 
-### What is R {.box-4 .bg-yellow}
+### What is R {.box-4 .bg-yellow .stretch}
 
 R is a general language and environment for **statistical** computing and **graphics**.
 
@@ -72,7 +74,7 @@ R is a general language and environment for **statistical** computing and **grap
 More details on https://www.r-project.org/about.html
 
 
-## {.bg-red .middle}
+## {.bg-blue .middle}
 
 ### Learning objectives {.box-10 .offset-1 .bg-red .icon}
 
@@ -80,20 +82,20 @@ More details on https://www.r-project.org/about.html
 
 - Apply your knowledge from Introduction to Bioinformatics in a new environment
 - Learn Base R
-- Structure your research data (*tidy data*)
 - Learn about *literate programming* using RMarkdown to produce reproducible research
+- Structure your research data (*tidy data*)
 - Get to know a set of packages for easy data manipulation and visualisation (*tidyverse* including *dplyr* and *ggplot*)
 - Practice R in a learning environment and with first projects
-- Eventually, write your project report in RMarkdown
+- Write your project report in RMarkdown
 
 ## Set up for R 
 
 ### R lecture {.box-8 .offset-2 .bg-green}
 
-- R1 Intro (this morning)
-- R2 Tidy data (Mon afternoon)
-- R3 Getting data into R (Tuesday morning)
-- R4 Data manipulation (Tue afternoon)
+- R1 Introduction to R 
+- R2 RMarkdown  (Mon afternoon)
+- R3 Tidy data & getting data into R (Tuesday morning)
+- R4 Data manipulation and databases (Tue afternoon)
 - R5 Visualisation (Wed morning)
 - R6 Genomics in R (Wednesday afternoon)
 
@@ -250,7 +252,7 @@ NaN # Not a Number
 ```
 
 
-### {.box-6 .offset-1 .bg-yellow .nvs2}
+### {.box-6 .offset-1 .nvs2}
 
 Call the command **`class()`** or **`typeof()`** to see what data you are working with.
 
@@ -293,7 +295,7 @@ double_precision <- as.character(.Machine$double.xmax) %>%
 .Machine$double.xmax
 ```
 
-```{r rm_dbl_precision}
+```{r rm_dbl_precision, include=FALSE}
 # Clear some variables to clean the env for ls() demo
 rm(double_precision)
 ```
@@ -333,20 +335,20 @@ is.integer(1L) #Putting capital 'L' after an integer forces it to be stored as a
 
 ### Vectors {.box-6 .stretch .bg-blue}
 
-- elements of the same type are organised as vectors
+- elements of the same type are organised as *vectors*
 - a single number is already a vector
-- `c()` is the function to **concatenate** elements
+- `c()` is the function to *concatenate* elements
 
-### Atomic vectors {.box-6 .bg-blue}
+### Atomic vectors {.box-6 .bg-blue .stretch}
 
-Each **atomic** vector contains only a single type of data
+Each *atomic* vector contains only a single type of data
 
 - The type of each atom is the same
 - The size of each atom is 1 (single element)
 
 %end%
 
-```{r vec_example, title = "Example", width = 8, class = "offset-2", row = c(6, 6)}
+```{r vec_example, title = "Example", width = 12,  row = c(6, 6)}
 # Logical
 c(TRUE, FALSE, TRUE)
 
@@ -404,30 +406,18 @@ x = 7
 
 The use of the equal sign (`=`) is a historic accident in programming languages derived from *C*.
 
+### Use keyboard shortcuts {.box-6  .bg-yellow .icon-small}
+ * On Mac the short cut `Alt -` will insert `<-` 
+ * `->` assigns a value to a name on the right.
+ * The name can be quoted (`"var_name" <- my_value`)
+
 ## Naming of variables{.build .nvs1}
 
-> **The World's Worst Variable Name** to be: data\
-Of course it's data! That's what variables contain! That's all they ever can contain. It's like you're packing up your belongings to move to a new house, and on the side of the box you write, in big black marker, "things".| [Andy Lester](http://archive.oreilly.com/pub/post/the_worlds_two_worst_variable.html) {.bg-red .show}
 
-<div class = "col-6 build" style = "z-index: 999;">
-
-### Use meaningful names {.box-12 .bg-yellow .show}
+### Use meaningful names {.box-6 .bg-yellow .show}
 
 - **matrix_multiplication** is better than **mult**
 - Do not fear long variable names!
-
-### Stay consistent: use a [naming convention](https://journal.r-project.org/archive/2012-2/RJournal_2012-2_Baaaath.pdf) {.box-12 .bg-yellow}
-
-- alllowercase
-- period.separated
-- **underscore_separated** (_recommended by [Hadley Wickham](http://adv-r.had.co.nz/Style.html)_)
-- lowerCamelCase
-- UpperCamelCase
-<!-- - _e.g._ `new_plot`, `my_list`, `new_function`, `transition_matrix` ... -->
-
-</div>
-
-### Use specific names {.box-6 .bg-blue}
 
 ```{r naming, eval = FALSE}
 total <- price * qty
@@ -439,6 +429,15 @@ if ( total2 < total3 ) {
     print "You can't afford this order.";
 }
 ```
+
+### The World's Worst Variable Name {.box-6 .bg-red }
+> Of course it's data! That's what variables contain! That's all they ever can contain. It's like you're packing up your belongings to move to a new house, and on the side of the box you write, in big black marker, "things".| [Andy Lester](http://archive.oreilly.com/pub/post/the_worlds_two_worst_variable.html)
+
+### Stay consistent: use a [naming convention](https://journal.r-project.org/archive/2012-2/RJournal_2012-2_Baaaath.pdf) {.box-12 .bg-yellow}
+
+   * **underscore_separated** (_recommended_ for modern R)
+   *  period.separated (S-plus derived R) 
+   *  lowerCamelCase (Objects - not covered in this course)
 
 If you're faced with naming something total2, change the existing name to something more specific.
 
@@ -455,7 +454,7 @@ There are several ways to check content of variable:
     ```
 - In R Console type **x** to see it's value.
 
-### Listing variables {.box-6 .bg-red}
+### Listing variables {.box-6 .bg-green}
 
 - To get a list of all of the variables that have been defined use the `ls()` command:
     ```{r ls, chunk_col = 40}
@@ -469,8 +468,9 @@ There are several ways to check content of variable:
 
 Type in R console:
 ```{r swirl_1, eval = FALSE}
+install.packages("swirl")
 library(swirl)
-#install_course("R Programming E")
+install_course("R Programming E")
 swirl()
 
 #Lesson 1, 2, 3
@@ -497,7 +497,7 @@ a + 5
 
 %end%
 
-```{r operations, title = "Basic R operations", width = 6}
+```{r operations, title = "Basic R operations are vectorised", width = 6}
 a * 4
 sqrt(a)
 exp(a)
@@ -1406,13 +1406,15 @@ Look at the `purrr` package from the `tidyverse` to perform functional programmi
 
 ## Vectorisation
 
-### Definition {.box-8 .offset-2 .bg-yellow}
+### Definition {.box-12  .bg-yellow}
 
 A **vectorised** function `f()` takes a vector `[x1, x2, ... , xn]` as input and returns the vector `[f(x1), f(x2), f(x3), ... , f(xn)]`.
 
-### Why is vectorisation important? {.box-10 .offset-1 .bg-red}
+### Why is vectorisation important? {.box-6  .bg-red}
 
 Vectorised functions usually involve a behind-the-scenes loop in a low-level language (C or Fortran), which runs way faster than a pure R loop.
+
+
 
 ## Vectorisation | Example {.bg-green .build}
 
@@ -1441,6 +1443,14 @@ microbenchmark::microbenchmark(non_vectorised_log(nums),
 
 Conclusion: vectorisation is important because it allows you to operate on vectors quickly (unlike looping).
 
+## Vectorisation | Advice
+
+### Beginner's mistakes {.box-6 .offset-3 .bg-yellow .icon-small}
+ * Not using vectorisation because for loops are thought to be *easier*.
+ * Writing too much intermediate code when looping over data structures.
+ * Modifying a vector in a for loop (super slow)
+ * In the end, purrr::map() and apply() **are** for loops that are more efficient.  
+ * When you don't know anymore, write a for loop anyway (e.g. when moving around in columns and rows in a matrix)
 
 ## Practice time! {.bg-green}
 
@@ -1456,3 +1466,8 @@ Choose the "R Programming E" course.
 Complete lesson **10**. In the end of the lesson send the email to `r swirl_mailto`
 
 The email subject should be generated automaticly by swirl, in the email body place your last command used in the lesson.
+
+## Conclusion {.bg-blue}
+
+### Thank you for your attention! {.box-8 .offset-2}
+
