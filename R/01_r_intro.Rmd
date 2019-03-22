@@ -1406,13 +1406,15 @@ Look at the `purrr` package from the `tidyverse` to perform functional programmi
 
 ## Vectorisation
 
-### Definition {.box-8 .offset-2 .bg-yellow}
+### Definition {.box-12  .bg-yellow}
 
 A **vectorised** function `f()` takes a vector `[x1, x2, ... , xn]` as input and returns the vector `[f(x1), f(x2), f(x3), ... , f(xn)]`.
 
-### Why is vectorisation important? {.box-10 .offset-1 .bg-red}
+### Why is vectorisation important? {.box-6  .bg-red}
 
 Vectorised functions usually involve a behind-the-scenes loop in a low-level language (C or Fortran), which runs way faster than a pure R loop.
+
+
 
 ## Vectorisation | Example {.bg-green .build}
 
@@ -1441,6 +1443,14 @@ microbenchmark::microbenchmark(non_vectorised_log(nums),
 
 Conclusion: vectorisation is important because it allows you to operate on vectors quickly (unlike looping).
 
+## Vectorisation | Advice
+
+### Beginner's mistakes {.box-6 .offset-3 .bg-yellow .icon-small}
+ * Not using vectorisation because for loops are thought to be *easier*.
+ * Writing too much intermediate code when looping over data structures.
+ * Modifying a vector in a for loop (super slow)
+ * In the end, purrr::map() and apply() **are** for loops that are more efficient.  
+ * When you don't know anymore, write a for loop anyway (e.g. when moving around in columns and rows in a matrix)
 
 ## Practice time! {.bg-green}
 
@@ -1456,3 +1466,8 @@ Choose the "R Programming E" course.
 Complete lesson **10**. In the end of the lesson send the email to `r swirl_mailto`
 
 The email subject should be generated automaticly by swirl, in the email body place your last command used in the lesson.
+
+## Conclusion {.bg-blue}
+
+### Thank you for your attention! {.box-8 .offset-2}
+
