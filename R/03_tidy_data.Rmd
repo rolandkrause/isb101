@@ -8,7 +8,7 @@ output: iosp::ioslides_plus
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(echo = TRUE, fig.align = "center")
-library(tidyverse)
+
 ```
 
 ## Learning objectives
@@ -145,6 +145,22 @@ Name of the table             | No             | You'll see this often
 
 ![](img/02/tidyverse_data_science.png)
 
+## Installing tidyverse packages
+
+### Easy installation of basic packages {.box-6 .bg-blue}
+
+```{r, eval = FALSE}
+install.packages("tidyverse")
+```
+
+### Include {.box-6 .bg-blue}
+
+```{r}
+library(tidyverse)
+```
+
+
+
 ## Pipes with magrittr{.build}
 
 ### R base {.box-6 .bg-blue .show .stretch}
@@ -173,29 +189,7 @@ rnorm(5) %>%
 
 ![](img/00/tip.png)
 
-`%>%` needs to be loaded using either:
-
-```{r, eval = FALSE, width = 8}
-library(magrittr)
-library(dplyr)
-library(tidyverse)
-```
-
-## Règles de la tuyauterie
-
-### hrbrmstr's Rules of Piping {.box-8 .offset-2 .bg-yellow}
-
-- The chain should be > 1
-- A pipe should be designed to accomplish a unified task
-- It's OK to change object class/type/mode
-- Pipe operations should be "atomic"
-- Be data-source aware
-- Pipe (briefly) in pipes
-- **Don't be reticent to create new verbs**
-
-source: [Bob Rudis (hrbrmstr) at studio::conf17](https://www.rstudio.com/resources/videos/writing-readable-code-with-pipes/)
-
-
+`%>%` is available in the `tidyverse` packages and some additional ones.
 
 
 
