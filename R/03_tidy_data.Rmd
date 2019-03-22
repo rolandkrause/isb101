@@ -574,42 +574,6 @@ patient_complete
 ```
 
 
-## How to keep hierachical data in a rectangle? | nesting tables {.build}
-
-### solution: `nest()` {.box-6 .bg-blue}
-
-```{r out.width = '50%'}
-patient_complete %>% 
-  nest(visit_id, measured) -> patient_nested
-patient_nested
-```
-
-### Advantages {.box-6 .bg-green .stretch}
-
- * common data structures are hierarchical, e.g. patient-centric with repeat observations
- * **nesting** allows to store *collapsed* tibbles and simplifies data management
- * **unnesting** unfold the data
-
-### `unnest()` {.box-12 .bg-blue .compact-output}
-```{r, row = TRUE}
-patient_nested %>% 
-  unnest()
-```
-
-
-## better described as grouped data {.vs2}
-
-### `group_by` and `nest()` {.box-12 .bg-blue}
-```{r, row = TRUE}
-patient_complete %>%
-  group_by(subject_id) %>%
-  nest(.key = "visit")
-```
-
-%end%
-
-- nested column ([list-column](https://github.com/rstudio/cheatsheets/raw/master/old/pdfs/list-columns-cheatsheet.pdf)) is named `data` by default
-
 
 
 # Import data using `readr`

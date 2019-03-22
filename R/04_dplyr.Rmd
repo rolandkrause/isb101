@@ -932,3 +932,318 @@ Choose the "isb101" course and complete the lessons:
 
 - **Manipulating Data with dplyr**.
 - **Grouping and Chaining with dplyr**.
+
+# `tidyr`
+
+![](img/00/logo_tidyr.png)
+
+## `tidyr` | introduction
+
+### Tip {.box-5 .bg-yellow .icon-small}
+
+![](img/00/tip.png)
+
+Use the [cheatsheet](https://www.rstudio.com/resources/cheatsheets/)
+
+### {.box-7 .bg-bluew}
+
+![](img/02/tidyr_cheatsheet.jpg)
+
+## Convert long / wide format
+
+### {.box-10 .offset-1 .bg-yellow}
+
+- The wide format is generally **untidy** _but_ found in the majority of datasets
+- The **wide** format makes computation on columns sometimes easier
+
+### gather {.box-6 .bg-blue-white .stretch}
+
+![](img/02/tidy_gather_450.png)
+
+### spread {.box-6 .bg-blue-white .stretch}
+
+![](img/02/tidy_spread_450.png)
+
+
+## Demo with the iris dataset | `gather()`
+
+```{r, message = FALSE, warning = FALSE, title = "From **large to long** with `gather()`"}
+library("tidyverse")
+iris_melt <- iris %>%
+  rownames_to_column(var = "observation") %>%
+  as_tibble() %>%
+  gather(key = "parameter", value = "value", -Species, -observation)
+
+iris_melt
+```
+
+## Demo with the iris dataset | `spread()` {.vs2}
+
+```{r, title = "From **long to large** with `spread()`"}
+iris_melt %>%
+  spread(parameter, value)
+```
+
+## `separate()` and `unite()`{} {.build}
+
+```{r, title = "Demo tibble", row = c(8, 4)}
+demo_tibble <- tibble(year  = c(2015, 2014, 2014),
+                      month = c(11L, 2L, 4L), # integer vector
+                      day   = c(23, 1, 30),
+                      value = c("high", "low", "low"))
+demo_tibble
+```
+
+```{r, title = "`unite()`", width = 6}
+demo_tibble_unite <- demo_tibble %>%
+  unite(date, c(year, month, day), sep = "-")
+demo_tibble_unite
+```
+
+```{r, title = "`separate()`", width = 6}
+# use **quotes** since we are not refering to objects
+demo_tibble_unite %>%
+  separate(date, c("year", "month", "day"))
+```
+
+# Basic data cleaning
+
+## Separate rows {.build}
+
+### Multiple values per cell {.box-6 .bg-green .stretch}
+
+```{r}
+patient_df <- tibble(
+    subject_id = 1001:1003, 
+    visit_id = c("1,2,3", "1,2", "1"),
+    measured = c("9,0, 11", "11, 3" , "12")  )
+patient_df
+```
+
+Note the incoherent white space
+
+### Combinations of variables {.box-6 .bg-blue .stretch}
+
+```{r}
+separate_rows(patient_df,
+              visit_id, measured,
+              convert = TRUE) # chr -> int
+```
+
+### {.box-6 .offset-3 .bg-yellow .icon-small}
+
+![](img/00/tip.png)
+
+To split different variables use `separate()`
+
+## `separate()` | splitting values {.build}
+
+```{r, row = c(8, 4), title = "Demo dataset"}
+patient <- tibble(
+  subject_id = 1001:1006,
+  gender_age = paste(c("m", "f"), floor(runif(6, 21, 65)),
+                     sep = "-"))
+patient
+```
+
+```{r, row = c(8,4), title = "splitting by key-value pairs"}
+separate(patient,
+         gender_age, c("sex", "age"),
+         convert = TRUE)
+```
+
+## `separate()` and `unite()` | exercice {.vs1 .build .bg-green}
+
+### create valid dates format YYYY-MM-DD {.box-12 .bg-blue}
+
+<!-- FIXME: date is not valid!!-->
+
+```{r, row = c(8, 4)}
+dummy <- data_frame(year = c(2015, 2014, 2014),
+                    month = c(11, 2, 4),
+                    day = c(23, 1, 30),
+                    value = c("high", "low", "low"))
+dummy
+```
+
+### solution `unite()`  {.box-12 .bg-gray}
+
+```{r, row = c(8, 4)}
+dummy %>%
+  unite(date,
+        year, month, day,
+        sep = "-") -> dummy_unite
+dummy_unite
+```
+
+## `separate()` and `unite()` | exercice { .build .bg-green}
+
+
+### {.box-6 .offset-3 .bg-bluew .show}
+
+Explode YYYY-MM-DD by the hyphen (`-`).
+
+### solution `separate()` {.box-10 .offset-1 .bg-bluew}
+
+ - Use **quotes** since we are not refering to objects
+ - Default split on non-alphanumeric characters 
+
+```{r, row = c(8, 4)}
+dummy_unite %>%
+  separate(date, c("year", "month", "day"))
+```
+
+## Practice time! {.bg-green}
+
+### {.box-10 .offset-1 .bg-bluew}
+
+Type in R console:
+
+```{r, eval = F, echo = FALSE}
+library(swirl)
+install_course_github("rolandkrause", "isb101", branch = "swirl")
+swirl()
+```
+
+### {.box-10 .offset-1 .bg-bluew}
+
+Download the `swc` file from [Moodle](https://moodle.uni.lu/) and, to install the course, run the following commands in R (select the file when asked).
+
+```{r, eval = FALSE}
+library(swirl)
+install_course()
+# Cboose the file you just downloaded when asked
+```
+
+Choose the "isb101" course and complete the lesson:
+
+- **Tidying Data with tidyr**.
+
+## Wrap up
+
+### We covered: {.box-10 .offset-1 .bg-red .icon}
+
+![](img/00/kt.png)
+
+- tidyverse, introduction
+- tidy data
+    + <http://tidyr.tidyverse.org/>
+    + `vignette("tidy-data")`
+- `tidyr`
+    + long / wide with `gather()` / `spread()`
+    + data cleaning with `separate()` / `unite()`
+- switch from `base` to `tidyverse`, [Rajesh Korde, blog' post](http://www.significantdigits.org/2017/10/switching-from-base-r-to-tidyverse/)
+
+
+
+## Fill all combinations
+
+```{r, title = "Demo dataset"}
+kelpdf <- tibble(
+  Year = c(1999, 2000, 2004, 1999, 2004),
+  Taxon = c("Saccharina", "Saccharina", "Saccharina", "Agarum", "Agarum"),
+  Abundance = c(4, 5, 2, 1, 8)
+)
+kelpdf
+```
+
+
+### {.col-4 .offset-8 .small}
+
+example from [imachorda.com](http://www.imachordata.com/you-complete-me/)
+
+## Fill all combinations {.build}
+
+### {.box-6 .offset-3 .bg-green .show}
+
+_Agarum_ was not recorded in 2000
+
+>- how to fill out the missing info?
+
+%end%
+
+```{r, width = 6, class = "offset-3", title = "Use `complete()`"}
+complete(kelpdf,
+         Year, Taxon)
+```
+
+### {.col-4 .offset-8 .small .show}
+
+example from [imachorda.com](http://www.imachordata.com/you-complete-me/)
+
+## Fill all combinations {.build}
+
+### {.box-8 .offset-2 .bg-green .show}
+
+ _Agarum_ was recorded in 2000, but as it was  **absent** no value was reported.
+
+>- how to fill out this info with 0?
+
+%end%
+
+```{r, width = 6, class = "offset-3", title = "Use `complete()` and option `fill`"}
+complete(kelpdf,
+         Year, Taxon,
+         fill = list(Abundance = 0))
+```
+
+### {.col-4 .offset-8 .small .show}
+
+example from [imachorda.com](http://www.imachordata.com/you-complete-me/)
+
+## fill all combinations {.build}
+
+### {.box-8 .offset-2 .bg-green .show}
+
+Wait... What happened between 2000 and 2004?\ The absence of  _Agarum_ was not reported... 
+
+>- how to fill out this info with 0s?
+
+%end%
+
+```{r, row = c(7, 5), class = "compact-output", title = "Use `complete()`, option `fill` and helper `full_seq()`"}
+complete(kelpdf,
+         # helper tidyr::full_seq
+         Year = full_seq(Year, period = 1),
+         Taxon,
+         fill = list(Abundance = 0))
+```
+
+### {.col-4 .offset-8 .small .show}
+
+example from [imachorda.com](http://www.imachordata.com/you-complete-me/)
+
+
+
+
+```{r, echo = FALSE}
+knitr::knit_exit()
+
+# nesting() example is useless: only a single column...
+# nest() should be presented for purrr. Here it makes no sense.
+```
+
+
+## nesting completion | combinations of variables {.build}
+
+### {.box-8 .offset-2 .bg-green .show}
+
+In our previous `patient_df`, do we have all visits per patient?
+
+```{r, class = "compact-output"}
+separate_rows(patient_df,
+              visit_id, measured,
+              convert = TRUE)
+```
+
+%end%
+
+```{r, row = c(7, 5), title = "Use `complete()` with the helper `nesting()`", class = "compact-output"}
+separate_rows(patient_df,
+              visit_id, measured,
+              convert = TRUE) -> a#%>% 
+  complete(a, subject_id, 
+           nesting(visit_id)) #-> patient_complete
+patient_complete
+```
+
