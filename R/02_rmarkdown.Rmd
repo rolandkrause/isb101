@@ -1,0 +1,342 @@
+---
+title: "RMarkdown"
+author: "Nikola de Lange, Roland Krause"
+date: "`r Sys.Date()`"
+output:
+  iosp::ioslides_plus:
+    footer: "Created with [ioslides plus](https://github.com/koncina/iosp)"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+```{css, echo = FALSE}
+/* my css codes. Some might get integrated in a future iosp version...*/
+
+article .my-flex > .box-body > p {
+  display: flex;
+  display: -webkit-flex;
+  align-items: center;
+  -webkit-align-items: center;
+  justify-content: space-around;
+  -webkit-justify-content: space-around;
+  font-size: 50px;
+}
+
+.box li {
+  line-height: 1.1em; /* should be optimized in the main iosp css... */
+}
+
+article .code-transparent > pre {
+  background: none;
+  /*border-left: none;*/
+}
+
+.code-transparent pre {
+  color: #c7254e;
+  background: none;
+  border-left: none;
+  padding-left: 50px;
+}
+
+.center img {
+  display: block;
+  margin: auto;
+  float: none;
+}
+```
+
+# Rmarkdown
+
+## Learning objectives {.vs2}
+
+### You will learn to: {.box-10 .offset-1 .bg-red .icon}
+
+![](img/00/kt.png)
+
+- use the markdown syntax
+- create _Rmarkdown_ documents
+- define the output format you expect to render
+- use the interactive RStudio interface to
+    + create your documents
+    + insert R code
+    + build your final document
+
+## RMarkdown
+
+### Why using `rmarkdown`?{.box-10 .offset-1 .bg-blue .icon}
+
+![](img/03/rmarkdown_output.png)
+
+- write **detailed** reports
+- ensure **reproducibility**
+- separate the **raw data**, the end report and/or processed data.
+- **keep track** of your analyses
+- **comment/describe** each step of your analysis
+- export a single (Rmd) document to various formats (Pdf, Html...)
+- text file that can be managed by a **version control system** (like [git](https://git-scm.com/))
+
+### Rmarkdown {.box-8 .offset-2 .bg-red .my-flex .vs1}
+
+![](img/00/logo_r.png) + ![](img/03/knit.png) + ![](img/03/logo_md.png)
+
+## Markdown {.build}
+
+**Markdown** is used to **format the text**
+
+### Markup language {.box-6 .bg-blue}
+
+- Such as Xml, HTML
+- A coding system used to structure text
+- Uses markup tags (_e.g._ `<h1></h1>` in HTML)
+
+### HTML {.box-6 .bg-green .my_code .stretch}
+
+```
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>This is a heading</h1>
+
+<p>This is some text in a paragraph.</p>
+
+</body>
+</html>
+```
+
+### **Lightweight** markup language{.box-6 .bg-blue}
+
+- Easy to read and write as it uses simple tags (_e.g._ `#`)
+
+### MD {.box-6 .bg-green .my_code .stretch}
+
+```
+# This is a heading
+
+This is some text in a paragraph
+```
+
+## Markdown | common text formatting **tags**
+
+### Headers{.box-6 .bg-pink2 .stretch}
+
+- Levels are defined using `#`, `##`, `###` ...
+
+### Text style{.box-6 .bg-aquamarine2 .stretch}
+
+- **bold** (`**`This will be bold`**`)
+- *italic* (`*`This will be italic`*`)
+
+### Links and images{.box-6 .bg-yellow .stretch}
+
+- `[description](http://example.com)`
+- `![](path/to/image.jpg)`
+
+### Verbatim code{.box-6 .bg-blue .stretch .code-transparent} 
+- `code` (` ` `This will be some inline coding stuff` ` `)
+- triple backticks are delimiting code blocks
+
+~~~
+```
+This is *verbatim* code
+# Even headers are not interpreted
+```
+~~~
+
+### Rmarkdown cheatsheet {.box-12 .bg-green .icon .stretch}
+
+![](img/03/rmarkdown_cheatsheet.png)
+
+- Have a look at the online documents on the [Rmarkdown website](http://rmarkdown.rstudio.com/lesson-8.html)
+- Use the Cheatsheet in the `Help > Cheatsheets` menu.
+
+
+## Exercise | Markdown{.bg-green .vs3}
+
+### Learn to use the markdown syntax{.box-8 .offset-2 .bg-white .icon}
+
+![](img/03/logo_md.png)
+
+Before writing your own Rmarkdown document, use the excellent ressource on
+[commonmark.org](http://commonmark.org/help/tutorial/) to learn the basics of markdown formatting.
+
+
+<span class = "vs2 small">An alternative online ressource can be found on [www.markdowntutorial.com](http://www.markdowntutorial.com/)</span>
+
+
+
+
+## Including _R_ code
+
+### Rmarkdown{.box-5 .bg-red .icon}
+
+![](img/00/logo_rmarkdown.png)
+
+- extends markdown
+- allows to integrate code chunks that will be interpreted
+    + **R code**
+    + bash
+    + python
+    + css
+    + ...
+
+### Knitr{.box-7 .bg-red .icon}
+
+![](img/00/logo_knitr.png)
+
+- R chunks are extracted, interpreted separately
+- The result is formatted (with or without the source code) and integrated into the markdown document
+- The markdown document is converted to the desired document format (Pdf, Html...)
+- Relies on the powerful [pandoc](http://pandoc.org/) converter
+- Fully integrated in Rstudio (Knit button)
+
+```{block, type = "center"}
+![](img/03/rstudio_knit.png)
+```
+
+## Rmarkdown document | Create, step 1{.nvs1}
+
+###{.col-10 .offset-1}
+
+![](img/03/rstudio_rmd_create_1.jpg)
+
+## Rmarkdown document | Create, step 2{.nvs1}
+
+###{.col-10 .offset-1}
+
+![](img/03/rstudio_rmd_create_2.jpg)
+
+## Rmarkdown document | Structure
+
+A Rmarkdown document document contains 3 elements:
+
+###{.col-6}
+
+![](img/03/rmd_example.png)
+
+###{.col-6}
+
+- A **<span class = "red">YAML header</span>** to define document wide options
+- Text which is formatted using the **<span class = "blue">markdown</span>** syntax
+- **<span class = "green">chunks</span>** containing the code to be interpreted by _R_ 
+
+## Rmarkdown document | Navigation
+
+###{.col-8 .offset-2}
+
+![](img/03/rstudio_index.jpg)
+
+## Rmarkdown document | Insert R code {.build}
+
+### Inserting a code chunk {.box-6 .offset-3 .bg-blue .center}
+
+![](img/03/rstudio_chunk_add.png)
+
+### {.box-6 .offset-3 .bg-white .center}
+
+![](img/03/chunk_example.png)
+
+## Rmarkdown document | Insert R code {.build}
+
+### R code chunks {.box-10 .offset-1 .bg-blue .center}
+
+![](img/03/chunk_example.png)
+
+- chunks are defined between two lines starting with a 3 backticks tag (` ``` `)
+- curly brackets define how to interprete the content (_R_ code but other languages such as Python are also supported)
+  + ` ```{r} ` is the minimum to define a starting _R_ chunk
+  + can contain more options (name of chunk, whether to show it or not, evaluate it or not)
+
+### Inline code {.box-10 .bg-blue .offset-1}
+
+To integrate small pieces of _R_ codes
+
+- Use backticks (` ` `) combined to the keyword r (`` `r '\x60r <your R code>\x60'` ``)
+- Example: type in ``1 + 1 = `r '\x60r 1+1\x60'` `` to render 1 + 1 = `r 1+1`.
+
+
+## Rmarkdown document | generate
+
+### Creating the output document {.box-6 .offset-3 .bg-blue .center .vs2}
+
+- use the integrated **Knit** button.
+- call `rmarkdown::render()`
+
+![](img/03/rstudio_knit.png)
+
+## Popular output formats
+
+### HTML {.box-6 .bg-green .stretch}
+
+- fast rendering
+- by default embeds binaries (pictures etc.)
+- customise styles using your own `css` files
+    + change headers
+    + fonts
+    + ...
+
+### Pdf {.box-6 .bg-red .stretch}
+
+- single file
+- preserves original aspect
+- requires $\LaTeX$
+- customise using your own
+    + $\LaTeX$ document class
+    + pandoc template (`.tex`)
+
+### Word document {.box-6 .offset-3 .bg-blue .stretch}
+
+- Widely used
+- Easily editable
+- Collaborate with people not using Rmarkdown
+- Prepare even scientific manuscripts suitable for submission
+
+## Growing variety of output formats
+
+### Output documents {.box-10 .offset-1 .bg-blue .icon}
+
+![](img/03/rmarkdown_output.png)
+
+- Look on the [rmarkdown website](http://rmarkdown.rstudio.com/gallery.html)
+- Documents (HTML, PDF, MS Word...)
+- **interactive** documents (`shiny` package)
+- websites (like the [rmarkdown](http://rmarkdown.rstudio.com) sites)
+
+### Books{.box-6 .bg-green .icon}
+
+![](img/00/book.png)
+
+- Bookdown package. Go on the [website](https://bookdown.org/yihui/bookdown/) to learn more about it.
+- Generate books as PDF, EPUB or MOBI files.
+- Have a look at the [R for Data Science](http://r4ds.had.co.nz/) website.
+    
+### Slideshow presentations {.box-6 .bg-yellow}
+
+- **ioslides_presentation** (HTML)
+    + [iosp](https://github.com/koncina/iosp) used for this presentation.
+- slidy_presentation (HTML)
+- beamer_presentation (pdf, $\LaTeX$)
+- ...
+
+## Wrap up {.vs2}
+
+### You learned to: {.box-10 .offset-1 .bg-red .icon}
+
+![](img/00/kt.png)
+
+- create _Rmarkdown_ documents
+- format your text using the markdown syntax
+- insert your R code in chunks
+- adapt some rendering options of R code chunks
+- define the output format you expect to render
+- use the interactive RStudio interface to
+    + create your documents
+    + insert R code
+    + build your final document
+
+## Using templates for scientific publishing
+
+## Conclusions
