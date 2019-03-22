@@ -199,13 +199,13 @@ Before writing your own Rmarkdown document, use the excellent ressource on
 
 ## Rmarkdown document | Create, step 1{.nvs1}
 
-###{.col-10 .offset-1}
+### {.col-10 .offset-1}
 
 ![](img/03/rstudio_rmd_create_1.jpg)
 
 ## Rmarkdown document | Create, step 2{.nvs1}
 
-###{.col-10 .offset-1}
+### {.col-10 .offset-1}
 
 ![](img/03/rstudio_rmd_create_2.jpg)
 
@@ -213,11 +213,11 @@ Before writing your own Rmarkdown document, use the excellent ressource on
 
 A Rmarkdown document document contains 3 elements:
 
-###{.col-6}
+### {.col-6}
 
 ![](img/03/rmd_example.png)
 
-###{.col-6}
+### {.col-6}
 
 - A **<span class = "red">YAML header</span>** to define document wide options
 - Text which is formatted using the **<span class = "blue">markdown</span>** syntax
@@ -225,7 +225,7 @@ A Rmarkdown document document contains 3 elements:
 
 ## Rmarkdown document | Navigation
 
-###{.col-8 .offset-2}
+### {.col-8 .offset-2}
 
 ![](img/03/rstudio_index.jpg)
 
@@ -254,7 +254,7 @@ A Rmarkdown document document contains 3 elements:
 
 To integrate small pieces of _R_ codes
 
-- Use backticks (` ` `) combined to the keyword r (`` `r '\x60r <your R code>\x60'` ``)
+- Use backticks (`` ` ``) combined to the keyword r (`` `r '\x60r <your R code>\x60'` ``)
 - Example: type in ``1 + 1 = `r '\x60r 1+1\x60'` `` to render 1 + 1 = `r 1+1`.
 
 
@@ -321,6 +321,13 @@ To integrate small pieces of _R_ codes
 - beamer_presentation (pdf, $\LaTeX$)
 - ...
 
+## Using templates for scientific publishing
+
+### Journal style templates {.bg-blue .box-8 .offset-2}
+- rticles package
+- choose from several templates 
+![](img/03/rticles_example.png)
+
 ## Wrap up {.vs2}
 
 ### You learned to: {.box-10 .offset-1 .bg-red .icon}
@@ -336,7 +343,4 @@ To integrate small pieces of _R_ codes
     + create your documents
     + insert R code
     + build your final document
-
-## Using templates for scientific publishing
-
-## Conclusions
+    + create papers in journal styles
