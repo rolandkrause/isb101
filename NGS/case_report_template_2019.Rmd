@@ -47,15 +47,16 @@ knitr::opts_chunk$set(echo = TRUE)
     * What annotations/parameters have been used for filtering down the variants ?
 
 ## Results
+
 ### Processing environment
-	- Describe in one paragraph the HPC system (https:hpc.uni.lu) and the iris 	server and how you have run the analysis on iris
-	- Describe the runtime (from the slurm-<jobid>.out files)
-	- How many cpus have been used ??
+ - Describe in one paragraph the HPC system (https:hpc.uni.lu) and the iris 	server and how you have run the analysis on iris
+ - Describe the runtime (from the slurm-<jobid>.out files)
+ - How many cpus have been used ??
 
 ### QC
-	- Summarize QC results from Fastqc: (1 paragraph)
-      *	one table summarizing read statistics for all three samples and 
-      * show one read quality metric for all samples in one figure.
+ - Summarize QC results from Fastqc: (1 paragraph)
+    *	one table summarizing read statistics for all three samples and 
+    * show one read quality metric for all samples in one figure.
 
 ### Sample processing
  -	Table with read statistics (read numbers for each processing step including total number, after initial mapping, after duplicate removal, etc.). What is the outcome of the NGS workflow ?

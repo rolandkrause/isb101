@@ -33,11 +33,14 @@ knitr::knit_hooks$set(chunk_col = function(before, options, envir) {
 })
 ```
 
-## Why learning R?
+## Why learning R? 
+
+### Stay in charge of your data analysis {.box-12 .bg-yellow}
+Every biomedical researchers should learn to perform reproducible data analysis in a scripted environment. 
 
 ### What is R {.box-4 .bg-yellow}
 
-R is a language and environment for **statistical** computing and **graphics**.
+R is a general language and environment for **statistical** computing and **graphics**.
 
 ```{css, echo = FALSE}
 .double-list ul {
@@ -54,14 +57,14 @@ R is a language and environment for **statistical** computing and **graphics**.
 ```
 
 
-### Advantages of R {.box-4 .bg-blue }
+### Advantages of R {.box-4 .bg-blue .stretch}
 
 - free software (unlike Matlab)
 - easy to download/install/update
 - easy to process big files and analyse huge amounts of data
 - integrated data visualisation tools
 
-### Relevance for life sciences {.box-4 .bg-green }
+### Relevance for life sciences {.box-4 .bg-green .stretch }
 
 - programs can be integrated with the text to produce fully reproducible manuscripts
 - most relevant statistical environment for data analysis in the life sciences
@@ -69,7 +72,7 @@ R is a language and environment for **statistical** computing and **graphics**.
 More details on https://www.r-project.org/about.html
 
 
-## {.bg-blue .middle}
+## {.bg-red .middle}
 
 ### Learning objectives {.box-10 .offset-1 .bg-red .icon}
 
@@ -96,11 +99,7 @@ More details on https://www.r-project.org/about.html
 
 ## How to install R on my PC?
 
-### {.box-8 .offset-2 .bg-yellow .icon-small}
 
-![](img/00/tip.png)
-
-R is already installed on your computers, this is for reference.
 
 ### R{.box-6 .bg-blue}
 
@@ -118,18 +117,24 @@ R is already installed on your computers, this is for reference.
 - download
 - run the downloaded file
 
+### {.box-8 .offset-2 .bg-yellow .icon-small}
+
+![](img/00/tip.png)
+
+Check if R is already installed on your computers, obviously.
+
 # RStudio
 
 ![](img/00/logo_rstudio.png)
 
 ## Rstudio | What is it? {.build}
 
-### IDE {.box-8 .offset-2 .bg-yellow}
+### IDE {.box-6  .bg-yellow}
 
 [RStudio](https://www.rstudio.com/products/RStudio/) is an Integrated Development Environment.\  
 It makes working with R much easier.
 
-### Warning {.box-6 .bg-red .offset-3 .icon-small}
+### Warning {.box-6 .bg-red  .icon-small}
 
 ![](img/00/warning.png)
 
@@ -245,9 +250,18 @@ NaN # Not a Number
 ```
 
 
-### {.box-10 .offset-1 .bg-yellow .nvs2}
+### {.box-6 .offset-1 .bg-yellow .nvs2}
 
 Call the command **`class()`** or **`typeof()`** to see what data you are working with.
+
+### {.box-6 .bg-yellow .nvs2}
+
+```{r}
+class("Hello")
+typeof(3)
+class(NA_complex_)
+```
+
 
 ## Numeric variables {.build}
 
@@ -285,7 +299,7 @@ rm(double_precision)
 ```
 
 
-### {.box-8 .offset-2 .bg-yellow}
+### {.box-6  .bg-yellow}
 
 In practice, numeric computations always produce `double` results thus the name `numeric` is used as a synonym. 
 
@@ -349,7 +363,7 @@ is.vector(4)
 identical(4, c(4))
 ```
 
-## Variables in R {.build}
+## Variable assignment {.build}
 
 ```{css, echo = FALSE}
 .box-body > .chunk {
@@ -363,9 +377,9 @@ identical(4, c(4))
 ```
 
 
-### Assignment {.box-8 .offset-2 .bg-yellow .show}
+### Assignment {.box-6 .bg-blue .show }
 
-In R you create **`objects`** by a process called **assignment**.
+The assignment operator `<-` assigns a value to a name.
 
 ```{r assign, title = "Example of assignment"}
 x <- 7
@@ -379,17 +393,16 @@ v2
 ```
 
 
-### Warning {.box-10 .offset-1 .bg-red .icon-small}
+### Do not use `=` for assignment {.box-6  .bg-red .icon-small .show}
 
 ![](img/00/warning.png)
 
-Here is another way to do an assignment in R:
-```{r, width = 6}
+There is another way to do an assignment in R:
+```{r, width = 5}
 x = 7
 ```
 
-This **SHOULD NOT** be read as "x equals 7", which will result in confusion later.\
-Using `<-` instead of `=` is encouraged.
+The use of the equal sign (`=`) is a historic accident in programming languages derived from *C*.
 
 ## Naming of variables{.build .nvs1}
 

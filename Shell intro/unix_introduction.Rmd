@@ -4,7 +4,7 @@ author:
 date: "`r Sys.Date()`"
 output:
   iosp::ioslides_plus:
-    logo: "/Users/nikola.delange/isb101/R/img/00/uni.png"
+    logo: "../R/img/00/uni.png"
 ---
 
 ```{r setup, include=FALSE}
@@ -129,7 +129,7 @@ knitr::opts_chunk$set(echo = TRUE)
 On `access-iris`
 ```{bash eval=F}
 srun -p interactive --qos qos-interactive --pty bash -i
-srun -p interactive --qos qos-interactive --time=03:00 --pty bash -i
+srun -p interactive --qos qos-interactive --time=03:00:00 --pty bash -i
 
 ```
 
