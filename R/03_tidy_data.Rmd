@@ -2,7 +2,7 @@
 title: "Tidy data"
 subtitle: "The tidyverse"
 author: "Nikola de Lange, Roland Krause"
-date: "09 January 2018"
+date: "2019-03-25"
 output: iosp::ioslides_plus
 ---
 
