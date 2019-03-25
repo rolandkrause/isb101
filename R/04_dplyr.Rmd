@@ -1,8 +1,8 @@
 ---
 title: "Databases and their transformation"
-subtitle: `dplyr` and `join`
-author: "A. Ginolhac, E. Koncina, R. Krause"
-date: "10 January 2018"
+subtitle: "`dplyr` and `tidyr`"
+author: "Roland Krause, Nikola de Lange"
+date: "2019-03-26"
 output: iosp::ioslides_plus
 ---
 
@@ -15,6 +15,7 @@ options(width = 100)
 options(tibble.print_max = 10)
 library(tidyverse)
 #library(biomaRt)
+gene_by_exon <- read_csv("data/gene_by_exon.csv")
 ```
 
 
@@ -53,7 +54,8 @@ knitr::knit_hooks$set(col_width = function(before, options, envir) {
 
 ###  {.box-10 .offset-1 .bg-yellow .large}
 
-Preparing data is the most time consuming part of of data analysis
+ * Preparing data is the most time consuming part of of data analysis!
+ * Essential part of understanding data, hard to avoid.
 
  
 ### `dplyr` is a tool box for working with data in tibbles/data frames {.box-10 .offset-1 .bg-blue .icon}
@@ -65,9 +67,8 @@ Preparing data is the most time consuming part of of data analysis
      + Summarizing
      + Grouping
      + Joining and intersecting tibbles
-  * In a workflow typically follows reshaping operations from `tidyr`
-  * Fast, by writing key pieces in C++ (using Rcpp)
-
+  * In a workflow typically in conjunction with reshaping operations from `tidyr`
+  
 ## Learning objectives {.vs3}
 
 ### You will learn to: {.box-10 .offset-1 .bg-red .icon}
@@ -85,113 +86,6 @@ Preparing data is the most time consuming part of of data analysis
 
 
 <!-- http://perso.ens-lyon.fr/lise.vaudor/dplyr/ -->
-
-## Preparing your environment {.middle}
-
-```{r, eval = FALSE, title = "`dplyr` installation (if required)", width = 6, class = "stretch"}
-install.packages("dplyr")
-# OR
-install.packages("tidyverse")
-```
-
-```{r, eval = FALSE, title = "Loading the `dplyr` functions", width = 6, class = "stretch"}
-library("dplyr")
-# OR
-library("tidyverse")
-```
-
-### Tip {.box-8 .offset-2 .bg-yellow .icon-small}
-
-![](img/00/tip.png)
-
-If you need to install `dplyr` or `tidyverse` you can also use the Packages tab in RStudio...
-
-
-## Preparing your environment {.middle}
-
-### The dataset {.box-10 .offset-1 .bg-blue}
-
-- Genes from chromosome 21 
-- Was downloaded from bioMart, saved as a `.csv` and provided on Moodle.
-- To load the `csv` file (once downloaded):
-
-```{r}
-gene_by_exon <- read_csv("data/gene_by_exon.csv")
-```
-
-<!--
-```{r, eval = FALSE, title = "`biomaRt` is part of bioconductor", width = 6, class = "offset-3"}
-source("https://bioconductor.org/biocLite.R")
-biocLite("biomaRt")
-```
-
-
-## Retrieving sa$mple data {.bg-green} 
-
-
-
-```{r biomart_library, eval = F, cache = TRUE, title = "Genes from chromosome 21 using biomaRt", width = 10, class = "offset-1"}
-# Load the library
-#library(biomaRt)
-gene_mart <- useMart(biomart = "ENSEMBL_MART_ENSEMBL",
-                     host = "www.ensembl.org")
-gene_set <- useDataset(gene_mart , dataset = "hsapiens_gene_ensembl")
-
-gene_by_exon <- getBM(mart = gene_set,
-                      attributes = c("ensembl_gene_id",
-                                     "ensembl_transcript_id",
-                                     "chromosome_name",
-                                     "start_position",
-                                     "end_position",
-                                     "hgnc_symbol",
-                                     "hgnc_id",
-                                     "strand",
-                                     "gene_biotype"
-                      ), 
-                      filters = "chromosome_name",
-                      values = "21"
-)
-```
-
-
-
-
-
-## `as_tibble()` from the tibble package | ![](img/00/logo_tibble.png){} {.nvs3}
-
-```{r, width = 10, class = "offset-1", title = "Useful when dealing with large tables"}
-gene_by_exon <- as_tibble(gene_by_exon)
-gene_by_exon
-```
--->
-
-## Reminder: Pipes in R | magrittr {.build .bg-blue}
-
-<!-- Didn't extend the font size formatting to chunks -->
-
-```{css, echo = FALSE}
-.x-large pre, article.smaller .x-large pre {
-  font-size: 125%;
-  line-height: 70px;
-  text-align: center;
-}
-```
-
-```{r, eval = FALSE, title = "Without pipe", class = "offset-2 x-large", width = 8}
-verb(subject, complement)
-```
-
-```{r, eval = FALSE, title = "With pipe", class = "offset-2 x-large", width = 8}
-subject %>% verb(complement)
-```
-
-###{.col-6 .offset-6 .small .show}
-
-Example adapted from [Romain François](https://twitter.com/ParisRaddict/status/781267225420435461)
-
-### Remark {.box-6 .offset-3 .bg-yellow .icon-small}
-
-`tidyverse` functions are consistently designed to work with `%>%`: **data** (_subject_) is the  **first** argument.
 
 
 ## Outline
@@ -599,16 +493,26 @@ gene_by_exon %>%
 ```
 
 
-# Joining data frames
+# Combining data frames
 
-## Joining, merging
+## `Join`, `merge` 
 
-### Basic operations on more than one table  {.bg-blue .box-6 .show}
+### Relational data  {.bg-blue .box-9}
+ * Tidy tables are great but cannot store all information. 
 
- * Integrate data from two tables by **keys**
- * Hierarchical databases
+ * Integrate data from two tables by a common variables called **keys**.
+  + A **primary key** uniquely identifies an observation in its table. 
+  + A **foreign key** uniquely identifies an observation in another table. 
+  + Some tables do not have a single unique variable that can serve as a key.
+  + Composite keys using multiple variables are required.
 
-### UK bands: `band_members` {.bg-green .box-6 .show}
+ * Relational databases commonly use a SQL (Structured Query Language). 
+    + `dplyr` is making use of the concepts 
+    + Some statements are identical, e.g. `select`
+    
+### Example {.box-3}  
+![](https://d33wubrfki0l68.cloudfront.net/108c0749d084c03103f8e1e8276c20e06357b124/5f113/diagrams/join-setup.png)
+
 
 ## Merge 2 separate tables {.build}
 
@@ -1112,7 +1016,7 @@ Download the `swc` file from [Moodle](https://moodle.uni.lu/) and, to install th
 ```{r, eval = FALSE}
 library(swirl)
 install_course()
-# Cboose the file you just downloaded when asked
+# Choose the file you just downloaded when asked
 ```
 
 Choose the "isb101" course and complete the lesson:
