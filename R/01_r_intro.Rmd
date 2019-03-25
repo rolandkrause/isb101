@@ -3,7 +3,12 @@ title: "Getting started in R"
 subtitle: "Basic R"
 author: "Nikola de Lange and Roland Krause"
 date: "2019-03-25"
-output: iosp::ioslides_plus
+output: 
+  iosp::ioslides_plus:
+    box_colours:
+      bg-bluew: "lavender"
+      bg-assign: "olivedrab4"
+
 ---
 
 ```{r setup, include = FALSE}
@@ -21,6 +26,7 @@ swirl_mailto <- "roland.krause@uni.lu"
  
 ### Sources  {.bg-blue .offset1-1 .box-10}
 Adapted from the biostat2 tidyverse lecture https://biostat2.uni.lu/lecture02_tidyverse.html 
+
 Multiple contributions from 
  * Hadely Wickham (RStudio, tidyverse)
 
@@ -99,11 +105,9 @@ More details on https://www.r-project.org/about.html
 - R5 Visualisation (Wed morning)
 - R6 Genomics in R (Wednesday afternoon)
 
-## How to install R on my PC?
+## How to install R? | Set-up {.build}
 
-
-
-### R{.box-6 .bg-blue}
+### 1. R{.box-6 .bg-blue}
 
 - go to http://cran.r-project.org
 - choose your system
@@ -111,7 +115,7 @@ More details on https://www.r-project.org/about.html
 - download R
 - run the downloaded file
 
-### Rstudio {.box-6 .bg-blue}
+### 2. Rstudio {.box-6 .bg-blue}
 
 - go to https://www.rstudio.com/
 - choose the **free RStudio Desktop** version
@@ -163,26 +167,26 @@ Don't mix up **R** and **RStudio**.
 
 ## Four panels {data-background="img/01/rstudio_layout.jpg" .middle}
 
-### Scripting {.box-6 .bg-bluew .stretch}
+### Scripting {.box-6 .bg-blue .stretch}
 
-- Represents the main window
+- The main window
 - Using a **Rmarkdown** document is highly recommended
 - Tabs to switch documents
 
-### Environment {.box-6 .bg-bluew .stretch}
+### Environment {.box-6 .bg-blue .stretch}
 
 - Environment: shows loaded objects and their `str()`
 - History
 - nice `git` integration
 - database **connections** interface
 
-### Console {.box-6 .bg-bluew .stretch}
+### Console {.box-6 .bg-blue .stretch}
 
 - Can be hidden when using **inline** outputs
 - `rmarkdown` output logs
 - An optional `terminal` tab
 
-### Files / Plots / Help {.box-6 .bg-bluew .stretch}
+### Files / Plots / Help {.box-6 .bg-blue .stretch}
 
 - package management tab
 - Plots panel might be unecessary when using **inline** outputs
@@ -252,7 +256,7 @@ NaN # Not a Number
 ```
 
 
-### {.box-6 .offset-1 .nvs2}
+### {.box-4 .offset-2  .nvs2 .stretch}
 
 Call the command **`class()`** or **`typeof()`** to see what data you are working with.
 
@@ -462,7 +466,7 @@ There are several ways to check content of variable:
     ```
 - Check "Environment" tab in RStudio
 
-## Practice time!{.bg-green}
+## Practice time! | Getting started {.bg-green}
 
 ### Using `swirl`{} {.box-10 .offset-1 .bg-white}
 
@@ -504,7 +508,7 @@ exp(a)
 log(a)
 ```
 
-### Warning {.box-8 .offset-2 .bg-red .icon-small}
+### Vector recyling {.box-8 .offset-2 .bg-red .icon-small}
 
 ![](img/00/warning.png)
 
@@ -518,9 +522,9 @@ a + b
 ```
 
 
-## Operations with vectors
+## Vectorized operations 
 
-### {.box-8 .offset-2 .bg-yellow}
+### Main functions{.box-8 .offset-2 .bg-yellow}
 
 - `log()`, `exp()`, `sin()`, `cos()`, `tan()`, `sqrt()`, ...
 - `max()` and `min()`
@@ -612,9 +616,9 @@ which(a > 2)
 a[which(a > 2)]
 ```
 
-## Practice time! {.bg-green}
+## Practice time! | Vectors and logical {.bg-green}
 
-### {.box-10 .offset-1 .bg-bluew}
+### {.box-10 .offset-1 .bg-white}
 
 Type in R console:
 ```{r, eval = F}
@@ -643,7 +647,7 @@ To extract the first element from `LETTERS` (the letter A), use square brackets:
 LETTERS[1]
 ```
 
-## Your turn! {.bg-green .build}
+## Your turn! {.bg-assign .build}
 
 ```{r, echo = FALSE, title = "How to get following outputs?", width = 10, class = "offset-1 show"}
 LETTERS[2:5]
@@ -679,9 +683,9 @@ v["First"]
 v[c("Last", "First")] 
 ```
 
-## Practice time!{.bg-green}
+## Practice time! | More on vectors {.bg-green}
 
-### {.box-10 .offset-1 .bg-bluew}
+### {.box-10 .offset-1 .bg-white}
 
 Type in R console:
 ```{r, eval = F}
@@ -694,7 +698,7 @@ Complete lessons **5**  and **6**. In the end of the lesson send the email to `r
 
 The email subject should be generated automaticly by swirl, in the email body place your last command used in the lesson.
 
-## Structures
+## Structures for categorical data | Factors
 
 ### Factors {.box-8 .offset-2 .bg-blue}
 
@@ -739,7 +743,7 @@ levels(kids) # still the same levels
 table(kids) # even though one level has 0 entries!
 ```
 
-## Structures
+## Structures for arbitrary elements | Lists
 
 ### Lists {.box-6 .offset-3 .bg-blue}
 
@@ -829,9 +833,9 @@ two_lists[2][1]
 
 ```
 
-## Structures{.build}
+## Structures for tabular data {.build}
 
-### Matrix and Arrays {.box-6 .offset-3 .bg-blue .show}
+### Matrix and Arrays {.box-8 .offset-2 .bg-blue .show .stretch}
 
 - Matrix (2D)
 - Arrays ($\geq$ 3D)
@@ -840,7 +844,7 @@ two_lists[2][1]
 matrix(1:4, nrow = 2)
 ```
 
-### Data frames {.box-8 .offset-2 .bg-blue}
+### Data frames {.box-8 .offset-2 .bg-bluew .show .stretch}
 
 Fundamental data structure for combining diverse data into tables.
 
@@ -1051,9 +1055,9 @@ summary(mtcars[, 1:4])
 head(mtcars) #Gives first 6 rows if n is not specified
 ```
 
-## Practice time!{.bg-green}
+## Practice time! | Matrix and data frame {.bg-green}
 
-### {.box-10 .offset-1 .bg-bluew}
+### {.box-10 .offset-1 .bg-white}
 
 Type in R console:
 ```{r, eval = F}
@@ -1170,9 +1174,9 @@ new_var <- new_fun(global_var)
 print(local_var)
 ```
 
-## Practice time!{.bg-green}
+## Practice time! | Functions {.bg-green}
 
-### {.box-10 .offset-1 .bg-bluew}
+### {.box-10 .offset-1 .bg-white}
 
 Type in R console:
 ```{r, eval = F}
@@ -1454,7 +1458,7 @@ Conclusion: vectorisation is important because it allows you to operate on vecto
 
 ## Practice time! {.bg-green}
 
-### {.box-10 .offset-1 .bg-bluew}
+### {.box-10 .offset-1 .bg-white}
 
 Type in R console:
 ```{r, eval = F}
