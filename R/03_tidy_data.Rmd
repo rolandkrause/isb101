@@ -161,7 +161,7 @@ library(tidyverse)
 
 
 
-## Pipes with magrittr{.build}
+## Pipes in R | `magrittr` {.build}
 
 ### R base {.box-6 .bg-blue .show .stretch}
 
@@ -190,6 +190,34 @@ rnorm(5) %>%
 ![](img/00/tip.png)
 
 `%>%` is available in the `tidyverse` packages and some additional ones.
+
+## Pipes in R | `magrittr` {.build .bg-blue}
+
+<!-- Didn't extend the font size formatting to chunks -->
+
+```{css, echo = FALSE}
+.x-large pre, article.smaller .x-large pre {
+  font-size: 125%;
+  line-height: 70px;
+  text-align: center;
+}
+```
+
+```{r, eval = FALSE, title = "Without pipe", class = "offset-2 x-large", width = 8}
+verb(subject, complement)
+```
+
+```{r, eval = FALSE, title = "With pipe", class = "offset-2 x-large", width = 8}
+subject %>% verb(complement)
+```
+
+###{.col-6 .offset-6 .small .show}
+
+Example adapted from [Romain François](https://twitter.com/ParisRaddict/status/781267225420435461)
+
+### Remark {.box-6 .offset-3 .bg-yellow .icon-small}
+
+`tidyverse` functions are consistently designed to work with `%>%`: **data** (_subject_) is the  **first** argument.
 
 
 
