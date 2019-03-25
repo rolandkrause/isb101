@@ -1472,7 +1472,17 @@ Complete lesson **10**. In the end of the lesson send the email to `r swirl_mail
 
 The email subject should be generated automatically by swirl, in the email body place your last command used in the lesson.
 
-## Conclusion {.bg-blue}
+## Conclusions {.bg-assign}
 
-### Thank you for your attention! {.box-8 .offset-2}
+### Review {.bg-blue .box-8 .offset-2 .icon}
+ * Vectors are at the core and vectorisations makes things fast 
+ * Think about assignment `<-` 
+ * Data types and structures
+ * Functions 
+ 
+
+![](img/00/logo_r.png)
+
+### Thank you for your attention! {.bg-yellow .box-8 .offset-2}
+Enjoy R wherever you encounter it!
 
