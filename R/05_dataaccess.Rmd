@@ -1,7 +1,7 @@
 ---
 title: "Access to databases"
 author: "Roland Krause"
-date: "January 11, 2017"
+date: "2019-03-26"
 output:
   ioslides_presentation:
     logo: logo-lcsb.png
@@ -9,6 +9,11 @@ output:
   beamer_presentation: default
 highlighter: highlight.js
 ---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(cache = TRUE)
+
+```
 
 ## Objectives|Discovering and access of biological information
 
@@ -69,7 +74,7 @@ Ensure you are not downloading files on every execution of your script.
  if (!file.exists(destfile)) {
     download.file(fileURL ,destfile,method="auto") }
  
- 
+
 ```
 
 
@@ -84,7 +89,7 @@ biocLite("biomaRt")
 ```
 
 
-```{r eval=FALSE}
+```{r}
 library("biomaRt")
 listMarts(host="www.ensembl.org")
 ```
@@ -92,14 +97,14 @@ listMarts(host="www.ensembl.org")
 
 ## Using ENSEMBL Mart
 
-```{r eval=FALSE}
+```{r }
 ensembl.mart = useMart(biomart="ENSEMBL_MART_ENSEMBL", 
                        host="www.ensembl.org")
 head(listDatasets(ensembl.mart))
 ```
 
 ## Using a specific database
-```{r eval=FALSE}
+```{r}
 human.genes.mart = useDataset(ensembl.mart, dataset="hsapiens_gene_ensembl")
 head(listAttributes(human.genes.mart))
 
@@ -107,7 +112,7 @@ head(listAttributes(human.genes.mart))
 
 ## Get data from the database
 
-```{r eval=FALSE}
+```{r}
 chr21_genes <- getBM(attributes=c('ensembl_gene_id',
 'ensembl_transcript_id','hgnc_symbol','chromosome_name','start_position','end_position'), filters =
 'chromosome_name', values ="21", mart = human.genes.mart)
@@ -118,19 +123,52 @@ head(chr21_genes)
 ## Links between databases
 
 
-```{r eval=FALSE}
+```{r, eval=FALSE}
 hgnc_swissprot <- getBM(attributes=c('ensembl_gene_id','ensembl_transcript_id','hgnc_symbol','hgnc_id','uniprot_swissprot'),filters = 'ensembl_gene_id', values = 'ENSG00000139618', mart = human.genes.mart)
 head(hgnc_swissprot)
 ```
 
 
-## Home work task
+## MutationMapper interface
 
-Retrieve the known SNPs for the `KCNA2` gene using the ENSEMBL Biomart.
+```{r}
+library(cgdsr)
+# Create CGDS object
+mycgds = CGDS("http://www.cbioportal.org/")
 
-1. Find out about the relevant resources using the web interface in [http://www.ensembl.org/biomart/](http://www.ensembl.org/biomart/)
 
-2. Code the access using the R-Biomart services.
+# Get list of cancer studies at server
+getCancerStudies(mycgds)
 
-Send your a text file of the output and your R code. 
+```
+
+## MutationMapper interface
+```{r}
+
+# Get available case lists (collection of samples) for a given cancer study
+mycancerstudy = getCancerStudies(mycgds)[2,1]
+mycaselist = getCaseLists(mycgds,mycancerstudy)[1,1]
+
+# Get available genetic profiles
+mygeneticprofile = getGeneticProfiles(mycgds,mycancerstudy)[4,1]
+
+# Get data slices for a specified list of genes, genetic profile and case list
+getProfileData(mycgds,c('BRCA1','BRCA2'),mygeneticprofile,mycaselist)
+
+# Get clinical data for the case list
+myclinicaldata = getClinicalData(mycgds,mycaselist)
+
+# documentation
+
+```
+
+## MutationMapper interface
+
+```{r}
+
+
+plot(mycgds, "gbm_tcga", "NF1", c("gbm_tcga_gistic","gbm_tcga_mrna"), "gbm_tcga_all")
+```
+
+
 
