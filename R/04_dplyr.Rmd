@@ -398,7 +398,8 @@ gene_by_exon %>%
 
  * `select` **helpers** with `vars()` in `mutate_at()`
  * Use column **conditions** for `mutate_if()`
- * `funs()` to wrap functions
+ * ~.  to interface the data transformation
+ 
 
 ### {.box-6 .bg-yellow .icon-small .middle}
 
