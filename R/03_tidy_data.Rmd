@@ -213,7 +213,7 @@ verb(subject, complement)
 subject %>% verb(complement)
 ```
 
-###{.col-6 .offset-6 .small .show}
+### {.col-6 .offset-6 .small .show}
 
 Example adapted from [Romain François](https://twitter.com/ParisRaddict/status/781267225420435461)
 
@@ -224,20 +224,6 @@ Example adapted from [Romain François](https://twitter.com/ParisRaddict/status/
 
 
 # Import data using `readr`
-
-## Learning objectives {.vs2}
-
-### You will learn to: {.box-10 .offset-1 .bg-red .icon}
-
-![](img/00/kt.png)
-
-- use `readr` to import your data into _R_
-- use the interactive RStudio interface to visualise your data
-- appreciate tibbles
-
-### Reference
-- <http://readr.tidyverse.org/>
-- `vignette("readr")`
 
 ## Importing data{.vs3 .build}
 
