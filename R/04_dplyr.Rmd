@@ -3,7 +3,12 @@ title: "Databases and their transformation"
 subtitle: "`dplyr` and `tidyr`"
 author: "Roland Krause, Nikola de Lange"
 date: "2019-03-26"
-output: iosp::ioslides_plus
+output: 
+  iosp::ioslides_plus:
+    box_colours:
+      bg-bluew: "lavender"
+      bg-assign: "palegreen4"
+  
 ---
 
 <!-- Adapted from https://biostat2.uni.lu/lecture06_dplyr.html -->
@@ -296,7 +301,7 @@ arrange(gene_by_exon, desc(end_position))
 - `arrange()` to sort
     + combine with `desc()` to reverse the sorting
 
-# Transforming columns
+# Transforming columns {.bg-bluew}
 
 ## Renaming columns 
 
@@ -466,7 +471,7 @@ iris %>%
 
 
 
-# Grouping and summarising
+# Grouping and summarising {.bg-bluew}
 
 ## `group_by()` and `summarise()`
 
@@ -509,7 +514,7 @@ gene_by_exon %>%
 ```
 
 
-# Combining data frames
+# Combining data frames {.bg-bluew}
 
 ## `Join`, `merge` 
 
@@ -656,8 +661,8 @@ inner_join(band_members,
            by = c(name = "artist"))
 ```
 
-# Helpers
-<!--
+# Helpers {.bg-bluew}
+
 ## `pull()` | `select()` as a vector {.build}
 
 ```{r, row = c(5, 7), title = "extract column by index"}
@@ -673,7 +678,7 @@ pull(gene_by_exon, gene_biotype) %>%
   unique()
 ```
 
--->
+
 ## `near()` | addresses the rounded float number issue {.vs2 .build}
 
 ### Predict the outcome of: {.box-6 .bg-green .show}
@@ -810,21 +815,13 @@ Go to the website to see additional functions.
 
 
 
-## Acknowledgments
 
 
-###  {.box-8 .offset-2 .vs1 .bg-yellow}
-
-- Lise Vaudor
-- Bruno Rodrigues
-- Hadley Wickham
-
-
-## Practice time! {.bg-green}
+## Practice time! {.bg-assign}
 
 ### {.box-10 .offset-1 .bg-green}
 
-If you didn't during the `tidyr` lecture, download the `swc` file from [Moodle](https://moodle.uni.lu/) and, to install the course, run the following commands in R (select the file when asked).
+Download the `swc` file from [Moodle](https://moodle.uni.lu/) and, to install the course, run the following commands in R (select the file when asked).
 
 ```{r, eval = FALSE}
 library(swirl)
@@ -846,7 +843,7 @@ Choose the "isb101" course and complete the lessons:
 - **Manipulating Data with dplyr**.
 - **Grouping and Chaining with dplyr**.
 
-# `tidyr`
+# `tidyr` {.bg-bluew}
 
 ![](img/00/logo_tidyr.png)
 
@@ -965,7 +962,7 @@ separate(patient,
          convert = TRUE)
 ```
 
-## `separate()` and `unite()` | exercice {.vs1 .build .bg-green}
+## `separate()` and `unite()` | exercise {.vs1 .build .bg-green}
 
 ### create valid dates format YYYY-MM-DD {.box-12 .bg-blue}
 
@@ -989,7 +986,7 @@ dummy %>%
 dummy_unite
 ```
 
-## `separate()` and `unite()` | exercice { .build .bg-green}
+## `separate()` and `unite()` | exercise { .build .bg-green}
 
 
 ### {.box-6 .offset-3 .bg-bluew .show}
@@ -1006,7 +1003,7 @@ dummy_unite %>%
   separate(date, c("year", "month", "day"))
 ```
 
-## Practice time! {.bg-green}
+## Practice time! {.bg-assign}
 
 ### {.box-10 .offset-1 .bg-bluew}
 
@@ -1135,5 +1132,16 @@ knitr::knit_exit()
 # nesting() example is useless: only a single column...
 # nest() should be presented for purrr. Here it makes no sense.
 ```
+## Acknowledgments {.bg-assign}
+
+
+### Thank you for your attention! {.box-8 .offset-2 .vs1 .bg-yellow}
+
+
+###  {.box-8 .offset-2 .vs1 .bg-yellow}
+
+- Lise Vaudor
+- Bruno Rodrigues
+- Hadley Wickham
 
 
