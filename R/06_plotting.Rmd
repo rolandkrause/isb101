@@ -1,8 +1,8 @@
 ---
-title: "Data plotting"
+title: "Vizualization"
 subtitle: ggplot2
 author: "E. Koncina, A. Ginolhac, R. Krause"
-date: "11 January 2018"
+date: "2019-03-27"
 output:
   iosp::ioslides_plus:
     keep_md: no
@@ -329,10 +329,8 @@ ggplot(data = iris) +
 
 `ggplot2` introduces a break in the workflow from ` %>% ` to `+`!
 
-> If the pipe ( %>% in 2014) had been invented before, ggplot2 would have never existed | Hadley Wickham
-
 ### ggplot2 {.box-6 .bg-blue}
-```{r, eval = FALSE, title = "`ggplot2`"}
+```{r, title = "`ggplot2`"}
 mtcars %>% 
   ggplot() +
   aes(x = mpg) +
@@ -341,8 +339,6 @@ mtcars %>%
   aes(colour = as.factor(gear)) +
   scale_color_brewer("gear", type = "qual")
 ```
-
-
 
 
 ## Mapping aesthetics
@@ -360,24 +356,30 @@ In our example we need to tell `geom_point()` which columns should be used as `x
 
 ```{r, fig.height = 4, eval = FALSE}
 ggplot(iris) +
-  geom_point(aes(x = Petal.Width, y = Petal.Length))
+  geom_point() + 
+  aes(x = Petal.Width) +
+  aes(y = Petal.Length)
 ```
 
 ## Unmapped parameters{.build}
 
 <!-- FIXME: image is not rendered as it should in firefox in column mode... Browser bug? -->
 
-### {.box-10 .offset-1 .bg-blue .show}
+### {.box-4 .bg-blue .show}
 
 - `geom_point()` accepts additional arguments such as the `colour`, the transparency (`alpha`) or the `size` (see `?geom_point`).
-- It is possible to define them to a fixed value wihout mapping them to a variable.
+- It is possible to define them to a fixed value without mapping them to a variable.
 
 %end%
 
-```{r iris_fixed_colour, width = 8, class = "offset-2", eval = FALSE}
+```{r iris_fixed_colour, width = 6, eval = FALSE}
 ggplot(iris) +
-  geom_point(aes(x = Petal.Width, y = Petal.Length),
-             colour = "blue", alpha = 0.6, size = 3)
+  aes(x = Petal.Width, 
+      y = Petal.Length) +
+  geom_point(
+    colour = "blue", 
+    alpha = 0.6, 
+    size = 3)
 ```
 
 ###{.box-6 .bg-bluew}
@@ -395,17 +397,20 @@ Note that parameters defined **outside** the aesthetics `aes()` are applied to *
 
 ## Mapping aesthetics | colour{.build}
 
-### {.box-10 .offset-1 .bg-blue .show}
+### {.box-6 .bg-blue .show}
 
 - `colour`, `alpha` or `size` can also be mapped to a column in the data frame.
 - We can for example attribute a different colour to each species.
 
 %end%
 
-```{r iris_map_colour, fig.height = 3.5, width = 8, class = "offset-2", eval = FALSE}
+```{r iris_map_colour, fig.height = 3.5, width = 6, eval = FALSE}
 ggplot(iris) +
-  geom_point(aes(x = Petal.Width, y = Petal.Length,
-                 colour = Species), alpha = 0.6, size = 3)
+  aes(x = Petal.Width, 
+                 y = Petal.Length,
+                 colour = Species) +
+  geom_point(alpha = 0.6, 
+             size = 3)
 ```
 
 ###{.box-6 .bg-bluew}
@@ -413,7 +418,7 @@ ggplot(iris) +
 ```{r iris_map_colour, echo = FALSE, fig.height = 3.5}
 ```
 
-### important {.box-6 .bg-red .icon-small}
+### Important {.box-6 .bg-red .icon-small}
 
 ![](img/00/warning.png)
 
@@ -916,10 +921,6 @@ They are referenced on a [dedicated site](https://www.ggplot2-exts.org/)
 <span class = "small">source: Justin Matejka, George Fitzmaurice [Same Stats, Different Graphs...](https://www.autodeskresearch.com/publications/samestats)</span>
 
 
-```{r, echo = FALSE}
-knitr::knit_exit()
-```
-
 
 ## Art | by Marcus Volz
 
@@ -986,50 +987,85 @@ vembedr::embed_youtube("DQiKHlpy70Q") %>% htmltools::div(class = "vembedr")
 
 
 
-## programming {.build}
 
-### `Sepal.Length` is not exposed {.box-6 .bg-red}
+## Iris data set | R examples {.build}
 
-```{r, error = TRUE, fig.height=3}
-iris_plot <- function(flower) {
-  ggplot(iris, aes(x = Species, y = flower)) +
-  geom_violin() +
-  ggbeeswarm::geom_quasirandom()
-}
-iris_plot(flower = Sepal.Length)
+### Mean and Standard Error {.box-12 .bg-blue .ss}
+```{r}
+iris %>%
+  sample_n(50) %>%
+  group_by(Species) %>%
+  summarize(mean_sl = mean(Sepal.Length),
+            sd_sl = sd(Sepal.Length),
+            n = n(),
+            se_sl = sd_sl / sqrt(n())
+            ) -> p
+g_se <- ggplot(p, aes(x = Species, y = mean_sl, fill = Species)) +
+          geom_col() 
+
 ```
 
-### strings does not help {.box-6 .bg-red}
 
-```{r, error = TRUE, fig.height=3}
-iris_plot <- function(flower) {
-  ggplot(iris, aes(x = Species, y = flower)) +
-  geom_violin() +
-  ggbeeswarm::geom_quasirandom()
-}
-iris_plot(flower = "Sepal.Length")
+## Graphs  {.build}
+
+### Mean and Standard Error {.box-6 .bg-blue}
+```{r,  fig.width=6}
+g_se + geom_errorbar(aes(ymin = mean_sl - se_sl, 
+                         ymax = mean_sl + se_sl)) 
 ```
 
-##
-
-### `aes_string()` expects strings {.box-6 .bg-grgold}
-
-```{r, fig.height=3}
-iris_plot <- function(flower) {
-  ggplot(iris, aes_string(x = "Species", y = flower)) +
-  geom_violin() +
-  ggbeeswarm::geom_quasirandom()
-}
-iris_plot(flower = "Sepal.Length")
+### Mean and Standard Deviation  {.box-6 .bg-blue}
+```{r , fig.width=6}
+g_se + geom_errorbar(aes(ymin = mean_sl - sd_sl, 
+                         ymax = mean_sl + sd_sl)) 
 ```
 
-### `aes_string()` expects strings {.box-6 .bg-grgold}
+## Better display options {.build}
 
-```{r, fig.height=3}
-iris_plot <- function(flower) {
-  ggplot(iris, aes_string(x = "Species", y = flower)) +
-  geom_violin() +
-  ggbeeswarm::geom_quasirandom()
-}
-iris_plot(flower = "Petal.Length")
+```{r}
+ggplot(sample_n(iris,80),  
+       aes(x = Species, y = Sepal.Length, fill=Species )) + 
+  theme(legend.position="bottom") -> g
 ```
+
+### Box plot {.box-4 .bg-blue}
+```{r  fig.width=4, , height = 6}
+g + geom_boxplot() 
+```
+
+### Violin plots {.box-4 .bg-blue}
+```{r,  fig.width=4,  height = 6}
+g  + geom_violin(draw_quantiles = c(0.25, 0.5, 0.75)) 
+```
+
+
+### Jittered display{.box-4 .bg-blue}
+```{r,  fig.width=4, height = 6}
+g + aes(colour=Species) + geom_jitter()
+```
+
+
+
+
+## Show me the data! {.build}
+
+### Bar chart with data {.box-8 .bg-blue}
+```{r showbar, fig.height=4}
+ggplot(data = iris %>% group_by(Species) %>% summarize_all(mean)) + 
+  aes(x = Species, y = Sepal.Length, fill = Species) +
+  geom_col(alpha =0.2) + 
+  geom_jitter(data= iris, aes(x=Species, y = Sepal.Length))
+```
+
+### Violin plot{.box-4 .bg-blue .stretch}
+```{r, error = TRUE, fig.height=4}
+g + 
+  geom_violin() +
+  geom_jitter(height = 0, width = 0.2)
+```
+
+## Your turn! 
+
+### Complete the exercise on the Moodle!  {.bg-yellow .box10 .offset-1}
+Send the results to to roland.krause@uni.lu
+
