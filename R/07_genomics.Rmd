@@ -1,7 +1,7 @@
 ---
 title: "Basic Genomics in R"
 author: "Roland Krause, Patrick May"
-date: "2018-01-12"
+date: "2019-03-27"
 output: 
   iosp::ioslides_plus:
     widescreen: true
@@ -376,9 +376,6 @@ kable(head(read.table(file.path(data_dir, "data-adjus.assoc.logistic.adjusted"),
 ```
 
 
-## Variant Call Formats
-
-## 
 
 
 # Thank you for your attention!
