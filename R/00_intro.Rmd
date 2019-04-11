@@ -1,26 +1,31 @@
 ---
 title: "Course introduction"
-subtitle: "IT101 - Getting started"
 author: "Roland Krause"
 date: "`r Sys.Date()`"
-smaller: true
-logo: "img/00/uni.png"
-output:
-  iosp::ioslides_plus:
-    footer: "IT101"
-    box_colours:
-      bg-my_colour: "slateblue2"
-      bg-epipgx: [ "gold", "darkmagenta"]
-      bg-unilu: ["#ee2a28", "darkred"]
-      bg-mechepi: [ "lightskyblue", "darkorange"]
-      bg-ilae: ["darkmagenta", "darkorchid1"]
-      bg-my_colour2: ["tomato3", "tomato2"]
-      bg-intro: ["tomato3", "darkorange"]
-      bg-my_colour3: ["springgreen4", header_text: "#FFD700"]
-      bg-lcsb: ["darkred", "lightblue1"]
+output:  powerpoint_presentation
 ---
 
 ```{r setup, include=FALSE}
+
+#   smaller: yes
+# subtitle: IT101 - Getting started
+# logo: img/00/uni.png
+
+  # iosp::ioslides_plus:
+  #   footer: "IT101"
+  #   box_colours:
+  #     bg-my_colour: "slateblue2"
+  #     bg-epipgx: [ "gold", "darkmagenta"]
+  #     bg-unilu: ["#ee2a28", "darkred"]
+  #     bg-mechepi: [ "lightskyblue", "darkorange"]
+  #     bg-ilae: ["darkmagenta", "darkorchid1"]
+  #     bg-my_colour2: ["tomato3", "tomato2"]
+  #     bg-intro: ["tomato3", "darkorange"]
+  #     bg-my_colour3: ["springgreen4", header_text: "#FFD700"]
+  #     bg-lcsb: ["darkred", "lightblue1"]
+  #     
+
+
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
@@ -263,7 +268,7 @@ Research data, particularly sensitive data should be in a single place.
 ## So you're not a programmer{ .outline}
 
 ### {.box-12}
-![](/img/00/notaprogrammer.png)
+![](img/00/notaprogrammer.png)
 
 
 ## Problem solving
