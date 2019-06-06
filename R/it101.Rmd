@@ -381,7 +381,7 @@ g +
 ### Even decent programmers use Google {.box-10 .bg-yellow .offset-1}
 Why shouldn't I?
 
-### General flow {.box-10 .bg-lcsb .offset-1}
+### General flow {.box-10 .bg-green .offset-1}
   * Read help pages and the official documentation well before turning to Google
   * Use stack exchange, forums and related resources carefully
   + Answers for Excel questions are worst
@@ -395,8 +395,8 @@ Why shouldn't I?
  * The Oracle answers a questions only once or if it finds the problem interesting
  * If you supply a trivial problem, it will stop answering
  
-### Available Oracles  {.box-10 .offset-1 .bg-green}
- * [](service.uni.lu) (Uni and LCSB helpdesk)
+### Available Oracles  {.box-10 .offset-1 .bg-lcsb}
+ * Service Now @ [service.uni.lu](service.uni.lu) (Uni and LCSB helpdesk)
  * Stack Overflow and other online sites
  * Local experts
 
@@ -443,8 +443,8 @@ Head of Bioinformatics Core
 for your attention!
 
 
-###  {.box-10 .offset-1 .small}
+###  {.box-10 .offset-1 .small .bg-blue}
  * Eric Koncina (LSRU, `iosp`, rendering this presentation)
  * Aurélien Ginohac (LSRU)
- * 
+
 
