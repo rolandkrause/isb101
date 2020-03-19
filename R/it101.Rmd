@@ -76,6 +76,7 @@ library(knitr)
  * How to manage your data
  * How to look and analyse your data
  * Solving issues with computers
+ * Get to know support from Bioinformatics core  
 
    
 ### Pertains to practically all people at LCSB {.box-6  .bg-lcsb .stretch .build}
@@ -83,6 +84,8 @@ library(knitr)
  * PhD candidates
  * Technicians
  * Administrators
+
+
 
 ## Typical flow of data {.smaller .build}
 
@@ -446,5 +449,4 @@ for your attention!
 ###  {.box-10 .offset-1 .small .bg-blue}
  * Eric Koncina (LSRU, `iosp`, rendering this presentation)
  * Aurélien Ginohac (LSRU)
-
 

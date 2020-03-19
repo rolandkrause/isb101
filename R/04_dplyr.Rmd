@@ -55,7 +55,7 @@ knitr::knit_hooks$set(col_width = function(before, options, envir) {
 }
 ```
 
-## Data transformation | Introduction {.build}
+## Data transformation | Introduction
 
 ###  {.box-10 .offset-1 .bg-yellow .large}
 
