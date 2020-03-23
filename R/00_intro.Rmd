@@ -1,69 +1,69 @@
 ---
-title: "Course introduction"
+title: "Genomics and Databases"
 author: "Roland Krause"
 date: "`r Sys.Date()`"
-output:  powerpoint_presentation
+output:  
+  iosp::ioslides_plus:
+    footer: "Introduction"
+    box_colours:
+      bg-my_colour: "slateblue2"
+      bg-epipgx: [ "gold", "darkmagenta"]
+      bg-unilu: ["#ee2a28", "darkred"]
+      bg-mechepi: [ "lightskyblue", "darkorange"]
+      bg-ilae: ["darkmagenta", "darkorchid1"]
+      bg-my_colour2: ["tomato3", "tomato2"]
+      bg-intro: ["tomato3", "darkorange"]
+      bg-my_colour3: ["springgreen4", header_text: "#FFD700"]
+      bg-lcsb: ["darkred", "lightblue1"]
 ---
 
 ```{r setup, include=FALSE}
 
-#   smaller: yes
-# subtitle: IT101 - Getting started
-# logo: img/00/uni.png
 
-  # iosp::ioslides_plus:
-  #   footer: "IT101"
-  #   box_colours:
-  #     bg-my_colour: "slateblue2"
-  #     bg-epipgx: [ "gold", "darkmagenta"]
-  #     bg-unilu: ["#ee2a28", "darkred"]
-  #     bg-mechepi: [ "lightskyblue", "darkorange"]
-  #     bg-ilae: ["darkmagenta", "darkorchid1"]
-  #     bg-my_colour2: ["tomato3", "tomato2"]
-  #     bg-intro: ["tomato3", "darkorange"]
-  #     bg-my_colour3: ["springgreen4", header_text: "#FFD700"]
-  #     bg-lcsb: ["darkred", "lightblue1"]
-  #     
 
 
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
-## Content | Bioinformatics {.build}
+## Learning outcomes  {.build}
 
 
-### Genomics {.box-6 .bg-blue}
- * Introduction to genetics
- * Introduction to the Unix Shell
- * Basic flow and algorithms
- * Next-generation sequencing - exome sequencing
- * Practical
- 
-### Databases {.box-6 .bg-yellow .stretch}
- * Statistical analysis environment R
- * Basic data structures
+### Knowledge {.box-6 .bg-blue}
+ * Learn basics of genetics and genomics
+ * Basic algorithms in sequence alignment
+ * Basic flow  in next-generation sequencing - exome sequencing
  * Reproducible science and reporting
+  
+### Databases {.box-6 .bg-yellow .stretch}
+ * How to structure your data
+ * Learn 10 important databases (one a day)
+
+### Programming {.box-6 .bg-green .stretch}
+ * Very basics of the Unix Shell
+ * Statistical analysis environment R
 
 
-## Speakers {.bg-blue}
+## Speakers {.bg-blue} 
 
 Speaker            | Institute|Subject
 -------------------|--------|---------
 Reinhard Schneider | LCSB   | Introduction
 Nikola de Lange | LCSB      | Unix Shell, R
-Patrick May | LCSB          | NGS
+Patrick May | LCSB          | Next generation sequencing
+Sreyoshi Chatterjee | LCSB | Next generation sequencing
 Daniel Stieber | LNS        | Genetics
 Roland Krause | LCSB        | R, Course moderator
 
 ## Timing
 
 ### Course times {.box-6 .bg-green}
- * Start 9:45
- * Lunch break 12:30 - 13:30
- * End (17:00)
- * Exercise/ Home work
- 
+ * Morning session 9:45
+ * Lunch break 12:15 - 13:15
+ * Database of the day 13:15 - 13:45
+ * End of main session 15:45 
+ * Practical work and review
+
 ### Schedule  {.box-6 .bg-blue}
  [Moodle](https://moodle.uni.lu/course/view.php?id=93#section-1)
  
@@ -89,6 +89,24 @@ Roland Krause | LCSB        | R, Course moderator
 ```
 
 
+# Remote teaching 
+
+## Remote teaching basics {.build}
+
+### Staying connected {.box-6  .bg-green .stretch  }
+ * Ask questions 
+   - Use the chat interface to raise a hand or directly ask a question
+   - Send us e-mails for more complex questions
+   
+### Keep a schedule {.box-6  .bg-yellow .stretch}
+ * Respect the timings and be online at 9:45 and 13:45 until the end of the sessions.
+ 
+### Trouble shooting during practical sessions {.box-6  .bg-red .stretch}
+ * Prepare to share your screen
+  
+### Your experience {.box-6  .bg-blue .stretch}
+
+
 # IT101 - Basic data management
 
 ## Scientific data management
@@ -100,7 +118,7 @@ Unrealistic depiction of a scientist
  
  ... has 7 PhDs  
  
- ... stores all research data in a database  
+ ... stores all research in an easy accessible database  
  
 ### {.box-4 .offset-1 }
 ![](img/00/hulk.png)
@@ -110,7 +128,7 @@ Unrealistic depiction of a scientist
 
 
 
-### Learning objectives {.box-8 .offset-1 .bg-red .icon}
+### Teaching objectives {.box-8 .offset-1 .bg-red .icon}
 ![](img/00/kt.png)
  * Reproduciblity in the research data life cycle
  * How to manage your data
@@ -176,9 +194,6 @@ Through multiple versions.
  * ownCloud share (BioCore)
  * Dropbox, Google Drive, OneDrive, iCloud are not generally advised but many collaborators might rely on it
  
-
-## Storing your data {.build}
-
 ### Advice  {.box-6  .bg-unilu .smaller .stretch}
  * Use institutional media for storage of all data
  * Disable write access to relevant source data
