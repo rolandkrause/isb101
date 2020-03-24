@@ -1,8 +1,8 @@
 ---
 title: "Getting started in R"
-subtitle: "Basic R"
+subtitle: "Base R"
 author: "Nikola de Lange and Roland Krause"
-date: "2019-03-25"
+date: "`r Sys.Date()`"
 output: 
   iosp::ioslides_plus:
     box_colours:

@@ -97,6 +97,8 @@ Roland Krause | LCSB        | R, Course moderator
  * Ask questions 
    - Use the chat interface to raise a hand or directly ask a question
    - Send us e-mails for more complex questions
+ * Mute your microphone unless you are prepared to speak to reduce noise
+ * Switch off your camera at will. Switch on your camera during conversations, opening and closing segments.
    
 ### Keep a schedule {.box-6  .bg-yellow .stretch}
  * Respect the timings and be online at 9:45 and 13:45 until the end of the sessions.
@@ -156,9 +158,9 @@ Unrealistic depiction of a scientist
 
 ###  Manuscript{.box-3 .warning .bg-unilu .stretch}
 Reproduce  
-  + all numbers paper
-  + summaries
-  + images and graphs
+ * all numbers paper
+ * summaries
+ * images and graphs
   
 ### Preserve {.box-3 .bg-green .stretch}
 One data set (planned)
@@ -186,7 +188,7 @@ Through multiple versions.
  * Use a file sharing service 
 
  * Special precautions for sensitive data (not covered here in detail)
-* Sensitive data must be encrypted on transfer
+ * Sensitive data must be encrypted on transfer
 
 ### Solutions for data transfer{.box-6  .bg-blue .smaller .stretch}
  * Share on central server
@@ -201,12 +203,12 @@ Through multiple versions.
 
 ## Filenames | Conventions {.build}
 
-### Examples {.box-12  .bg-advice .smaller}
+### Examples {.box-12  .bg-green .smaller}
  `Iris-setosa_samples_1927-05-12.csv`\
  `PI102_Mouse_EEG_2018-11-03_1245.tsv`\
  `Bioinfiniti_FullProposal_2018-11-15_1655.docx`
 
-### Dates according to ISO8601 {.box-4  .bg-advice .smaller .stretch}
+### Dates according to ISO8601 {.box-4  .bg-yellow .smaller .stretch}
 `2018-12-03`
 
 `2018-12-06_1700`
@@ -221,7 +223,7 @@ Through multiple versions.
  * Human readable
  * Plays well with default ordering 
 
-### Source {.outline .box-12}
+### Source {.outline .bg-green .box-12}
 From Jenny Bryan by CC-BY
 https://speakerdeck.com/jennybc/how-to-name-files
 
