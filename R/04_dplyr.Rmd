@@ -2,7 +2,7 @@
 title: "Databases and their transformation"
 subtitle: "`dplyr` and `tidyr`"
 author: "Roland Krause, Nikola de Lange"
-date: "2019-03-26"
+date: "`r Sys.Date()`"
 output: 
   iosp::ioslides_plus:
     box_colours:

@@ -4,7 +4,7 @@ author: "Nikola de Lange, Roland Krause"
 date: "`r Sys.Date()`"
 output:
   iosp::ioslides_plus:
-    footer: "Created with [ioslides plus](https://github.com/koncina/iosp)"
+    footer: "ISB101"
 ---
 
 ```{r setup, include=FALSE}
@@ -88,7 +88,7 @@ article .code-transparent > pre {
 
 ### Markup language {.box-6 .bg-blue}
 
-- Such as Xml, HTML
+- Common examples are the eXtensible Markup Language XML and the relatedHTML
 - A coding system used to structure text
 - Uses markup tags (_e.g._ `<h1></h1>` in HTML)
 
