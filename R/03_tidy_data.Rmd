@@ -199,11 +199,11 @@ rnorm(5) %>%
   round(2)
 ```
 
-### Of note{.box-6 .bg-yellow .icon-small}
+### Availability {.box-6 .bg-yellow .icon-small}
 
 ![](img/00/tip.png)
 
-`%>%` is available in the `tidyverse` packages and some additional ones.
+`%>%` is available in all `tidyverse` packages as well as other packages but not in most base packages.
 
 ## Pipes in R | `magrittr` {.build .bg-blue}
 
@@ -233,6 +233,28 @@ Example adapted from [Romain François](https://twitter.com/ParisRaddict/status/
 
 `tidyverse` functions are consistently designed to work with `%>%`: **data** (_subject_) is the  **first** argument.
 
+## An example on pipes | From following `dplyr` session {.build}
+
+```{r read_gene, include=FALSE}
+gene_by_exon <- read_csv("data/gene_by_exon.csv")
+
+```
+
+
+```{r, row = c(8, 4), tibble_rows = 4}
+
+gene_by_exon %>%
+  filter(gene_biotype == "protein_coding") %>% 
+  mutate(length = end_position - start_position) %>% 
+  select(hgnc_symbol, length)
+```
+
+```{r, row = c(8, 4), tibble_rows = 4}
+
+gene_filtered <- filter(gene_by_exon, gene_biotype == "protein_coding") 
+gene_length <-   mutate(gene_filtered, length = end_position - start_position)  
+select(gene_length, hgnc_symbol, length)
+```
 
 
 # Import data using `readr`
