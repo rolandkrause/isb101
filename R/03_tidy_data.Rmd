@@ -2,7 +2,7 @@
 title: "Tidy data"
 subtitle: "The tidyverse"
 author: "Nikola de Lange, Roland Krause"
-date: "2019-03-25"
+date:  "`r Sys.Date()`"
 output: iosp::ioslides_plus
 ---
 
@@ -23,7 +23,7 @@ knitr::opts_chunk$set(echo = TRUE, fig.align = "center")
 - appreciate the tibble format
 - use `readr` to import data into R
 
-## Basic: everything in the data rectangle | with header {.middle}
+## The very basics: Everything in the data rectangle | with a header {.middle}
 
 ### {.box-6 .bg-white .offset-3}
 
@@ -31,11 +31,6 @@ knitr::opts_chunk$set(echo = TRUE, fig.align = "center")
 
 <span class="small">[Jenny Bryan](https://speakerdeck.com/jennybc/data-rectangling) in Jeff Leek [blog post](https://simplystatistics.org/2017/05/24/toward-tidy-analysis/)</span>
 
-## Rationale {.vs3 .build}
-
-> tidy datasets are all alike but every messy dataset is messy in its own way | Hadley Wickham (see `vignette("tidy-data")`) {.col-8 .offset-2 .bg-yellow}
-
-> All happy families are alike; each unhappy family is unhappy in its own way. | Leo Tolstoy, Anna Karenina{.col-8 .offset-2}
 
 ## Semantics {.vs2}
 
@@ -57,6 +52,16 @@ knitr::opts_chunk$set(echo = TRUE, fig.align = "center")
 3. Each value is in its own cell
 
 ![](img/02/tidy_data.png)
+
+## Tidying messy data
+
+### For clean data ensure that {.col-8 .box .offset-2 .build .bg-blue}
+>	- Column names are easy to use and informative
+>	- Row names are easy to use and informative
+>	- Obvious mistakes in the data have been removed
+>	- Variable values are internally consistent
+>	- Appropriate transformed variables have been added
+
 
 ## Bad data exercise {.bg-green .build}
 
@@ -103,15 +108,22 @@ Name of the table             | No             | You'll see this often
   
 ## Common tidy data violations {.vs3}
 
-### Problems {.box-10 .bg-yellow .offset-1}
+### Problems and solution {.box-10 .bg-yellow .offset-1}
 
-- Column headers are values, not variable names (`tidyr::gather()`)
-- Multiple variables stored in one column (`tidyr::separate()`)
-- Variables are stored in both rows and columns (`tidyr::gather()`-`tidyr::spread()`)
-- Repeated observations (`tidyr::nest()` or `dplyr::group_by`)
-- Multiple types in one table (`tidyr::dplyr()` data transformation)
-- One type in multiple tables (`tidyr::dplyr()`, combine into single table)
-
+- Column headers are values, not variable names 
+   * Reshape table (`tidyr::gather()`)
+- Multiple variables stored in one column
+   * Separate columns (`tidyr::separate()`)
+- Variables are stored in both rows and columns
+   * Reshape table (`tidyr::gather()`-`tidyr::spread()`)
+- Repeated observations
+   * Group observations ( `dplyr::group_by` or `tidyr::nest()`)
+- Multiple types of observations in one table 
+   * Separate tables (`tidyr::dplyr()`)
+- One type in multiple tables 
+   *  Combine into single table (`tidyr::dplyr()`)
+   
+   
 # The tidyverse
 
 ![](img/00/logo_tidyverse.png)
@@ -699,9 +711,9 @@ read_delim(file, delim = "|", ...)
 
 ![](img/03/readr_read_fwf_tsv.png)
 
-## Wrap up
+## Wrap up {.build}
 
-### You learned to: {.box-10 .offset-1 .bg-red .icon}
+### We covered {.box-8 .bg-red .icon}
 
 ![](img/00/kt.png)
 
@@ -715,8 +727,18 @@ read_delim(file, delim = "|", ...)
 - adjust the imported data types
 
 
+### Tidy data core {.box-4  .bg-green}
+ + `vignette("tidy-data")`
+ + <http://tidyr.tidyverse.org/>
 
 
+
+### Acknowledgments {.box-3  .vs1 .bg-blue}
+
+* Hadley Wickham
+* Jeremy Stanley
+
+### Thank you for your attention! {.box-9  .vs1 .stretch .bg-red .outline}
 
 
 
