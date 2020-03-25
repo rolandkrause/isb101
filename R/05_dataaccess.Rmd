@@ -1,7 +1,7 @@
 ---
-title: "Access to databases"
+title: "Programmatic access to the ENSEMBL database"
 author: "Roland Krause"
-date: "2019-03-26"
+date:  "`r Sys.Date()`"
 output:
   ioslides_presentation:
     logo: logo-lcsb.png
@@ -15,54 +15,67 @@ knitr::opts_chunk$set(cache = TRUE)
 
 ```
 
-## Objectives|Discovering and access of biological information
+## Learning Objectives 
 
-1. Browsing, identify structure of data
-2. Access data programmatically - e.g. using R, wget or other 
-via an Application Program Interface (API)
+### Discovering and access of biological information {.box-10 .offset-1 .bg-red .icon}
 
-## Standard text formats for data
+![](img/00/kt.png)
+
+ 1. Browsing and  identifying structures of data
+ 2. Access data programmatically 
+    * with R 
+    * or shell tools (`wget`  `curl`)
+    * via an Application Program Interface (API)
+
+## Formats for data exchange {.build}
+
+### Standards in 2020 {.box-6 .offset-3 .bg-blue}
+
 > -  ### Tab-separated text files ('''.tab/.tsv''')
 > -  ### eXtensible Markup Language (XML)
 > -  ### JSON
 
-## How data is organized|Large institutions to host data
-- NCBI - National Center for Biotechnology Information
-- EBI - European Institute for Bioinformatics
+## How data is organized|Large institutions to hosting
 
-## Some databases
- * [NCBI Gene](http://www.ncbi.nlm.nih.gov/gene) - Gene sequences
- * [Uniprot](http://www.uniprot.org) - Protein sequences
- * [STRING](www.string-dg.org) - Protein-protein interactions
- * [OMIM](https://www.ncbi.nlm.nih.gov/omim/) - Mendelian diseases and genes   
+### US-based {.box-4 .offset-1 .bg-blue}
+ - UCSC Genome Browser - [genome.ucsc.edu](genome.ucsc.edu)
+ - [Refseq](https://www.ncbi.nlm.nih.gov/refseq/)
+ - National Center for Biotechnoloy Information [NCBI](https://www.ncbi.nlm.nih.gov/)
 
-## Genome browsers
-
-- UCSC Genome Browser - [genome.ucsc.edu](genome.ucsc.edu)
-- ENSEMBL - [www.ensembl.org](www.ensembl.org)
+### Europe {.box-4 .offset-2 .bg-green .stretch}
+ - ENSEMBL - [www.ensembl.org](http://www.ensembl.org)
+ - [Uniprot](http://www.uniprot.org)
+ - EBI - European Institute for Bioinformatics
 
 
-## Curated resources | Uniprot and Refseq
+# Working with biological databases
 
-[Uniprot](http://www.uniprot.org)
+## Advice for your projects {.build}
 
-
-# Working with biological database
-
-## Advice for your projects
-
-#### Looking up data on the web -- not a reliable resource for your thesis
+### Looking up data on the web {.bg-green .box-6 }
+ * Not a reliable resource for your thesis
+ * Use to discover structure of a data set or hosting site
+ 
+ 
  $\to$ Save your queries
  
-#### Occasional look-up in your database or from a linked resource
- $\to$ Programmatic access
+### Repeated look-ups in a database  {.bg-yellow .box-6 .stretch}
+ * Exploring several genes in a consistent fashion
+ 
+ 
+  $\to$ Programmatic access reommended
 
-#### Full resource, e.g. when computing statistics
+### Genome-wide computations {.bg-blue .box-8 }
+ * Programmatic access required 
+ * Ensure that installations are not automatically triggered!  
+ * Your institute's bioinformatics facility might already hold a copy of a resource.
+ * Mirror installation of larger resourcer are big ($>$ 3Tb for ENSEMBL)
+  
  $\to$ Download full resource, denote version, date and URL or (ideally Digital Object Identifier) 
- Script but ensure that it's not automatically triggered!  
- Your institute's bioinformatics facility might already hold copy
+ 
+### {.box-4 }
+ ![](img/05/hard-disk.jpg)
 
-#### Mirror installation of larger resourcer for bigger project
 
 ## Downloading data in R 
 
@@ -80,12 +93,13 @@ Ensure you are not downloading files on every execution of your script.
 
 # Programmatic access to databases 
 
-## BioMart installation
+## BioMart installation  {.col-8 .offset-2 .box .bg-blue}
 
 ```{r, eval=FALSE}
-source("http://bioconductor.org/biocLite.R")
-biocLite("biomaRt")
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
 
+BiocManager::install("biomaRt")
 ```
 
 
@@ -95,8 +109,12 @@ listMarts(host="www.ensembl.org")
 ```
 
 
-## Using ENSEMBL Mart
+## Using ENSEMBL Mart {.build}
 
+### BioMart on the web {.bg-green .box-8 .offset-2}
+ * [BioMart](https://www.ensembl.org/info/data/biomart)
+
+### BioMart from the API  {.bg-blue .box-8 .offset-2}
 ```{r }
 ensembl.mart = useMart(biomart="ENSEMBL_MART_ENSEMBL", 
                        host="www.ensembl.org")
