@@ -29,11 +29,45 @@ knitr::opts_chunk$set(cache = TRUE)
 
 ## Formats for data exchange {.build}
 
-### Standards in 2020 {.box-6 .offset-3 .bg-blue}
 
-> -  ### Tab-separated text files ('''.tab/.tsv''')
-> -  ### eXtensible Markup Language (XML)
-> -  ### JSON
+
+### Tab-separated text files  {.box-6 .bg-blue .stretch } 
+'.tab/.tsv', not `.csv`
+```{}
+hgnc_symbol  ensembl_gene_id
+MIR548X  ENSG00000265841
+MIR6508  ENSG00000275523
+MIR125B2 ENSG00000207863
+ 
+```
+
+### JSON {.box-6 .stretch .bg-blue}
+```{}
+{"genes":[
+  { "hgnc_symbol":"MIR548X", "ensembl_gene_id":"ENSG00000265841" },
+  { "hgnc_symbol":"MIR6508", "ensembl_gene_id":"ENSG00000275523" },
+  { "hgnc_symbol":"MIR125B2", "ensembl_gene_id":"ENSG00000207863" }
+]}
+``` 
+
+### eXtensible Markup Language (XML) {.box-12 .bg-blue}
+```{}
+<genes>
+  <gene>
+    <hgnc_symbol>MIR548X</hgnc_symbol>
+    <ensembl_gene_id>ENSG00000265841</ensembl_gene_id>
+  </gene>
+  <gene>
+  <hgnc_symbol>MIR6508</hgnc_symbol><ensembl_gene_id>ENSG00000275523</ensembl_gene_id>
+  </gene>
+  <gene>
+  <hgnc_symbol>MIR125B2</hgnc_symbol><ensembl_gene_id>ENSG00000207863</ensembl_gene_id>
+</genes>
+
+```
+
+
+
 
 ## How data is organized|Large institutions to hosting
 
@@ -73,21 +107,28 @@ knitr::opts_chunk$set(cache = TRUE)
   
  $\to$ Download full resource, denote version, date and URL or (ideally Digital Object Identifier) 
  
-### {.box-4 }
+### {.box-4 .stretch}
  ![](img/05/hard-disk.jpg)
 
 
-## Downloading data in R 
+## Downloading data in R {.build}
 
-Ensure you are not downloading files on every execution of your script.
-```{r download}
- destfile="./hordeum_variants.txt.gz" 
- fileURL <- "ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/variants/hordeum_vulgare_variation.txt.gz"
+### Prerequisite {.bg-yellow .box-8 .offset-2 .stretch .icon-small}
 
- if (!file.exists(destfile)) {
-    download.file(fileURL ,destfile,method="auto") }
+ * Ensure you are not downloading files on every execution of your script.
+ * Most tools will accept a URL - and download the file every time!
+ * Your script will run many times.
+![](img/00/tip.png)
+
  
+### A simple example  {.bg-blue .box-10 .offset-1}
+```{r download}
+ file_destination <- "./hordeum_variants.txt.gz"
 
+ source_url <- "ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/variants/hordeum_vulgare_variation.txt.gz"
+
+ if (!file.exists(file_destination)) {
+    download.file(source_url, file_destination, method="auto") }
 ```
 
 
@@ -116,14 +157,14 @@ listMarts(host="www.ensembl.org")
 
 ### BioMart from the API  {.bg-blue .box-8 .offset-2}
 ```{r }
-ensembl.mart = useMart(biomart="ENSEMBL_MART_ENSEMBL", 
+ensembl.mart <- useMart(biomart="ENSEMBL_MART_ENSEMBL", 
                        host="www.ensembl.org")
 head(listDatasets(ensembl.mart))
 ```
 
 ## Using a specific database
 ```{r}
-human.genes.mart = useDataset(ensembl.mart, dataset="hsapiens_gene_ensembl")
+human.genes.mart <- useDataset(ensembl.mart, dataset = "hsapiens_gene_ensembl")
 head(listAttributes(human.genes.mart))
 
 ```
@@ -131,9 +172,20 @@ head(listAttributes(human.genes.mart))
 ## Get data from the database
 
 ```{r}
-chr21_genes <- getBM(attributes=c('ensembl_gene_id',
-'ensembl_transcript_id','hgnc_symbol','chromosome_name','start_position','end_position'), filters =
-'chromosome_name', values ="21", mart = human.genes.mart)
+chr21_genes <- getBM(
+  attributes = c(
+    'ensembl_gene_id',
+    'ensembl_transcript_id',
+    'hgnc_symbol',
+    'chromosome_name',
+    'start_position',
+    'end_position'
+  ),
+  filters =
+    'chromosome_name',
+  values = "21",
+  mart = human.genes.mart
+)
 
 head(chr21_genes)
 ```
@@ -142,14 +194,36 @@ head(chr21_genes)
 
 
 ```{r, eval=FALSE}
-hgnc_swissprot <- getBM(attributes=c('ensembl_gene_id','ensembl_transcript_id','hgnc_symbol','hgnc_id','uniprot_swissprot'),filters = 'ensembl_gene_id', values = 'ENSG00000139618', mart = human.genes.mart)
+hgnc_swissprot <-
+  getBM(
+    attributes = c(
+      'ensembl_gene_id',
+      'ensembl_transcript_id',
+      'hgnc_symbol',
+      'hgnc_id',
+      'uniprot_swissprot'
+    ),
+    filters = 'ensembl_gene_id',
+    values = 'ENSG00000139618',
+    mart = human.genes.mart
+  )
 head(hgnc_swissprot)
 ```
 
 
+## Conclusion
+
+### Summary {.bg-yellow .box-8 .offset-2}
+ * Take care of the data you receive from external source
+ * Code data access
+ * Use web tools to discover how things work
+ 
+### Thank you for your attention! 
+ 
+<!--
 ## MutationMapper interface
 
-```{r}
+```{r,  eval=FALSE}
 library(cgdsr)
 # Create CGDS object
 mycgds = CGDS("http://www.cbioportal.org/")
@@ -161,7 +235,7 @@ getCancerStudies(mycgds)
 ```
 
 ## MutationMapper interface
-```{r}
+```{r,  eval=FALSE}
 
 # Get available case lists (collection of samples) for a given cancer study
 mycancerstudy = getCancerStudies(mycgds)[2,1]
@@ -182,11 +256,11 @@ myclinicaldata = getClinicalData(mycgds,mycaselist)
 
 ## MutationMapper interface
 
-```{r}
+```{r,  eval=FALSE}
 
 
 plot(mycgds, "gbm_tcga", "NF1", c("gbm_tcga_gistic","gbm_tcga_mrna"), "gbm_tcga_all")
 ```
-
+ -->
 
 
