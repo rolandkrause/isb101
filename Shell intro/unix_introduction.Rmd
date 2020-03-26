@@ -37,16 +37,6 @@ knitr::opts_chunk$set(echo = TRUE)
 }
 ```
 
-## General Information
-
-### About me {.box-8 .bg-blue}
-- Nikola de Lange
-- 1st year PhD student
-- PARK-QC Doctoral Training Unit
-
-### Contact {.box-8}
-- nikola.delange@uni.lu
-
 
 ## The Unix Shell
 
@@ -128,8 +118,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ### Job scheduling (interactive){.box-12}
 On `access-iris`
 ```{bash eval=F}
-srun -p interactive --qos qos-interactive --pty bash -i
-srun -p interactive --qos qos-interactive --time=03:00:00 --pty bash -i
+srun --reservation=masters_genomics --time=03:00:00 --pty bash -i
 
 ```
 
