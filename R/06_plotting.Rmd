@@ -66,7 +66,7 @@ One of the following"
  * Erase redundant data-ink.
  * Revise and edit.
 
-## Examples 
+## Cleaning up a chart | Example
 
 ### {.center}
 
@@ -88,6 +88,8 @@ ggplot(my_dat) +
 ```
 
 ## Remove redundant information | Legend
+
+### {.center}
 ```{r, echo = FALSE, width=8}
 ggplot(my_dat) +
   aes(gene, length, fill=gene) +
@@ -100,6 +102,9 @@ Source: https://medium.com/@plotlygraphs/maximizing-the-data-ink-ratio-in-dashbo
 
 
 ## Remove redundant information | Color
+
+### {.center}
+
 
 ```{r, echo = FALSE, width = 8}
 
@@ -118,7 +123,10 @@ ggplot(my_dat, aes(gene, length, width = .6)) +
 
 
 ## Increase data to ink | Color
-```{r}
+
+### {.center}
+
+```{r, echo = FALSE, width=8}
 ggplot(my_dat, aes(gene, length, width = .6)) +
    geom_col(fill = "white", colour="grey") +
    guides(fill=FALSE) +
@@ -132,7 +140,11 @@ ggplot(my_dat, aes(gene, length, width = .6)) +
 
 
 ## Remove grey background 
-```{r}
+
+### {.center}
+
+
+```{r, echo = FALSE, width=8}
 ggplot(my_dat, aes(gene, length, width = .6)) +
    geom_col(fill = "white", colour="grey") +
    guides(fill=FALSE) +
@@ -147,6 +159,9 @@ ggplot(my_dat, aes(gene, length, width = .6)) +
 
 
 ## Display absolute numbers {.center}
+
+### {.center}
+
 ```{r, echo = FALSE, width = 8}
 
 ggplot(my_dat, aes(gene, length, width = .6)) +
@@ -169,6 +184,8 @@ ggplot(my_dat, aes(gene, length, width = .6)) +
 
 
 ## But you know ...
+
+### {.center}
 
 ```{r, echo = FALSE}
 kable(my_dat, col.names = c("Gene", "Length"))
@@ -1063,18 +1080,18 @@ ggplot(sample_n(iris,80),
   theme(legend.position="bottom") -> g
 ```
 
-### Box plot {.box-4 .bg-blue}
+### Box plot {.box-4 .bg-bluew}
 ```{r  fig.width=4, , height = 6}
 g + geom_boxplot() 
 ```
 
-### Violin plots {.box-4 .bg-blue}
+### Violin plots {.box-4 .bg-bluew}
 ```{r,  fig.width=4,  height = 6}
 g  + geom_violin(draw_quantiles = c(0.25, 0.5, 0.75)) 
 ```
 
 
-### Jittered display{.box-4 .bg-blue}
+### Jittered display{.box-4 .bg-bluew}
 ```{r,  fig.width=4, height = 6}
 g + aes(colour=Species) + geom_jitter()
 ```
@@ -1084,7 +1101,7 @@ g + aes(colour=Species) + geom_jitter()
 
 ## Show me the data! {.build}
 
-### Bar chart with data {.box-8 .bg-blue}
+### Bar chart with data {.box-8 .bg-bluew}
 ```{r showbar, fig.height=4}
 ggplot(data = iris %>% group_by(Species) %>% summarize_all(mean)) + 
   aes(x = Species, y = Sepal.Length, fill = Species) +
@@ -1092,7 +1109,7 @@ ggplot(data = iris %>% group_by(Species) %>% summarize_all(mean)) +
   geom_jitter(data= iris, aes(x=Species, y = Sepal.Length))
 ```
 
-### Violin plot{.box-4 .bg-blue .stretch}
+### Violin plot{.box-4 .bg-bluew .stretch}
 ```{r, error = TRUE, fig.height=4}
 g + 
   geom_violin() +
