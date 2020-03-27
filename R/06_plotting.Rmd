@@ -2,10 +2,13 @@
 title: "Vizualization"
 subtitle: ggplot2
 author: "E. Koncina, A. Ginolhac, R. Krause"
-date: "2019-03-27"
+date: "`r Sys.Date()`"
 output:
   iosp::ioslides_plus:
-    keep_md: no
+    keep_md: yes
+    box_colours:
+      bg-bluew: "lavender"
+      bg-assign: "palegreen4"
 ---
 
 ```{r setup, include = FALSE}
@@ -68,33 +71,41 @@ One of the following"
 ### {.center}
 
 ```{r, echo = FALSE, width=8}
-
 my_dat <- tribble(~gene, ~length, 
                   "SCN1A",  312,
                   "SCN2A",  542,
                   "SLC1A3", 501,
                   "ACT1"  , 421,
                   "IRG1" ,  387)
-                  
+```
+
+
+```{r, echo = FALSE, width=8}
 ggplot(my_dat) +
   aes(gene, length, fill=gene) +
    geom_col() +
-  labs(title = "Length of genes by gene length", caption = "Gene length in residues") +
-  theme(plot.background = element_rect(fill = "lightblue"))
-  #scale_fill_gradientn(colours = terrain.colors(10))
+  labs(title = "Length of genes by gene length", caption = "Gene length in residues")
+```
 
+## Remove redundant information | Legend
+```{r, echo = FALSE, width=8}
+ggplot(my_dat) +
+  aes(gene, length, fill=gene) +
+   geom_col() +
+   guides(fill = "none") +
+  labs(title = "Length of genes by gene length", caption = "Gene length in residues") 
 ```
 
 Source: https://medium.com/@plotlygraphs/maximizing-the-data-ink-ratio-in-dashboards-and-slide-deck-7887f7c1fab
 
 
-## Remove redundant information | Legend
+## Remove redundant information | Color
 
 ```{r, echo = FALSE, width = 8}
 
 ggplot(my_dat, aes(gene, length, width = .6)) +
-   geom_col(fill = "white", colour="grey") +
-   theme_bw()+
+   geom_col(fill = "black", colour="grey") +
+
    guides(fill=FALSE) +
     labs(title = "Gene length in residues")+
    theme(
@@ -102,26 +113,58 @@ ggplot(my_dat, aes(gene, length, width = .6)) +
          axis.title.x=element_blank(),
          axis.ticks.x=element_blank()) 
 
+
 ```
 
 
-## {.center}
+## Increase data to ink | Color
+```{r}
+ggplot(my_dat, aes(gene, length, width = .6)) +
+   geom_col(fill = "white", colour="grey") +
+   guides(fill=FALSE) +
+    labs(title = "Gene length in residues")+
+   theme(
+         legend.text = element_blank(),
+         axis.title.x=element_blank(),
+         axis.ticks.x=element_blank())
+
+```
+
+
+## Remove grey background 
+```{r}
+ggplot(my_dat, aes(gene, length, width = .6)) +
+   geom_col(fill = "white", colour="grey") +
+   guides(fill=FALSE) +
+    labs(title = "Gene length in residues")+
+   theme(
+         legend.text = element_blank(),
+         axis.title.x=element_blank(),
+         axis.ticks.x=element_blank()) +
+  theme_classic()
+
+```
+
+
+## Display absolute numbers {.center}
 ```{r, echo = FALSE, width = 8}
 
 ggplot(my_dat, aes(gene, length, width = .6)) +
    geom_col(fill = "white", colour="grey") +
-   theme_minimal()+
    guides(fill=FALSE) +
-    labs(title = "Gene length in residues")+
+    labs(title = "Gene length in residues", y="", x ="")+
    theme(
          strip.background = element_blank(),
          legend.text = element_blank(),
          axis.title.x=element_blank(),
          axis.title.y=element_blank(),
          axis.text.y=element_blank(),
-         axis.ticks.x=element_blank()) +
-     geom_text(aes(label = length), vjust = 3)
-
+         axis.ticks.x=element_blank(),
+         panel.border = element_blank(),
+         panel.grid.major = element_blank(),
+         panel.grid.minor = element_blank()) +
+     geom_text(aes(label = length), vjust = 3) +
+  theme_void() 
 ```
 
 
@@ -361,18 +404,17 @@ ggplot(iris) +
   aes(y = Petal.Length)
 ```
 
-## Unmapped parameters{.build}
+## Mapping parameters for all data{.build}
 
 <!-- FIXME: image is not rendered as it should in firefox in column mode... Browser bug? -->
 
-### {.box-4 .bg-blue .show}
+### Not all parameters mapped to data  {.box-12 .bg-green .show}
 
-- `geom_point()` accepts additional arguments such as the `colour`, the transparency (`alpha`) or the `size` (see `?geom_point`).
-- It is possible to define them to a fixed value without mapping them to a variable.
+`geom_point()` accepts additional arguments such as the `colour`, the transparency (`alpha`) or the `size` (see `?geom_point`).
+They will become fixed value without mapping them to a variable.
 
-%end%
-
-```{r iris_fixed_colour, width = 6, eval = FALSE}
+### Example {.box-6 .bg-blue}
+```{r iris_fixed_colour}
 ggplot(iris) +
   aes(x = Petal.Width, 
       y = Petal.Length) +
@@ -382,10 +424,6 @@ ggplot(iris) +
     size = 3)
 ```
 
-###{.box-6 .bg-bluew}
-
-```{r iris_fixed_colour, echo = FALSE, fig.height = 3.5}
-```
 
 ### important {.box-6 .bg-red .icon-small}
 
@@ -397,7 +435,7 @@ Note that parameters defined **outside** the aesthetics `aes()` are applied to *
 
 ## Mapping aesthetics | colour{.build}
 
-### {.box-6 .bg-blue .show}
+### Mapping to variables {.box-6 .bg-blue .show}
 
 - `colour`, `alpha` or `size` can also be mapped to a column in the data frame.
 - We can for example attribute a different colour to each species.
@@ -413,12 +451,12 @@ ggplot(iris) +
              size = 3)
 ```
 
-###{.box-6 .bg-bluew}
+### {.box-6 .bg-bluew}
 
 ```{r iris_map_colour, echo = FALSE, fig.height = 3.5}
 ```
 
-### Important {.box-6 .bg-red .icon-small}
+### Important {.box-4 .bg-red .icon-small}
 
 ![](img/00/warning.png)
 
@@ -434,7 +472,7 @@ ggplot(iris) +
              alpha = 0.6, size = 3)
 ```
 
-###{.box-8 .offset-2 .bg-bluew}
+### {.box-8 .offset-2 .bg-blue}
 
 ```{r iris_shape, echo = FALSE, fig.height = 3.5}
 ```
@@ -452,25 +490,22 @@ ggplot(iris) +
        caption = "Fisher, R. A. (1936)")
 ```
 
-###{.box-8 .offset-2 .bg-bluew}
+### {.box-8 .offset-2 .bg-bluew}
 
 ```{r iris_labels, fig.height = 3, echo = FALSE}
 ```
 
-## Histograms
+## Histograms 
 
-```{r iris_histo, eval = FALSE, width = 8, class = "offset-2"}
+### Petal length {.box-8 .bg-bluew}
+```{r iris_histo}
 ggplot(iris) +
   geom_histogram(aes(x = Petal.Length, fill = Species),
                  alpha = 0.8, bins = 30)
 ```
 
-###{.box-6 .bg-bluew}
 
-```{r iris_histo, fig.height = 4, echo = FALSE}
-```
-
-### Tip {.box-6 .bg-yellow .icon-small}
+### Tip {.box-4 .bg-yellow .icon-small}
 
 ![](img/00/tip.png)
 
@@ -523,7 +558,7 @@ are intermediate values calculated by `ggplot2` using stat functions
 
 ## Barcharts | categorical variables
 
-### `geom_bar()`{} {.box-6 .offset-3 .bg-yellow}
+### `geom_bar()`{} {.box-6 .bg-yellow}
 
 - `geom_bar()` counts the number of values in each category
 - `geom_bar()` uses `stat_count()` (creates a new `count` column).

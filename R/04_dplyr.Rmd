@@ -398,14 +398,14 @@ gene_by_exon %>%
 
  * `select` **helpers** with `vars()` in `mutate_at()`
  * Use column **conditions** for `mutate_if()`
- * ~.  to interface the data transformation
- 
+ * `mutate_all()` changes all columns
 
-### {.box-6 .bg-yellow .icon-small .middle}
+### `.~` {.box-6 .bg-yellow .icon-small .stretch}
 
 ![](img/00/tip.png)
 
 The placeholder **`~.`** is the dynamic variable when using `mutate_at()`
+ 
 
 %end% 
 
@@ -436,7 +436,7 @@ Now we get a chromosome **22** and look at the strands!
 
 ## `mutate_all()` | change all columns
 
-### Replace columns {.box-6 .offset-3 .bg-yellow}
+### Replace columns {.box-8 .bg-yellow}
 
 Use **unnamed** actions in through the formula interface `~.` to **replace** all columns
 
@@ -451,22 +451,19 @@ iris %>%
 
 ## `mutate_all()` | change all columns
 
-### Add columns {.box-6 .offset-3 .bg-yellow}
+### Add columns {.box-8 .bg-yellow}
 
-Use **named** actions by providing a list of names and functions to **add** new columns.
+Use **named actions** by providing a **list of names and functions** to **add** new columns.
 
 %end%
 
 ```{r, title = "Convert iris from cm to inches", class = "compact-output"}
-#iris %>%
-#  as_tibble() %>%
-#  select(-Species) %>%
-#  mutate_all(funs(inches = . / 2.54))
 
 iris %>%
   as_tibble() %>%
   select(-Species) %>%
-  mutate_all(list(inches = ~. / 2.54))
+  mutate_all(list(inches = ~. / 2.54)) %>% 
+  select(contains("Sepal"))
 
 ```
 
@@ -478,13 +475,14 @@ iris %>%
 
 ### `group_by`{} {.box-6 .bg-blue}
 
-- It is frequently used in conjunction with a summarising transformation
-- You can group by more than one variable
+- Summarising transformations are usually performed on a group of variables.
+- You can group by more than one variable with `group_by()`.
 - Use `ungroup()` to remove the grouping once your computing is done
 
-### `summarise`{} {.box-6 .bg-blue}
+### `summarise`{} {.box-6 .bg-blue .stretch}
 
-Returns a single row for each group
+ - Returns a single row for each group.
+ - If you do not supply a group it simply computes on the complete data frame.
 
 %end%
 
