@@ -1,11 +1,11 @@
 ---
 title: '`ggplot2` practical'
-author: 'ISB101'
-date: '11 January 2018'
+author: 'Eric Koncina'
+date: "`r Sys.Date()`'
 output:
-  unilur::tutorial_html_solution: default
   unilur::tutorial_pdf: default
   unilur::tutorial_pdf_solution: default
+  unilur::tutorial_html_solution: default
   unilur::tutorial_html: default
 ---
 
@@ -76,7 +76,7 @@ Adding different layers to address this is not the way to go: we can see that th
 ```
 
 ```{block, box = "lightblue", boxtitle = "Tip"}
-You might be interested in using the functions `gather()`, `separate()`, `spread()` (`tidyr`) but also `column_to_rownames()` (`tibble`)
+You might be interested in using the functions `gather()`, `separate()`, `spread()` (`tidyr`) but also `rownames_to_column()` (`tibble`)
 
 Try to solve this question stepwise. Using the pipe allows you to add or remove a step easily and to experiment if your code works or not within your current chunk.
 ```
