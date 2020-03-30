@@ -3,9 +3,9 @@ title: "Filtering variants"
 author: "Roland Krause"
 date: "29/03/2020"
 output: 
-  unilur::tutorial_html_solution: default
-  unilur::tutorial_pdf_solution: default
   unilur::tutorial_pdf: default
+  unilur::tutorial_pdf_solution: default
+  unilur::tutorial_html_solution: default
   unilur::tutorial_html: default
 ---
 
@@ -24,7 +24,7 @@ sam_dir <- "/Users/roland.krause/Workspace/isb101/NGS/WEScourse/corpasome/varian
 In this short introduction we will filter variants from an annotated file produced on the shell in R, a common step in genomic data analyses. The script so far is using custom Perl scripts. Rewrite the steps in R. 
 For each question, save your results in tibble.
 
-For filtering it is recommned to use the `str_detect()` function from the *stringr* package included in the *tidyverse*.
+For filtering it is recommended to use the `str_detect()` function from the *stringr* package included in the *tidyverse*.
 
 ## Getting started
 
@@ -148,10 +148,11 @@ semi_join(pred, cand_genes, by=c(Gene.refGene = "X1"))
 ### Coverage
 
 Explore the data that has been generated and plot the coverage along the chromosome for one sample.
-```{r, eval=FALSE}
+```{r, eval=FALSE, solution=TRUE}
 coverage_dir <- "/Users/roland.krause/Workspace/isb101/NGS/WEScourse/corpasome/coverage/"
 
-dad_cov_stats <- read_tsv(file.path(coverage_dir, "dad.coverage", colnames(c("chr", "start", "stop", "cov", "N", "P", "Q"))))
+dad_cov_stats <- read_tsv(file.path(coverage_dir, "dad.coverage", col_names = FALSE)
+                                    #, colnames(c("chr", "start", "stop", "cov", "N", "P", "Q"))))
 ```
 
 ### Quality control with FastQC
