@@ -57,7 +57,7 @@ recessive %>%
           tg <= cut_at ) -> uncommon
 ```
  
- 3. From the results above filter on the two rows `Func.refGene` and `ExonicFunc.refGene`. 
+ 3. From the results above filter on the two columns `Func.refGene` and `ExonicFunc.refGene`. 
     * In `Func.refGene`, filter rows such that  *splicing* or *exonic* remains and 
     * in`ExonicFunc.refGene` column, *frameshift* or *nonsynonymous SNV* or *stopgain* or *stoploss* is included. 
   Compare to `corpasome.trio.chr22.snps.filtered.annovar.recessive.noncommon.exonsplicing`. 
