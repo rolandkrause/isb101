@@ -71,8 +71,8 @@ uncommon %>%
   
 ```{r, solution = TRUE}
 exonsplicing %>% 
-#  filter( !str_detect(ljb2_sift, "D|P")) %>% 
- filter(          str_detect(ljb2_pp2hvar, "D|P")) -> cands
+ filter( str_detect(ljb2_sift, "D|P")) %>% 
+ filter( str_detect(ljb2_pp2hvar, "D|P")) -> cands
 
 ```
   
@@ -112,26 +112,26 @@ uncommon %>% filter(is.na(snp138)) -> dbsnp
 
 ```
 
-  4. From the file `corpasome.trio.chr22.denovogear.annovar_input.hg19_multianno.txt.noncommon..notdbSNP`, alter two rows `Func.refGene` and `ExonicFunc.refGene`. In `Func.refGene`, filter rows such that  *splicing* or *exonic;splicing* remains and in `ExonicFunc.refGene` column, *frameshift* or *nonsynonymous* or *stopgain* or *stoploss* is included. Save all of these changes into the file `corpasome.trio.chr22.denovogear.annovar_input.hg19_multianno.txt.noncommon.notdbSNP.exonsplicing`
+  4. From the file `corpasome.trio.chr22.denovogear.annovar_input.hg19_multianno.txt.noncommon..notdbSNP`, alter two columns `Func.refGene` and `ExonicFunc.refGene`. In `Func.refGene`, filter rows such that  *splicing* or *exonic;splicing* remains and in `ExonicFunc.refGene` column, *frameshift* or *nonsynonymous* or *stopgain* or *stoploss* is included. Save all of these changes into a variable named `denovogear.exonsplicing`
   
 ```{r, solution = TRUE}
 dbsnp %>% 
   filter(str_detect(Func.refGene, "exonic")) %>% 
-  filter(str_detect(ExonicFunc.refGene, c("nonsynonymous|frameshift|stopgain|stoploss"))) -> exonsplicing
+  filter(str_detect(ExonicFunc.refGene, c("nonsynonymous|frameshift|stopgain|stoploss"))) -> denovogear.exonsplicing
   
 ```
   
-  5. Now, we want to filter for the deleterious variants. Remove other patterns such that only  `D` from each of the columns ljb2_sift,ljb2_pp2hvar remains. Rename this new file to corpasome.trio.chr22.denovogear.annovar_input.hg19_multianno.txt.noncommon.notdbSNP.exonsplicing.pred
+  5. Now, we want to filter for the deleterious variants. Remove other patterns such that only  `D` from each of the columns of ljb2_sift,ljb2_pp2hvar remains. Save this into a new variable called to denovogear.pred
 ```{r, solution = TRUE}
-exonsplicing %>% 
-#  filter( !str_detect(ljb2_sift, "D|P")) %>% 
- filter(          str_detect(ljb2_pp2hvar, "D|P")) -> pred
+denovogear.exonsplicing %>% 
+ filter(str_detect(ljb2_sift, "D")) %>% 
+ filter(str_detect(ljb2_pp2hvar, "D")) -> denovogear.pred
 ```
   
   6. Same as before, we want to see how many of our predicted genes overlap with the candidate gene list. Run an overlap between the predicted file (produced by the last question) and the candidateGenesList. Are there any matching genes ? If yes, which ones.
   
 ```{r, solution = TRUE}
-semi_join(pred, cand_genes, by=c(Gene.refGene = "X1"))
+semi_join(denovogear.pred, cand_genes, by=c(Gene.refGene = "X1"))
 ```
 
  7. Generate a bar plot that shows the numbers of variants in the individual filtering steps.
