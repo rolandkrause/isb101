@@ -4,14 +4,14 @@ author: "Roland Krause"
 date: "29/03/2020"
 output: 
   unilur::tutorial_html_solution: default
-  unilur::tutorial_pdf: default
   unilur::tutorial_pdf_solution: default
+  unilur::tutorial_pdf: default
   unilur::tutorial_html: default
 ---
----
+
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, include = FALSE)
+knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
@@ -20,36 +20,119 @@ library(tidyverse)
 sam_dir <- ("/Users/roland.krause/Workspace/isb101/NGS/WEScourse/corpasome/variants_samtools/")
 ```
 
+## Introduction
+In this short introduction we will filter variants from an annotated file produced on the shell in R, a common step in genomic data analyses. The script so far is using custom Perl scripts. Rewrite the steps in R. 
+For each question, save your results in tibble.
+
+For filtering it is recommned to use the `str_detect()` function from the *stringr* package included in the *tidyverse*.
+
 ## Filtering SNPs recessive analysis
 
 Load the file `corpasome.trio.chr22.snps.filtered.annovar.tsv` into R.
- 1. *why* Filter the columns `corpasome_dad`, `corpasome_mom`, `corpasome_daughter` with patterns “01,01,11” respectively  and save the new file as `corpasome.trio.chr22.snps.filtered.annovar.recessive`.
+ 1. Filter the columns `corpasome_dad`, `corpasome_mom`and `corpasome_daughter` with the patterns $01$, $01$, and $11$ respectively. Compare your results to the file `corpasome.trio.chr22.snps.filtered.annovar.recessive`.
  
 ```{r, solution = TRUE}
 recessive <- read_tsv(file.path(sam_dir, "corpasome.trio.chr22.snps.filtered.annovar.tsv")) %>% 
   filter(corpasome_dad == "01", 
          corpasome_mom == "01", 
          corpasome_daughter == "11")
+
+
 ```
 
  
- 2. Filter the columns `esp6500si_ea`,`1000g2012apr_eur` such that the values are  0.05 or less for both columns. Save this into a new file named `corpasome.trio.chr22.snps.filtered.annovar.recessive.noncommon`.
+ 2. Filter the columns `esp6500si_ea`,`1000g2012apr_eur` such that the values above $0.05$ in any column are removed. Be careful about missing values in this column, they need to be included!
  
-```{r}
-filtered %>% 
-  filter
+Compare to the file named `corpasome.trio.chr22.snps.filtered.annovar.recessive.noncommon`.
+ 
+```{r, solution = TRUE}
+cut_at <- 0.05 
+
+recessive %>% 
+  mutate(esp = replace_na(esp6500si_ea, 0)) %>% 
+  mutate(tg = replace_na(`1000g2012apr_eur`, 0)) %>% 
+  filter(esp <= cut_at ,
+          tg <= cut_at ) -> uncommon
 ```
  
-  3. From the file `corpasome.trio.chr22.snps.filtered.annovar.recessive.noncommon`, alter two rows Func.refGene and ExonicFunc.refGene. In Func.refGene, filter rows such that  splicing or exonic;splicing remains and in ExonicFunc.refGene column, frameshift or nonsynonymous or stopgain or stoploss is included. Save all of these changes into the file corpasome.trio.chr22.snps.filtered.annovar.recessive.noncommon.exonsplicing 
-  4. Now, we want to filter out the deleterious variants. Remove the patterns D|P from each of the columns ljb2_sift,ljb2_pp2hvar . Rename this new file to corpasome.trio.chr22.snps.filtered.annovar.recessive.noncommon.exonsplicing.pred
+ 3. From the results above filter on the two rows `Func.refGene` and `ExonicFunc.refGene`. 
+ 
+  * In `Func.refGene`, filter rows such that  
+  *splicing* or *exonic* remains and 
+  * in`ExonicFunc.refGene` column, *frameshift* or *nonsynonymous SNV* or *stopgain* or *stoploss* is included. 
+  Compare to `corpasome.trio.chr22.snps.filtered.annovar.recessive.noncommon.exonsplicing`. 
+
+```{r, solution = TRUE}
+uncommon %>% 
+  filter(Func.refGene %in% c("splicing", "exonic")) %>% 
+  filter(ExonicFunc.refGene %in% c("frameshift", "nonsynonymous SNV", "stopgain","stoploss")) -> exonsplicing
+```
+  4. Now, we want to filter out the deleterious variants. Remove the patterns *D* and *P* from each of the columns `ljb2_sift` and `ljb2_pp2hvar` . Compare to `corpasome.trio.chr22.snps.filtered.annovar.recessive.noncommon.exonsplicing.pred`.
   
-  5. Finally, we want to see how many of our predicted genes overlap with the candidategene list. Run an overlap between the predicted file (produced by the last question) and the candidateGenesList. Are there any matching genes ? If yes, what ?
+```{r, solution = TRUE}
+exonsplicing %>% 
+#  filter( !str_detect(ljb2_sift, "D|P")) %>% 
+ filter(          str_detect(ljb2_pp2hvar, "D|P")) -> cands
+
+```
   
-## Denovo annotation analysis
+  
+  5. Finally, we want to see how many of our predicted genes overlap with the candidategene list. Run an overlap between the predicted file (produced by the last question) and the `candidateGenesList` in `WEScourse/data/`. Are there any matching genes ?
+  
+```{r, solution = TRUE}
+cand_genes <- read_tsv("/Users/roland.krause/Workspace/isb101/NGS/WEScourse/data/candidateGenes/schizophrenia.cand.genes.ids", col_names = FALSE)
+semi_join(cands, cand_genes, by=c(Gene.refGene = "X1"))
+```
+
+ 6. Generate a bar plot that shows the numbers of variants in the individual filtering steps.
+
+  
+## *De novo* annotation analysis
   1. Load the file `corpasome.trio.chr22.denovogear.annovar_input.hg19_multianno.txt` into your R session.
   
-  2. Filter the columns `esp6500si_ea`,`1000g2012apr_eur `with values 0.00001 and save to a new file called corpasome.trio.chr22.denovogear.annovar_input.hg19_multianno.txt.noncommon3.From the previous file, filter out the variants already present in dbSNP (hint: make use of the dbsnp file snp138)4. From the file corpasome.trio.chr22.denovogear.annovar_input.hg19_multianno.txt.noncommon..notdbSNP, alter two rows Func.refGene and ExonicFunc.refGene. In Func.refGene, filter rows such that  splicing or exonic;splicing remains and in ExonicFunc.refGene column, frameshift or nonsynonymous or stopgain or stoploss is included. Save all of these changes into the file `corpasome.trio.chr22.denovogear.annovar_input.hg19_multianno.txt.noncommon.notdbSNP.exonsplicing`
-  5. Now, we want to filter out the deleterious variants. Remove the patterns D|P from each of the columns ljb2_sift,ljb2_pp2hvar . Rename this new file to corpasome.trio.chr22.denovogear.annovar_input.hg19_multianno.txt.noncommon..notdbSNP.exonsplicing.pred6. Same as before, we want to see how many of our predicted genes overlap with the candidate gene list. Run an overlap between the predicted file (produced by the last question) and the candidateGenesList. Are there any matching genes ? If yes, what
+```{r, solution = TRUE}
+denovo <- read_tsv("/Users/roland.krause/Workspace/isb101/NGS/WEScourse/corpasome/denovo/corpasome.trio.chr22.denovogear.annovar_input.hg19_multianno.txt", na="")
+```
+  
+  2. Filter the columns `esp6500si_ea` and `1000g2012apr_eur` for values less or equal to $0.00001$ and compare to 'corpasome.trio.chr22.denovogear.annovar_input.hg19_multianno.txt.noncommon`.
+```{r, solution = TRUE}
+cut_at <- 0.00001
+
+denovo %>% 
+  mutate(esp = replace_na(esp6500si_ea, 0)) %>% 
+  mutate(tg = replace_na(`1000g2012apr_eur`, 0)) %>% 
+  filter(esp <= cut_at ,
+          tg <= cut_at ) -> uncommon
+```
+  
+  3.From the previous file, remove the variants already present in dbSNP listed in the column `snp138`.
+  
+```{r, solution = TRUE}
+uncommon %>% filter(is.na(snp138)) -> dbsnp
+
+```
+
+  4. From the file `corpasome.trio.chr22.denovogear.annovar_input.hg19_multianno.txt.noncommon..notdbSNP`, alter two rows `Func.refGene` and `ExonicFunc.refGene`. In `Func.refGene`, filter rows such that  *splicing* or *exonic;splicing* remains and in `ExonicFunc.refGene` column, *frameshift* or *nonsynonymous* or *stopgain* or *stoploss* is included. Save all of these changes into the file `corpasome.trio.chr22.denovogear.annovar_input.hg19_multianno.txt.noncommon.notdbSNP.exonsplicing`
+  
+```{r, solution = TRUE}
+dbsnp %>% 
+  filter(str_detect(Func.refGene, "exonic")) %>% 
+  filter(str_detect(ExonicFunc.refGene, c("nonsynonymous|frameshift|stopgain|stoploss"))) -> exonsplicing
+  
+```
+  
+  5. Now, we want to filter out the deleterious variants. Remove the patterns `D` and `P` from each of the columns ljb2_sift,ljb2_pp2hvar . Rename this new file to corpasome.trio.chr22.denovogear.annovar_input.hg19_multianno.txt.noncommon.notdbSNP.exonsplicing.pred
+```{r, solution = TRUE}
+exonsplicing %>% 
+#  filter( !str_detect(ljb2_sift, "D|P")) %>% 
+ filter(          str_detect(ljb2_pp2hvar, "D|P")) -> pred
+```
+  
+  6. Same as before, we want to see how many of our predicted genes overlap with the candidate gene list. Run an overlap between the predicted file (produced by the last question) and the candidateGenesList. Are there any matching genes ? If yes, which ones.
+  
+```{r, solution = TRUE}
+semi_join(pred, cand_genes, by=c(Gene.refGene = "X1"))
+```
 
 
-## Questions on summaries, plot? 
+ 7 . Generate a bar plot that shows the numbers of variants in the individual filtering steps.
