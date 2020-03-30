@@ -32,8 +32,8 @@ Copy data from the server to your local computer. Information is supplied on the
 
 ## Filtering SNPs recessive analysis
 
-Load the file `corpasome.trio.chr22.snps.filtered.annovar.tsv` into R.
- 1. Filter the columns `corpasome_dad`, `corpasome_mom`and `corpasome_daughter` with the patterns $01$, $01$, and $11$ respectively. Compare your results to the file `corpasome.trio.chr22.snps.filtered.annovar.recessive`. Why are these patterns particularly important in this case ?
+
+ 1. Load the file `corpasome.trio.chr22.snps.filtered.annovar.tsv` into R. Filter the columns `corpasome_dad`, `corpasome_mom`and `corpasome_daughter` with the patterns $01$, $01$, and $11$ respectively. Compare your results to the file `corpasome.trio.chr22.snps.filtered.annovar.recessive`. Why are these patterns particularly important in this case ?
  
 ```{r, solution = TRUE}
 recessive <- read_tsv(file.path(sam_dir, "corpasome.trio.chr22.snps.filtered.annovar.tsv"), guess_max = 5100) %>% 
@@ -45,9 +45,7 @@ recessive <- read_tsv(file.path(sam_dir, "corpasome.trio.chr22.snps.filtered.ann
 ```
 
  
- 2. Filter the columns `esp6500si_ea`,`1000g2012apr_eur` such that the values above $0.05$ in any row are removed. Be careful about missing values in this column, they need to be included!
- 
-Compare to the file named `corpasome.trio.chr22.snps.filtered.annovar.recessive.noncommon`.
+ 2. Filter the columns `esp6500si_ea` and `1000g2012apr_eur` such that the values above $0.05$ in any row are removed. Be careful about missing values in this column. Empty values need to be included! Use the function `replace_na()` to convert $NA$ to $0$. Compare to the file named `corpasome.trio.chr22.snps.filtered.annovar.recessive.noncommon`.
  
 ```{r, solution = TRUE}
 cut_at <- 0.05 
@@ -60,10 +58,8 @@ recessive %>%
 ```
  
  3. From the results above filter on the two rows `Func.refGene` and `ExonicFunc.refGene`. 
- 
-  * In `Func.refGene`, filter rows such that  
-  *splicing* or *exonic* remains and 
-  * in`ExonicFunc.refGene` column, *frameshift* or *nonsynonymous SNV* or *stopgain* or *stoploss* is included. 
+    * In `Func.refGene`, filter rows such that  *splicing* or *exonic* remains and 
+    * in`ExonicFunc.refGene` column, *frameshift* or *nonsynonymous SNV* or *stopgain* or *stoploss* is included. 
   Compare to `corpasome.trio.chr22.snps.filtered.annovar.recessive.noncommon.exonsplicing`. 
 
 ```{r, solution = TRUE}
@@ -81,7 +77,7 @@ exonsplicing %>%
 ```
   
   
-  5. Finally, we want to see how many of our predicted genes overlap with the candidategene list. Run an overlap between the predicted file (produced by the last question) and the `candidateGenesList` in `WEScourse/data/`. Are there any matching genes ?
+  5. Finally, we want to see how many of our predicted genes overlap with the candidategene list. Run an overlap between the predicted file (produced by the last question) and the `candidateGenesList` in `WEScourse/data/`.   Are there any matching genes ?
   
 ```{r, solution = TRUE}
 cand_genes <- read_tsv("/Users/roland.krause/Workspace/isb101/NGS/WEScourse/data/candidateGenes/schizophrenia.cand.genes.ids", col_names = FALSE)
@@ -109,7 +105,7 @@ denovo %>%
           tg <= cut_at ) -> uncommon
 ```
   
-  3.From the previous file, remove the variants already present in dbSNP listed in the column `snp138`.
+  3. From the previous file, remove the variants already present in dbSNP listed in the column `snp138`.
   
 ```{r, solution = TRUE}
 uncommon %>% filter(is.na(snp138)) -> dbsnp
@@ -138,12 +134,12 @@ exonsplicing %>%
 semi_join(pred, cand_genes, by=c(Gene.refGene = "X1"))
 ```
 
-
- 7 . Generate a bar plot that shows the numbers of variants in the individual filtering steps.
+ 7. Generate a bar plot that shows the numbers of variants in the individual filtering steps.
 
 
 ## Advanced exercises
 
+Suggestions, not provided. 
 
 ### Coverage
 
