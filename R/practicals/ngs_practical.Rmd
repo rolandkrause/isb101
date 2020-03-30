@@ -17,7 +17,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r, include=FALSE}
 library(tidyverse)
-sam_dir <- ("/Users/roland.krause/Workspace/isb101/NGS/WEScourse/corpasome/variants_samtools/")
+sam_dir <- "/Users/roland.krause/Workspace/isb101/NGS/WEScourse/corpasome/variants_samtools/"
 ```
 
 ## Introduction
@@ -26,13 +26,17 @@ For each question, save your results in tibble.
 
 For filtering it is recommned to use the `str_detect()` function from the *stringr* package included in the *tidyverse*.
 
+## Getting started
+
+Copy data from the server to your local computer. Information is supplied on the [Moodle](https://moodle.uni.lu/course/view.php?id=93#section-18).
+
 ## Filtering SNPs recessive analysis
 
 Load the file `corpasome.trio.chr22.snps.filtered.annovar.tsv` into R.
  1. Filter the columns `corpasome_dad`, `corpasome_mom`and `corpasome_daughter` with the patterns $01$, $01$, and $11$ respectively. Compare your results to the file `corpasome.trio.chr22.snps.filtered.annovar.recessive`.
  
 ```{r, solution = TRUE}
-recessive <- read_tsv(file.path(sam_dir, "corpasome.trio.chr22.snps.filtered.annovar.tsv")) %>% 
+recessive <- read_tsv(file.path(sam_dir, "corpasome.trio.chr22.snps.filtered.annovar.tsv"), guess_max = 5100) %>% 
   filter(corpasome_dad == "01", 
          corpasome_mom == "01", 
          corpasome_daughter == "11")
@@ -136,3 +140,20 @@ semi_join(pred, cand_genes, by=c(Gene.refGene = "X1"))
 
 
  7 . Generate a bar plot that shows the numbers of variants in the individual filtering steps.
+
+
+## Advanced exercises
+
+
+### Coverage
+
+Explore the data that has been generated and plot the coverage along the chromosome for one sample.
+```{r, eval=FALSE}
+coverage_dir <- "/Users/roland.krause/Workspace/isb101/NGS/WEScourse/corpasome/coverage/"
+
+dad_cov_stats <- read_tsv(file.path(coverage_dir, "dad.coverage", colnames(c("chr", "start", "stop", "cov", "N", "P", "Q"))))
+```
+
+### Quality control with FastQC
+
+Try reading the fastqc_data.txt for one of the samples. Reading in this file is a bit complicated, make sure you have read the help messages for `read_tsv` and the related functions. Do not edit the file manually!
