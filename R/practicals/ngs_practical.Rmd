@@ -33,7 +33,7 @@ Copy data from the server to your local computer. Information is supplied on the
 ## Filtering SNPs recessive analysis
 
 Load the file `corpasome.trio.chr22.snps.filtered.annovar.tsv` into R.
- 1. Filter the columns `corpasome_dad`, `corpasome_mom`and `corpasome_daughter` with the patterns $01$, $01$, and $11$ respectively. Compare your results to the file `corpasome.trio.chr22.snps.filtered.annovar.recessive`.
+ 1. Filter the columns `corpasome_dad`, `corpasome_mom`and `corpasome_daughter` with the patterns $01$, $01$, and $11$ respectively. Compare your results to the file `corpasome.trio.chr22.snps.filtered.annovar.recessive`. Why are these patterns particularly important in this case ?
  
 ```{r, solution = TRUE}
 recessive <- read_tsv(file.path(sam_dir, "corpasome.trio.chr22.snps.filtered.annovar.tsv"), guess_max = 5100) %>% 
@@ -45,7 +45,7 @@ recessive <- read_tsv(file.path(sam_dir, "corpasome.trio.chr22.snps.filtered.ann
 ```
 
  
- 2. Filter the columns `esp6500si_ea`,`1000g2012apr_eur` such that the values above $0.05$ in any column are removed. Be careful about missing values in this column, they need to be included!
+ 2. Filter the columns `esp6500si_ea`,`1000g2012apr_eur` such that the values above $0.05$ in any row are removed. Be careful about missing values in this column, they need to be included!
  
 Compare to the file named `corpasome.trio.chr22.snps.filtered.annovar.recessive.noncommon`.
  
@@ -71,7 +71,7 @@ uncommon %>%
   filter(Func.refGene %in% c("splicing", "exonic")) %>% 
   filter(ExonicFunc.refGene %in% c("frameshift", "nonsynonymous SNV", "stopgain","stoploss")) -> exonsplicing
 ```
-  4. Now, we want to filter out the deleterious variants. Remove the patterns *D* and *P* from each of the columns `ljb2_sift` and `ljb2_pp2hvar` . Compare to `corpasome.trio.chr22.snps.filtered.annovar.recessive.noncommon.exonsplicing.pred`.
+  4. Now, we want to filter for the deleterious variants. Remove other patterns such that either *D* or *P* from each of the columns `ljb2_sift` and `ljb2_pp2hvar` remains. Compare to `corpasome.trio.chr22.snps.filtered.annovar.recessive.noncommon.exonsplicing.pred`. Could you also think of an explanation as to why we want to keep the deleterious variants ?
   
 ```{r, solution = TRUE}
 exonsplicing %>% 
@@ -125,7 +125,7 @@ dbsnp %>%
   
 ```
   
-  5. Now, we want to filter out the deleterious variants. Remove the patterns `D` and `P` from each of the columns ljb2_sift,ljb2_pp2hvar . Rename this new file to corpasome.trio.chr22.denovogear.annovar_input.hg19_multianno.txt.noncommon.notdbSNP.exonsplicing.pred
+  5. Now, we want to filter for the deleterious variants. Remove other patterns such that only  `D` from each of the columns ljb2_sift,ljb2_pp2hvar remains. Rename this new file to corpasome.trio.chr22.denovogear.annovar_input.hg19_multianno.txt.noncommon.notdbSNP.exonsplicing.pred
 ```{r, solution = TRUE}
 exonsplicing %>% 
 #  filter( !str_detect(ljb2_sift, "D|P")) %>% 
