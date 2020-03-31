@@ -139,7 +139,7 @@ semi_join(denovogear.pred, cand_genes, by=c(Gene.refGene = "X1"))
 
 ## Advanced exercises
 
-Suggestions, not provided. 
+Suggestions, not be handed in.  
 
 ### Coverage
 
