@@ -305,6 +305,53 @@ To integrate small pieces of _R_ codes
 - **interactive** documents (`shiny` package)
 - websites (like the [rmarkdown](http://rmarkdown.rstudio.com) sites)
 
+## Using references in RMarkdown documents{.build}
+
+### Setting up a bibliography {.box-6  .bg-green .outline .stretch}
+- Use a referene manager like Zotero and export to **BibTeX** fornat
+- Alternatively just create a simple `.bib` file from [Google Scholar](http://scholar.google.com)
+
+```
+@article{macdonald_mutations_2010,
+author = {Macdonald, Robert L. and Kang, Jing-Qiong and Gallagher, Martin J.},
+title = {Mutations in GABAA receptor subunits associated with genetic epilepsies},
+journal = {The Journal of Physiology},
+volume = {588},
+number = {11},
+pages = {1861-1869},
+doi = {10.1113/jphysiol.2010.186999},
+year = {2010}
+}
+```
+
+### Setup {.box-6 .bg-blue .outline .stretch}
+YAML Header
+```
+---
+title: "Sample Document"
+output: html_document
+bibliography: bibliography.bib # The BibTex
+csl: nature.csl                # The citation style file  
+---
+```
+
+- Insert citations using the [pandoc](https://pandoc.org/MANUAL.html#citations) syntax:\
+  `[@citation-key]`
+
+```
+Some research has been done already[@my-reference].
+```
+
+- Use citation style language (`csl`) files
+- Have a look at and select an appropriate file:
+    + <https://www.zotero.org/styles>
+    + <https://github.com/citation-style-language/styles>
+
+
+
+
+## Other outputs {.build}
+
 ### Books{.box-6 .bg-green .icon}
 
 ![](img/00/book.png)
