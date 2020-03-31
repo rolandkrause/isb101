@@ -1,0 +1,112 @@
+---
+title: "Case Report: Trio-based whole exome sequencing reveals <denovo|recessive> causative mutation <mutation> for <disease>
+"
+author: "Student01"
+date: "`r Sys.Date()`"
+output: word_document
+#bibliography: wesbib.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Aims
+You will receive a set of exome data for a family trio to identify a disease-causing variant using the tools presented in the course. Your task for this case report is to summarize the steps leading to the variant and to reflect on how you get there. Your report should be reproducible using RMarkdown and code where possible. Minimally include two graphs and two computed tables in the Results sections that are purely produced from code. Use computed results in the text at least twice.
+
+#### Extra efforts, not required
+  * Use of a bibliography 
+  * All figures produced from code
+  * All numbers produced from code
+  * Webtools used from code (very advanced )
+
+## Introduction
+  - 2-3 sentences 
+     *	What is next generation sequencing, whole exome sequencing, and trio sequencing used for? Get some use cases from literature. 
+  -	1-2 sentences about the disease:
+     *	Are there already sequencing studies done for the disease (if yes, which one) ?
+     *	Are their already genetic variants known (if yes which one) and where can you find those ?
+     * Incidence of the disease (how often it occurs ?).
+     *	What is the mode of inheritance you would expect ?
+
+##	Materials and methods
+
+### Study Participants/Whole exome sequencing
+
+ -	Description of the Corpas family project (check http://manuelcorpas.com/exome ):
+ * 	http://manuelcorpas.com/2013/01/21/corpas-family-exome-data-available-for-public-download/
+ * 	http://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-015-1973-7
+ -	Draw pedigree (mark affected child) and give alleles per individual for the variant that you found. You can draw the pedigree by hand but also use an R package to draw the pedigree
+ -	How was the sequencing data generated, on which machine, using which technology, using which sequencing kit,  exome array ? 
+
+### NGS data preprocessing 
+ -	Describe data formats used and give overview of methods with a figure showing the NGS processing workflow (could be from other publications, if  please reference): from raw fastq files to called variants.
+ -	Quality control:
+    * 	describe method and parameters to evaluate quality of the raw sequencing data
+ -	NGS processing:
+    * Describe mapping method that was used, which reference genome, ..
+	  * Describe GATK pipeline (see GATK webpage for documentation)
+    * Describe the different steps, what are they doing, what is the input/output.
+
+### Variant annotation and filtering
+ -	How variants were called ? Which parameter were used ?
+    *	Describe Annovar annotation pipeline. Which annotations and databases were used for annotation ?
+ -	Variant filter strategy:
+    * What annotations/parameters have been used for filtering down the variants ?
+
+## Results
+### Processing environment
+	- Describe in one paragraph the HPC system (https:hpc.uni.lu) and the iris 	server and how you have run the analysis on iris
+	- Describe the runtime (from the slurm-<jobid>.out files)
+	- How many cpus have been used ??
+
+### QC
+	- Summarize QC results from Fastqc: (1 paragraph)
+      *	one table summarizing read statistics for all three samples and 
+      * show one read quality metric for all samples in one figure.
+
+### Sample processing
+ -	Table with read statistics (read numbers for each processing step including total number, after initial mapping, after duplicate removal, etc.). What is the outcome of the NGS workflow ?
+
+### Variant calling/filtering
+ - How many variants were in the raw sample output and then called in the initial bcf files, in the vcf file filtered for read depth and finally in the demultiplexed vcf file ? What means demultiplexing here ?
+ - How many variants were finally called over all samples and annotated using ANNOVAR ? How many variants remaining after each filtering step (1 or 2 tables) ? Describe impact of each filtering step by number of qualifying variants. 
+ - How many exonic/intronic variants were called ? (1-2 sentences, 1 table). Were there any variants related to alternative splicing ?
+ - How many different exonic variant types (nonsynonymous/synonymous/frameshift/non-frameshiftindels/etc) were called ? (1-2 sentences, 1 table).
+ - QC measures: calculate and discuss
+    * transistion/transversion ratio
+    * nonsynonymous/synonymous ratio
+ - Were variants found in candidate variants genes ? If yes, with how many reads covered, what was the allele frequency of the alternative allele. Discuss quality of the calls. Report sequencing depth for all samples for candidate variant.
+ - Report gene coverage for all samples for candidate gene.
+ - Show variant in IGV from all three family members. Which mode of inheritance you have found and what is the support for it ?
+ - Describe candidate variant and gene using databases like 
+ - Check the current allele frequencies in gnoMAD for your variants
+ - Annotate your variant with more scores and annotation using [wANNOVAR](http://wannovar.wglab.org/) and discuss if they support the hypothesis that the variant is disease causing
+ - Collect data about your variant and gene and the position of your variant from GeneCards, Uniprot, OMIM, GTEX. Is the variant located in a certain protein domain, does it is region where other disease-causing variants are located, is the protein/gene expressed in the tissue that you would expect ?
+ - Use different tools for variant interpretation like MutationMapper, MuPIT, MTR-viewer, VSranker, ClinVar
+ - Have at least one figure that shows the location of the variant on the protein sequence, e.g. using MutationMapper or the R package [G3viz](https://cran.rstudio.com/web/packages/g3viz/vignettes/introduction.html) 
+ 
+## Discussion
+Summary of analysis results. What variant and gene been found? Is the mode of inheritance of your variant known or not known? What evidence you have found that supports your hypothesis that you have found a causative variant? Can you think of experiments that could show that you have found a disease-causing variant ? 
+
+## References
+
+(no style preference, example, you could use e.g. https://www.zotero.org)
+
+
+1. Martin, M. Cutadapt removes adapter sequences from high-throughput sequencing reads. EMBnet.journal 17, 10 (2011).
+2. GATK | Best Practice Workflows. at <https://www.broadinstitute.org/gatk/guide/bp_step.php?p=1>
+3. SAMtools. at <http://samtools.sourceforge.net/>
+4. picard / Wiki / Main_Page. at <http://sourceforge.net/p/picard/wiki/Main_Page/>
+5. DePristo, M. A. et al. A framework for variation discovery and genotyping using next-generation DNA sequencing data. Nat. Genet. 43, 491–8 (2011).
+6. Langille, M. G. I. & Brinkman, F. S. L. IslandViewer: an integrated interface for computational identification and visualization of genomic islands. Bioinformatics 25, 664–5 (2009).
+7. Chong, J. X. et al. Autosomal-Dominant Multiple Pterygium Syndrome Is Caused by Mutations in MYH3. Am. J. Hum. Genet. 96, 841–9 (2015).
+11. Bcftools by samtools. at <http://samtools.github.io/bcftools/>
+  12. Alonso, N., Lucas, G. & Hysi, P. Big data challenges in bone research: genome-wide association studies and next-generation sequencing. Bonekey Rep. 4, 635 (2015).
+  15. Vt - Genome Analysis Wiki. at <http://genome.sph.umich.edu/wiki/Vt>
+  16. Liu, X., Jian, X. & Boerwinkle, E. dbNSFP v2.0: a database of human non-synonymous SNVs and their functional predictions and annotations. Hum. Mutat. 34, E2393–402 (2013).
+  17. Sherry, S. T. dbSNP: the NCBI database of genetic variation. Nucleic Acids Res. 29, 308–311 (2001).
+
+  34. De Novo Mutations in Synaptic Transmission Genes Including DNM1 Cause Epileptic Encephalopathies - mmc3.pdf. at <http://www.cell.com/cms/attachment/2018737082/2038848558/mmc3.pdf>
+
+
