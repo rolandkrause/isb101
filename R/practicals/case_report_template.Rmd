@@ -14,11 +14,15 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ## Aims
-You will receive a set of exome data for a family trio to identify a disease-causing variant using the tools presented in the course. Your task for this case report is to summarize the steps leading to the variant and to reflect on how you get there. Your report should be reproducible using RMarkdown and code where possible. 
+You will receive a set of exome data for a family trio to identify a disease-causing variant using the tools presented in the course. 
+Your task for this case report is to summarize the steps leading to the variant and to reflect on how you get there. 
+Your report should be reproducible using RMarkdown and code where possible. 
 
-Minimally include two graphs and two computed tables in the Results sections that are purely produced from code. Use computed results in the text at least twice. There are many possibilities in this report.
+Minimally include two graphs and two computed tables in the Results sections that are purely produced from code. 
+Use computed results in the text at least twice. 
+There are many possibilities in this report.
 
-#### Extra efforts, not required
+### Extra efforts, not required
   * Use of a bibliography 
   * All figures produced from code
   * All numbers produced from code
@@ -81,10 +85,6 @@ ggplot(mtcars) +
 
 
 ## Results
-### Processing environment
- - Describe in one paragraph the HPC system (https:hpc.uni.lu) and the iris  server and how you have run the analysis on iris
- - Describe the runtime (from the slurm-<jobid>.out files)
- - How many cpus have been used??
 
 ### QC
  - Summarize QC results from Fastqc: (1 paragraph)
@@ -113,7 +113,11 @@ ggplot(mtcars) +
  - Have at least one figure that shows the location of the variant on the protein sequence, e.g. using MutationMapper or the R package [G3viz](https://cran.rstudio.com/web/packages/g3viz/vignettes/introduction.html) 
  
 ## Discussion
-Summary of analysis results. What variant and gene been found? Is the mode of inheritance of your variant known or not known? What evidence you have found that supports your hypothesis that you have found a causative variant? Can you think of experiments that could show that you have found a disease-causing variant? 
+Summary of analysis results. 
+What variant and gene been found? 
+Is the mode of inheritance of your variant known or not known? 
+What evidence you have found that supports your hypothesis that you have found a causative variant? 
+Can you think of experiments that could show that you have found a disease-causing variant? 
 
 
 ## References

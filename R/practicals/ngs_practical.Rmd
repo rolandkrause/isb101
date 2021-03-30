@@ -1,12 +1,12 @@
 ---
 title: "Filtering variants"
 author: "Roland Krause"
-date: "29/03/2020"
+date: "30 March 2021"
 output: 
-  unilur::tutorial_pdf: default
+  unilur::tutorial_html: default
   unilur::tutorial_pdf_solution: default
   unilur::tutorial_html_solution: default
-  unilur::tutorial_html: default
+  unilur::tutorial_pdf: default
 ---
 
 
@@ -21,7 +21,7 @@ sam_dir <- "/Users/roland.krause/Workspace/isb101/NGS/WEScourse/corpasome/varian
 ```
 
 ## Introduction
-In this short introduction we will filter variants from an annotated file produced on the shell in R, a common step in genomic data analyses. The script so far is using custom Perl scripts. Rewrite the steps in R. 
+In this short introduction we will filter variants from an annotated file produced on the shell in R, a common step in genomic data analyses. The `runAnalysis.sh`script so far is using custom Perl scripts. We want to rewrite the steps in R. 
 For each question, save your results in tibble.
 
 For filtering it is recommended to use the `str_detect()` function from the *stringr* package included in the *tidyverse*.
@@ -36,7 +36,9 @@ Copy data from the server to your local computer. Information is supplied on the
  1. Load the file `corpasome.trio.chr22.snps.filtered.annovar.tsv` into R. Filter the columns `corpasome_dad`, `corpasome_mom`and `corpasome_daughter` with the patterns $01$, $01$, and $11$ respectively. Compare your results to the file `corpasome.trio.chr22.snps.filtered.annovar.recessive`. Why are these patterns particularly important in this case ?
  
 ```{r, solution = TRUE}
-recessive <- read_tsv(file.path(sam_dir, "corpasome.trio.chr22.snps.filtered.annovar.tsv"), guess_max = 5100) %>% 
+recessive <- read_tsv(file.path(
+  #sam_dir, 
+  "~/Downloads/corpasome.trio.chr22.snps.filtered.annovar.tsv"), guess_max = 5100) %>% 
   filter(corpasome_dad == "01", 
          corpasome_mom == "01", 
          corpasome_daughter == "11")
@@ -135,21 +137,6 @@ semi_join(denovogear.pred, cand_genes, by=c(Gene.refGene = "X1"))
 ```
 
  7. Generate a bar plot that shows the numbers of variants in the individual filtering steps.
-
-
-## Advanced exercises
-
-Suggestions, not be handed in.  
-
-### Coverage
-
-Explore the data that has been generated and plot the coverage along the chromosome for one sample.
-```{r, eval=FALSE, solution=TRUE}
-coverage_dir <- "/Users/roland.krause/Workspace/isb101/NGS/WEScourse/corpasome/coverage/"
-
-dad_cov_stats <- read_tsv(file.path(coverage_dir, "dad.coverage", col_names = FALSE)
-                                    #, colnames(c("chr", "start", "stop", "cov", "N", "P", "Q"))))
-```
 
 ### Quality control with FastQC
 

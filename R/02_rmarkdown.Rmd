@@ -1,10 +1,10 @@
 ---
 title: "RMarkdown"
-author: "Nikola de Lange, Roland Krause"
+author: "Roland Krause"
 date: "`r Sys.Date()`"
 output:
   iosp::ioslides_plus:
-    footer: "ISB101"
+    footer: "Best practices in Research Data Management"
 ---
 
 ```{r setup, include=FALSE}
@@ -46,6 +46,12 @@ article .code-transparent > pre {
   margin: auto;
   float: none;
 }
+
+.box.outline {
+ 	background-color: white;
+ 	color: black;
+}
+
 ```
 
 # Rmarkdown
@@ -107,7 +113,7 @@ article .code-transparent > pre {
 </html>
 ```
 
-### **Lightweight** markup language{.box-6 .bg-blue}
+### **Lightweight** markup language{.box-6 .bg-blue .outline}
 
 - Easy to read and write as it uses simple tags (_e.g._ `#`)
 
@@ -293,6 +299,16 @@ To integrate small pieces of _R_ codes
 - Easily editable
 - Collaborate with people not using Rmarkdown
 - Prepare even scientific manuscripts suitable for submission
+
+
+## Worked example
+
+ * [RStudio Cloud](https://rstudio.cloud/) is a free R session in the browser.
+* Register for free.
+* Create a new project.
+* Create a new RMarkdown document from the Menu.
+* Upload the peak lists as created 
+
 
 ## Growing variety of output formats
 

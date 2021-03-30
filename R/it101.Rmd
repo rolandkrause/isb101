@@ -22,7 +22,7 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 
-library(ggbeeswarm)
+#library(ggbeeswarm)
 library(tidyverse)
 library(knitr)
 ```
@@ -46,6 +46,7 @@ library(knitr)
 .p {
  font-size: 16pt;
 }
+
 
 .icon-small img {
   float: right;
