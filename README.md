@@ -7,3 +7,4 @@ Instructors: Reinhard Schneider (RS),  Roland Krause (RK), Patrick May (PM), Dan
 With contributions from 
 Ganna Androsova (GA)
 Eric Koncina (EK)
+Aurélien Ginolhac (AG)
